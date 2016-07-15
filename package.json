@@ -1,0 +1,15 @@
+{
+  "name": "swagger-pact-validator",
+  "version": "0.1.0",
+  "description": "A CLI tool to validate pact files against swagger specs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:atlassian/swagger-pact-validator.git"
+  },
+  "author": "Ben Sayers",
+  "license": "ISC"
+}
