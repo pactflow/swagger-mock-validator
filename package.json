@@ -11,5 +11,11 @@
     "url": "git@bitbucket.org:atlassian/swagger-pact-validator.git"
   },
   "author": "Ben Sayers",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.2.1",
+    "gulp-eslint": "3.0.1"
+  }
 }

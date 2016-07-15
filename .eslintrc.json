@@ -1,0 +1,15 @@
+{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:all",
+    "rules": {
+        "complexity": ["error", 3],
+        "dot-location": ["error", "property"],
+        "indent": ["error", 4],
+        "one-var": ["off"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"]
+    }
+}
