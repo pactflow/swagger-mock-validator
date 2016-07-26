@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "description": "A CLI tool to validate pact files against swagger specs.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "bin": {
+    "swagger-pact-validator": "./lib/cli.js"
   },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:atlassian/swagger-pact-validator.git"
@@ -16,6 +17,8 @@
     "eslint": "3.0.1",
     "gulp": "^3.9.1",
     "gulp-cli": "^1.2.1",
-    "gulp-eslint": "3.0.1"
+    "gulp-eslint": "3.0.1",
+    "gulp-jasmine": "^2.4.0",
+    "run-sequence": "^1.2.2"
   }
 }
