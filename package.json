@@ -16,9 +16,12 @@
   "author": "Ben Sayers",
   "license": "ISC",
   "devDependencies": {
+    "conventional-changelog": "^1.1.0",
+    "conventional-changelog-lint": "^1.0.0",
     "eslint": "3.0.1",
     "gulp": "^3.9.1",
     "gulp-cli": "^1.2.1",
+    "gulp-conventional-changelog": "^1.1.0",
     "gulp-eslint": "3.0.1",
     "gulp-jasmine": "^2.4.0",
     "gulp-util": "^3.0.7",

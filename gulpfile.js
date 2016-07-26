@@ -2,6 +2,7 @@
 
 const gulp = require('gulp');
 
+const conventionalChangelog = require('gulp-conventional-changelog');
 const exec = require('./gulp/exec');
 const eslint = require('gulp-eslint');
 const jasmine = require('gulp-jasmine');
@@ -12,7 +13,19 @@ const paths = {
     tests: ['test/e2e/**/*.spec.js']
 };
 
-gulp.task('lint', () =>
+gulp.task('changelog', () =>
+    gulp.src('CHANGELOG.md', {buffer: false})
+        .pipe(conventionalChangelog({preset: 'angular'}))
+        .pipe(gulp.dest('./'))
+);
+
+gulp.task('lint', ['lint-javascript', 'lint-commits']);
+
+gulp.task('lint-commits', () =>
+    exec('./node_modules/.bin/conventional-changelog-lint --from=2614d72 --preset angular')
+);
+
+gulp.task('lint-javascript', () =>
     gulp.src(['gulpfile.js', 'lib/**/*.js', 'test/**/*.js'])
         .pipe(eslint())
         .pipe(eslint.format())

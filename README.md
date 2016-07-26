@@ -7,5 +7,8 @@
 - Supports swagger files in json and yaml format
 - Can be invoked from the command line in any language
 
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md)
+
 ## Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)
