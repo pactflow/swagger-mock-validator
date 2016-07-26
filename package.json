@@ -7,7 +7,7 @@
     "swagger-pact-validator": "./lib/cli.js"
   },
   "scripts": {
-      "test": "./node_modules/.bin/gulp"
+    "test": "./node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "gulp-cli": "^1.2.1",
     "gulp-eslint": "3.0.1",
     "gulp-jasmine": "^2.4.0",
+    "jasmine-promise-tools": "^1.0.4",
     "run-sequence": "^1.2.2"
   }
 }
