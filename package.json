@@ -6,7 +6,9 @@
   "bin": {
     "swagger-pact-validator": "./lib/cli.js"
   },
-  "scripts": {},
+  "scripts": {
+      "test": "./node_modules/.bin/gulp"
+  },
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:atlassian/swagger-pact-validator.git"
