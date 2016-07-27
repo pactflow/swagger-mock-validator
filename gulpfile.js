@@ -2,11 +2,20 @@
 
 const gulp = require('gulp');
 
+const bump = require('gulp-bump');
 const conventionalChangelog = require('gulp-conventional-changelog');
 const exec = require('./gulp/exec');
 const eslint = require('gulp-eslint');
+const git = require('gulp-git');
+const fs = require('fs');
 const jasmine = require('gulp-jasmine');
+const minimist = require('minimist');
 const runSequence = require('run-sequence');
+
+// eslint-disable-next-line no-sync
+const getVersion = () => JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+
+const options = minimist(process.argv.slice(2), {strings: ['type']});
 
 const paths = {
     all: ['gulpfile.js', 'lib/**/*.js', 'test/**/*.js'],
@@ -18,6 +27,24 @@ gulp.task('changelog', () =>
         .pipe(conventionalChangelog({preset: 'angular'}))
         .pipe(gulp.dest('./'))
 );
+
+gulp.task('bump-version', () =>
+    gulp.src(['./package.json'])
+        .pipe(bump({type: options.type}))
+        .pipe(gulp.dest('./'))
+);
+
+gulp.task('commit-changes', () =>
+    gulp.src('.')
+        .pipe(git.add())
+        .pipe(git.commit(`chore: release ${getVersion()}`))
+);
+
+gulp.task('create-new-tag', (callback) => {
+    const version = getVersion();
+
+    git.tag(version, `Created Tag for version: ${version}`, callback);
+});
 
 gulp.task('lint', ['lint-javascript', 'lint-commits']);
 
@@ -32,9 +59,24 @@ gulp.task('lint-javascript', () =>
         .pipe(eslint.failAfterError())
 );
 
-gulp.task('npm-link', () =>
-    exec('npm link')
-);
+gulp.task('npm-link', () => exec('npm link'));
+
+gulp.task('npm-publish', () => exec('npm publish'));
+
+gulp.task('push-changes', (callback) => {
+    git.push('origin', 'master', {args: '--tags'}, callback);
+});
+
+gulp.task('release', () => {
+    runSequence(
+        'bump-version',
+        'changelog',
+        'commit-changes',
+        'create-new-tag',
+        'push-changes',
+        'npm-publish'
+    );
+});
 
 gulp.task('test', () =>
     gulp.src('test/e2e/**/*.spec.js').pipe(jasmine())

@@ -1,6 +1,6 @@
 {
   "name": "swagger-pact-validator",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "A CLI tool to validate pact files against swagger specs.",
   "main": "index.js",
   "bin": {
@@ -15,17 +15,23 @@
   },
   "author": "Ben Sayers",
   "license": "ISC",
+  "publishConfig":{
+      "registry": "https://npm-private.atlassian.io/"
+  },
   "devDependencies": {
     "conventional-changelog": "^1.1.0",
     "conventional-changelog-lint": "^1.0.0",
     "eslint": "3.0.1",
     "gulp": "^3.9.1",
+    "gulp-bump": "^2.2.0",
     "gulp-cli": "^1.2.1",
     "gulp-conventional-changelog": "^1.1.0",
     "gulp-eslint": "3.0.1",
+    "gulp-git": "^1.10.0",
     "gulp-jasmine": "^2.4.0",
     "gulp-util": "^3.0.7",
     "jasmine-promise-tools": "^1.0.4",
+    "minimist": "^1.2.0",
     "run-sequence": "^1.2.2"
   }
 }
