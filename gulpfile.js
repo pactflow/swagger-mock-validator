@@ -22,6 +22,18 @@ const paths = {
     tests: ['test/e2e/**/*.spec.js']
 };
 
+const getBumpType = () => {
+    const validTypes = ['major', 'minor', 'patch', 'prerelease'];
+
+    if (validTypes.indexOf(options.type) === -1) {
+        throw new Error(
+            `You must specify a release type as one of (${validTypes.join(', ')}), e.g. "--type minor"`
+        );
+    }
+
+    return options.type;
+};
+
 gulp.task('changelog', () =>
     gulp.src('CHANGELOG.md', {buffer: false})
         .pipe(conventionalChangelog({preset: 'angular'}))
@@ -30,7 +42,7 @@ gulp.task('changelog', () =>
 
 gulp.task('bump-version', () =>
     gulp.src(['./package.json'])
-        .pipe(bump({type: options.type}))
+        .pipe(bump({type: getBumpType()}))
         .pipe(gulp.dest('./'))
 );
 
