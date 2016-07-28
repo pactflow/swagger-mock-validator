@@ -14,11 +14,11 @@
   },
   "author": "Ben Sayers",
   "license": "UNLICENSED",
-  "publishConfig":{
-      "registry": "https://npm-private.atlassian.io/"
+  "publishConfig": {
+    "registry": "https://npm-private.atlassian.io/"
   },
-  "engines" : {
-      "node" : ">=4.4.7" 
+  "engines": {
+    "node": ">=4.4.7"
   },
   "devDependencies": {
     "conventional-changelog": "^1.1.0",
@@ -34,6 +34,14 @@
     "gulp-util": "^3.0.7",
     "jasmine-promise-tools": "^1.0.4",
     "minimist": "^1.2.0",
+    "proxyquire": "^1.7.10",
     "run-sequence": "^1.2.2"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "lodash": "^4.14.0",
+    "q": "^1.4.1",
+    "swagger-tools": "^0.10.1",
+    "verror": "^1.6.1"
   }
 }

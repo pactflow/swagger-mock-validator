@@ -37,13 +37,16 @@ gulp
 
 Commits to this codebase should follow the [conventional changelog conventions](https://github.com/bcoe/conventional-changelog-standard/blob/master/convention.md).
 
-- `gulp` - A pre-commit check to be run before pushing any changes
-- `gulp watch` - Automatically runs the tests whenever you edit a file
+To get fast test feedback run `gulp watch` in one terminal window and `gulp watch-e2e` in another.
 
-## Publishing a new version
+- `gulp` - A pre-commit check to be run before pushing any changes
+- `gulp watch` - Automatically runs the unit tests whenever you edit a relevant file
+- `gulp watch-e2e` - Automatically runs the e2e tests whenever you edit a relevant file
+
+## Releasing a new version
 
 This project is versioned using [Semantic Versioning](http://semver.org/).
 
-- `gulp publish bugfix` - Publishes a minor version to npm
-- `gulp publish minor` - Publishes a major version to npm
-- `gulp publish major` - Publishes a major version to npm
+- `gulp release --type patch` - Publishes a patch version to npm, e.g. 1.0.0 -> 1.0.1
+- `gulp release --type minor` - Publishes a minor version to npm, e.g. 1.0.0 -> 1.1.0
+- `gulp release --type major` - Publishes a major version to npm, e.g. 1.0.0 -> 2.0.0

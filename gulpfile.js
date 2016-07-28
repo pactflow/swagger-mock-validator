@@ -17,11 +17,6 @@ const getVersion = () => JSON.parse(fs.readFileSync('./package.json', 'utf8')).v
 
 const options = minimist(process.argv.slice(2), {strings: ['type']});
 
-const paths = {
-    all: ['gulpfile.js', 'lib/**/*.js', 'test/**/*.js'],
-    tests: ['test/e2e/**/*.spec.js']
-};
-
 const getBumpType = () => {
     const validTypes = ['major', 'minor', 'patch', 'prerelease'];
 
@@ -81,6 +76,7 @@ gulp.task('push-changes', (callback) => {
 
 gulp.task('release', () => {
     runSequence(
+        'default',
         'bump-version',
         'changelog',
         'commit-changes',
@@ -90,12 +86,18 @@ gulp.task('release', () => {
     );
 });
 
-gulp.task('test', () =>
-    gulp.src('test/e2e/**/*.spec.js').pipe(jasmine())
-);
+gulp.task('test', () => gulp.src('test/**/*.spec.js').pipe(jasmine()));
 
-gulp.task('watch', ['npm-link'], () => {
-    gulp.watch(paths.all, ['test']);
+gulp.task('unit-test', () => gulp.src('test/unit/**/*.spec.js').pipe(jasmine()));
+
+gulp.task('e2e-test', () => gulp.src('test/e2e/**/*.spec.js').pipe(jasmine()));
+
+gulp.task('watch', () => {
+    gulp.watch(['lib/**/*', 'test/unit/**/*'], ['unit-test']);
+});
+
+gulp.task('watch-e2e', ['npm-link'], () => {
+    gulp.watch(['lib/**/*', 'test/e2e/**/*'], ['e2e-test']);
 });
 
 gulp.task('default', (callback) => {

@@ -1,0 +1,30 @@
+{
+    "provider": {
+        "name": "User Service"
+    },
+    "consumer": {
+        "name": "Billing Service"
+    },
+    "interactions": [{
+        "description": "a request for a user",
+        "request": {
+            "method": "get",
+            "path": "/1/users/2"
+        },
+        "response": {
+            "status": 200,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": {
+                "email": "bsmith@domain.com",
+                "firstName": "Bob",
+                "userId": 2,
+                "lastName": "Smith"
+            }
+        }
+    }],
+    "metadata": {
+        "pactSpecificationVersion": "1.0.0"
+    }
+}
