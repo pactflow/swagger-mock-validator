@@ -20,7 +20,7 @@ npm login --registry=https://npm-private.atlassian.io --scope=atlassian
 
 2. Install the tool using npm
 ```
-npm install @atlassian/swagger-pact-validator
+npm install -g @atlassian/swagger-pact-validator
 ```
 
 ## Usage
