@@ -28,7 +28,7 @@ const createParameterBuilder = (parameter) => {
         withTypeInteger: () => createParameterBuilder(setValueOn(parameter, 'type', 'integer')),
         withTypeNumber: () => createParameterBuilder(setValueOn(parameter, 'type', 'number')),
         withTypeString: () => createParameterBuilder(setValueOn(parameter, 'type', 'string'))
-    }
+    };
 
     return builder;
 };
