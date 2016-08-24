@@ -3,9 +3,38 @@
 
 ## What is Swagger Pact Validator
 - A command line tool that confirms the request and responses captured in a pact file conform to the schema specified in a swagger specification.
-- Supports local files or urls
-- Supports swagger files in json and yaml format
+- Supports local files
+- Supports swagger files in json format
 - Can be invoked from the command line in any language
+
+## Requirements
+- nodejs 4.4.7 or higher
+- npm 2.15.8 or higher
+
+## Installation
+
+1. Login to Atlassian's private npm repository using your Staff ID credentials.
+```
+npm login --registry=https://npm-private.atlassian.io --scope=atlassian
+```
+
+2. Install the tool using npm
+```
+npm install @atlassian/swagger-pact-validator
+```
+
+## Usage
+Invoke the tool with a path to a swagger file and a path to a pact file. These files should be in json format.
+```
+swagger-pact-validator /path/to/swagger.json /path/to/pact.json
+```
+
+Invoking this command will confirm the swagger spec and pact are compatible with each other. If the two files are compatible with each other an exit status of 0 is returned. If the two files are not compatible with each other an exit status of 1 is returned, along with a message containing the reason why the two files are not compatible.
+
+For more options on how to use the command run the command with the help flag.
+```
+swagger-pact-validator --help
+```
 
 ## Changelog
 See [CHANGELOG.md](CHANGELOG.md)
