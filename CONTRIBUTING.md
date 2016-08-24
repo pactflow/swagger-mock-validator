@@ -23,12 +23,17 @@ npm install --global gulp-cli
 ```
 If you do not want to install the gulp cli globally you can access it via `./node_modules/.bin/gulp`
 
-3. Install project dependencies
+3. Login to Atlassian's private npm repository using your Staff ID credentials.
+```
+npm login --registry=https://npm-private.atlassian.io --scope=atlassian
+```
+
+4. Install project dependencies
 ```
 npm install
 ```
 
-4. Ensure your environment is working by running the pre-commit check
+5. Ensure your environment is working by running the pre-commit check
 ```
 gulp
 ```

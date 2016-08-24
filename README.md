@@ -20,7 +20,7 @@ npm login --registry=https://npm-private.atlassian.io --scope=atlassian
 
 2. Install the tool using npm
 ```
-npm install -g @atlassian/swagger-pact-validator
+npm install --global @atlassian/swagger-pact-validator
 ```
 
 ## Usage
@@ -29,7 +29,11 @@ Invoke the tool with a path to a swagger file and a path to a pact file. These f
 swagger-pact-validator /path/to/swagger.json /path/to/pact.json
 ```
 
-Invoking this command will confirm the swagger spec and pact are compatible with each other. If the two files are compatible with each other an exit status of 0 is returned. If the two files are not compatible with each other an exit status of 1 is returned, along with a message containing the reason why the two files are not compatible.
+Invoking this command will confirm the swagger spec and pact are compatible with each other.
+
+If the two files are compatible with each other an exit status of 0 is returned.
+
+If the two files are not compatible with each other an exit status of 1 is returned, along with a message containing the reason why the two files are not compatible.
 
 For more options on how to use the command run the command with the help flag.
 ```
