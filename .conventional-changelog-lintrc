@@ -1,0 +1,7 @@
+{
+  "extends": ["angular"],
+  "preset": "angular",
+  "rules": {
+    "footer-leading-blank": [0]
+  }
+}
