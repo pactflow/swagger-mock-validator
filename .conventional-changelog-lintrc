@@ -2,6 +2,7 @@
   "extends": ["angular"],
   "preset": "angular",
   "rules": {
+    "body-tense": [0],
     "footer-leading-blank": [0]
   }
 }
