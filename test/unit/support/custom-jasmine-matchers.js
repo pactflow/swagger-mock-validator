@@ -89,7 +89,7 @@ const compareResults = (options) => {
 module.exports = {
     toContainErrors: (util, customEqualityTesters) => ({
         compare: (actual, expected) => compareResults({
-            actualResults: actual.errors,
+            actualResults: _.get(actual, 'errors', []),
             expectedResults: expected,
             util,
             customEqualityTesters,
@@ -98,7 +98,7 @@ module.exports = {
     }),
     toContainWarnings: (util, customEqualityTesters) => ({
         compare: (actual, expected) => compareResults({
-            actualResults: actual.warnings,
+            actualResults: _.get(actual, 'warnings', []),
             expectedResults: expected,
             util,
             customEqualityTesters,
