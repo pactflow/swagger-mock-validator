@@ -2,6 +2,7 @@
 
 const exec = require('child_process').exec;
 const expectToReject = require('jasmine-promise-tools').expectToReject;
+const express = require('express');
 const q = require('q');
 const willResolve = require('jasmine-promise-tools').willResolve;
 const VError = require('verror');
@@ -23,16 +24,29 @@ const invokeCommand = (options) => {
 };
 
 const invokeCommandAndExpectToReject = (options) => expectToReject(invokeCommand(options));
+const serverPort = 8000;
+const urlTo = (path) => `http://localhost:${serverPort}/${path}`;
 
 describe('swagger-pact-validator', () => {
-    it('should succeed when a pact and a swagger spec are compatible', willResolve(() =>
+    let mockServer;
+
+    beforeAll((done) => {
+        const expressApp = express();
+
+        expressApp.use(express.static('.'));
+        mockServer = expressApp.listen(serverPort, done);
+    });
+
+    afterAll((done) => mockServer.close(done));
+
+    it('should succeed when a pact file and a swagger file are compatible', willResolve(() =>
         invokeCommand({
             pact: 'test/e2e/fixtures/working-consumer-pact.json',
             swagger: 'test/e2e/fixtures/provider-spec.json'
         })
     ));
 
-    it('should fail when a pact file expects something that is not in the swagger spec', willResolve(() =>
+    it('should fail when a pact file expects something that is not in the swagger file', willResolve(() =>
         invokeCommandAndExpectToReject({
             pact: 'test/e2e/fixtures/broken-consumer-pact.json',
             swagger: 'test/e2e/fixtures/provider-spec.json'
@@ -44,13 +58,29 @@ describe('swagger-pact-validator', () => {
         })
     ));
 
-    it('should fail when the swagger spec is not valid', willResolve(() =>
+    it('should fail when the swagger file is not valid', willResolve(() =>
         invokeCommandAndExpectToReject({
             pact: 'test/e2e/fixtures/working-consumer-pact.json',
             swagger: 'test/e2e/fixtures/invalid-provider-spec.json'
         }).then((error) => {
             expect(error).toEqual(jasmine.stringMatching('Missing required property: version'));
             expect(error).toEqual(jasmine.stringMatching('Additional properties not allowed: wrongVersion'));
+        })
+    ));
+
+    it('should succeed when a pact url and a swagger url are compatible', willResolve(() =>
+        invokeCommand({
+            pact: urlTo('test/e2e/fixtures/working-consumer-pact.json'),
+            swagger: urlTo('test/e2e/fixtures/provider-spec.json')
+        })
+    ));
+
+    it('should fail when the pact url cannot be retrieved', willResolve(() =>
+        invokeCommandAndExpectToReject({
+            pact: urlTo('test/e2e/fixtures/missing-pact.json'),
+            swagger: urlTo('test/e2e/fixtures/provider-spec.json')
+        }).then((error) => {
+            expect(error).toEqual(jasmine.stringMatching('Expected 200 but recieved 404'));
         })
     ));
 });

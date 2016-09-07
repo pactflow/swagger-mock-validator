@@ -1,5 +1,6 @@
 'use strict';
 
+const customJasmineMatchers = require('./support/custom-jasmine-matchers');
 const expectToReject = require('jasmine-promise-tools').expectToReject;
 const q = require('q');
 const pactBuilder = require('./support/pact-builder');
@@ -13,9 +14,13 @@ describe('swagger-pact-validator reading files', () => {
     let swaggerPactValidator;
 
     beforeEach(() => {
+        jasmine.addMatchers(customJasmineMatchers);
+
         mockFiles = {};
         mockFileSystem = swaggerPactValidatorLoader.createMockFileSystem(mockFiles);
-        swaggerPactValidator = swaggerPactValidatorLoader.createInstance(mockFileSystem);
+        const mockHttpClient = swaggerPactValidatorLoader.createMockHttpClient({});
+
+        swaggerPactValidator = swaggerPactValidatorLoader.createInstance(mockFileSystem, mockHttpClient);
     });
 
     describe('reading the swagger file', () => {
@@ -34,7 +39,7 @@ describe('swagger-pact-validator reading files', () => {
             const result = swaggerPactValidator.validate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error('Unable to read file "swagger.json": error-message'));
+                expect(error).toEqual(new Error('Unable to read "swagger.json": error-message'));
             });
         }));
 
@@ -45,7 +50,7 @@ describe('swagger-pact-validator reading files', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(
-                    new Error('Unable to parse file "swagger.json" as json: Unexpected end of input')
+                    new Error('Unable to parse "swagger.json" as json: Unexpected end of input')
                 );
             });
         }));
@@ -56,19 +61,56 @@ describe('swagger-pact-validator reading files', () => {
             const result = swaggerPactValidator.validate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error('File "swagger.json" is not a valid swagger file'));
-                expect(error.details).toEqual({
-                    errors: [{
+                expect(error).toEqual(new Error('"swagger.json" is not a valid swagger file'));
+                expect(error.details).toContainErrors([{
+                    message: 'Missing required property: paths',
+                    pactDetails: {
+                        interactionDescription: null,
+                        interactionState: '[none]',
+                        location: '[pactRoot]',
+                        value: null
+                    },
+                    source: 'swagger-validation',
+                    swaggerDetails: {
+                        pathName: null,
+                        pathMethod: null,
                         location: '[swaggerRoot]',
-                        message: 'Missing required property: paths'
-                    }, {
+                        value: null
+                    },
+                    type: 'error'
+                }, {
+                    message: 'Missing required property: info',
+                    pactDetails: {
+                        interactionDescription: null,
+                        interactionState: '[none]',
+                        location: '[pactRoot]',
+                        value: null
+                    },
+                    source: 'swagger-validation',
+                    swaggerDetails: {
+                        pathName: null,
+                        pathMethod: null,
                         location: '[swaggerRoot]',
-                        message: 'Missing required property: info'
-                    }, {
+                        value: null
+                    },
+                    type: 'error'
+                }, {
+                    message: 'Missing required property: swagger',
+                    pactDetails: {
+                        interactionDescription: null,
+                        interactionState: '[none]',
+                        location: '[pactRoot]',
+                        value: null
+                    },
+                    source: 'swagger-validation',
+                    swaggerDetails: {
+                        pathName: null,
+                        pathMethod: null,
                         location: '[swaggerRoot]',
-                        message: 'Missing required property: swagger'
-                    }]
-                });
+                        value: null
+                    },
+                    type: 'error'
+                }]);
             });
         }));
 
@@ -78,12 +120,23 @@ describe('swagger-pact-validator reading files', () => {
             const result = swaggerPactValidator.validate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                expect(error.details).toEqual({
-                    errors: [{
+                expect(error.details).toContainErrors([{
+                    message: 'Missing required property: title',
+                    pactDetails: {
+                        interactionDescription: null,
+                        interactionState: '[none]',
+                        location: '[pactRoot]',
+                        value: null
+                    },
+                    source: 'swagger-validation',
+                    swaggerDetails: {
+                        pathName: null,
+                        pathMethod: null,
                         location: '[swaggerRoot].info',
-                        message: 'Missing required property: title'
-                    }]
-                });
+                        value: null
+                    },
+                    type: 'error'
+                }]);
             });
         }));
     });
@@ -104,7 +157,7 @@ describe('swagger-pact-validator reading files', () => {
             const result = swaggerPactValidator.validate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error('Unable to read file "pact.json": error-message'));
+                expect(error).toEqual(new Error('Unable to read "pact.json": error-message'));
             });
         }));
 
@@ -114,7 +167,7 @@ describe('swagger-pact-validator reading files', () => {
             const result = swaggerPactValidator.validate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error('Unable to parse file "pact.json" as json: Unexpected end of input'));
+                expect(error).toEqual(new Error('Unable to parse "pact.json" as json: Unexpected end of input'));
             });
         }));
     });

@@ -24,9 +24,13 @@ npm install --global @atlassian/swagger-pact-validator
 ```
 
 ## Usage
-Invoke the tool with a path to a swagger file and a path to a pact file. These files should be in json format.
+Invoke the tool with a path or url to a swagger file and a path or url to a pact file. These files should be in json format.
 ```
 swagger-pact-validator /path/to/swagger.json /path/to/pact.json
+
+swagger-pact-validator http://api.com/swagger.json https://pact-broker.com/pact.json
+
+swagger-pact-validator /path/to/swagger.json https://pact-broker.com/pact.json
 ```
 
 Invoking this command will confirm the swagger spec and pact are compatible with each other.

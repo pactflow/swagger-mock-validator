@@ -3,6 +3,7 @@
   "preset": "angular",
   "rules": {
     "body-tense": [0],
-    "footer-leading-blank": [0]
+    "footer-leading-blank": [0],
+    "subject-tense": [0]
   }
 }
