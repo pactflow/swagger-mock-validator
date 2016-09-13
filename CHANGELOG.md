@@ -1,3 +1,13 @@
+<a name="0.0.4"></a>
+## [0.0.4](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.3...v0.0.4) (2016-09-13)
+
+
+### Features
+
+* add support for retrieving pact and swagger files via urls ([ab248dc](https://bitbucket.org/atlassian/swagger-pact-validator/commits/ab248dc))
+
+
+
 <a name="0.0.3"></a>
 ## [0.0.3](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.2...v0.0.3) (2016-09-01)
 
