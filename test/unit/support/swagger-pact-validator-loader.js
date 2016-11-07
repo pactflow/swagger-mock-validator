@@ -10,9 +10,7 @@ const swaggerPactValidatorLoader = {
             './json-loader/http-client': mockHttpClient
         });
 
-        return proxyquire(
-            '../../../lib/swagger-pact-validator', {'./swagger-pact-validator/json-loader': jsonLoader}
-        );
+        return proxyquire('../../../lib/swagger-pact-validator', {'./swagger-pact-validator/json-loader': jsonLoader});
     },
     createMockFileSystem: (mockFiles) => {
         const mockFileSystem = jasmine.createSpyObj('mockFileSystem', ['readFile']);
