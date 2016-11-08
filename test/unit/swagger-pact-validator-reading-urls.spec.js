@@ -74,7 +74,7 @@ describe('swagger-pact-validator reading urls', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(
-                    new Error('Unable to parse "http://domain.com/swagger.json" as json: Unexpected end of input')
+                    new Error('Unable to parse "http://domain.com/swagger.json" as json: Unexpected end of JSON input')
                 );
             });
         }));
@@ -120,7 +120,7 @@ describe('swagger-pact-validator reading urls', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(
-                    new Error('Unable to parse "http://domain.com/pact.json" as json: Unexpected end of input')
+                    new Error('Unable to parse "http://domain.com/pact.json" as json: Unexpected end of JSON input')
                 );
             });
         }));

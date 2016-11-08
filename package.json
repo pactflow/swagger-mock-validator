@@ -6,7 +6,12 @@
     "swagger-pact-validator": "./lib/cli.js"
   },
   "scripts": {
-    "test": "./node_modules/.bin/gulp"
+    "release-major": "./node_modules/.bin/gulp release --type major",
+    "release-minor": "./node_modules/.bin/gulp release --type minor",
+    "release-patch": "./node_modules/.bin/gulp release --type patch",
+    "test": "./node_modules/.bin/gulp",
+    "watch": "./node_modules/.bin/gulp watch",
+    "watch-e2e": "./node_modules/.bin/gulp watch-e2e"
   },
   "repository": {
     "type": "git",
@@ -18,7 +23,7 @@
     "registry": "https://npm-private.atlassian.io/"
   },
   "engines": {
-    "node": ">=4.4.7"
+    "node": ">=6.9.1"
   },
   "devDependencies": {
     "conventional-changelog": "^1.1.0",
