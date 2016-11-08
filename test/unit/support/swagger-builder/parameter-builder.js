@@ -6,17 +6,17 @@ const setValueOn = require('../builder-utilities').setValueOn;
 const createParameterBuilder = (parameter) => {
     const builder = {
         build: () => cloneDeep(parameter),
-        withNumberInPathNamed: (name) => builder
-            .withName(name)
-            .withInPath()
-            .withTypeNumber(),
-        withName: (name) => createParameterBuilder(setValueOn(parameter, 'name', name)),
         withInPath: () => {
             const newParameterWithPath = setValueOn(parameter, 'in', 'path');
             const newParameterWithPathAndRequired = setValueOn(newParameterWithPath, 'required', true);
 
             return createParameterBuilder(newParameterWithPathAndRequired);
         },
+        withName: (name) => createParameterBuilder(setValueOn(parameter, 'name', name)),
+        withNumberInPathNamed: (name) => builder
+            .withName(name)
+            .withInPath()
+            .withTypeNumber(),
         withTypeArrayOfNumber: () => {
             const newParameterWithTypeArray = setValueOn(parameter, 'type', 'array');
             const newParameterWithTypeArrayAndItemsNumber =
@@ -34,8 +34,8 @@ const createParameterBuilder = (parameter) => {
 };
 
 module.exports = createParameterBuilder({
-    name: 'default-name',
     in: 'path',
+    name: 'default-name',
     required: false,
     type: 'number'
 });

@@ -72,9 +72,9 @@ describe('swagger-pact-validator reading files', () => {
                     },
                     source: 'swagger-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot]',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -88,9 +88,9 @@ describe('swagger-pact-validator reading files', () => {
                     },
                     source: 'swagger-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot]',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -104,9 +104,9 @@ describe('swagger-pact-validator reading files', () => {
                     },
                     source: 'swagger-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot]',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -130,9 +130,9 @@ describe('swagger-pact-validator reading files', () => {
                     },
                     source: 'swagger-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].info',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'

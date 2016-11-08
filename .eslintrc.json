@@ -14,6 +14,7 @@
         "max-len": ["error", 120],
         "max-lines": ["error", 1000],
         "max-statements": ["error", 20, { "ignoreTopLevelFunctions": true }],
+        "multiline-ternary": ["off"],
         "no-console": ["off"],
         "no-magic-numbers": ["off"],
         "no-negated-condition": ["off"],

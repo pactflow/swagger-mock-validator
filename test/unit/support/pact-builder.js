@@ -10,10 +10,10 @@ const createPactBuilder = (pact) => ({
 });
 
 const pactBuilder = createPactBuilder({
-    provider: {name: 'default-provider-name'},
     consumer: {name: 'deault-consumer-name'},
     interactions: [],
-    metadata: {pactSpecificationVersion: '1.0.0'}
+    metadata: {pactSpecificationVersion: '1.0.0'},
+    provider: {name: 'default-provider-name'}
 });
 
 pactBuilder.interaction = require('./pact-builder/interaction-builder');

@@ -34,8 +34,8 @@ const swaggerPactValidatorLoader = {
     },
     invoke: (swaggerFile, pactFile) => {
         const mockFileSystem = swaggerPactValidatorLoader.createMockFileSystem({
-            'swagger.json': q(JSON.stringify(swaggerFile)),
-            'pact.json': q(JSON.stringify(pactFile))
+            'pact.json': q(JSON.stringify(pactFile)),
+            'swagger.json': q(JSON.stringify(swaggerFile))
         });
         const mockHttpClient = swaggerPactValidatorLoader.createMockHttpClient({});
         const swaggerPactValidator = swaggerPactValidatorLoader.createInstance(mockFileSystem, mockHttpClient);

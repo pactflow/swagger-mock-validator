@@ -15,12 +15,12 @@ const createSwaggerBuilder = (swagger) => ({
 });
 
 const swaggerBuilder = createSwaggerBuilder({
-    swagger: '2.0',
-    paths: {},
     info: {
         title: 'default-title',
         version: '1.0.0'
-    }
+    },
+    paths: {},
+    swagger: '2.0'
 });
 
 swaggerBuilder.operation = require('./swagger-builder/operation-builder');

@@ -53,9 +53,9 @@ describe('swagger-pact-validator paths', () => {
                 },
                 source: 'swagger-pact-validation',
                 swaggerDetails: {
-                    pathName: null,
-                    pathMethod: null,
                     location: '[swaggerRoot].paths',
+                    pathMethod: null,
+                    pathName: null,
                     value: null
                 },
                 type: 'error'
@@ -89,9 +89,9 @@ describe('swagger-pact-validator paths', () => {
                 },
                 source: 'swagger-pact-validation',
                 swaggerDetails: {
-                    pathName: null,
-                    pathMethod: null,
                     location: '[swaggerRoot].paths',
+                    pathMethod: null,
+                    pathName: null,
                     value: null
                 },
                 type: 'error'
@@ -250,9 +250,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: '/users/{userId}',
-                        pathMethod: null,
                         location: '[swaggerRoot].paths./users/{userId}',
+                        pathMethod: null,
+                        pathName: '/users/{userId}',
                         value: null
                     },
                     type: 'warning'
@@ -307,9 +307,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -341,9 +341,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -398,9 +398,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -455,9 +455,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -511,9 +511,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -545,9 +545,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -584,9 +584,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: '/api/{userIds}/comments',
-                        pathMethod: null,
                         location: '[swaggerRoot].paths./api/{userIds}/comments.parameters[0]',
+                        pathMethod: null,
+                        pathName: '/api/{userIds}/comments',
                         value: userIdsParameter.build()
                     },
                     type: 'warning'
@@ -629,9 +629,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: '/{accountIds}/users/{userIds}',
-                        pathMethod: null,
                         location: '[swaggerRoot].paths./{accountIds}/users/{userIds}.parameters[0]',
+                        pathMethod: null,
+                        pathName: '/{accountIds}/users/{userIds}',
                         value: accountIdsParameter.build()
                     },
                     type: 'warning'
@@ -645,9 +645,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: '/{accountIds}/users/{userIds}',
-                        pathMethod: null,
                         location: '[swaggerRoot].paths./{accountIds}/users/{userIds}.parameters[1]',
+                        pathMethod: null,
+                        pathName: '/{accountIds}/users/{userIds}',
                         value: userIdsParameter.build()
                     },
                     type: 'warning'
@@ -684,9 +684,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: '/api/{userIds}/comments',
-                        pathMethod: 'get',
                         location: '[swaggerRoot].paths./api/{userIds}/comments.get.parameters[0]',
+                        pathMethod: 'get',
+                        pathName: '/api/{userIds}/comments',
                         value: userIdsParameter.build()
                     },
                     type: 'warning'
@@ -727,9 +727,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -774,9 +774,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -790,9 +790,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -828,9 +828,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'
@@ -864,9 +864,9 @@ describe('swagger-pact-validator paths', () => {
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        pathName: null,
-                        pathMethod: null,
                         location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
                         value: null
                     },
                     type: 'error'

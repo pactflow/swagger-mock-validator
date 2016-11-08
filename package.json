@@ -22,28 +22,28 @@
   },
   "devDependencies": {
     "conventional-changelog": "^1.1.0",
-    "conventional-changelog-lint": "^1.0.0",
-    "eslint": "3.0.1",
+    "conventional-changelog-lint": "^1.1.0",
+    "eslint": "3.9.1",
     "express": "^4.14.0",
     "gulp": "^3.9.1",
-    "gulp-bump": "^2.2.0",
+    "gulp-bump": "^2.5.0",
     "gulp-cli": "^1.2.1",
     "gulp-conventional-changelog": "^1.1.0",
     "gulp-eslint": "3.0.1",
-    "gulp-git": "^1.10.0",
-    "gulp-jasmine": "^2.4.0",
+    "gulp-git": "^1.12.0",
+    "gulp-jasmine": "^2.4.2",
     "gulp-util": "^3.0.7",
-    "jasmine-promise-tools": "^1.0.4",
+    "jasmine-promise-tools": "^1.0.5",
     "minimist": "^1.2.0",
     "proxyquire": "^1.7.10",
     "run-sequence": "^1.2.2"
   },
   "dependencies": {
     "commander": "^2.9.0",
-    "lodash": "^4.14.0",
+    "lodash": "^4.16.6",
     "q": "^1.4.1",
-    "request": "^2.74.0",
+    "request": "^2.78.0",
     "swagger-tools": "^0.10.1",
-    "verror": "^1.6.1"
+    "verror": "^1.8.1"
   }
 }

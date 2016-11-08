@@ -29,8 +29,8 @@ const compareProperties = (options) => {
         `in ${options.type}[${options.index}].${options.property}`;
 
     return {
-        pass,
-        message
+        message,
+        pass
     };
 };
 
@@ -38,12 +38,12 @@ const compareResult = (options) =>
     _.map(propertiesToCompare, (property) =>
         compareProperties({
             actualResult: options.actualResult,
+            customEqualityTesters: options.customEqualityTesters,
             expectedResult: options.expectedResult,
             index: options.index,
-            customEqualityTesters: options.customEqualityTesters,
-            util: options.util,
+            property,
             type: options.type,
-            property
+            util: options.util
         })
     );
 
@@ -53,11 +53,11 @@ const compareResults = (options) => {
         .map((actualAndExpectedResult, index) =>
             compareResult({
                 actualResult: actualAndExpectedResult[1],
+                customEqualityTesters: options.customEqualityTesters,
                 expectedResult: actualAndExpectedResult[0],
                 index,
-                util: options.util,
-                customEqualityTesters: options.customEqualityTesters,
-                type: options.type
+                type: options.type,
+                util: options.util
             })
         )
         .flatten()
@@ -75,14 +75,14 @@ const compareResults = (options) => {
 
     if (failComparisonMessages.length === 0) {
         return {
-            pass: true,
-            message: successComparisonMessages.join('\n')
+            message: successComparisonMessages.join('\n'),
+            pass: true
         };
     }
 
     return {
-        pass: false,
-        message: failComparisonMessages.join('\n')
+        message: failComparisonMessages.join('\n'),
+        pass: false
     };
 };
 
@@ -90,19 +90,10 @@ module.exports = {
     toContainErrors: (util, customEqualityTesters) => ({
         compare: (actual, expected) => compareResults({
             actualResults: _.get(actual, 'errors', []),
-            expectedResults: expected,
-            util,
             customEqualityTesters,
-            type: 'errors'
-        })
-    }),
-    toContainWarnings: (util, customEqualityTesters) => ({
-        compare: (actual, expected) => compareResults({
-            actualResults: _.get(actual, 'warnings', []),
             expectedResults: expected,
-            util,
-            customEqualityTesters,
-            type: 'warnings'
+            type: 'errors',
+            util
         })
     }),
     toContainNoWarnings: (util, customEqualityTesters) => ({
@@ -112,5 +103,14 @@ module.exports = {
 
             return result;
         }
+    }),
+    toContainWarnings: (util, customEqualityTesters) => ({
+        compare: (actual, expected) => compareResults({
+            actualResults: _.get(actual, 'warnings', []),
+            customEqualityTesters,
+            expectedResults: expected,
+            type: 'warnings',
+            util
+        })
     })
 };
