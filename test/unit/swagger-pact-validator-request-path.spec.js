@@ -7,7 +7,7 @@ const swaggerBuilder = require('./support/swagger-builder');
 const invokeSwaggerPactValidator = require('./support/swagger-pact-validator-loader').invoke;
 const willResolve = require('jasmine-promise-tools').willResolve;
 
-describe('swagger-pact-validator paths', () => {
+describe('swagger-pact-validator request path', () => {
     const expectedFailedValidationError =
         new Error('Pact file "pact.json" is not compatible with swagger file "swagger.json"');
 

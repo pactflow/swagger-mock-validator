@@ -6,8 +6,10 @@ const setValueOn = require('../builder-utilities').setValueOn;
 const createInteractionBuilder = (interaction) => ({
     build: () => cloneDeep(interaction),
     withDescription: (description) => createInteractionBuilder(setValueOn(interaction, 'description', description)),
+    withRequestMethodGet: () => createInteractionBuilder(setValueOn(interaction, 'request.method', 'GET')),
     withRequestMethodPost: () => createInteractionBuilder(setValueOn(interaction, 'request.method', 'POST')),
-    withRequestPath: (path) => createInteractionBuilder(setValueOn(interaction, 'request.path', path))
+    withRequestPath: (path) => createInteractionBuilder(setValueOn(interaction, 'request.path', path)),
+    withResponseBody: (body) => createInteractionBuilder(setValueOn(interaction, 'response.body', body))
 });
 
 module.exports = createInteractionBuilder({

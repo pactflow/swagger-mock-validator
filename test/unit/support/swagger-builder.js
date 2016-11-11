@@ -26,5 +26,7 @@ const swaggerBuilder = createSwaggerBuilder({
 swaggerBuilder.operation = require('./swagger-builder/operation-builder');
 swaggerBuilder.parameter = require('./swagger-builder/parameter-builder');
 swaggerBuilder.path = require('./swagger-builder/path-builder');
+swaggerBuilder.response = require('./swagger-builder/response-builder');
+swaggerBuilder.schema = require('./swagger-builder/schema-builder');
 
 module.exports = swaggerBuilder;
