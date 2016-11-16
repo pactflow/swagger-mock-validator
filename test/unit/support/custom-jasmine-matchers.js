@@ -1,6 +1,9 @@
 'use strict';
 
+const util = require('util');
 const _ = require('lodash');
+
+const valueToString = (value) => util.inspect(value, {breakLength: Infinity});
 
 const propertiesToCompare = [
     'message',
@@ -18,14 +21,16 @@ const propertiesToCompare = [
 
 const compareProperties = (options) => {
     const actualProperty = _.get(options.actualResult, options.property);
+    const actualPropertyAsString = valueToString(actualProperty);
     const expectedProperty = _.get(options.expectedResult, options.property);
+    const expectedPropertyAsString = valueToString(expectedProperty);
 
-    const pass = options.util.equals(actualProperty, expectedProperty, options.customEqualityTesters);
+    const pass = options.utilities.equals(actualProperty, expectedProperty, options.customEqualityTesters);
 
     const message = pass
-        ? `Expected '${actualProperty}' not to be '${expectedProperty}' ` +
+        ? `Expected '${actualPropertyAsString}' not to be '${expectedPropertyAsString}' ` +
         `in warning[${options.index}].${options.property}`
-        : `Expected '${actualProperty}' to be '${expectedProperty}' ` +
+        : `Expected '${actualPropertyAsString}' to be '${expectedPropertyAsString}' ` +
         `in ${options.type}[${options.index}].${options.property}`;
 
     return {
@@ -43,7 +48,7 @@ const compareResult = (options) =>
             index: options.index,
             property,
             type: options.type,
-            util: options.util
+            utilities: options.utilities
         })
     );
 
@@ -57,7 +62,7 @@ const compareResults = (options) => {
                 expectedResult: actualAndExpectedResult[0],
                 index,
                 type: options.type,
-                util: options.util
+                utilities: options.utilities
             })
         )
         .flatten()
@@ -87,30 +92,30 @@ const compareResults = (options) => {
 };
 
 module.exports = {
-    toContainErrors: (util, customEqualityTesters) => ({
+    toContainErrors: (utilities, customEqualityTesters) => ({
         compare: (actual, expected) => compareResults({
             actualResults: _.get(actual, 'errors', []),
             customEqualityTesters,
             expectedResults: expected,
             type: 'errors',
-            util
+            utilities
         })
     }),
-    toContainNoWarnings: (util, customEqualityTesters) => ({
+    toContainNoWarnings: (utilities, customEqualityTesters) => ({
         compare: (actual) => {
             const expected = {warnings: []};
-            const result = {pass: util.equals(actual, expected, customEqualityTesters)};
+            const result = {pass: utilities.equals(actual, expected, customEqualityTesters)};
 
             return result;
         }
     }),
-    toContainWarnings: (util, customEqualityTesters) => ({
+    toContainWarnings: (utilities, customEqualityTesters) => ({
         compare: (actual, expected) => compareResults({
             actualResults: _.get(actual, 'warnings', []),
             customEqualityTesters,
             expectedResults: expected,
             type: 'warnings',
-            util
+            utilities
         })
     })
 };

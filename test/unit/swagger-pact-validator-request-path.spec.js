@@ -21,7 +21,7 @@ describe('swagger-pact-validator request path', () => {
             .build();
 
         const swaggerFile = swaggerBuilder
-            .withPath('/does/exist', swaggerBuilder.path)
+            .withPath('/does/exist', swaggerBuilder.path.withGetOperation(swaggerBuilder.operation))
             .build();
 
         return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
@@ -152,6 +152,7 @@ describe('swagger-pact-validator request path', () => {
                         .withInPath()
                         .withTypeNumber()
                     )
+                    .withGetOperation(swaggerBuilder.operation)
                 )
                 .build();
 
@@ -164,7 +165,10 @@ describe('swagger-pact-validator request path', () => {
             const pactFile = pactBuilder.withInteraction(pactBuilder.interaction.withRequestPath('/users/1')).build();
 
             const swaggerFile = swaggerBuilder
-                .withPath('/users/{userId}', swaggerBuilder.path.withParameterReference('userId'))
+                .withPath('/users/{userId}', swaggerBuilder.path
+                    .withParameterReference('userId')
+                    .withGetOperation(swaggerBuilder.operation)
+                )
                 .withParameter('userId', swaggerBuilder.parameter
                     .withName('userId')
                     .withInPath()
@@ -214,6 +218,7 @@ describe('swagger-pact-validator request path', () => {
                             .withTypeBoolean()
                         )
                     )
+                    .withGetOperation(swaggerBuilder.operation)
                     .withParameter(swaggerBuilder.parameter
                         .withName('userId')
                         .withInPath()
@@ -226,39 +231,6 @@ describe('swagger-pact-validator request path', () => {
                 expect(result).toContainNoWarnings();
             });
         }));
-
-        it('should ignore path parameters that have no parameter definition', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(pactBuilder.interaction
-                    .withRequestPath('/users/1')
-                    .withDescription('interaction description')
-                )
-                .build();
-
-            const swaggerFile = swaggerBuilder
-                .withPath('/users/{userId}', swaggerBuilder.path)
-                .build();
-
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
-                expect(result).toContainWarnings([{
-                    message: 'No parameter definition found for "userId", assuming value is valid',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '1'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths./users/{userId}',
-                        pathMethod: null,
-                        pathName: '/users/{userId}',
-                        value: null
-                    },
-                    type: 'warning'
-                }]);
-            });
-        }));
     });
 
     describe('number parameters', () => {
@@ -269,6 +241,7 @@ describe('swagger-pact-validator request path', () => {
                     .withInPath()
                     .withTypeNumber()
                 )
+                .withGetOperation(swaggerBuilder.operation)
             );
 
         it('should pass when the pact path matches a number param defined in the swagger', willResolve(() => {
@@ -360,6 +333,7 @@ describe('swagger-pact-validator request path', () => {
                     .withInPath()
                     .withTypeBoolean()
                 )
+                .withGetOperation(swaggerBuilder.operation)
             );
 
         it('should pass when the pact path matches a boolean param defined in the swagger', willResolve(() => {
@@ -417,6 +391,7 @@ describe('swagger-pact-validator request path', () => {
                     .withInPath()
                     .withTypeString()
                 )
+                .withGetOperation(swaggerBuilder.operation)
             );
 
         it('should pass when the pact path matches a string param defined in the swagger', willResolve(() => {
@@ -473,7 +448,10 @@ describe('swagger-pact-validator request path', () => {
             .withTypeInteger();
 
         const swaggerWithIntegerParameterInPathBuilder = swaggerBuilder
-            .withPath('/api/{userId}/comments', swaggerBuilder.path.withParameter(userIdParameter));
+            .withPath('/api/{userId}/comments', swaggerBuilder.path
+                .withParameter(userIdParameter)
+                .withGetOperation(swaggerBuilder.operation)
+            );
 
         it('should pass when the pact path matches a integer param defined in the swagger', willResolve(() => {
             const pactFile = pactBuilder
@@ -570,7 +548,10 @@ describe('swagger-pact-validator request path', () => {
                 .withTypeArrayOfNumber();
 
             const swaggerFile = swaggerBuilder
-                .withPath('/api/{userIds}/comments', swaggerBuilder.path.withParameter(userIdsParameter))
+                .withPath('/api/{userIds}/comments', swaggerBuilder.path
+                    .withParameter(userIdsParameter)
+                    .withGetOperation(swaggerBuilder.operation)
+                )
                 .build();
 
             return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
@@ -615,6 +596,7 @@ describe('swagger-pact-validator request path', () => {
                 .withPath('/{accountIds}/users/{userIds}', swaggerBuilder.path
                     .withParameter(accountIdsParameter)
                     .withParameter(userIdsParameter)
+                    .withGetOperation(swaggerBuilder.operation)
                 )
                 .build();
 
