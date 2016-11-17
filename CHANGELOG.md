@@ -1,3 +1,13 @@
+<a name="0.0.6"></a>
+## [0.0.6](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.5...v0.0.6) (2016-11-17)
+
+
+### Features
+
+* add validation for request methods ([778b8e0](https://bitbucket.org/atlassian/swagger-pact-validator/commits/778b8e0)), closes [#3](https://bitbucket.org/atlassian/swagger-pact-validator/issue/3)
+
+
+
 <a name="0.0.5"></a>
 ## [0.0.5](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.4...v0.0.5) (2016-11-08)
 
