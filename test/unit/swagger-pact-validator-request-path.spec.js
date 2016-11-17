@@ -231,6 +231,41 @@ describe('swagger-pact-validator request path', () => {
                 expect(result).toContainNoWarnings();
             });
         }));
+
+        it('should ignore path parameters that have no parameter definition', willResolve(() => {
+            const pactFile = pactBuilder
+                .withInteraction(pactBuilder.interaction
+                    .withRequestPath('/users/1')
+                    .withDescription('interaction description')
+                )
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/users/{userId}', swaggerBuilder.path)
+                .build();
+
+            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+
+            return expectToReject(result).then((error) => {
+                expect(error.details).toContainWarnings([{
+                    message: 'No parameter definition found for "userId", assuming value is valid',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '1'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./users/{userId}',
+                        pathMethod: null,
+                        pathName: '/users/{userId}',
+                        value: null
+                    },
+                    type: 'warning'
+                }]);
+            });
+        }));
     });
 
     describe('number parameters', () => {
