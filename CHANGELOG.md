@@ -1,3 +1,13 @@
+<a name="0.0.7"></a>
+## [0.0.7](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.6...v0.0.7) (2016-11-17)
+
+
+### Bug Fixes
+
+* handle undefined path parameters when method is missing ([b595073](https://bitbucket.org/atlassian/swagger-pact-validator/commits/b595073))
+
+
+
 <a name="0.0.6"></a>
 ## [0.0.6](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.5...v0.0.6) (2016-11-17)
 
