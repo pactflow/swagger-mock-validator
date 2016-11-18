@@ -63,41 +63,123 @@ describe('swagger-pact-validator request path', () => {
         });
     }));
 
-    it('should return the error when a pact partialy matches a swagger spec', willResolve(() => {
-        const pactFile = pactBuilder
-            .withInteraction(pactBuilder.interaction
-                .withDescription('interaction description')
-                .withRequestPath('/almost/matches')
-            )
-            .build();
+    describe('partial matching', () => {
+        it('should return the error when a pact path partialy matches a shorter swagger spec', willResolve(() => {
+            const pactFile = pactBuilder
+                .withInteraction(pactBuilder.interaction
+                    .withDescription('interaction description')
+                    .withRequestPath('/almost/matches')
+                )
+                .build();
 
-        const swaggerFile = swaggerBuilder
-            .withPath('/almost', swaggerBuilder.path)
-            .build();
+            const swaggerFile = swaggerBuilder
+                .withPath('/almost', swaggerBuilder.path)
+                .build();
 
-        const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
 
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                message: 'Path not defined in swagger file: /almost/matches',
-                pactDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
-                    value: '/almost/matches'
-                },
-                source: 'swagger-pact-validation',
-                swaggerDetails: {
-                    location: '[swaggerRoot].paths',
-                    pathMethod: null,
-                    pathName: null,
-                    value: null
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                expect(error.details).toContainErrors([{
+                    message: 'Path not defined in swagger file: /almost/matches',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/almost/matches'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: null
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should return the error when a pact path partially matches a longer swagger spec', willResolve(() => {
+            const pactFile = pactBuilder
+                .withInteraction(pactBuilder.interaction
+                    .withDescription('interaction description')
+                    .withRequestPath('/almost')
+                )
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/almost/matches', swaggerBuilder.path)
+                .build();
+
+            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                expect(error.details).toContainErrors([{
+                    message: 'Path not defined in swagger file: /almost',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/almost'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: null
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should return the error when a pact partially matches a swagger spec with params', willResolve(() => {
+            const pactFile = pactBuilder
+                .withInteraction(pactBuilder.interaction
+                    .withDescription('interaction description')
+                    .withRequestPath('/almost')
+                )
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/almost/matches/{userId}', swaggerBuilder.path
+                    .withGetOperation(swaggerBuilder.operation
+                        .withParameter(swaggerBuilder.parameter
+                            .withName('userId')
+                            .withInPath()
+                            .withTypeNumber()
+                        )
+                    )
+                )
+                .build();
+
+            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                expect(error.details).toContainErrors([{
+                    message: 'Path not defined in swagger file: /almost',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/almost'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: null
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
 
     describe('location of parameter definitions', () => {
         it('should pass when the parameter is defined on the operation object', willResolve(() => {
