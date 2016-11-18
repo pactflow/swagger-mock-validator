@@ -1,3 +1,13 @@
+<a name="0.0.8"></a>
+## [0.0.8](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.7...v0.0.8) (2016-11-18)
+
+
+### Bug Fixes
+
+* swagger validation warnings treated as warnings not errors ([ccf7251](https://bitbucket.org/atlassian/swagger-pact-validator/commits/ccf7251)), closes [#21](https://bitbucket.org/atlassian/swagger-pact-validator/issue/21) [#19](https://bitbucket.org/atlassian/swagger-pact-validator/issue/19)
+
+
+
 <a name="0.0.7"></a>
 ## [0.0.7](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.6...v0.0.7) (2016-11-17)
 
