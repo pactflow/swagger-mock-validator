@@ -139,6 +139,71 @@ describe('swagger-pact-validator reading files', () => {
                 }]);
             });
         }));
+
+        it('should return the warning when the swagger file contains warnings', willResolve(() => {
+            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder
+                .withParameter('userId', swaggerBuilder.parameter
+                    .withName('userId')
+                    .withInPath()
+                    .withTypeNumber()
+                )
+                .build()));
+            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
+
+            return swaggerPactValidator.validate('swagger.json', 'pact.json').then((result) => {
+                expect(result).toContainWarnings([{
+                    message: 'Parameter is defined but is not used: #/parameters/userId',
+                    pactDetails: {
+                        interactionDescription: null,
+                        interactionState: '[none]',
+                        location: '[pactRoot]',
+                        value: null
+                    },
+                    source: 'swagger-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].parameters.userId',
+                        pathMethod: null,
+                        pathName: null,
+                        value: null
+                    },
+                    type: 'warning'
+                }]);
+            });
+        }));
+
+        it('should return any warnings when the swagger file contains errors and warnings', willResolve(() => {
+            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder
+                .withPath('/account/{accountId}', swaggerBuilder.path.withGetOperation(swaggerBuilder.operation))
+                .withParameter('userId', swaggerBuilder.parameter
+                    .withName('userId')
+                    .withInPath()
+                    .withTypeNumber()
+                )
+                .build()));
+            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
+
+            const result = swaggerPactValidator.validate('swagger.json', 'pact.json');
+
+            return expectToReject(result).then((error) => {
+                expect(error.details).toContainWarnings([{
+                    message: 'Parameter is defined but is not used: #/parameters/userId',
+                    pactDetails: {
+                        interactionDescription: null,
+                        interactionState: '[none]',
+                        location: '[pactRoot]',
+                        value: null
+                    },
+                    source: 'swagger-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].parameters.userId',
+                        pathMethod: null,
+                        pathName: null,
+                        value: null
+                    },
+                    type: 'warning'
+                }]);
+            });
+        }));
     });
 
     describe('reading the pact file', () => {
