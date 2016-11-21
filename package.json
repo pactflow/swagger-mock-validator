@@ -17,13 +17,16 @@
     "type": "git",
     "url": "git@bitbucket.org:atlassian/swagger-pact-validator.git"
   },
-  "author": "Ben Sayers",
-  "license": "UNLICENSED",
+  "author": {
+      "name": "Ben Sayers (Atlassian)",
+      "email": "bsayers@atlassian.com"
+  },
+  "license": "Apache-2.0",
   "publishConfig": {
     "registry": "https://npm-private.atlassian.io/"
   },
   "engines": {
-    "node": ">=6.9.1"
+    "node": ">=4.4.7"
   },
   "devDependencies": {
     "conventional-changelog": "^1.1.0",

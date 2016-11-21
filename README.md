@@ -49,3 +49,6 @@ See [CHANGELOG.md](CHANGELOG.md)
 
 ## Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## License
+See [LICENSE.txt](LICENSE.txt)
