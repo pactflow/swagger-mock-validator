@@ -5,6 +5,44 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/{accountId}/users": {
+            "post": {
+                "summary": "Create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "$ref": "#/parameters/accountId"
+                }, {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/newUser"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "The accountId is not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/{accountId}/users/{userId}": {
             "get": {
                 "summary": "Get a user",
@@ -12,11 +50,7 @@
                     "application/json"
                 ],
                 "parameters": [{
-                    "name": "accountId",
-                    "type": "integer",
-                    "format": "int32",
-                    "in": "path",
-                    "required": true
+                    "$ref": "#/parameters/accountId"
                 }, {
                     "name": "userId",
                     "in": "path",
@@ -29,28 +63,7 @@
                     "200": {
                         "description": "The user",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "userId": {
-                                    "type": "integer",
-                                    "format": "int32"
-                                },
-                                "firstName": {
-                                    "type": "string"
-                                },
-                                "lastName": {
-                                    "type": "string"
-                                },
-                                "email": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "userId",
-                                "firstName",
-                                "lastName",
-                                "email"
-                            ]
+                            "$ref": "#/definitions/user"
                         }
                     },
                     "400": {
@@ -64,6 +77,60 @@
                     }
                 }
             }
+        }
+    },
+    "definitions": {
+        "newUser": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "firstName",
+                "lastName",
+                "email"
+            ]
+        },
+        "user": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "userId",
+                "firstName",
+                "lastName",
+                "email"
+            ]
+        }
+    },
+    "parameters": {
+        "accountId": {
+            "name": "accountId",
+            "type": "integer",
+            "format": "int32",
+            "in": "path",
+            "required": true
         }
     }
 }

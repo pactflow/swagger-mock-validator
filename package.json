@@ -18,8 +18,8 @@
     "url": "git@bitbucket.org:atlassian/swagger-pact-validator.git"
   },
   "author": {
-      "name": "Ben Sayers (Atlassian)",
-      "email": "bsayers@atlassian.com"
+    "name": "Ben Sayers (Atlassian)",
+    "email": "bsayers@atlassian.com"
   },
   "license": "Apache-2.0",
   "publishConfig": {
@@ -47,6 +47,7 @@
     "run-sequence": "^1.2.2"
   },
   "dependencies": {
+    "ajv": "^4.9.0",
     "commander": "^2.9.0",
     "lodash": "^4.16.6",
     "q": "^1.4.1",

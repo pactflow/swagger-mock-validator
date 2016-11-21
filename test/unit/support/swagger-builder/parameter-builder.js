@@ -1,33 +1,62 @@
 'use strict';
 
 const cloneDeep = require('lodash').cloneDeep;
-const setValueOn = require('../builder-utilities').setValueOn;
+const setValuesOn = require('../builder-utilities').setValuesOn;
 
 const createParameterBuilder = (parameter) => {
     const builder = {
         build: () => cloneDeep(parameter),
-        withInPath: () => {
-            const newParameterWithPath = setValueOn(parameter, 'in', 'path');
-            const newParameterWithPathAndRequired = setValueOn(newParameterWithPath, 'required', true);
-
-            return createParameterBuilder(newParameterWithPathAndRequired);
-        },
-        withName: (name) => createParameterBuilder(setValueOn(parameter, 'name', name)),
-        withNumberInPathNamed: (name) => builder
-            .withName(name)
-            .withInPath()
-            .withTypeNumber(),
-        withTypeArrayOfNumber: () => {
-            const newParameterWithTypeArray = setValueOn(parameter, 'type', 'array');
-            const newParameterWithTypeArrayAndItemsNumber =
-                setValueOn(newParameterWithTypeArray, 'items', {type: 'number'});
-
-            return createParameterBuilder(newParameterWithTypeArrayAndItemsNumber);
-        },
-        withTypeBoolean: () => createParameterBuilder(setValueOn(parameter, 'type', 'boolean')),
-        withTypeInteger: () => createParameterBuilder(setValueOn(parameter, 'type', 'integer')),
-        withTypeNumber: () => createParameterBuilder(setValueOn(parameter, 'type', 'number')),
-        withTypeString: () => createParameterBuilder(setValueOn(parameter, 'type', 'string'))
+        withArrayOfNumberInPathNamed: (name) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'path',
+            items: {type: 'number'},
+            name,
+            required: true,
+            type: 'array'
+        })),
+        withBooleanInPathNamed: (name) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'path',
+            name,
+            required: true,
+            type: 'boolean'
+        })),
+        withIntegerInPathNamed: (name) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'path',
+            name,
+            required: true,
+            type: 'integer'
+        })),
+        withNumberInPathNamed: (name) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'path',
+            name,
+            required: true,
+            type: 'number'
+        })),
+        withOptionalSchemaInBody: (schemaBuilder) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'body',
+            name: 'body',
+            required: false,
+            schema: schemaBuilder.build(),
+            type: undefined
+        })),
+        withRequiredNumberInQueryNamed: (name) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'query',
+            name,
+            required: true,
+            type: 'number'
+        })),
+        withRequiredSchemaInBody: (schemaBuilder) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'body',
+            name: 'body',
+            required: true,
+            schema: schemaBuilder.build(),
+            type: undefined
+        })),
+        withStringInPathNamed: (name) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'path',
+            name,
+            required: true,
+            type: 'string'
+        }))
     };
 
     return builder;

@@ -6,7 +6,7 @@
         "name": "Billing Service"
     },
     "interactions": [{
-        "description": "a request for a user",
+        "description": "request path missing test",
         "request": {
             "method": "get",
             "path": "/one/users/2"
@@ -21,6 +21,40 @@
                 "firstName": "Bob",
                 "userId": 2,
                 "lastName": "Smith"
+            }
+        }
+    }, {
+        "description": "request method missing test",
+        "request": {
+            "method": "delete",
+            "path": "/one/users/2"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
+        "description": "request body invalid test",
+        "request": {
+            "body": {
+                "firstName": "Bob",
+                "lastName": "Smith"
+            },
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "method": "post",
+            "path": "/1/users"
+        },
+        "response": {
+            "status": 200,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": {
+                "email": "bsmith@domain.com",
+                "firstName": "Bob",
+                "lastName": "Smith",
+                "userId": 2
             }
         }
     }],

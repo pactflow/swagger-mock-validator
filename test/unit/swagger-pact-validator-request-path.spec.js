@@ -11,6 +11,12 @@ describe('swagger-pact-validator request path', () => {
     const expectedFailedValidationError =
         new Error('Pact file "pact.json" is not compatible with swagger file "swagger.json"');
 
+    const userIdNumberPathParameterBuilder = swaggerBuilder.parameter.withNumberInPathNamed('userId');
+
+    const userIdIntegerPathParameterBuilder = swaggerBuilder.parameter.withIntegerInPathNamed('userId');
+
+    const userIdBooleanPathParameterBuilder = swaggerBuilder.parameter.withBooleanInPathNamed('userId');
+
     beforeEach(() => {
         jasmine.addMatchers(customJasmineMatchers);
     });
@@ -146,13 +152,7 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/almost/matches/{userId}', swaggerBuilder.path
-                    .withGetOperation(swaggerBuilder.operation
-                        .withParameter(swaggerBuilder.parameter
-                            .withName('userId')
-                            .withInPath()
-                            .withTypeNumber()
-                        )
-                    )
+                    .withGetOperation(swaggerBuilder.operation.withParameter(userIdNumberPathParameterBuilder))
                 )
                 .build();
 
@@ -187,13 +187,7 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', swaggerBuilder.path
-                    .withGetOperation(swaggerBuilder.operation
-                        .withParameter(swaggerBuilder.parameter
-                            .withName('userId')
-                            .withInPath()
-                            .withTypeNumber()
-                        )
-                    )
+                    .withGetOperation(swaggerBuilder.operation.withParameter(userIdNumberPathParameterBuilder))
                 )
                 .build();
 
@@ -209,13 +203,7 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', swaggerBuilder.path
-                    .withPostOperation(swaggerBuilder.operation
-                        .withParameter(swaggerBuilder.parameter
-                            .withName('userId')
-                            .withInPath()
-                            .withTypeNumber()
-                        )
-                    )
+                    .withPostOperation(swaggerBuilder.operation.withParameter(userIdNumberPathParameterBuilder))
                 )
                 .build();
 
@@ -229,11 +217,7 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', swaggerBuilder.path
-                    .withParameter(swaggerBuilder.parameter
-                        .withName('userId')
-                        .withInPath()
-                        .withTypeNumber()
-                    )
+                    .withParameter(userIdNumberPathParameterBuilder)
                     .withGetOperation(swaggerBuilder.operation)
                 )
                 .build();
@@ -251,11 +235,7 @@ describe('swagger-pact-validator request path', () => {
                     .withParameterReference('userId')
                     .withGetOperation(swaggerBuilder.operation)
                 )
-                .withParameter('userId', swaggerBuilder.parameter
-                    .withName('userId')
-                    .withInPath()
-                    .withTypeNumber()
-                )
+                .withParameter('userId', userIdNumberPathParameterBuilder)
                 .build();
 
             return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
@@ -268,18 +248,8 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', swaggerBuilder.path
-                    .withGetOperation(swaggerBuilder.operation
-                        .withParameter(swaggerBuilder.parameter
-                            .withName('userId')
-                            .withInPath()
-                            .withTypeNumber()
-                        )
-                    )
-                    .withParameter(swaggerBuilder.parameter
-                        .withName('userId')
-                        .withInPath()
-                        .withTypeBoolean()
-                    )
+                    .withGetOperation(swaggerBuilder.operation.withParameter(userIdNumberPathParameterBuilder))
+                    .withParameter(userIdBooleanPathParameterBuilder)
                 )
                 .build();
 
@@ -293,19 +263,9 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', swaggerBuilder.path
-                    .withPostOperation(swaggerBuilder.operation
-                        .withParameter(swaggerBuilder.parameter
-                            .withName('userId')
-                            .withInPath()
-                            .withTypeBoolean()
-                        )
-                    )
+                    .withPostOperation(swaggerBuilder.operation.withParameter(userIdBooleanPathParameterBuilder))
                     .withGetOperation(swaggerBuilder.operation)
-                    .withParameter(swaggerBuilder.parameter
-                        .withName('userId')
-                        .withInPath()
-                        .withTypeNumber()
-                    )
+                    .withParameter(userIdNumberPathParameterBuilder)
                 )
                 .build();
 
@@ -353,11 +313,7 @@ describe('swagger-pact-validator request path', () => {
     describe('number parameters', () => {
         const swaggerWithNumberParameterInPathBuilder = swaggerBuilder
             .withPath('/api/{userId}/comments', swaggerBuilder.path
-                .withParameter(swaggerBuilder.parameter
-                    .withName('userId')
-                    .withInPath()
-                    .withTypeNumber()
-                )
+                .withParameter(userIdNumberPathParameterBuilder)
                 .withGetOperation(swaggerBuilder.operation)
             );
 
@@ -445,11 +401,7 @@ describe('swagger-pact-validator request path', () => {
     describe('boolean parameters', () => {
         const swaggerWithBooleanParameterInPathBuilder = swaggerBuilder
             .withPath('/jobs/renewal/enabled/{enabled}', swaggerBuilder.path
-                .withParameter(swaggerBuilder.parameter
-                    .withName('enabled')
-                    .withInPath()
-                    .withTypeBoolean()
-                )
+                .withParameter(swaggerBuilder.parameter.withBooleanInPathNamed('enabled'))
                 .withGetOperation(swaggerBuilder.operation)
             );
 
@@ -503,11 +455,7 @@ describe('swagger-pact-validator request path', () => {
     describe('string parameters', () => {
         const swaggerWithStringParameterInPathBuilder = swaggerBuilder
             .withPath('/products/{productName}', swaggerBuilder.path
-                .withParameter(swaggerBuilder.parameter
-                    .withName('productName')
-                    .withInPath()
-                    .withTypeString()
-                )
+                .withParameter(swaggerBuilder.parameter.withStringInPathNamed('productName'))
                 .withGetOperation(swaggerBuilder.operation)
             );
 
@@ -559,14 +507,9 @@ describe('swagger-pact-validator request path', () => {
     });
 
     describe('integer parameters', () => {
-        const userIdParameter = swaggerBuilder.parameter
-            .withName('userId')
-            .withInPath()
-            .withTypeInteger();
-
         const swaggerWithIntegerParameterInPathBuilder = swaggerBuilder
             .withPath('/api/{userId}/comments', swaggerBuilder.path
-                .withParameter(userIdParameter)
+                .withParameter(userIdIntegerPathParameterBuilder)
                 .withGetOperation(swaggerBuilder.operation)
             );
 
@@ -659,10 +602,7 @@ describe('swagger-pact-validator request path', () => {
                     .withRequestPath('/api/1,2,3/comments'))
                 .build();
 
-            const userIdsParameter = swaggerBuilder.parameter
-                .withName('userIds')
-                .withInPath()
-                .withTypeArrayOfNumber();
+            const userIdsParameter = swaggerBuilder.parameter.withArrayOfNumberInPathNamed('userIds');
 
             const swaggerFile = swaggerBuilder
                 .withPath('/api/{userIds}/comments', swaggerBuilder.path
@@ -699,15 +639,9 @@ describe('swagger-pact-validator request path', () => {
                     .withRequestPath('/1,2,3/users/4,5,6'))
                 .build();
 
-            const accountIdsParameter = swaggerBuilder.parameter
-                .withName('accountIds')
-                .withInPath()
-                .withTypeArrayOfNumber();
+            const accountIdsParameter = swaggerBuilder.parameter.withArrayOfNumberInPathNamed('accountIds');
 
-            const userIdsParameter = swaggerBuilder.parameter
-                .withName('userIds')
-                .withInPath()
-                .withTypeArrayOfNumber();
+            const userIdsParameter = swaggerBuilder.parameter.withArrayOfNumberInPathNamed('userIds');
 
             const swaggerFile = swaggerBuilder
                 .withPath('/{accountIds}/users/{userIds}', swaggerBuilder.path
@@ -761,10 +695,7 @@ describe('swagger-pact-validator request path', () => {
                     .withRequestPath('/api/1,2,3/comments'))
                 .build();
 
-            const userIdsParameter = swaggerBuilder.parameter
-                .withName('userIds')
-                .withInPath()
-                .withTypeArrayOfNumber();
+            const userIdsParameter = swaggerBuilder.parameter.withArrayOfNumberInPathNamed('userIds');
 
             const swaggerFile = swaggerBuilder
                 .withPath('/api/{userIds}/comments', swaggerBuilder.path
@@ -803,11 +734,10 @@ describe('swagger-pact-validator request path', () => {
                 )
                 .build();
 
-            const userIdParameter = swaggerBuilder.parameter.withNumberInPathNamed('userId');
             const accountIdParameter = swaggerBuilder.parameter.withNumberInPathNamed('accountId');
             const swaggerFile = swaggerBuilder
                 .withPath('/{accountId}/users/{userId}', swaggerBuilder.path
-                    .withGetOperation(swaggerBuilder.operation.withParameter(userIdParameter))
+                    .withGetOperation(swaggerBuilder.operation.withParameter(userIdNumberPathParameterBuilder))
                     .withParameter(accountIdParameter)
                 )
                 .build();
@@ -850,11 +780,10 @@ describe('swagger-pact-validator request path', () => {
                 )
                 .build();
 
-            const userIdParameter = swaggerBuilder.parameter.withNumberInPathNamed('userId');
             const accountIdParameter = swaggerBuilder.parameter.withNumberInPathNamed('accountId');
             const swaggerFile = swaggerBuilder
                 .withPath('/{accountId}/users/{userId}', swaggerBuilder.path
-                    .withGetOperation(swaggerBuilder.operation.withParameter(userIdParameter))
+                    .withGetOperation(swaggerBuilder.operation.withParameter(userIdNumberPathParameterBuilder))
                     .withParameter(accountIdParameter)
                 )
                 .build();
@@ -969,6 +898,48 @@ describe('swagger-pact-validator request path', () => {
                         value: null
                     },
                     type: 'error'
+                }]);
+            });
+        }));
+    });
+
+    describe('parameters not in path', () => {
+        it('should not match paramters that are not defined for the path', willResolve(() => {
+            const pactFile = pactBuilder
+                .withInteraction(pactBuilder.interaction
+                    .withDescription('interaction description')
+                    .withRequestPath('/users/1')
+                )
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/users/{userId}', swaggerBuilder.path
+                    .withParameter(swaggerBuilder.parameter
+                        .withRequiredNumberInQueryNamed('userId')
+                    )
+                )
+                .build();
+
+            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                expect(error.details).toContainWarnings([{
+                    message: 'No parameter definition found for "userId", assuming value is valid',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '1'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./users/{userId}',
+                        pathMethod: null,
+                        pathName: '/users/{userId}',
+                        value: null
+                    },
+                    type: 'warning'
                 }]);
             });
         }));

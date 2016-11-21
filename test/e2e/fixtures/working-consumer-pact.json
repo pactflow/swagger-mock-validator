@@ -6,7 +6,7 @@
         "name": "Billing Service"
     },
     "interactions": [{
-        "description": "a request for a user",
+        "description": "request path exists test",
         "request": {
             "method": "get",
             "path": "/1/users/2"
@@ -19,8 +19,43 @@
             "body": {
                 "email": "bsmith@domain.com",
                 "firstName": "Bob",
-                "userId": 2,
+                "lastName": "Smith",
+                "userId": 2
+            }
+        }
+    },{
+        "description": "request method exists test",
+        "request": {
+            "method": "get",
+            "path": "/1/users/2"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
+        "description": "request body valid test",
+        "request": {
+            "body": {
+                "email": "bsmith@domain.com",
+                "firstName": "Bob",
                 "lastName": "Smith"
+            },
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "method": "post",
+            "path": "/1/users"
+        },
+        "response": {
+            "status": 200,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": {
+                "email": "bsmith@domain.com",
+                "firstName": "Bob",
+                "lastName": "Smith",
+                "userId": 2
             }
         }
     }],

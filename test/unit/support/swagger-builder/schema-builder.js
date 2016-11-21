@@ -11,8 +11,9 @@ const createSchemaBuilder = (schema) => ({
     withRequiredProperty: (name, propertySchemaBuilder) =>
         createSchemaBuilder(addToArrayOn(schema, 'required', name))
             .withOptionalProperty(name, propertySchemaBuilder),
-    withTypeInteger: () => createSchemaBuilder(setValueOn(schema, 'type', 'integer')),
-    withTypeObject: () => createSchemaBuilder(setValueOn(schema, 'type', 'object'))
+    withTypeNumber: () => createSchemaBuilder(setValueOn(schema, 'type', 'number')),
+    withTypeObject: () => createSchemaBuilder(setValueOn(schema, 'type', 'object')),
+    withTypeString: () => createSchemaBuilder(setValueOn(schema, 'type', 'string'))
 });
 
 module.exports = createSchemaBuilder({type: 'string'});

@@ -141,13 +141,11 @@ describe('swagger-pact-validator reading files', () => {
         }));
 
         it('should return the warning when the swagger file contains warnings', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder
-                .withParameter('userId', swaggerBuilder.parameter
-                    .withName('userId')
-                    .withInPath()
-                    .withTypeNumber()
-                )
-                .build()));
+            mockFiles['swagger.json'] = q(JSON.stringify(
+                swaggerBuilder
+                    .withParameter('userId', swaggerBuilder.parameter.withNumberInPathNamed('userId'))
+                    .build()
+            ));
             mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
             return swaggerPactValidator.validate('swagger.json', 'pact.json').then((result) => {
@@ -172,14 +170,12 @@ describe('swagger-pact-validator reading files', () => {
         }));
 
         it('should return any warnings when the swagger file contains errors and warnings', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder
-                .withPath('/account/{accountId}', swaggerBuilder.path.withGetOperation(swaggerBuilder.operation))
-                .withParameter('userId', swaggerBuilder.parameter
-                    .withName('userId')
-                    .withInPath()
-                    .withTypeNumber()
-                )
-                .build()));
+            mockFiles['swagger.json'] = q(JSON.stringify(
+                swaggerBuilder
+                    .withPath('/account/{accountId}', swaggerBuilder.path.withGetOperation(swaggerBuilder.operation))
+                    .withParameter('userId', swaggerBuilder.parameter.withNumberInPathNamed('userId'))
+                    .build()
+            ));
             mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
             const result = swaggerPactValidator.validate('swagger.json', 'pact.json');

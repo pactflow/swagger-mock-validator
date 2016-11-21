@@ -46,7 +46,7 @@ describe('swagger-pact-validator', () => {
         })
     ));
 
-    it('should fail when a pact file expects something that is not in the swagger file', willResolve(() =>
+    it('should fail when a pact file and a swagger file are not compatible', willResolve(() =>
         invokeCommandAndExpectToReject({
             pact: 'test/e2e/fixtures/broken-consumer-pact.json',
             swagger: 'test/e2e/fixtures/provider-spec.json'
@@ -55,6 +55,14 @@ describe('swagger-pact-validator', () => {
                 'is not compatible with swagger file "test/e2e/fixtures/provider-spec.json"'));
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[0]\.request\.path/));
             expect(error).toEqual(jasmine.stringMatching('Path not defined in swagger file: /one/users/2'));
+
+            expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[1]\.request\.method/));
+            expect(error).toEqual(jasmine.stringMatching('Method not defined in swagger file: delete'));
+
+            expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[2]\.request\.body/));
+            expect(error).toEqual(jasmine.stringMatching(
+                'Request body is incompatible with the request body schema in the swagger file'
+            ));
         })
     ));
 

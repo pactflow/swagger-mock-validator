@@ -19,6 +19,7 @@
         "no-magic-numbers": ["off"],
         "no-negated-condition": ["off"],
         "no-ternary": ["off"],
+        "no-undefined": ["off"],
         "one-var": ["off"],
         "quotes": ["error", "single"],
         "quote-props": ["error", "as-needed"],
