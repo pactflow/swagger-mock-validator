@@ -1,3 +1,13 @@
+<a name="0.0.9"></a>
+## [0.0.9](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.8...v0.0.9) (2016-11-21)
+
+
+### Bug Fixes
+
+* partial path matching causing exceptions ([8507ff5](https://bitbucket.org/atlassian/swagger-pact-validator/commits/8507ff5))
+
+
+
 <a name="0.0.8"></a>
 ## [0.0.8](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.7...v0.0.8) (2016-11-18)
 
