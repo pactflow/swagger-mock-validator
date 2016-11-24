@@ -1,0 +1,258 @@
+{
+    "basePath": "/",
+    "definitions": {
+        "dbMigrationRequest": {
+            "additionalProperties": false,
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "down": {
+                    "type": "boolean"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "executionDetails": {
+            "additionalProperties": false,
+            "properties": {
+                "details": {
+                    "type": "object"
+                },
+                "logs": {
+                    "type": "string"
+                },
+                "status": {
+                    "enum": ["SUCCESS", "FAILURE", "INPROGRESS", "ACKNOWLEDGED"]
+                }
+            },
+            "required": ["status", "logs", "details"],
+            "type": "object"
+        },
+        "executionRequest": {
+            "additionalProperties": false,
+            "properties": {
+                "dockerImage": {
+                    "type": "string"
+                },
+                "microsEnv": {
+                    "type": "string"
+                },
+                "requiresAsap": {
+                    "type": "boolean"
+                },
+                "scheduled": {
+                    "type": "boolean"
+                },
+                "serviceName": {
+                    "maxLength": 26,
+                    "type": "string"
+                },
+                "serviceUrl": {
+                    "type": "string"
+                },
+                "splitBy": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                }
+            },
+            "required": ["serviceName", "dockerImage", "serviceUrl", "microsEnv"],
+            "type": "object"
+        },
+        "executionResponse": {
+            "additionalProperties": false,
+            "properties": {
+                "progressUri": {
+                    "type": "string"
+                }
+            },
+            "required": ["progressUri"],
+            "type": "object"
+        },
+        "executionResult": {
+            "additionalProperties": false,
+            "properties": {
+                "logs": {
+                    "type": "string"
+                },
+                "status": {
+                    "enum": ["SUCCESS", "FAILURE", "INPROGRESS", "ACKNOWLEDGED"]
+                }
+            },
+            "required": ["status"],
+            "type": "object"
+        }
+    },
+    "host": "semantic-check-executor.internal.app.dev.atlassian.io",
+    "info": {
+        "title": "Semantic Check Executor Service",
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/api.html": {
+            "get": {
+                "description": "Rendered API documentation ",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api.raml": {
+            "get": {
+                "description": "A description of the API in RAML format ",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api.swagger": {
+            "get": {
+                "description": "A description of the API in Swagger format ",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/db/migrate": {
+            "post": {
+                "description": "Runs the missing DB schema migrations",
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/dbMigrationRequest"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "DB schema migrations ran successfully"
+                    }
+                }
+            }
+        },
+        "/deepcheck": {
+            "get": {
+                "description": "A deepcheck check for the semantic-check-executor-service ",
+                "responses": {
+                    "200": {
+                        "description": "The application is running with a working database "
+                    },
+                    "500": {
+                        "description": "The application cannot connect to a database "
+                    }
+                }
+            }
+        },
+        "/execute": {
+            "post": {
+                "description": "Schedules the execution of the docker image ",
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/executionRequest"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Execution request was successfully accepted and scheduled for execution ",
+                        "schema": {
+                            "$ref": "#/definitions/executionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Execution request was rejected due wrong format "
+                    }
+                }
+            }
+        },
+        "/executions/details/{executionId}": {
+            "get": {
+                "description": "Returns the current state of the execution ",
+                "parameters": [{
+                    "description": "An execution ID returned from the schedule execution endpoint ",
+                    "in": "path",
+                    "name": "executionId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Current details of the execution ",
+                        "schema": {
+                            "$ref": "#/definitions/executionDetails"
+                        }
+                    },
+                    "404": {
+                        "description": "If the execution id was not found "
+                    }
+                }
+            }
+        },
+        "/executions/{executionId}": {
+            "get": {
+                "description": "Returns the current state of the execution ",
+                "parameters": [{
+                    "description": "An execution ID returned from the schedule execution endpoint ",
+                    "in": "path",
+                    "name": "executionId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Current state of the execution ",
+                        "schema": {
+                            "$ref": "#/definitions/executionResult"
+                        }
+                    },
+                    "404": {
+                        "description": "If the execution id was not found "
+                    }
+                }
+            }
+        },
+        "/healthcheck": {
+            "get": {
+                "description": "A status check for the semantic-check-executor-service ",
+                "responses": {
+                    "200": {
+                        "description": "The application is running with a working database "
+                    }
+                }
+            }
+        },
+        "/version.json": {
+            "get": {
+                "description": "Version details of the application ",
+                "responses": {
+                    "200": {
+                        "description": "The current version details of the application "
+                    }
+                }
+            }
+        }
+    },
+    "schemes": ["https"],
+    "securityDefinitions": {
+        "asap": {
+            "description": "ASAP authentication (http://s2sauth.bitbucket.org/)",
+            "type": "basic"
+        }
+    },
+    "swagger": "2.0"
+}

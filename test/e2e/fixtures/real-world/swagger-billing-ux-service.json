@@ -1,0 +1,708 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Billing UX API's for Billing UX Frontend",
+        "version": "1.0",
+        "title": "Billing UX Service",
+        "contact": {
+            "name": "Supernova Team (Hipchat: Purchasing - Supernova (Expand Cloud Experience)",
+            "url": "http://go/supernova"
+        }
+    },
+    "host": "billing-ux-service.internal.app.dev.atlassian.io",
+    "basePath": "/",
+    "tags": [{
+        "name": "entitlement-resource",
+        "description": "Entitlement Resource"
+    }, {
+        "name": "credit-card-resource",
+        "description": "Credit Card Resource"
+    }, {
+        "name": "country-resource",
+        "description": "Country Resource"
+    }],
+    "paths": {
+        "/api/billing/bill-estimate": {
+            "get": {
+                "tags": ["entitlement-resource"],
+                "summary": "getBillEstimate",
+                "operationId": "getBillEstimateUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "aidAccount",
+                    "description": "aidAccount",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/AidAccount"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BillEstimate"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/billing/billing-details": {
+            "get": {
+                "tags": ["entitlement-resource"],
+                "summary": "getBillingDetails",
+                "operationId": "getBillingDetailsUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "aidAccount",
+                    "description": "aidAccount",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/AidAccount"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BillingDetails"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["entitlement-resource"],
+                "summary": "updateBillingDetails",
+                "operationId": "updateBillingDetailsUsingPUT",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "billingDetails",
+                    "description": "billingDetails",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/BillingDetailsUpdateRequest"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/billing/customer-details": {
+            "get": {
+                "tags": ["entitlement-resource"],
+                "summary": "getCustomerDetails",
+                "operationId": "getCustomerDetailsUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "aidAccount",
+                    "description": "aidAccount",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/AidAccount"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CustomerDetails"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["entitlement-resource"],
+                "summary": "updateCustomerDetails",
+                "operationId": "updateCustomerDetailsUsingPUT",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "customerDetails",
+                    "description": "customerDetails",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/CustomerDetails"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/billing/invoice-contact": {
+            "get": {
+                "tags": ["entitlement-resource"],
+                "summary": "getInvoiceContact",
+                "operationId": "getInvoiceContactUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "aidAccount",
+                    "description": "aidAccount",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/AidAccount"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/InvoiceContact"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["entitlement-resource"],
+                "summary": "updateInvoiceContact",
+                "operationId": "updateInvoiceContactUsingPUT",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "contact",
+                    "description": "contact",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/InvoiceContact"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/countries": {
+            "get": {
+                "tags": ["country-resource"],
+                "summary": "getCountries",
+                "operationId": "getCountriesUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Collection«Country»"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/credit-card/session": {
+            "post": {
+                "tags": ["credit-card-resource"],
+                "summary": "createSession",
+                "operationId": "createSessionUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CreditCardSession"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/credit-card/session/{sessionId}/save": {
+            "post": {
+                "tags": ["credit-card-resource"],
+                "summary": "saveSession",
+                "operationId": "saveSessionUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["application/json;charset=UTF-8"],
+                "parameters": [{
+                    "name": "sessionId",
+                    "in": "path",
+                    "description": "sessionId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CreditCardToken"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "AidAccount": {
+          "type": "object"
+        },
+        "InvoiceContact": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                }
+            }
+        },
+        "BillingPeriod": {
+            "type": "object",
+            "properties": {
+                "endDate": {
+                    "$ref": "#/definitions/LocalDate"
+                },
+                "renewalFrequency": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "$ref": "#/definitions/LocalDate"
+                }
+            }
+        },
+        "CreditCardToken": {
+            "type": "object",
+            "properties": {
+                "creditCardSessionId": {
+                    "type": "string"
+                },
+                "creditCardToken": {
+                    "type": "string"
+                },
+                "creditCardValidationCode": {
+                    "type": "string",
+                    "enum": ["BASIC_VERIFICATION_SUCCESSFUL", "NO_VERIFICATION_PERFORMED", "VERIFICATION_UNKNOWN", "EXTERNAL_VERIFICATION_SUCCESSFUL", "EXTERNAL_VERIFICATION_DECLINED", "EXTERNAL_VERIFICATION_DECLINED_EXPIRED_CARD", "EXTERNAL_VERIFICATION_DECLINED_INVALID_CSC", "EXTERNAL_VERIFICATION_PROCESSING_ERROR", "EXTERNAL_VERIFICATION_BLOCKED"]
+                }
+            }
+        },
+        "IsoChronology": {
+            "type": "object",
+            "properties": {
+                "calendarType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "CustomerContact": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "Collection«Country»": {
+            "type": "object"
+        },
+        "BillEstimateItem": {
+            "type": "object",
+            "properties": {
+                "amountBeforeTax": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "amountWithTax": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "entitlementId": {
+                    "type": "string"
+                },
+                "productKey": {
+                    "type": "string"
+                },
+                "productName": {
+                    "type": "string"
+                },
+                "selectedEdition": {
+                    "type": "string"
+                },
+                "taxAmount": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "trialEndDate": {
+                    "$ref": "#/definitions/LocalDate"
+                },
+                "usage": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BillEstimateItemUsage"
+                    }
+                }
+            }
+        },
+        "CreditCardSession": {
+            "type": "object",
+            "properties": {
+                "creditCardSessionId": {
+                    "type": "string"
+                },
+                "merchantId": {
+                    "type": "string"
+                }
+            }
+        },
+        "LocalDate": {
+            "type": "object",
+            "properties": {
+                "chronology": {
+                    "$ref": "#/definitions/IsoChronology"
+                },
+                "dayOfMonth": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "dayOfWeek": {
+                    "type": "string",
+                    "enum": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+                },
+                "dayOfYear": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "era": {
+                    "$ref": "#/definitions/Era"
+                },
+                "leapYear": {
+                    "type": "boolean"
+                },
+                "month": {
+                    "type": "string",
+                    "enum": ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"]
+                },
+                "monthValue": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "year": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "BillingDetails": {
+            "type": "object",
+            "properties": {
+                "addressLine1": {
+                    "type": "string"
+                },
+                "addressLine2": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "creditCard": {
+                    "$ref": "#/definitions/CreditCard"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "postcode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreditCard": {
+            "type": "object",
+            "properties": {
+                "expiryMonth": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "expiryYear": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "suffix": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "CustomerDetails": {
+            "type": "object",
+            "properties": {
+                "addressLine1": {
+                    "type": "string"
+                },
+                "addressLine2": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "customerContact": {
+                    "$ref": "#/definitions/CustomerContact"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "organisationName": {
+                    "type": "string"
+                },
+                "postcode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "taxpayerId": {
+                    "type": "string"
+                }
+            }
+        },
+        "BillEstimate": {
+            "type": "object",
+            "properties": {
+                "currencyCode": {
+                    "type": "string"
+                },
+                "currentBillingPeriod": {
+                    "$ref": "#/definitions/BillingPeriod"
+                },
+                "lines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BillEstimateItem"
+                    }
+                },
+                "nextBillingPeriod": {
+                    "$ref": "#/definitions/BillingPeriod"
+                },
+                "totalAmountBeforeTax": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "totalAmountWithTax": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "totalTaxAmount": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "Era": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "BillEstimateItemUsage": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "unitLabel": {
+                    "type": "string"
+                },
+                "units": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "BillingDetailsUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "addressLine1": {
+                    "type": "string"
+                },
+                "addressLine2": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "creditCard": {
+                    "$ref": "#/definitions/CreditCard"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "postcode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

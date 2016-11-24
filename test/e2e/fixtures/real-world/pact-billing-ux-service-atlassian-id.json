@@ -1,0 +1,98 @@
+{
+    "provider": {
+        "name": "AtlassianID"
+    },
+    "consumer": {
+        "name": "billing-ux-service"
+    },
+    "interactions": [{
+        "providerState": null,
+        "description": "a request to get a valid session",
+        "request": {
+            "method": "GET",
+            "path": "/session/1",
+            "body": null
+        },
+        "response": {
+            "status": 200,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": {
+                "id": "12345",
+                "userName": "alana@acme.com"
+            }
+        }
+    }, {
+        "providerState": null,
+        "description": "a request to get an invalid session",
+        "request": {
+            "method": "GET",
+            "path": "/session/99999",
+            "body": null
+        },
+        "response": {
+            "status": 400,
+            "body": null
+        }
+    }],
+    "metadata": {
+        "pact-specification": {
+            "version": "2.0.0"
+        },
+        "pact-jvm": {
+            "version": "3.2.6"
+        }
+    },
+    "updatedAt": "2016-10-16T23:19:14+00:00",
+    "createdAt": "2016-08-30T01:05:18+00:00",
+    "_links": {
+        "self": {
+            "title": "Pact",
+            "name": "Pact between billing-ux-service (v1.0.0) and AtlassianID",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/AtlassianID/consumer/billing-ux-service/version/1.0.0"
+        },
+        "pb:consumer": {
+            "title": "Consumer",
+            "name": "billing-ux-service",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-service"
+        },
+        "pb:provider": {
+            "title": "Provider",
+            "name": "AtlassianID",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/AtlassianID"
+        },
+        "pb:latest-pact-version": {
+            "title": "Pact",
+            "name": "Latest version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/AtlassianID/consumer/billing-ux-service/latest"
+        },
+        "pb:previous-distinct": {
+            "title": "Pact",
+            "name": "Previous distinct version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/AtlassianID/consumer/billing-ux-service/version/1.0.0/previous-distinct"
+        },
+        "pb:diff-previous-distinct": {
+            "title": "Diff",
+            "name": "Diff with previous distinct version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/AtlassianID/consumer/billing-ux-service/version/1.0.0/diff/previous-distinct"
+        },
+        "pb:pact-webhooks": {
+            "title": "Webhooks for the pact between billing-ux-service and AtlassianID",
+            "href": "https://pact-broker.internal.useast.atlassian.io/webhooks/provider/AtlassianID/consumer/billing-ux-service"
+        },
+        "pb:tag-prod-version": {
+            "title": "Tag this version as 'production'",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-service/versions/1.0.0/tags/prod"
+        },
+        "pb:tag-version": {
+            "title": "Tag version",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-service/versions/1.0.0/tags/{tag}"
+        },
+        "curies": [{
+            "name": "pb",
+            "href": "https://pact-broker.internal.useast.atlassian.io/doc/{rel}",
+            "templated": true
+        }]
+    }
+}

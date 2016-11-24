@@ -1,0 +1,1214 @@
+{
+  "consumer": {
+    "name": "Bitbucket Cloud PACT macOS Consumer"
+  },
+  "provider": {
+    "name": "Bitbucket Cloud PACT Provider"
+  },
+  "interactions": [
+    {
+      "description": "CreateRemoteRepo",
+      "request": {
+        "method": "post",
+        "path": "/2.0/repositories/test_user/test",
+        "headers": {
+          "Authorization": "Basic user:pass"
+        },
+        "body": {
+          "repoDescription": "test",
+          "repoType": 1,
+          "repoIsPrivate": 1,
+          "repoName": "test",
+          "type": "a-type"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "owner": {
+            "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbed}",
+            "links": {
+              "avatar": {
+                "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+              },
+              "html": {
+                "href": "https://bitbucket.org/_USERNAME_/"
+              },
+              "self": {
+                "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+              }
+            },
+            "username": "_USERNAME_",
+            "display_name": "FirstName LastName",
+            "type": "user"
+          },
+          "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+          "size": 58381,
+          "scm": "git",
+          "description": "test",
+          "full_name": "test_user/test",
+          "website": "website",
+          "type": "repository",
+          "created_on": "2015-12-17T22:59:41.697350+00:00",
+          "name": "test",
+          "fork_policy": "allow_forks",
+          "project": {
+            "name": "Project",
+            "uuid": "{8dshfghsdfhgk464592368592936852hc}",
+            "key": "PROJ",
+            "links": {
+              "avatar": {
+                "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ/avatar/32"
+              },
+              "html": {
+                "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ"
+              },
+              "self": {
+                "href": "https://api.bitbucket.org/2.0/teams/_PROJECT_/projects/PROJ"
+              }
+            },
+            "type": "project"
+          },
+          "has_wiki": false,
+          "has_issues": false,
+          "links": {
+            "watchers": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+            },
+            "pullrequests": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+            },
+            "branches": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+            },
+            "tags": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+            },
+            "commits": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+            },
+            "downloads": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+            },
+            "hooks": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+            },
+            "avatar": {
+              "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+            },
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+            },
+            "forks": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+            },
+            "clone": [
+              {
+                "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                "name": "https"
+              },
+              {
+                "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                "name": "ssh"
+              }
+            ],
+            "html": {
+              "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+            }
+          },
+          "updated_on": "2016-04-20T20:16:36.492142+00:00",
+          "is_private": true,
+          "language": ""
+        }
+      }
+    },
+    {
+      "description": "GetOwnedRepos",
+      "request": {
+        "method": "get",
+        "path": "/2.0/repositories/test_user",
+        "headers": {
+          "Authorization": "Basic user:pass"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "size": 5,
+          "next": "https://bitbucket.org/api/2.0/repositories/test_user?pagelen=Optional(5)&page=Optional(1)",
+          "values": [
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbef}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName!",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+              "size": 1,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_user/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            },
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbed}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+              "size": 2,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_user/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "has_wiki": false,
+              "has_issues": true,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            },
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbed}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfb}",
+              "size": 3,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_user/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            },
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbee}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastNamed",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+              "size": 4,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_user/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            },
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbed}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfb}",
+              "size": 5,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_user/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            }
+          ],
+          "page": 1,
+          "pagelen": 5
+        }
+      }
+    },
+    {
+      "description": "GetRepoDetails",
+      "request": {
+        "method": "get",
+        "path": "/2.0/repositories/test_projecttest_repo",
+        "headers": {
+          "Authorization": "Basic user:pass"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "values": [{
+            "owner": {
+              "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbed}",
+              "links": {
+                "avatar": {
+                  "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                },
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                }
+              },
+              "username": "_USERNAME_",
+              "display_name": "FirstName LastName",
+              "type": "user"
+            },
+            "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+            "size": 58381,
+            "scm": "git",
+            "description": "just a description",
+            "full_name": "test_user/test_repo",
+            "website": "website",
+            "type": "repository",
+            "created_on": "2015-12-17T22:59:41.697350+00:00",
+            "name": "test_repo",
+            "fork_policy": "allow_forks",
+            "project": {
+              "name": "Project",
+              "uuid": "{8dshfghsdfhgk464592368592936852hc}",
+              "key": "PROJ",
+              "links": {
+                "avatar": {
+                  "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ/avatar/32"
+                },
+                "html": {
+                  "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/teams/_PROJECT_/projects/PROJ"
+                }
+              },
+              "type": "project"
+            },
+            "has_wiki": false,
+            "has_issues": false,
+            "links": {
+              "watchers": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+              },
+              "pullrequests": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+              },
+              "branches": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+              },
+              "tags": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+              },
+              "commits": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+              },
+              "downloads": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+              },
+              "hooks": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+              },
+              "avatar": {
+                "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+              },
+              "self": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+              },
+              "forks": {
+                "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+              },
+              "clone": [
+                {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                  "name": "https"
+                },
+                {
+                  "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                  "name": "ssh"
+                }
+              ],
+              "html": {
+                "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+              }
+            }
+          }],
+          "updated_on": "2016-04-20T20:16:36.492142+00:00",
+          "is_private": false,
+          "language": ""
+        }
+      }
+    },
+    {
+      "description": "GetTeamRepos",
+      "request": {
+        "method": "get",
+        "path": "/2.0/repositories/test_project",
+        "headers": {
+          "Authorization": "Basic user:pass"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "size": 5,
+          "next": "https://bitbucket.org/api/2.0/repositories/test_project?pagelen=Optional(5)&page=Optional(1)",
+          "values": [
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbed}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+              "size": 58381,
+              "scm": "git",
+              "description": "just a description!",
+              "full_name": "test_project/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "project": {
+                "name": "Project",
+                "uuid": "{8dshfghsdfhgk464592368592936852hc}",
+                "key": "PROJ",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ/avatar/32"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/teams/_PROJECT_/projects/PROJ"
+                  }
+                },
+                "type": "project"
+              },
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            },
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbee}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfb}",
+              "size": 58381,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_project/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "project": {
+                "name": "Project",
+                "uuid": "{8dshfghsdfhgk464592368592936852hc}",
+                "key": "PROJ",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ/avatar/32"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/teams/_PROJECT_/projects/PROJ"
+                  }
+                },
+                "type": "project"
+              },
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            },
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbef}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+              "size": 58381,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_project/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "project": {
+                "name": "Project",
+                "uuid": "{8dshfghsdfhgk464592368592936852hc}",
+                "key": "PROJ",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ/avatar/32"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/teams/_PROJECT_/projects/PROJ"
+                  }
+                },
+                "type": "project"
+              },
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            },
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbea}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+              "size": 58381,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_project/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "project": {
+                "name": "Project",
+                "uuid": "{8dshfghsdfhgk464592368592936852hc}",
+                "key": "PROJ",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ/avatar/32"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/teams/_PROJECT_/projects/PROJ"
+                  }
+                },
+                "type": "project"
+              },
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            },
+            {
+              "owner": {
+                "uuid": "{36fcb71d-d12c-46c6-9276-ac5b2e3afbed}",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/_USERNAME_/"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+                  }
+                },
+                "username": "_USERNAME_",
+                "display_name": "FirstName LastName",
+                "type": "user"
+              },
+              "uuid": "{9896dsagafa96sdf86asdcsa98d6fsdaf89sfa}",
+              "size": 58381,
+              "scm": "git",
+              "description": "just a description",
+              "full_name": "test_project/test-repo",
+              "website": "website",
+              "type": "repository",
+              "created_on": "2015-12-17T22:59:41.697350+00:00",
+              "name": "test-repo",
+              "fork_policy": "allow_forks",
+              "project": {
+                "name": "Project",
+                "uuid": "{8dshfghsdfhgk464592368592936852hc}",
+                "key": "PROJ",
+                "links": {
+                  "avatar": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ/avatar/32"
+                  },
+                  "html": {
+                    "href": "https://bitbucket.org/account/user/_PROJECT_/projects/PROJ"
+                  },
+                  "self": {
+                    "href": "https://api.bitbucket.org/2.0/teams/_PROJECT_/projects/PROJ"
+                  }
+                },
+                "type": "project"
+              },
+              "has_wiki": false,
+              "has_issues": false,
+              "links": {
+                "watchers": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/watchers"
+                },
+                "pullrequests": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/pullrequests"
+                },
+                "branches": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/branches"
+                },
+                "tags": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/refs/tags"
+                },
+                "commits": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/commits"
+                },
+                "downloads": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/downloads"
+                },
+                "hooks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/hooks"
+                },
+                "avatar": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_/avatar/32/"
+                },
+                "self": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_"
+                },
+                "forks": {
+                  "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_/_SLUG_/forks"
+                },
+                "clone": [
+                  {
+                    "href": "https://bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "https"
+                  },
+                  {
+                    "href": "ssh://git@bitbucket.org/_USERNAME_/_SLUG_.git",
+                    "name": "ssh"
+                  }
+                ],
+                "html": {
+                  "href": "https://bitbucket.org/_USERNAME_/_SLUG_"
+                }
+              },
+              "updated_on": "2016-04-20T20:16:36.492142+00:00",
+              "is_private": false,
+              "language": ""
+            }
+          ],
+          "page": 1,
+          "pagelen": 5
+        }
+      }
+    },
+    {
+      "description": "GetUserProfile",
+      "request": {
+        "method": "get",
+        "path": "/2.0/user",
+        "headers": {
+          "Authorization": "Basic user:pass"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "created_on": "2015-09-21T21:54:31+00:00",
+          "uuid": "{87686af9af6d9ssf9d8a6vdssf7sd98f7}",
+          "display_name": "FirstName LastName [Atlassian]",
+          "type": "user",
+          "links": {
+            "avatar": {
+              "href": "https://bitbucket.org/account/_USERNAME_/avatar/32/"
+            },
+            "following": {
+              "href": "https://api.bitbucket.org/2.0/users/_USERNAME_/following"
+            },
+            "repositories": {
+              "href": "https://api.bitbucket.org/2.0/repositories/_USERNAME_"
+            },
+            "followers": {
+              "href": "https://api.bitbucket.org/2.0/users/_USERNAME_/followers"
+            },
+            "html": {
+              "href": "https://bitbucket.org/_USERNAME_/"
+            },
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/users/_USERNAME_"
+            }
+          },
+          "location": "",
+          "website": "",
+          "username": "test_user"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecificationVersion": "2.0.0"
+  }
+}

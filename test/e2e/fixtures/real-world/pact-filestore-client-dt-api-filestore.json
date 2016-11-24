@@ -1,0 +1,1241 @@
+{
+    "consumer": {
+        "name": "filestore-client"
+    },
+    "provider": {
+        "name": "dt-api-filestore"
+    },
+    "interactions": [
+        {
+            "description": "a request for getting the file",
+            "provider_state": "a valid token exists and e3287dfc-2c5b-499f-8851-c18a805282d7 is a document",
+            "request": {
+                "method": "get",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "document",
+                        "size": 231392,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "example document.pdf",
+                        "processingStatus": "succeeded",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request for getting the file",
+            "provider_state": "a valid token exists, e3287dfc-2c5b-499f-8851-c18a805282d7 is a file and is a member of an existing collection the-most-awesome-collection-ever",
+            "request": {
+                "method": "get",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7",
+                "query": "collection=the-most-awesome-collection-ever",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "document",
+                        "size": 231392,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "example document.pdf",
+                        "processingStatus": "succeeded",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request for uploading a file",
+            "provider_state": "a valid token exists and processing is pending",
+            "request": {
+                "method": "post",
+                "path": "/file/binary",
+                "query": "name=example%20document.pdf",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "unknown",
+                        "size": 231392,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "example document.pdf",
+                        "processingStatus": "pending",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request for uploading a file",
+            "provider_state": "a valid token exists and processing is pending",
+            "request": {
+                "method": "post",
+                "path": "/file/binary",
+                "query": "name=example%20document.pdf",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "unknown",
+                        "size": 231392,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "example document.pdf",
+                        "processingStatus": "pending",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to create a file from binary in a collection",
+            "provider_state": "a collection and a valid token exists and processing is pending",
+            "request": {
+                "method": "post",
+                "path": "/file/binary",
+                "query": "collection=the-most-awesome-collection-ever&name=example%20document.pdf",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "unknown",
+                        "size": 231392,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "example document.pdf",
+                        "processingStatus": "pending",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request for downloading the original file",
+            "provider_state": "a valid token exists and e3287dfc-2c5b-499f-8851-c18a805282d7 is a file id",
+            "request": {
+                "method": "get",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7/binary",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                }
+            }
+        },
+        {
+            "description": "a request for downloading an artifact file",
+            "provider_state": "a valid token exists and e3287dfc-2c5b-499f-8851-c18a805282d7 is a document",
+            "request": {
+                "method": "get",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7/artifact/document.pdf/binary",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                }
+            }
+        },
+        {
+            "description": "a request for downloading an resized preview",
+            "provider_state": "a valid token exists and e3287dfc-2c5b-499f-8851-c18a805282d7 is a document",
+            "request": {
+                "method": "get",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7/image",
+                "query": "height=100&width=100",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                }
+            }
+        },
+        {
+            "description": "a request for uploading a chunk",
+            "provider_state": "a valid token exists",
+            "request": {
+                "method": "put",
+                "path": "/chunk/a6d09383157bf348f295c625400d7e444a7f4986-0",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 201
+            }
+        },
+        {
+            "description": "a request for uploading a chunk",
+            "provider_state": "a valid token exists and the chunk already exists",
+            "request": {
+                "method": "put",
+                "path": "/chunk/a6d09383157bf348f295c625400d7e444a7f4986-415",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to check if a chunk exists",
+            "provider_state": "a valid token exists and the chunk already exists",
+            "request": {
+                "method": "head",
+                "path": "/chunk/a6d09383157bf348f295c625400d7e444a7f4986-415",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to check if a chunk exists",
+            "provider_state": "a valid token exists",
+            "request": {
+                "method": "head",
+                "path": "/chunk/a6d09383157bf348f295c625400d7e444a7f4986-0",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 404
+            }
+        },
+        {
+            "description": "a request to get a chunk",
+            "provider_state": "a valid token exists and the chunk already exists",
+            "request": {
+                "method": "get",
+                "path": "/chunk/a6d09383157bf348f295c625400d7e444a7f4986-415",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "binary/octet-stream"
+                }
+            }
+        },
+        {
+            "description": "a request to create a file from chunks",
+            "provider_state": "a valid token exists and all chunks already exist and processing is pending",
+            "request": {
+                "method": "post",
+                "path": "/file/chunked",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "chunks": [
+                        "a6d09383157bf348f295c625400d7e444a7f4986-415",
+                        "dcf1fab6a7df29114826f667f016344f0317d9a3-1599"
+                    ],
+                    "mimeType": "application/pdf",
+                    "name": "test file"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "unknown",
+                        "size": 2014,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "test file",
+                        "processingStatus": "pending",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to create a file from chunks in the non-existent collection named \"non-existent-collection\"",
+            "provider_state": "a valid token exists and all chunks already exist and collection with an alias \"non-existent-collection\" exists and processing is pending",
+            "request": {
+                "method": "post",
+                "path": "/file/chunked",
+                "query": "collection=non-existent-collection",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "chunks": [
+                        "a6d09383157bf348f295c625400d7e444a7f4986-415",
+                        "dcf1fab6a7df29114826f667f016344f0317d9a3-1599"
+                    ],
+                    "mimeType": "application/pdf",
+                    "name": "test file"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "unknown",
+                        "size": 2014,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "test file",
+                        "processingStatus": "pending",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to copy a file",
+            "provider_state": "a valid token exists and 2942f940-2a0d-4a31-90ea-c6e305fc6590 is a file id",
+            "request": {
+                "method": "post",
+                "path": "/file/copy",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "id": "2942f940-2a0d-4a31-90ea-c6e305fc6590"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "unknown",
+                        "size": 2014,
+                        "artifacts": {},
+                        "mimeType": "binary/octet-stream",
+                        "name": "test file",
+                        "processingStatus": "pending",
+                        "id": "6db35a17-aa49-4f3a-ab80-5072975518e0"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to delete a file",
+            "provider_state": "a valid token exists and e3287dfc-2c5b-499f-8851-c18a805282d7 is a file id",
+            "request": {
+                "method": "delete",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to grant permissions to another client",
+            "provider_state": "a valid token exists",
+            "request": {
+                "method": "post",
+                "path": "/grant",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "fileId": "e3287dfc-2c5b-499f-8851-c18a805282d7",
+                    "granteeId": "1bc68251-f381-427c-8dfa-1b51fd5b6f46"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "id": "cc7af564-6c8f-4cac-bab4-8b1b7e489e3b"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to get grant details",
+            "provider_state": "a valid token exists and grant cc7af564-6c8f-4cac-bab4-8b1b7e489e3b exists and is disabled",
+            "request": {
+                "method": "get",
+                "path": "/grant/cc7af564-6c8f-4cac-bab4-8b1b7e489e3b",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "disabled": true,
+                        "id": "cc7af564-6c8f-4cac-bab4-8b1b7e489e3b"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to disable a grant",
+            "provider_state": "a valid token exists",
+            "request": {
+                "method": "put",
+                "path": "/grant/cc7af564-6c8f-4cac-bab4-8b1b7e489e3b",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "disabled": true
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "disabled": true,
+                        "id": "cc7af564-6c8f-4cac-bab4-8b1b7e489e3b"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to revoke a grant",
+            "provider_state": "a valid token exists",
+            "request": {
+                "method": "delete",
+                "path": "/grant/cc7af564-6c8f-4cac-bab4-8b1b7e489e3b",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to create 2 uploads",
+            "provider_state": "a valid token exists",
+            "request": {
+                "method": "post",
+                "path": "/upload",
+                "query": "createUpTo=2",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": [
+                        {
+                            "created": 1453335978,
+                            "expires": 1453335988,
+                            "id": "13c49470-adac-4b16-82ec-301340c7b133"
+                        },
+                        {
+                            "created": 1453335978,
+                            "expires": 1453335988,
+                            "id": "29c49470-adac-4b16-89ac-301340c7b16a"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "description": "a request to add a binary to an existing upload",
+            "provider_state": "a valid token exists and 29c49470-adac-4b16-82ec-301340c7b16a is an upload id",
+            "request": {
+                "method": "put",
+                "path": "/upload/29c49470-adac-4b16-82ec-301340c7b16a/binary",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to get chunks for an existing session",
+            "request": {
+                "method": "get",
+                "path": "/upload/29c49470-adac-4b16-82ec-301340c7b16a/chunks",
+                "query": "limit=100&offset=5",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "body": {
+                    "data": {
+                        "hash": "c88c0194217858bb74c4c2fb55227dff17f5c6ea20c2756f0be9e5022bc0cfc4",
+                        "size": 12345,
+                        "chunks": [
+                            "f1d2d2f924e986ac86fdf7b36c94bcdf32beec15-16",
+                            "abcdd2f924e986ac86fdf7b36c94bcdf32beecef-4"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to add chunks to an existing session",
+            "request": {
+                "method": "put",
+                "path": "/upload/29c49470-adac-4b16-82ec-301340c7b16a/chunks",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "hash": "completeFileHash",
+                    "size": 42,
+                    "offset": 5,
+                    "chunks": [
+                        "f1d2d2f924e986ac86fdf7b36c94bcdf32beec15-123",
+                        "abcdd2f924e986ac86fdf7b36c94bcdf32beecef-23"
+                    ]
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to create a file from an upload",
+            "provider_state": "a valid token exists and 29c49470-adac-4b16-82ec-301340c7b16a is an upload id",
+            "request": {
+                "method": "post",
+                "path": "/file/upload",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "mimeType": "application/pdf",
+                    "name": "document.pdf",
+                    "uploadId": "29c49470-adac-4b16-82ec-301340c7b16a"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "unknown",
+                        "size": 231392,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "document.pdf",
+                        "processingStatus": "pending",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to create a file from an upload with conditions",
+            "provider_state": "a valid token exists and 29c49470-adac-4b16-82ec-301340c7b16a is an upload id",
+            "request": {
+                "method": "post",
+                "path": "/file/upload",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "mimeType": "application/pdf",
+                    "name": "document.pdf",
+                    "conditions": {
+                        "hash": "sha1:da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                        "size": 231392
+                    },
+                    "uploadId": "29c49470-adac-4b16-82ec-301340c7b16a"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "mediaType": "unknown",
+                        "size": 231392,
+                        "artifacts": {},
+                        "mimeType": "application/pdf",
+                        "name": "document.pdf",
+                        "processingStatus": "pending",
+                        "id": "e3287dfc-2c5b-499f-8851-c18a805282d7"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to delete an upload",
+            "provider_state": "a valid token exists and 13c49470-adac-4b16-82ec-301340c7b133 is a valid upload",
+            "request": {
+                "method": "delete",
+                "path": "/upload/13c49470-adac-4b16-82ec-301340c7b133",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to delete an upload",
+            "provider_state": "a valid token exists and an-upload-which-does-not-exist is a non-existing upload",
+            "request": {
+                "method": "delete",
+                "path": "/upload/an-upload-which-does-not-exist",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 404
+            }
+        },
+        {
+            "description": "a request to create a client",
+            "request": {
+                "method": "post",
+                "path": "/client",
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "description": "client description",
+                    "title": "client title"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "description": "client description",
+                        "key": "78fce8f62ab525ad5e07d640767c7c740621dc0087198391398b0a67fea89f16",
+                        "id": "38746c1a-f37f-11e4-a4c3-3c15c2c70c",
+                        "title": "client title"
+                    }
+                }
+            }
+        },
+        {
+            "description": "an unauthorized request for getting a file",
+            "provider_state": "the token is invalid",
+            "request": {
+                "method": "get",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7",
+                "headers": {
+                    "Authorization": "Bearer INVALID",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 403,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "error": {
+                        "href": "http://localhost:1234#UnauthorizedError",
+                        "code": "UnauthorizedError",
+                        "title": "The given client id or auth token is invalid"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request for downloading the original file with token and bad client id",
+            "provider_state": "a valid token exists and e3287dfc-2c5b-499f-8851-c18a805282d7 is a file id",
+            "request": {
+                "method": "get",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7/binary",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "badClientId"
+                }
+            },
+            "response": {
+                "status": 403,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "error": {
+                        "href": "http://localhost:1234#UnauthorizedError",
+                        "code": "UnauthorizedError",
+                        "title": "The given client id or auth token is invalid"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request for downloading the original file with clientId and expired token",
+            "provider_state": "a valid token exists and e3287dfc-2c5b-499f-8851-c18a805282d7 is a file id",
+            "request": {
+                "method": "get",
+                "path": "/file/e3287dfc-2c5b-499f-8851-c18a805282d7/binary",
+                "headers": {
+                    "Authorization": "Bearer EXPIRED",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 403,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "error": {
+                        "href": "http://localhost:1234#UnauthorizedError",
+                        "code": "UnauthorizedError",
+                        "title": "Jwt verification failed: token expired"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to create a collection",
+            "provider_state": "a valid token exists",
+            "request": {
+                "method": "post",
+                "path": "/collection",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "name": "the-most-awesome-collection-ever"
+                }
+            },
+            "response": {
+                "status": 201,
+                "body": {
+                    "data": {
+                        "createdAt": 1464132368,
+                        "name": "the-most-awesome-collection-ever"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to retrieve a collection",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a valid collection",
+            "request": {
+                "method": "get",
+                "path": "/collection/the-most-awesome-collection-ever",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "body": {
+                    "data": {
+                        "createdAt": 1464132368,
+                        "name": "the-most-awesome-collection-ever"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to retrieve a collection",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a non-existing collection",
+            "request": {
+                "method": "get",
+                "path": "/collection/the-most-awesome-collection-ever",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 404
+            }
+        },
+        {
+            "description": "a request to retrieve collection items",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a valid collection",
+            "request": {
+                "method": "get",
+                "path": "/collection/the-most-awesome-collection-ever/items",
+                "query": "limit=2",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "body": {
+                    "data": {
+                        "nextInclusiveStartKey": "121",
+                        "contents": [
+                            {
+                                "occurrenceKey": "urn:hipchat:message:12413532",
+                                "details": {
+                                    "fileSize": 34315,
+                                    "detectedMimeType": "video/mp4",
+                                    "fileName": "some_video.mp4"
+                                },
+                                "id": "0a6f64e4-7330-4dcf-ac65-58ab10677282",
+                                "type": "file"
+                            },
+                            {
+                                "occurrenceKey": "urn:hipchat:message:12413532",
+                                "details": {
+                                    "fileSize": 132,
+                                    "detectedMimeType": "application/pdf",
+                                    "fileName": "some_doc.pdf"
+                                },
+                                "id": "1863256a-181f-4cd4-aefb-9b73f4db238c",
+                                "type": "file"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to retrieve collection items",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a valid collection",
+            "request": {
+                "method": "get",
+                "path": "/collection/the-most-awesome-collection-ever/items",
+                "query": "inclusiveStartKey=abc&limit=2",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "body": {
+                    "data": {
+                        "nextInclusiveStartKey": "121",
+                        "contents": [
+                            {
+                                "occurrenceKey": "urn:hipchat:message:12413532",
+                                "details": {
+                                    "fileSize": 34315,
+                                    "detectedMimeType": "video/mp4",
+                                    "fileName": "some_video.mp4"
+                                },
+                                "id": "0a6f64e4-7330-4dcf-ac65-58ab10677282",
+                                "type": "file"
+                            },
+                            {
+                                "occurrenceKey": "urn:hipchat:message:12413532",
+                                "details": {
+                                    "fileSize": 132,
+                                    "detectedMimeType": "application/pdf",
+                                    "fileName": "some_doc.pdf"
+                                },
+                                "id": "1863256a-181f-4cd4-aefb-9b73f4db238c",
+                                "type": "file"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to retrieve collection items",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a non-existing collection",
+            "request": {
+                "method": "get",
+                "path": "/collection/the-most-awesome-collection-ever/items",
+                "query": "limit=2",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 404
+            }
+        },
+        {
+            "description": "a request to update a collection",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a valid collection",
+            "request": {
+                "method": "put",
+                "path": "/collection/the-most-awesome-collection-ever",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "actions": [
+                        {
+                            "action": "insert",
+                            "item": {
+                                "occurrenceKey": "abc",
+                                "id": "0a6f64e4-7330-4dcf-ac65-58ab10677282",
+                                "type": "file"
+                            }
+                        },
+                        {
+                            "action": "remove",
+                            "item": {
+                                "occurrenceKey": "abc",
+                                "id": "1863256a-181f-4cd4-aefb-9b73f4db238c",
+                                "type": "file"
+                            }
+                        }
+                    ]
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to update a collection",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a non-existing collection",
+            "request": {
+                "method": "put",
+                "path": "/collection/the-most-awesome-collection-ever",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "actions": [
+                        {
+                            "action": "insert",
+                            "item": {
+                                "occurrenceKey": "abc",
+                                "id": "0a6f64e4-7330-4dcf-ac65-58ab10677282",
+                                "type": "file"
+                            }
+                        },
+                        {
+                            "action": "remove",
+                            "item": {
+                                "occurrenceKey": "abc",
+                                "id": "1863256a-181f-4cd4-aefb-9b73f4db238c",
+                                "type": "file"
+                            }
+                        }
+                    ]
+                }
+            },
+            "response": {
+                "status": 404
+            }
+        },
+        {
+            "description": "a request to delete a collection",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a valid collection",
+            "request": {
+                "method": "delete",
+                "path": "/collection/the-most-awesome-collection-ever",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        },
+        {
+            "description": "a request to delete a collection",
+            "provider_state": "a valid token exists and the-most-awesome-collection-ever is a non-existing collection",
+            "request": {
+                "method": "delete",
+                "path": "/collection/the-most-awesome-collection-ever",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 404
+            }
+        },
+        {
+            "description": "a request to get a link preview",
+            "provider_state": "a valid token exists and link preview is available for http://google.com",
+            "request": {
+                "method": "get",
+                "path": "/link/preview",
+                "query": "url=http%3A%2F%2Fgoogle.com",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "preview": {
+                            "description": "Biggest search engine ever",
+                            "url": "http://google.com",
+                            "title": "Google Inc",
+                            "type": "link"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to get a link preview",
+            "provider_state": "a valid token exists and target link server returns 404 for http://google.com/non-existent-link",
+            "request": {
+                "method": "get",
+                "path": "/link/preview",
+                "query": "url=http%3A%2F%2Fgoogle.com%2Fnon-existent-link",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "previewError": {
+                            "name": "NotFoundError",
+                            "code": 404
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to create a link",
+            "provider_state": "a valid token exists to insert items in existent collection \"mycollection\"",
+            "request": {
+                "method": "post",
+                "path": "/link",
+                "query": "collection=mycollection",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "url": "http://www.google.com"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "createdAt": 1474527027263,
+                        "url": "http://google.com",
+                        "id": "50c704a2-80cb-47fd-9043-cc29045125d3"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to create a link",
+            "provider_state": "a valid token exists to insert items in non existent collection \"mycollection\"",
+            "request": {
+                "method": "post",
+                "path": "/link",
+                "query": "collection=mycollection",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                },
+                "body": {
+                    "url": "http://www.google.com"
+                }
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "createdAt": 1474527027263,
+                        "url": "http://google.com",
+                        "id": "50c704a2-80cb-47fd-9043-cc29045125d3"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to get a link",
+            "provider_state": "a valid token exists to access collection \"mycollection\" and \"50c704a2-80cb-47fd-9043-cc29045125d3\" is an existing link within the \"mycollection\" collection",
+            "request": {
+                "method": "get",
+                "path": "/link/50c704a2-80cb-47fd-9043-cc29045125d3",
+                "query": "collection=mycollection",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "data": {
+                        "createdAt": 1474527027263,
+                        "url": "http://google.com",
+                        "id": "50c704a2-80cb-47fd-9043-cc29045125d3"
+                    }
+                }
+            }
+        },
+        {
+            "description": "a request to get a link",
+            "provider_state": "a valid token exists to access collection \"mycollection\" and \"50c704a2-80cb-47fd-9043-cc29045125d3\" is not an existing link",
+            "request": {
+                "method": "get",
+                "path": "/link/50c704a2-80cb-47fd-9043-cc29045125d3",
+                "query": "collection=mycollection",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIzODc0NmMxYS1mMzdmLTExZTQtYTRjMy0zYzE1YzJjNzBjZTYifQ.FWL5flzuuAH_THe7zie8mjTFqoiw9JifhRL7HsfnZyc",
+                    "X-Client-Id": "clientId"
+                }
+            },
+            "response": {
+                "status": 404
+            }
+        }
+    ]
+}

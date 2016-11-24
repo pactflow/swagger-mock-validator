@@ -1,0 +1,2051 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Billing API's for Atlassian",
+        "version": "1.0",
+        "title": "Billing API Gateway"
+    },
+    "host": "billing-api-gateway.internal.app.dev.atlassian.io",
+    "basePath": "/",
+    "tags": [{
+        "name": "Refunds",
+        "description": "Operations related to refunds"
+    }, {
+        "name": "Entitlement Groups",
+        "description": "Operations about Entitlement Groups"
+    }, {
+        "name": "Products",
+        "description": "Operations about Products"
+    }, {
+        "name": "Accounts",
+        "description": "Operations about Billing Accounts"
+    }, {
+        "name": "Country",
+        "description": "Get country information"
+    }, {
+        "name": "Usage",
+        "description": "Operations about Usage"
+    }, {
+        "name": "Credit Cards",
+        "description": "Operations about Credit Cards"
+    }],
+    "paths": {
+        "/api/accounts/{accountId}": {
+            "get": {
+                "tags": ["Accounts"],
+                "summary": "Get Account",
+                "operationId": "get-account",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountId",
+                    "in": "path",
+                    "description": "accountId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Account"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Accounts"],
+                "summary": "Create Account",
+                "operationId": "create-account",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountId",
+                    "in": "path",
+                    "description": "accountId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "in": "body",
+                    "name": "accountCreationRequest",
+                    "description": "accountCreationRequest",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/AccountCreationRequest"
+                    }
+                }],
+                "responses": {
+                    "400": {
+                        "description": "BAD REQUEST"
+                    },
+                    "202": {
+                        "description": "Accepted"
+                    }
+                }
+            }
+        },
+        "/api/accounts/{accountId}/customer-details": {
+            "get": {
+                "tags": ["Accounts"],
+                "summary": "Get Customer Details",
+                "operationId": "get-customer-details",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountId",
+                    "in": "path",
+                    "description": "accountId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CustomerDetails"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Accounts"],
+                "summary": "Update Customer Details",
+                "operationId": "update-customer-details",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountId",
+                    "in": "path",
+                    "description": "accountId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "in": "body",
+                    "name": "customerDetails",
+                    "description": "customerDetails",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/CustomerDetails"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/accounts/{accountId}/entitlement-groups": {
+            "get": {
+                "tags": ["Accounts"],
+                "summary": "Get Entitlement Groups",
+                "operationId": "get-entitlement-groups",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountId",
+                    "in": "path",
+                    "description": "accountId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/EntitlementGroup"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/accounts/{accountId}/refundable-payments": {
+            "get": {
+                "tags": ["Accounts"],
+                "summary": "Get Refundable Payments",
+                "operationId": "get-refundable-payments-for-account",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountId",
+                    "in": "path",
+                    "description": "accountId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RefundablePayments"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/accounts/{accountId}/statements/{invoiceNumber}": {
+            "get": {
+                "tags": ["Accounts"],
+                "summary": "Get Statement",
+                "operationId": "get-statement",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountId",
+                    "in": "path",
+                    "description": "accountId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "invoiceNumber",
+                    "in": "path",
+                    "description": "invoiceNumber",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int64"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Statement"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/country": {
+            "get": {
+                "tags": ["Country"],
+                "summary": "Get countries",
+                "operationId": "get-countries",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Collection«Country»"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/credit-card/session": {
+            "post": {
+                "tags": ["Credit Cards"],
+                "summary": "Create TNS Session",
+                "operationId": "create-tns-session",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CreditCardSessionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/credit-card/session/{sessionId}/save": {
+            "post": {
+                "tags": ["Credit Cards"],
+                "summary": "Save TNS Session",
+                "operationId": "save-tns-session",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "sessionId",
+                    "in": "path",
+                    "description": "sessionId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Entitlement Group",
+                "operationId": "get-entitlement-group",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/EntitlementGroup"
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/bill-estimate": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Bill Estimate",
+                "operationId": "get-bill-estimate",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BillEstimate"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/billing-details": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Billing Details",
+                "operationId": "get-billing-details",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BillingDetailsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORISED"
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Update Billing Details",
+                "operationId": "update-billing-details",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "in": "body",
+                    "name": "billingDetails",
+                    "description": "billingDetails",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/BillingDetailsRequest"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/billing-details/{paymentId}": {
+            "delete": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Delete Payment Method",
+                "operationId": "delete-payment-method",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "paymentId",
+                    "in": "path",
+                    "description": "paymentId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/entitlements/{entitlementId}": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Entitlement",
+                "operationId": "get-entitlement",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "entitlementId",
+                    "in": "path",
+                    "description": "entitlementId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Entitlement"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/entitlements/{entitlementId}/edition": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Edition",
+                "operationId": "get-edition",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "entitlementId",
+                    "in": "path",
+                    "description": "entitlementId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/EditionsResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Select Edition",
+                "operationId": "select-edition",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "entitlementId",
+                    "in": "path",
+                    "description": "entitlementId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "in": "body",
+                    "name": "selectEditionRequest",
+                    "description": "selectEditionRequest",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/SelectEditionRequest"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/invoice-contact": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Invoice Contact",
+                "operationId": "get-invoice-contact",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/InvoiceContact"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Update Invoice Contact",
+                "operationId": "update-invoice-contact",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "in": "body",
+                    "name": "invoiceContact",
+                    "description": "invoiceContact",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/InvoiceContact"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/invoice-history": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Invoice History",
+                "operationId": "get-invoice-history",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "date-start",
+                    "in": "query",
+                    "description": "date-start",
+                    "required": false,
+                    "type": "string",
+                    "format": "date"
+                }, {
+                    "name": "date-end",
+                    "in": "query",
+                    "description": "date-end",
+                    "required": false,
+                    "type": "string",
+                    "format": "date"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/InvoiceHistory"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/payments/collect-outstanding": {
+            "post": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Collect Outstanding Balance",
+                "operationId": "collect-outstanding-balance-on-entitlement-group",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "in": "body",
+                    "name": "request",
+                    "description": "request",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/CollectOutstandingBalanceRequest"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CollectOutstandingBalanceResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/refundable-payments": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Refundable Payments",
+                "operationId": "get-refundable-payments-for-entitlement-group",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RefundablePayments"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/entitlement-groups/{entitlementGroupId}/usages": {
+            "get": {
+                "tags": ["Entitlement Groups"],
+                "summary": "Get Usage History",
+                "operationId": "get-usage-history",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlementGroupId",
+                    "in": "path",
+                    "description": "entitlementGroupId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "date-start",
+                    "in": "query",
+                    "description": "date-start",
+                    "required": true,
+                    "type": "string",
+                    "format": "date-time"
+                }, {
+                    "name": "billing-status-filter",
+                    "in": "query",
+                    "description": "billing-status-filter",
+                    "required": false,
+                    "type": "string",
+                    "default": "all",
+                    "enum": ["billed", "unbilled", "all"]
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UsageHistory"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/accounts/{accountNumber}/statements/{invoiceNumber}": {
+            "get": {
+                "tags": ["Accounts"],
+                "summary": "getStatementByInternalId",
+                "operationId": "getStatementByInternalIdUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountNumber",
+                    "in": "path",
+                    "description": "accountNumber",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int64"
+                }, {
+                    "name": "invoiceNumber",
+                    "in": "path",
+                    "description": "invoiceNumber",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int64"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Statement"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": ["Products"],
+                "summary": "Get Products",
+                "operationId": "get-product",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Product"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/{productKey}/editions": {
+            "get": {
+                "tags": ["Products"],
+                "summary": "Get Product Info",
+                "operationId": "get-product-info",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "productKey",
+                    "in": "path",
+                    "description": "productKey",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/refunds/account/{accountId}/{invoiceId}": {
+            "post": {
+                "tags": ["Refunds"],
+                "summary": "Issue refund",
+                "operationId": "get-refundable-payments-for-issue-refund",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "accountId",
+                    "in": "path",
+                    "description": "accountId",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "invoiceId",
+                    "in": "path",
+                    "description": "invoiceId",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int64"
+                }, {
+                    "in": "body",
+                    "name": "issueRefundRequest",
+                    "description": "issueRefundRequest",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/IssueRefundRequest"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/IssueRefundResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/refunds/reasons": {
+            "get": {
+                "tags": ["Refunds"],
+                "summary": "Get refund reasons",
+                "operationId": "get-refund-reasons",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RefundReasons"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usages": {
+            "get": {
+                "tags": ["Usage"],
+                "summary": "Get Usage",
+                "operationId": "get-usage",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlement-id",
+                    "in": "query",
+                    "description": "entitlement-id",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "unit-label",
+                    "in": "query",
+                    "description": "unit-label",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GetUsageResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Usage"],
+                "summary": "Record Usage",
+                "operationId": "create-usage",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "createUsageRequest",
+                    "description": "createUsageRequest",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/CreateUsageRequest"
+                    }
+                }],
+                "responses": {
+                    "400": {
+                        "description": "BAD REQUEST"
+                    },
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/GetUsageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usages/batch": {
+            "post": {
+                "tags": ["Usage"],
+                "summary": "Send Batch",
+                "operationId": "send-batch",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "recurring",
+                    "description": "recurring",
+                    "required": false,
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/usages/re-queue-failed": {
+            "post": {
+                "tags": ["Usage"],
+                "summary": "Requeue failed records",
+                "operationId": "re-queue-failed-records",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    }
+                }
+            }
+        },
+        "/api/usages/reset": {
+            "post": {
+                "tags": ["Usage"],
+                "summary": "Reset Usage",
+                "operationId": "reset-usage",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "entitlement-group-id",
+                    "in": "query",
+                    "description": "entitlement-group-id",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "entitlement-id",
+                    "in": "query",
+                    "description": "entitlement-id",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "date-start",
+                    "in": "query",
+                    "description": "date-start",
+                    "required": true,
+                    "type": "string",
+                    "format": "date-time"
+                }],
+                "responses": {
+                    "400": {
+                        "description": "BAD REQUEST"
+                    },
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/api/usages/{recordId}": {
+            "delete": {
+                "tags": ["Usage"],
+                "summary": "Delete Usage Record",
+                "operationId": "delete-usage-record",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "recordId",
+                    "in": "path",
+                    "description": "recordId",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Account": {
+            "type": "object",
+            "properties": {
+                "creationDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "customerDetails": {
+                    "$ref": "#/definitions/CustomerDetails"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "testAccount": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "RefundablePayments": {
+            "type": "object",
+            "properties": {
+                "payments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RefundablePayment"
+                    }
+                }
+            }
+        },
+        "Invoice": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number",
+                    "description": "The total invoice amount"
+                },
+                "billDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2016-11-21",
+                    "description": "The invoice bill date in local date format"
+                },
+                "invoiceNumber": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The number uniquely identifying this invoice. Same as Statement.Invoice.invoiceNumber."
+                }
+            }
+        },
+        "Product": {
+            "type": "object",
+            "properties": {
+                "editionToRateSchedule": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "editions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "CustomerContact": {
+            "type": "object",
+            "required": ["email", "firstName", "lastName"],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string",
+                    "maxLength": 32
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string",
+                    "maxLength": 32
+                },
+                "phone": {
+                    "type": "string",
+                    "maxLength": 25
+                }
+            }
+        },
+        "RefundablePayment": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Visa ending in 8769",
+                    "description": "Payment description generated by the billing system"
+                },
+                "maxRefundableAmount": {
+                    "type": "number",
+                    "description": "The maximum amount that can be refunded"
+                },
+                "paymentDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2016-11-14",
+                    "description": "The date on which the invoice was paid in local date format"
+                },
+                "refundedAmount": {
+                    "type": "number",
+                    "description": "The amount that has been refunded by a previous refund. 0, if no refund has happened."
+                },
+                "totalAmount": {
+                    "type": "number",
+                    "description": "The total amount of the original transaction"
+                },
+                "transactionNumber": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The transactionNumber identifying the transaction used for paying the entirety of a statement. Same as Statement.PaymentDetails.transactionNumber"
+                }
+            }
+        },
+        "Collection«Country»": {
+            "type": "object"
+        },
+        "CustomerDetails": {
+            "type": "object",
+            "properties": {
+                "addressLine1": {
+                    "type": "string",
+                    "description": "The first address line of the customer"
+                },
+                "addressLine2": {
+                    "type": "string",
+                    "description": "The second address line of the customer"
+                },
+                "city": {
+                    "type": "string",
+                    "description": "The city of the customer"
+                },
+                "country": {
+                    "type": "string",
+                    "description": "The country of the customer"
+                },
+                "currency": {
+                    "type": "string",
+                    "description": "The currency of the Account. See https://en.wikipedia.org/wiki/ISO_4217"
+                },
+                "customerContact": {
+                    "$ref": "#/definitions/CustomerContact"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "The externally facing unique ID for the Customer Details."
+                },
+                "organisationName": {
+                    "type": "string",
+                    "description": "The organisation name of the customer"
+                },
+                "postcode": {
+                    "type": "string",
+                    "description": "The postcode of the customer"
+                },
+                "state": {
+                    "type": "string",
+                    "description": "The state of the customer"
+                },
+                "taxpayerId": {
+                    "type": "string",
+                    "description": "The taxpayer identifier for the customer"
+                }
+            }
+        },
+        "BillEstimate": {
+            "type": "object",
+            "properties": {
+                "currencyCode": {
+                    "type": "string"
+                },
+                "currentBillingPeriod": {
+                    "$ref": "#/definitions/BillingPeriod"
+                },
+                "lines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Line"
+                    }
+                },
+                "nextBillingPeriod": {
+                    "$ref": "#/definitions/BillingPeriod"
+                },
+                "totalAmountBeforeTax": {
+                    "type": "number"
+                },
+                "totalAmountWithTax": {
+                    "type": "number"
+                },
+                "totalTaxAmount": {
+                    "type": "number"
+                }
+            }
+        },
+        "InvoiceContact": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "The primary email address where invoices will be sent"
+                },
+                "firstName": {
+                    "type": "string",
+                    "description": "The first name of the Invoice Contact"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "The unique identifier for the Invoice Contact"
+                },
+                "lastName": {
+                    "type": "string",
+                    "description": "The last name of the Invoice Contact"
+                }
+            }
+        },
+        "Collection«ReversedInvoiceTransaction»": {
+            "type": "object"
+        },
+        "AccountRequest": {
+            "type": "object",
+            "properties": {
+                "contact": {
+                    "$ref": "#/definitions/ContactDetailsRequest"
+                },
+                "entitlementGroup": {
+                    "$ref": "#/definitions/EntitlementGroupRequest"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "BillingPeriod": {
+            "type": "object",
+            "properties": {
+                "endDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2016-12-31",
+                    "description": "The end date of the billing period in local date format yyyy-mm-dd."
+                },
+                "renewalFrequency": {
+                    "type": "string",
+                    "description": "The renewal frequency, either MONTHLY, ANNUAL, or PERPETUAL.",
+                    "enum": ["MONTHLY", "ANNUAL", "PERPETUAL"]
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2016-11-30",
+                    "description": "The start date of the billing period in local date format yyyy-mm-dd."
+                }
+            }
+        },
+        "ContactDetailsRequest": {
+            "type": "object",
+            "properties": {
+                "addressLine1": {
+                    "type": "string",
+                    "example": "341 George Street",
+                    "description": "First line of the address where the customer is located"
+                },
+                "addressLine2": {
+                    "type": "string",
+                    "description": "Second line of the address where the customer is located"
+                },
+                "city": {
+                    "type": "string",
+                    "example": "Sydney",
+                    "description": "City of the address where the customer is located"
+                },
+                "country": {
+                    "type": "string",
+                    "example": "AU",
+                    "description": "ISO 3166 two-letter country code for the country where this account will be used"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "jsmith@example.com",
+                    "description": "The email of the customer contact details associated with this account"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "John",
+                    "description": "The first name of the customer contact details associated with this account"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Smith",
+                    "description": "The last name of the customer contact details associated with this account"
+                },
+                "organisationName": {
+                    "type": "string",
+                    "example": "Atlassian",
+                    "description": "Customer organisation name"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+61292621443",
+                    "description": "Contact phone number for the customer"
+                },
+                "postcode": {
+                    "type": "string",
+                    "example": "2000",
+                    "description": "Postcode of the address where the customer is located"
+                },
+                "state": {
+                    "type": "string",
+                    "example": "NSW",
+                    "description": "State for the address where the customer is located"
+                },
+                "taxpayerid": {
+                    "type": "string",
+                    "example": "51824753556"
+                }
+            }
+        },
+        "Line": {
+            "type": "object",
+            "properties": {
+                "amountBeforeTax": {
+                    "type": "number"
+                },
+                "amountWithTax": {
+                    "type": "number"
+                },
+                "entitlementId": {
+                    "type": "string"
+                },
+                "productKey": {
+                    "type": "string",
+                    "example": "bitbucket.ondemand",
+                    "description": "The Atlassian product key."
+                },
+                "productName": {
+                    "type": "string",
+                    "example": "Bitbucket",
+                    "description": "The product name."
+                },
+                "selectedEdition": {
+                    "type": "string",
+                    "description": "The currently active edition."
+                },
+                "taxAmount": {
+                    "type": "number",
+                    "description": "The estimated tax amount."
+                },
+                "trialEndDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The end date of the trial period if on a trial rate schedule."
+                },
+                "usage": {
+                    "type": "array",
+                    "description": "A list of usage elements for each entitlement.",
+                    "items": {
+                        "$ref": "#/definitions/Usage"
+                    }
+                }
+            },
+            "description": "A line for each of the entitlements belonging to an entitlement-group."
+        },
+        "UsageHistory": {
+            "type": "object",
+            "required": ["id", "invoiceNumber", "unitLabel", "usageTimestamp"],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "invoiceNumber": {
+                    "$ref": "#/definitions/Optional«long»"
+                },
+                "unitLabel": {
+                    "type": "string"
+                },
+                "units": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "usageTimestamp": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "EntitlementGroup": {
+            "type": "object",
+            "required": ["creationDate", "id", "name", "status"],
+            "properties": {
+                "accountId": {
+                    "type": "string",
+                    "description": "The Account ID that this Entitlement Group belongs to"
+                },
+                "autoRenewed": {
+                    "type": "boolean"
+                },
+                "billingDetailsId": {
+                    "type": "string"
+                },
+                "creationDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "currentBillingPeriod": {
+                    "$ref": "#/definitions/BillingPeriod"
+                },
+                "customerContactId": {
+                    "type": "string"
+                },
+                "customerDetailsId": {
+                    "type": "string"
+                },
+                "entitlements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Entitlement"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 2147483647
+                },
+                "invoiceContactId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "outstandingBalance": {
+                    "type": "number",
+                    "description": "The outstanding balance on the entitlement group"
+                },
+                "sen": {
+                    "type": "string",
+                    "description": "The Atlassian Service Entitlement Number (SEN)"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "SelectEditionRequest": {
+            "type": "object",
+            "properties": {
+                "selectedEdition": {
+                    "type": "string",
+                    "description": "The target edition"
+                }
+            }
+        },
+        "TokenResponse": {
+            "type": "object",
+            "properties": {
+                "creditCardSessionId": {
+                    "type": "string",
+                    "description": "The id of the Credit Card Session to store credit card information against"
+                },
+                "creditCardToken": {
+                    "type": "string",
+                    "description": "The Credit Card Token which can be used to process future payments"
+                },
+                "creditCardValidationCode": {
+                    "type": "string",
+                    "description": "The validation code returned as a result of validating the Credit Card information stored in the session",
+                    "enum": ["BASIC_VERIFICATION_SUCCESSFUL", "NO_VERIFICATION_PERFORMED", "VERIFICATION_UNKNOWN", "EXTERNAL_VERIFICATION_SUCCESSFUL", "EXTERNAL_VERIFICATION_DECLINED", "EXTERNAL_VERIFICATION_DECLINED_EXPIRED_CARD", "EXTERNAL_VERIFICATION_DECLINED_INVALID_CSC", "EXTERNAL_VERIFICATION_PROCESSING_ERROR", "EXTERNAL_VERIFICATION_BLOCKED"]
+                }
+            }
+        },
+        "CollectOutstandingBalanceRequest": {
+            "type": "object",
+            "properties": {
+                "paymentMethodId": {
+                    "type": "string",
+                    "description": "The Payment Method ID to use for processing the payment"
+                }
+            }
+        },
+        "EditionsResponse": {
+            "type": "object",
+            "properties": {
+                "availableEditions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AvailableEdition"
+                    }
+                },
+                "currentEdition": {
+                    "type": "string"
+                }
+            }
+        },
+        "RefundReasons": {
+            "type": "object",
+            "required": ["refundReasons"],
+            "properties": {
+                "refundReasons": {
+                    "$ref": "#/definitions/Collection«RefundReason»"
+                }
+            }
+        },
+        "CreditCardResponse": {
+            "type": "object",
+            "properties": {
+                "expiryMonth": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "expiryYear": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "suffix": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "BillingDetailsResponse": {
+            "type": "object",
+            "properties": {
+                "addressLine1": {
+                    "type": "string",
+                    "description": "The first line of the Billing Details address"
+                },
+                "addressLine2": {
+                    "type": "string",
+                    "description": "The second line of the Billing Details address"
+                },
+                "city": {
+                    "type": "string",
+                    "description": "The city of the Billing Details address"
+                },
+                "country": {
+                    "type": "string",
+                    "description": "The country of the Billing Details address"
+                },
+                "creditCard": {
+                    "$ref": "#/definitions/CreditCardResponse"
+                },
+                "firstName": {
+                    "type": "string",
+                    "description": "The first name of the owner of the Billing Details"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "The id of this Billing Details record"
+                },
+                "lastName": {
+                    "type": "string",
+                    "description": "The last name of the owner of the Billing Details"
+                },
+                "paymentMethod": {
+                    "type": "string",
+                    "description": "The type of payment method",
+                    "enum": ["NO_DETAILS", "TOKENIZED_CREDIT_CARD"]
+                },
+                "postcode": {
+                    "type": "string",
+                    "description": "The postcode of the Billing Details address"
+                },
+                "state": {
+                    "type": "string",
+                    "description": "The state of the Billing Details address"
+                }
+            }
+        },
+        "PaymentDetails": {
+            "type": "object",
+            "properties": {
+                "creditCardType": {
+                    "type": "string",
+                    "example": "Visa, Mastercard, etc"
+                },
+                "paymentAmount": {
+                    "type": "number",
+                    "description": "The amount paid within this transaction."
+                },
+                "paymentMethod": {
+                    "type": "string",
+                    "description": "The payment method used, e.g. Credit Card"
+                },
+                "paymentProcessorId": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The order id of the transaction with the payment processor, e.g. TNS' orderId."
+                },
+                "transactionDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The date the transaction occurred."
+                },
+                "transactionNumber": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The transactionNumber identifying the transaction used for paying the entirety of a statement."
+                }
+            }
+        },
+        "InvoiceHistory": {
+            "type": "object",
+            "properties": {
+                "invoices": {
+                    "type": "array",
+                    "description": "A list of invoices. Empty list if there are no invoices.",
+                    "items": {
+                        "$ref": "#/definitions/Invoice"
+                    }
+                }
+            }
+        },
+        "Optional«long»": {
+            "type": "object",
+            "properties": {
+                "present": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "AvailableEdition": {
+            "type": "object",
+            "properties": {
+                "availableInternally": {
+                    "type": "boolean",
+                    "example": false,
+                    "description": "Indicates whether the transition should be available internally."
+                },
+                "availableToCustomers": {
+                    "type": "boolean",
+                    "example": false,
+                    "description": "Indicates whether the transition should be available to customers."
+                },
+                "edition": {
+                    "type": "string",
+                    "description": "The name of the edition."
+                },
+                "needsPaymentDetailsOnAccount": {
+                    "type": "boolean",
+                    "example": false,
+                    "description": "Indicates that in order to be able to this transition payment details need to be present on the billing system account."
+                }
+            }
+        },
+        "CreateUsageRequest": {
+            "type": "object",
+            "properties": {
+                "entitlementGroupId": {
+                    "type": "string",
+                    "description": "The entitlement group id (Cloud ID) to associate the usage with.",
+                    "pattern": "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+                },
+                "entitlementId": {
+                    "type": "string",
+                    "description": "The entitlement id (product) which this usage is associated with.",
+                    "pattern": "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique id for the usage record. This is used to ensure idempotency of requests.",
+                    "pattern": "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+                },
+                "unitLabel": {
+                    "type": "string",
+                    "description": "The type of usage to load. Will be something like 'users', 'minutes'."
+                },
+                "units": {
+                    "type": "number"
+                }
+            }
+        },
+        "CollectOutstandingBalanceResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "billingDetails": {
+                    "$ref": "#/definitions/BillingDetailsResponse"
+                }
+            }
+        },
+        "EntitlementRequest": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+                "edition": {
+                    "type": "string",
+                    "example": "PREMIUM",
+                    "description": "Product edition"
+                },
+                "id": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 2147483647
+                },
+                "key": {
+                    "type": "string",
+                    "example": "bitbucket.ondemand",
+                    "description": "Product key"
+                },
+                "sen": {
+                    "type": "string",
+                    "description": "The Atlassian Service Entitlement Number (SEN)"
+                }
+            }
+        },
+        "AccountCreationRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/AccountRequest"
+                },
+                "callback": {
+                    "$ref": "#/definitions/Callback"
+                },
+                "creationTime": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "EntitlementGroupRequest": {
+            "type": "object",
+            "required": ["entitlements", "id", "name"],
+            "properties": {
+                "daysValid": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "entitlements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/EntitlementRequest"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 2147483647
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sen": {
+                    "type": "string"
+                }
+            }
+        },
+        "Usage": {
+            "type": "object",
+            "properties": {
+                "amountBeforeTax": {
+                    "type": "number",
+                    "description": "The estimated amount before tax."
+                },
+                "amountWithTax": {
+                    "type": "number",
+                    "description": "The estimated amount including tax."
+                },
+                "description": {
+                    "type": "string",
+                    "example": "Bitbucket Build Minutes",
+                    "description": "The usage description."
+                },
+                "taxAmount": {
+                    "type": "number",
+                    "description": "The estimated tax amount."
+                },
+                "taxRate": {
+                    "type": "number",
+                    "description": "The applied tax rate in percent."
+                },
+                "unitLabel": {
+                    "type": "string",
+                    "example": "build minutes",
+                    "description": "The usage label."
+                },
+                "units": {
+                    "type": "number",
+                    "description": "The current plan instance units (e.g. number of \"Confluence Users\") or the current usage units of a particular service (e.g. number of \"Bitbucket Build Minutes\")."
+                }
+            }
+        },
+        "BillingDetailsRequest": {
+            "type": "object",
+            "required": ["addressLine1", "city", "country", "firstName"],
+            "properties": {
+                "addressLine1": {
+                    "type": "string"
+                },
+                "addressLine2": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "creditCard": {
+                    "$ref": "#/definitions/CreditCardRequest"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "postcode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            }
+        },
+        "Statement": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/Account"
+                },
+                "accountId": {
+                    "type": "string"
+                },
+                "accountTotalOwed": {
+                    "type": "number"
+                },
+                "balanceForward": {
+                    "type": "number"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "invoices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Invoice"
+                    }
+                },
+                "paidDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "paymentDetails": {
+                    "$ref": "#/definitions/PaymentDetails"
+                },
+                "statementDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "statementNumber": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalCharges": {
+                    "type": "number"
+                },
+                "totalTaxCharges": {
+                    "type": "number"
+                }
+            }
+        },
+        "IssueRefundRequest": {
+            "type": "object",
+            "required": ["refundReason"],
+            "properties": {
+                "comments": {
+                    "type": "string",
+                    "description": "Optional user comment on the refund",
+                    "maxLength": 255
+                },
+                "refundReason": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Reason for the refund. A list of valid refund reasons can be retrieved via the get-refund-reasons endpoint."
+                }
+            }
+        },
+        "CreditCardSessionResponse": {
+            "type": "object",
+            "properties": {
+                "creditCardSessionId": {
+                    "type": "string",
+                    "description": "The session id that a consumer can use to send Credit Card info to TNS"
+                },
+                "merchantId": {
+                    "type": "string",
+                    "description": "The merchant id that a consumer can use when rendering a form to send Credit Card info to TNS"
+                }
+            }
+        },
+        "Callback": {
+            "type": "object",
+            "properties": {
+                "callbackAuthToken": {
+                    "type": "string",
+                    "description": "Auth token to send when calling back"
+                },
+                "callbackUrl": {
+                    "type": "string",
+                    "example": "https://pander.internal.domain.dev.atlassian.io/respond/200",
+                    "description": "URL to callback to once processing is complete"
+                }
+            }
+        },
+        "GetUsageResponse": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "number"
+                },
+                "entitlementId": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "includesLimits": {
+                    "type": "boolean"
+                },
+                "max": {
+                    "type": "number"
+                },
+                "remaining": {
+                    "type": "number"
+                },
+                "unitLabel": {
+                    "type": "string"
+                }
+            }
+        },
+
+        "CreditCardRequest": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "description": "The token returned from the TNS Payment Gateway"
+                }
+            }
+        },
+        "Entitlement": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+                "accountId": {
+                    "type": "string",
+                    "description": "The id of the Billing Account that this entitlement belongs to"
+                },
+                "creationDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "entitlementGroupId": {
+                    "type": "string",
+                    "description": "The id of the Entitlement Group that this entitlement belongs to"
+                },
+                "id": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 2147483647
+                },
+                "name": {
+                    "type": "string"
+                },
+                "productKey": {
+                    "type": "string",
+                    "example": "bitbucket.ondemand",
+                    "description": "The product key that this Entitlement relates to"
+                },
+                "selectedEdition": {
+                    "type": "string",
+                    "example": "free",
+                    "description": "The current selected edition of this entitlement"
+                },
+                "sen": {
+                    "type": "string",
+                    "example": "A746763",
+                    "description": "The Atlassian Service Entitlement Number (SEN)"
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "Active",
+                    "description": "The status of this entitlement"
+                },
+                "trialEndDate": {
+                    "type": "string",
+                    "format": "date"
+                }
+            }
+        },
+        "Collection«RefundReason»": {
+            "type": "object"
+        },
+        "IssueRefundResponse": {
+            "type": "object",
+            "required": ["refundTransactionNumber", "reversedInvoiceTransactions", "totalRefundAmount"],
+            "properties": {
+                "refundTransactionNumber": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "reversedInvoiceTransactions": {
+                    "$ref": "#/definitions/Collection«ReversedInvoiceTransaction»"
+                },
+                "totalRefundAmount": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,563 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "You can provide a description of your API in the template file as `gfm` markdown OR use javadoc for that",
+    "version" : "1.0.0",
+    "title" : "Swagger Petstore",
+    "termsOfService" : "http://atlassian.com/terms/",
+    "contact" : {
+      "email" : "rest@atlassian.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath" : "/v2",
+  "paths" : {
+    "/board/{projectId}/data" : {
+      "get" : {
+        "summary" : "Returns:\n - In case of success, the board data with the given board id and custom response header x-alast-changed-time\n - 304 if the board data has not changed since the given changed time defined by the custom request header x-aif-changed-since.",
+        "description" : "Returns:\n - In case of success, the board data with the given board id and custom response header x-alast-changed-time\n - 304 if the board data has not changed since the given changed time defined by the custom request header x-aif-changed-since.\n - In case of error, error response",
+        "operationId" : "com.atlassian.jira.plugin.board.rest.BoardDataResource.getBoard_get",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "x-aif-changed-since",
+          "in" : "header",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "projectId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Returns a representation of the board data with the given board id",
+            "examples" : {
+              "application/json" : "{\"issues\":[{\"id\":10100,\"url\":\"/jira/browse/SCRUM-2\",\"key\":\"SCRUM-2\",\"summary\":\"Another issue\",\"assigneeKey\":\"admin\",\"statusId\":10000,\"dueDate\":\"2017-01-03T15:48:34.038+1100\"},{\"id\":10000,\"url\":\"/jira/browse/SCRUM-1\",\"key\":\"SCRUM-1\",\"summary\":\"First issue!\",\"assigneeKey\":\"\",\"statusId\":10000}],\"people\":{\"admin\":{\"key\":\"admin\",\"displayName\":\"admin\",\"avatarUrl\":\"http://localhost:2990/jira/secure/useravatar?avatarId=10340\"}},\"transitions\":[{\"transitionId\":1,\"toStatusId\":10000,\"name\":\"Created\",\"hasScreen\":false,\"isConditional\":false,\"isInitial\":true,\"isGlobal\":false},{\"transitionId\":2,\"fromStatusId\":10000,\"toStatusId\":3,\"name\":\"Start Work\",\"hasScreen\":false,\"isConditional\":false,\"isInitial\":false,\"isGlobal\":false},{\"transitionId\":3,\"fromStatusId\":3,\"toStatusId\":10001,\"name\":\"Done\",\"hasScreen\":false,\"isConditional\":false,\"isInitial\":false,\"isGlobal\":false}],\"columns\":[{\"name\":\"To Do\",\"statusCategory\":\"new\",\"statusId\":10000,\"canCreateIssues\":true,\"hasFilteredIssues\":false},{\"name\":\"In Progress\",\"statusCategory\":\"indeterminate\",\"statusId\":3,\"canCreateIssues\":false,\"hasFilteredIssues\":false},{\"name\":\"Done\",\"statusCategory\":\"done\",\"statusId\":10001,\"canCreateIssues\":false,\"hasFilteredIssues\":true}]}"
+            },
+            "schema" : {
+              "$ref" : "#/definitions/BoardDataJsonable"
+            },
+            "x-atlassian-json-schema" : {
+              "id" : "https://docs.atlassian.com/jira/REST/schema/board-data-jsonable#",
+              "title" : "Board Data Jsonable",
+              "type" : "object",
+              "properties" : {
+                "issues" : {
+                  "type" : "array",
+                  "items" : {
+                    "title" : "Board Issue Jsonable",
+                    "type" : "object",
+                    "properties" : {
+                      "id" : {
+                        "type" : "integer"
+                      },
+                      "url" : {
+                        "type" : "string"
+                      },
+                      "key" : {
+                        "type" : "string"
+                      },
+                      "summary" : {
+                        "type" : "string"
+                      },
+                      "assigneeKey" : {
+                        "type" : "string"
+                      },
+                      "statusId" : {
+                        "type" : "integer"
+                      },
+                      "dueDate" : {
+                        "type" : "string"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                },
+                "people" : {
+                  "type" : "object",
+                  "patternProperties" : {
+                    ".+" : {
+                      "title" : "Board User Jsonable",
+                      "type" : "object",
+                      "properties" : {
+                        "key" : {
+                          "type" : "string"
+                        },
+                        "displayName" : {
+                          "type" : "string"
+                        },
+                        "avatarUrl" : {
+                          "type" : "string"
+                        }
+                      },
+                      "additionalProperties" : false
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "transitions" : {
+                  "type" : "array",
+                  "items" : {
+                    "title" : "Board Transition Jsonable",
+                    "type" : "object",
+                    "properties" : {
+                      "transitionId" : {
+                        "type" : "integer"
+                      },
+                      "fromStatusId" : {
+                        "type" : "integer"
+                      },
+                      "toStatusId" : {
+                        "type" : "integer"
+                      },
+                      "name" : {
+                        "type" : "string"
+                      },
+                      "hasScreen" : {
+                        "type" : "boolean"
+                      },
+                      "isConditional" : {
+                        "type" : "boolean"
+                      },
+                      "isInitial" : {
+                        "type" : "boolean"
+                      },
+                      "isGlobal" : {
+                        "type" : "boolean"
+                      }
+                    },
+                    "additionalProperties" : false,
+                    "required" : [ "transitionId", "hasScreen", "isConditional", "isInitial", "isGlobal" ]
+                  }
+                },
+                "columns" : {
+                  "type" : "array",
+                  "items" : {
+                    "title" : "Board Column Jsonable",
+                    "type" : "object",
+                    "properties" : {
+                      "name" : {
+                        "type" : "string"
+                      },
+                      "statusCategory" : {
+                        "type" : "string"
+                      },
+                      "statusId" : {
+                        "type" : "integer"
+                      },
+                      "canCreateIssues" : {
+                        "type" : "boolean"
+                      },
+                      "hasFilteredIssues" : {
+                        "type" : "boolean"
+                      }
+                    },
+                    "additionalProperties" : false,
+                    "required" : [ "statusId", "canCreateIssues", "hasFilteredIssues" ]
+                  }
+                }
+              },
+              "additionalProperties" : false
+            }
+          },
+          "304" : {
+            "description" : "Indicates that the project with the given id hasn't changed since the last time data was retrieved"
+          },
+          "412" : {
+            "description" : "Indicates that the project has workflows which are currently not supported and therefore the board cannot be displayed"
+          },
+          "500" : {
+            "description" : "Indicates that the JIRA server encountered an unexpected error while fetching the board data"
+          },
+          "default" : {
+            "description" : "default response",
+            "schema" : {
+              "$ref" : "#/definitions/BoardDataJsonable"
+            },
+            "x-atlassian-json-schema" : {
+              "id" : "https://docs.atlassian.com/jira/REST/schema/board-data-jsonable#",
+              "title" : "Board Data Jsonable",
+              "type" : "object",
+              "properties" : {
+                "issues" : {
+                  "type" : "array",
+                  "items" : {
+                    "title" : "Board Issue Jsonable",
+                    "type" : "object",
+                    "properties" : {
+                      "id" : {
+                        "type" : "integer"
+                      },
+                      "url" : {
+                        "type" : "string"
+                      },
+                      "key" : {
+                        "type" : "string"
+                      },
+                      "summary" : {
+                        "type" : "string"
+                      },
+                      "assigneeKey" : {
+                        "type" : "string"
+                      },
+                      "statusId" : {
+                        "type" : "integer"
+                      },
+                      "dueDate" : {
+                        "type" : "string"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                },
+                "people" : {
+                  "type" : "object",
+                  "patternProperties" : {
+                    ".+" : {
+                      "title" : "Board User Jsonable",
+                      "type" : "object",
+                      "properties" : {
+                        "key" : {
+                          "type" : "string"
+                        },
+                        "displayName" : {
+                          "type" : "string"
+                        },
+                        "avatarUrl" : {
+                          "type" : "string"
+                        }
+                      },
+                      "additionalProperties" : false
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "transitions" : {
+                  "type" : "array",
+                  "items" : {
+                    "title" : "Board Transition Jsonable",
+                    "type" : "object",
+                    "properties" : {
+                      "transitionId" : {
+                        "type" : "integer"
+                      },
+                      "fromStatusId" : {
+                        "type" : "integer"
+                      },
+                      "toStatusId" : {
+                        "type" : "integer"
+                      },
+                      "name" : {
+                        "type" : "string"
+                      },
+                      "hasScreen" : {
+                        "type" : "boolean"
+                      },
+                      "isConditional" : {
+                        "type" : "boolean"
+                      },
+                      "isInitial" : {
+                        "type" : "boolean"
+                      },
+                      "isGlobal" : {
+                        "type" : "boolean"
+                      }
+                    },
+                    "additionalProperties" : false,
+                    "required" : [ "transitionId", "hasScreen", "isConditional", "isInitial", "isGlobal" ]
+                  }
+                },
+                "columns" : {
+                  "type" : "array",
+                  "items" : {
+                    "title" : "Board Column Jsonable",
+                    "type" : "object",
+                    "properties" : {
+                      "name" : {
+                        "type" : "string"
+                      },
+                      "statusCategory" : {
+                        "type" : "string"
+                      },
+                      "statusId" : {
+                        "type" : "integer"
+                      },
+                      "canCreateIssues" : {
+                        "type" : "boolean"
+                      },
+                      "hasFilteredIssues" : {
+                        "type" : "boolean"
+                      }
+                    },
+                    "additionalProperties" : false,
+                    "required" : [ "statusId", "canCreateIssues", "hasFilteredIssues" ]
+                  }
+                }
+              },
+              "additionalProperties" : false
+            }
+          }
+        }
+      }
+    },
+    "/columnRank/after" : {
+      "put" : {
+        "summary" : "",
+        "operationId" : "com.atlassian.jira.plugin.board.rest.BoardColumnRankResource.rankAfter_put",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "columnRankRequestBean",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ColumnRankRequestBean"
+          },
+          "x-atlassian-json-schema" : null
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Returns no content"
+          }
+        }
+      }
+    },
+    "/columnRank/before" : {
+      "put" : {
+        "summary" : "",
+        "operationId" : "com.atlassian.jira.plugin.board.rest.BoardColumnRankResource.rankBefore_put",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "columnRankRequestBean",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ColumnRankRequestBean"
+          },
+          "x-atlassian-json-schema" : null
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Returns no content"
+          }
+        }
+      }
+    },
+    "/rank/rankAfter" : {
+      "put" : {
+        "summary" : "",
+        "operationId" : "com.atlassian.jira.plugin.board.rest.RankResource.rankAfter_put",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "issueRankRequestBean",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/IssueRankRequestBean"
+          },
+          "x-atlassian-json-schema" : null
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Returns no content"
+          }
+        }
+      }
+    },
+    "/rank/rankBefore" : {
+      "put" : {
+        "summary" : "",
+        "operationId" : "com.atlassian.jira.plugin.board.rest.RankResource.rankBefore_put",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "issueRankRequestBean",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/IssueRankRequestBean"
+          },
+          "x-atlassian-json-schema" : null
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Returns no content"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "BoardColumnJsonable" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "statusCategory" : {
+          "type" : "string"
+        },
+        "statusId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "canCreateIssues" : {
+          "type" : "boolean",
+          "default" : false
+        },
+        "hasFilteredIssues" : {
+          "type" : "boolean",
+          "default" : false
+        }
+      }
+    },
+    "ColumnRankRequestBean" : {
+      "type" : "object",
+      "properties" : {
+        "workflowName" : {
+          "type" : "string"
+        },
+        "statusId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "relativeStatusId" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      }
+    },
+    "BoardTransitionJsonable" : {
+      "type" : "object",
+      "properties" : {
+        "transitionId" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "fromStatusId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "toStatusId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "hasScreen" : {
+          "type" : "boolean",
+          "default" : false
+        },
+        "isConditional" : {
+          "type" : "boolean",
+          "default" : false
+        },
+        "isInitial" : {
+          "type" : "boolean",
+          "default" : false
+        },
+        "isGlobal" : {
+          "type" : "boolean",
+          "default" : false
+        }
+      }
+    },
+    "BoardDataJsonable" : {
+      "type" : "object",
+      "properties" : {
+        "issues" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/BoardIssueJsonable"
+          }
+        },
+        "people" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/BoardUserJsonable"
+          }
+        },
+        "transitions" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/BoardTransitionJsonable"
+          }
+        },
+        "columns" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/BoardColumnJsonable"
+          }
+        }
+      }
+    },
+    "BoardIssueJsonable" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "url" : {
+          "type" : "string"
+        },
+        "key" : {
+          "type" : "string"
+        },
+        "summary" : {
+          "type" : "string"
+        },
+        "assigneeKey" : {
+          "type" : "string"
+        },
+        "statusId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "dueDate" : {
+          "type" : "string"
+        }
+      }
+    },
+    "BoardUserJsonable" : {
+      "type" : "object",
+      "properties" : {
+        "key" : {
+          "type" : "string"
+        },
+        "displayName" : {
+          "type" : "string"
+        },
+        "avatarUrl" : {
+          "type" : "string"
+        }
+      }
+    },
+    "IssueRankRequestBean" : {
+      "type" : "object",
+      "properties" : {
+        "issueId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "relativeIssueId" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      }
+    }
+  },
+  "externalDocs" : {
+    "description" : "Find out more about Atlassian things",
+    "url" : "http://www.atlassian.com"
+  }
+}

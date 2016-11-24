@@ -1,0 +1,110 @@
+{
+    "consumer": {
+        "name": "billing-ux-frontend"
+    },
+    "provider": {
+        "name": "billing-ux-service"
+    },
+    "interactions": [{
+        "description": "a request for billing details with a invalid AID cookie",
+        "provider_state": "billing-ux-service is healthy",
+        "request": {
+            "method": "GET",
+            "path": "/api/billing/billing-details",
+            "headers": {
+                "Accept": "application/json",
+                "cookie": "ATL_TOKEN=invalid"
+            }
+        },
+        "response": {
+            "status": 403,
+            "headers": {}
+        }
+    }, {
+        "description": "a request for billing details with a valid AID cookie",
+        "provider_state": "billing-ux-service is healthy",
+        "request": {
+            "method": "GET",
+            "path": "/api/billing/billing-details",
+            "headers": {
+                "Accept": "application/json",
+                "cookie": "ATL_TOKEN=valid"
+            }
+        },
+        "response": {
+            "status": 200,
+            "headers": {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            "body": {
+                "firstName": "Kim",
+                "lastName": "Damevin",
+                "addressLine1": "341 George Street",
+                "addressLine2": "Level 6",
+                "city": "Sydney",
+                "state": "NSW",
+                "country": "Australia",
+                "postcode": "2000",
+                "creditCard": {
+                    "expiryMonth": 11,
+                    "expiryYear": 2017,
+                    "suffix": "0000",
+                    "type": "AMEX"
+                }
+            }
+        }
+    }],
+    "metadata": {
+        "pactSpecificationVersion": "2.0.0"
+    },
+    "createdAt": "2016-12-01T23:18:59+00:00",
+    "_links": {
+        "self": {
+            "title": "Pact",
+            "name": "Pact between billing-ux-frontend (v0.0.0-83) and billing-ux-service",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/billing-ux-service/consumer/billing-ux-frontend/version/0.0.0-83"
+        },
+        "pb:consumer": {
+            "title": "Consumer",
+            "name": "billing-ux-frontend",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-frontend"
+        },
+        "pb:provider": {
+            "title": "Provider",
+            "name": "billing-ux-service",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-service"
+        },
+        "pb:latest-pact-version": {
+            "title": "Pact",
+            "name": "Latest version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/billing-ux-service/consumer/billing-ux-frontend/latest"
+        },
+        "pb:previous-distinct": {
+            "title": "Pact",
+            "name": "Previous distinct version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/billing-ux-service/consumer/billing-ux-frontend/version/0.0.0-83/previous-distinct"
+        },
+        "pb:diff-previous-distinct": {
+            "title": "Diff",
+            "name": "Diff with previous distinct version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/billing-ux-service/consumer/billing-ux-frontend/version/0.0.0-83/diff/previous-distinct"
+        },
+        "pb:pact-webhooks": {
+            "title": "Webhooks for the pact between billing-ux-frontend and billing-ux-service",
+            "href": "https://pact-broker.internal.useast.atlassian.io/webhooks/provider/billing-ux-service/consumer/billing-ux-frontend"
+        },
+        "pb:tag-prod-version": {
+            "title": "Tag this version as 'production'",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-frontend/versions/0.0.0-83/tags/prod"
+        },
+        "pb:tag-version": {
+            "title": "Tag version",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-frontend/versions/0.0.0-83/tags/{tag}"
+        },
+        "curies": [{
+            "name": "pb",
+            "href": "https://pact-broker.internal.useast.atlassian.io/doc/{rel}",
+            "templated": true
+        }]
+    }
+}

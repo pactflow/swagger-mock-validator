@@ -1,0 +1,1567 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "All requests should have suitable headers. For example, if JSON is supplied as the request entity, the request should incorporate a `Content-type: application/json` header.\n\nBearer tokens will be provided to consumers of each environment and is required to be passed along as an `Authorization` header of the format `Bearer $token`. A bearer token for dev can be found  <a href=\"https://extranet.atlassian.com/display/I/Environment\" target=\"_blank\">here</a>.\n\nNote that dev and staging environments send email only to **@atlassian.com** and **@atlassian.com.test-google-a.com** emails.",
+        "version": "",
+        "title": "",
+        "termsOfService": ""
+    },
+    "host": "aid-account.stg.internal.atlassian.com",
+    "basePath": "/",
+    "tags": [{
+        "name": "verifyCredentials"
+    }, {
+        "name": "invite"
+    }, {
+        "name": "bulk"
+    }, {
+        "name": "verify"
+    }, {
+        "name": "session"
+    }, {
+        "name": "cloud-session"
+    }, {
+        "name": "Users"
+    }, {
+        "name": "resetPassword"
+    }, {
+        "name": "migration"
+    }, {
+        "name": "verifyAppCredentials"
+    }],
+    "schemes": ["https"],
+    "paths": {
+        "/Users": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Create an account",
+                "description": "",
+                "operationId": "create",
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"displayName\" : \"Alana Aware\",\n  \"urn:scim:schemas:extension:atlassian:1.0\" : {\n    \"companyName\" : \"Acme Inc.\",\n    \"location\" : \"Australia\",\n    \"validatedEmails\" : [\n      \"alana@acme.com\"\n    ]\n  },\n  \"emails\" : [\n    {\n      \"value\" : \"alana@acme.com\",\n      \"primary\" : true\n    }\n  ],\n  \"userName\" : \"alana@acme.com\",\n  \"schemas\" : [\n    \"urn:scim:schemas:core:2.0\",\n    \"urn:scim:schemas:extension:atlassian:1.0\"\n  ],\n  \"password\" : \"new-user-password\"\n}"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "\nAccount created successfully. The response body will contain the user data (without password) following the SCIM format.\n<br/><div><strong>Please do not rely on the auto-generated schema example values in the yellow boxes below. They will not\nnecessarily be valid bodies. One notable difference is the \"atlassian\" object actually needs to be specified as\n\"urn:scim:schemas:extension:atlassian:1.0\". The placeholder request bodies are valid reference points.</strong></div>",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "409": {
+                        "description": "User already exists"
+                    }
+                }
+            }
+        },
+        "/Users/.search": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Search for users",
+                "description": "\nUsers can be searched for by username only using a subset of the SCIM filtering syntax.\nCurrently the only supported filters are:\n* **username** with **ew** and **eq** as supported filters. Note that **ew** filter only accepts values starting with **@**.</li>\n* **id** with **eq** as supported filter. You can search by multiple ids composing this filter with **or**</li>\nRestricting the set of returned attributes and sorting are not supported.\nPagination parameters \"count\" and \"startIndex\" are optional and will default to 50 and 1 respectively.\nFor more details on the syntax of search requests, see [3.2.2 of the SCIM spec](http://tools.ietf.org/html/draft-ietf-scim-api-07#section-3.2.2).",
+                "operationId": "search",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/SearchUsers"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"schemas\" : [\n    \"urn:scim:schemas:core:2.0:SearchRequest\"\n  ],\n  \"filter\" : \"username eq \\\"alana@acme.com\\\"\",\n  \"count\" : 10,\n  \"startIndex\" : 1\n}"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Search query executed successfully. A search result resource, as per the SCIM spec, will be returned. If the user is present, a search result with one user resource will be returned; if the user does not exist, a search result with no user resources will be returned.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    }
+                }
+            }
+        },
+        "/Users/{userid}": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Get an account",
+                "description": "",
+                "operationId": "get",
+                "parameters": [{
+                    "name": "userid",
+                    "in": "path",
+                    "description": "The user identifier",
+                    "required": true,
+                    "type": "string",
+                    "x-example": "6619138:c4e07b88-e765-43a2-a4f1-064e42c6939b"
+                }, {
+                    "name": "attributes",
+                    "in": "query",
+                    "description": "A comma separated list of additional attributes to include",
+                    "required": false,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "User found. The details of the user are returned in the response body as a SCIM user resource with the following fields populated (the remainder are null):\n* active\n* displayName\n* emails\n* id\n* name\n* userName",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "403": {
+                        "description": "The server understood the request but is refusing to fulfill it"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Users"],
+                "summary": "Update an account",
+                "description": "",
+                "operationId": "update",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "userid",
+                    "in": "path",
+                    "description": "The user identifier",
+                    "required": true,
+                    "type": "string",
+                    "x-example": "6619138:c4e07b88-e765-43a2-a4f1-064e42c6939b"
+                }, {
+                    "in": "body",
+                    "name": "body",
+                    "description": "Note: **password** is optional. **emails** and **userName** are ignored but **validatedEmails** will be updated.\nSending **primary email** which is different from the current primary email for the user will trigger email change process.",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"displayName\" : \"Alana Aware\",\n  \"urn:scim:schemas:extension:atlassian:1.0\" : {\n    \"companyName\" : \"Acme Inc.\",\n    \"location\" : \"Australia\",\n    \"validatedEmails\" : [\n      \"alana@acme.com\"\n    ]\n  },\n  \"title\" : \"Manager\",\n  \"emails\" : [\n    {\n      \"value\" : \"alana@acme.com\",\n      \"primary\" : true\n    }\n  ],\n  \"schemas\" : [\n    \"urn:scim:schemas:core:2.0:User\",\n    \"urn:scim:schemas:extension:atlassian:1.0\"\n  ],\n  \"active\" : true,\n  \"password\" : \"new-user-password\"\n}"
+                    }
+                }, {
+                    "name": "initiatorName",
+                    "in": "header",
+                    "description": "Use this field to specify the full name of the person if the user affected is not the one initiating the change",
+                    "required": false,
+                    "type": "string"
+                }, {
+                    "name": "initiatorTenant",
+                    "in": "header",
+                    "description": "Use this field to specify the tenant that is initiating this change, if the user affected is not the one initiating the change",
+                    "required": false,
+                    "type": "string"
+                }, {
+                    "name": "continueUrl",
+                    "in": "header",
+                    "description": "The URL to which the user will be redirected to after verifying their email address or signing up. aid.changeEmail.success=true or aid.newUser=true will be added as a query parameter for each case respectively.",
+                    "required": false,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Account updated successfully. The response body will contain the updated user information without password.",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "403": {
+                        "description": "The server understood the request but is refusing to fulfill it"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/Users/{userid}/email": {
+            "put": {
+                "tags": ["Users"],
+                "summary": "Change user's email",
+                "description": "It forces a change of email for the given user, and can optionally notify that user of the change",
+                "operationId": "updateUserEmail",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/EmailAddressUpdate"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"email\" : \"alana@acme.com\",\n  \"sendEmailNotification\" : true\n}"
+                    }
+                }, {
+                    "name": "userid",
+                    "in": "path",
+                    "description": "The user identifier",
+                    "required": true,
+                    "type": "string",
+                    "x-example": "6619138:c4e07b88-e765-43a2-a4f1-064e42c6939b"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "User's email was changed successfully",
+                        "schema": {
+                            "$ref": "#/definitions/EmailChangeResponseBody"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "404": {
+                        "description": "User was not found"
+                    }
+                }
+            }
+        },
+        "/Users/{userid}/status": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Get user's status",
+                "description": "",
+                "operationId": "getStatus",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "userid",
+                    "in": "path",
+                    "description": "The user identifier",
+                    "required": true,
+                    "type": "string",
+                    "x-example": "6619138:c4e07b88-e765-43a2-a4f1-064e42c6939b"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "User's status.",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateStatusRequest"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Users"],
+                "summary": "Update user's status",
+                "description": "",
+                "operationId": "updateStatus",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "userid",
+                    "in": "path",
+                    "description": "The user identifier",
+                    "required": true,
+                    "type": "string",
+                    "x-example": "6619138:c4e07b88-e765-43a2-a4f1-064e42c6939b"
+                }, {
+                    "in": "body",
+                    "name": "body",
+                    "description": "* active - is required\n* type - is optional and defaults to `temporary`, unless explicitly set as `permanent`.\n\nSetting `type` as `permanent` will permanently de-activate the user.",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/UpdateStatusRequest"
+                    },
+                    "x-examples": {
+                        "default": "{\n          \"active\": false,\n          \"type\": \"temporary\"\n        }"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "User's status changed successfully."
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/bulk/invalidatePasswords": {
+            "post": {
+                "tags": ["bulk"],
+                "summary": "Invalidate passwords for multiple users",
+                "description": "Users can be searched for by username only using a subset of the SCIM filtering syntax.\nCurrently the only supported field for filtering is **username** with **ew** and **eq** as supported filters.\n**ew** filters can be combined using **or** to reset passwords for multiple domains.\nNote that **ew** filter only accepts values starting with **@**.\nFor more details on the syntax of search requests, see [§3.2.2 of the SCIM spec](http://tools.ietf.org/html/draft-ietf-scim-api-07#section-3.2.2)",
+                "operationId": "invalidatePasswords",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/SearchRequest"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"schemas\" : [\n    \"urn:scim:schemas:core:2.0:SearchRequest\"\n  ],\n  \"filter\" : \"username ew \\\"@example.com\\\" or username ew \\\"@example.net\\\"\"\n}"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Domains passwords invalidated successfully and all their sessions were killed."
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    }
+                }
+            }
+        },
+        "/cloud-session": {
+            "post": {
+                "tags": ["cloud-session"],
+                "summary": "Create a Cloud session",
+                "description": "",
+                "operationId": "verifyCredentials",
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/JwtToken"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6IkxvZ2luIiwiZXhwIjoxNDc5OTYwNDEzLCJpYXQiOjE0Nzk5NjAyOTMsInN1YiI6ImphbGlAYXRsYXNzaWFuLmNvbSIsImlzcyI6ImFjY291bnQifQ._coDEYxoqP7oQGc12GZserEZsX0hH-RcO4yLL5ZuPac\"\n}"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Response contains a Cloud session token that is to be set as a cookie.",
+                        "schema": {
+                            "$ref": "#/definitions/JwtToken"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    }
+                }
+            }
+        },
+        "/invite": {
+            "post": {
+                "tags": ["invite"],
+                "summary": "Invite a user to create an account",
+                "description": "",
+                "operationId": "invite",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "* invitee - The email address to which the invitation is sent.\n* inviter - A text field (typically a name or an email address) appearing in the email that is sent out, stating who the invitation was sent by.\n* application - A string key for the application performing the request. Valid values come from this properties file.\n* displayName - An optional plain text field used as the default value for the display name of the invited user on the invitation acceptance page. If the invitee already exists, this value is ignored.\n* applicationName - An optional text field that says what the user has been invited to use. If omitted, this value will be determined based on the provided application.\n* text - Extra information which consuming services can include to give the user extra context, augmenting the default text. This is plain text. See also html. If text and html are both present, text is ignored.\n* html - Extra information which consuming services can include to give the user extra context, augmenting the default text. This is HTML using a restricted set of tags (&lt;b&gt;, &lt;br&gt;, &lt;em&gt;, &lt;h*&gt;, &lt;i&gt;, &lt;li&gt;, &lt;ol&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;). See also text. If text and html are both present, text is ignored. This is the only field permitting markup.\n* continueUrl - The URL which the user will be redirected to after completing the invitation flow.\n* daysValidFor - An optional number of days for the invitation link to be valid. Omitting it will use the default value (7). Value must be between 1-1095 (inclusive).\n* sender - An optional name to use as the sender of the email.\n* subject - The subject of the email.\n* template - An optional string describing an alternate template to use for the email. Default: aid_account_invite_adg\n* existingUserTemplate - The email template used for emailing an existing user. Default: aid_account_welcome_adg\n* templateParameters - A map of arbitrary key/value pairs that can be used by the email sending system.\n* simplified - Whether the simplified signup flow should be used or not.",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/InviteRequest"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"displayName\" : \"Emma the Eager\",\n  \"application\" : \"megamanzero\",\n  \"existingUserTemplate\" : \"world\",\n  \"daysValidFor\" : 7,\n  \"subject\" : \"You are invited!\",\n  \"templateParameters\" : {\n    \"key\" : \"value\",\n    \"key2\" : \"value2\"\n  },\n  \"inviter\" : \"alana@acme.com\",\n  \"continueUrl\" : \"http://megamanzero:8082/login\",\n  \"applicationName\" : \"My Company's Megaman Zero\",\n  \"text\" : \"Hey, you are invited\",\n  \"invitee\" : \"emma@acme.com\",\n  \"simplified\" : false,\n  \"template\" : \"hello\",\n  \"sender\" : \"Alane Aware\"\n}"
+                    }
+                }],
+                "responses": {
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "204": {
+                        "description": "Invitation sent successfully. The Location header in the response contains the URL that was sent in the email and should be treated as sensitive information."
+                    }
+                }
+            }
+        },
+        "/migration": {
+            "post": {
+                "tags": ["migration"],
+                "summary": "Migrate an account",
+                "description": "A new account may be created for the specified user `aid.newUser` and/or the user may be forced\nto undergo email verification `aid.afterVerification`. This information will be returned as query parameters to the `continueUrl`.",
+                "operationId": "migrate",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/MigrationRequest"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"user\" : {\n    \"displayName\" : \"Alana Aware\",\n    \"urn:scim:schemas:extension:atlassian:1.0\" : {\n      \"validatedEmails\" : [\n        \"alana@acme.com\"\n      ]\n    },\n    \"emails\" : [\n      {\n        \"value\" : \"alana@acme.com\",\n        \"primary\" : true\n      }\n    ],\n    \"userName\" : \"alana@acme.com\",\n    \"schemas\" : [\n      \"urn:scim:schemas:core:2.0\",\n      \"urn:scim:schemas:extension:atlassian:1.0\"\n    ],\n    \"password\" : \"new-user-password\"\n  },\n  \"application\" : \"hipchat\",\n  \"continueUrl\" : \"https://www.hipchat.com/users/aid_link_account?e=alana%40acme.com&d=%2fhome\"\n}"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Account already exists. The redirect URL is returned in the `Location` header.",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "201": {
+                        "description": "Account created successfully. The redirect URL is returned in the `Location` header.",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    }
+                }
+            }
+        },
+        "/resetPassword": {
+            "post": {
+                "tags": ["resetPassword"],
+                "summary": "Initiate reset password flow for the user",
+                "description": "",
+                "operationId": "resetpassword",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "* **email** - The user's email to initiate reset password flow for.\n* **application** - A string key for the application performing the request. Valid values come from this [properties file](https://stash.atlassian.com/projects/AID/repos/aid-core/browse/src/main/resources/applicationNames.properties).\n* **tenant** - Optional string representing tenant name for Cloud instance\n* **continueUrl** - The URL to which the user will be redirected to after changing password.\n* **template** - An optional string describing an alternate template to use for the email. Default: [mac_forgot_password_adg](https://extranet.atlassian.com/display/EML/Atlassian+ID+-+Password+Reset).\n* **templateParameters** - A map of arbitrary key/value pairs that can be used by the email sending system. Not that those parameters are not encoded by Atlassian account so they should be encoded on caller side ",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/ResetPasswordRequest"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"email\" : \"emma@acme.com\",\n  \"application\" : \"megamanzero\",\n  \"continueUrl\" : \"http://megamanzero:8082/login\"\n}"
+                    }
+                }],
+                "responses": {
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "204": {
+                        "description": "Reset password email has been sent successfully"
+                    }
+                }
+            }
+        },
+        "/session/{ssoToken}": {
+            "get": {
+                "tags": ["session"],
+                "summary": "Get an account by SSO session token",
+                "description": "Returns `com.atlassian.scim.User` object.",
+                "operationId": "getBySsoToken",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "ssoToken",
+                    "in": "path",
+                    "description": "The SSO session token",
+                    "required": true,
+                    "type": "string",
+                    "x-example": "iaoSSj5pBnA0QK0Up6OZ4g00"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "User found",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG"
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "403": {
+                        "description": "The server understood the request but is refusing to fulfill it"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/verify": {
+            "post": {
+                "tags": ["verify"],
+                "summary": "Verify the email address of an account",
+                "description": "",
+                "operationId": "verify",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "* **application** - A string key for the application performing the request. Valid values come from this [properties file](https://stash.atlassian.com/projects/AID/repos/aid-core/browse/src/main/resources/applicationNames.properties).\n* **username** - The username to request verification for. Note that currently there is a one-to-one correspondence between email addresses and usernames.\n* **continueUrl** - The URL to which the user will be redirected to after verifying their email address.\n* **text** - Extra information which consuming services can include to give the user extra context, augmenting the default text.\n* **html** - Extra information which consuming services can include to give the user extra context, augmenting the default text. This is HTML using a restricted set of tags (`&lt;b&gt;`, `&lt;br&gt;`, `&lt;em&gt;`, `&lt;h*&gt;`, `&lt;i&gt;`, `&lt;li&gt;`, `&lt;ol&gt;`, `&lt;p&gt;`, `&lt;strong&gt;`, `&lt;ul&gt;`). This is the only field permitting markup.\n* **sender** - An optional name to use as the sender of the email.\n* **template** - An optional string describing an alternate template to use for the email. Default: [aid_account_verification_adg](https://extranet.atlassian.com/display/EML/Atlassian+ID+-+Email+Confirmation).",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/Request"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"application\" : \"megamanzero\",\n  \"username\" : \"emma@acme.com\",\n  \"continueUrl\" : \"http://megamanzero:8082/login\",\n  \"text\" : \"Verify yourself!\",\n  \"sender\" : \"Alana Aware\"\n}"
+                    }
+                }],
+                "responses": {
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "204": {
+                        "description": "Verify email sent successfully"
+                    },
+                    "304": {
+                        "description": "The email address of this account is already verified. No verification email will be sent."
+                    }
+                }
+            }
+        },
+        "/verifyAppCredentials": {
+            "post": {
+                "tags": ["verifyAppCredentials"],
+                "summary": "Verify the credentials of an account from ondemand",
+                "description": "**This endpoint is ASAP protected when called through ID Proxy and should always be called through it. It requires Bearer authentication when called directly**",
+                "operationId": "verifyAppCredentials",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "* **username**\n* **password**\n* **initiatorTenant**",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/VerifyAppCredentialsRequest"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"username\" : \"username@example.com\",\n  \"password\" : \"password123\",\n  \"initiatorTenant\" : \"tenant.jira-dev.com\"\n}"
+                    }
+                }, {
+                    "name": "On-Behalf-Of",
+                    "in": "header",
+                    "description": "This header is provided by ID Proxy from ASAP token issuer. This field is used to specify the asap audience that the response will be signed for.",
+                    "required": true,
+                    "type": "string",
+                    "x-example": "jira"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Provided credentials are valid. The response will contain an ASAP token signed by aid-account along with the userid and context.",
+                        "schema": {
+                            "$ref": "#/definitions/VerifyAppCredentialsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "412": {
+                        "description": "Provided credentials are valid but the given tenant has required that the email address of the account be changed"
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "403": {
+                        "description": "Provided credentials are invalid"
+                    },
+                    "417": {
+                        "description": "Provided credentials are valid but the user is required to change their password"
+                    },
+                    "409": {
+                        "description": "Provided credentials are valid but the email address of this account has not been verified, or this account requires migration"
+                    }
+                }
+            }
+        },
+        "/verifyCredentials": {
+            "post": {
+                "tags": ["verifyCredentials"],
+                "summary": "Verify the credentials of an account",
+                "description": "**This endpoint does not require Bearer token**",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "* **key** or **username**\n* **password**",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/VerifyCredentialsRequest"
+                    },
+                    "x-examples": {
+                        "default": "{\n  \"username\" : \"username@example.com\",\n  \"password\" : \"password123\"\n}"
+                    }
+                }, {
+                    "name": "initiatorTenant",
+                    "in": "header",
+                    "description": "Use this field to specify the tenant that is performing the verification",
+                    "required": false,
+                    "type": "string",
+                    "x-example": "tenantName"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Provided credentials are valid. The response will contain a JWT token that can be provided to the login service\nin **token** query parameter (e.g. https://id.atlassian.com/login?token=<token>) to log the user in without\nrequiring user interaction.\n    ",
+                        "schema": {
+                            "$ref": "#/definitions/VerifyCredentialsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "The request could not be understood by the server due to malformed syntax.\n\n    errorCodes:\n      password\n        PASSWORD_LENGTH_ERROR\n        PASSWORD_CASE_ERROR\n        PASSWORD_PATTERN_ERROR\n        PASSWORD_STRENGTH_ERROR\n      filter\n        BAD_FILTER\n      daysValidFor\n        DURATION_INVALID\n      userName\n        MISSING_USERNAME\n        EMPTY_USERNAME\n        USERNAME_MUST_BE_EMAIL\n      emails\n        MISSING_EMAIL\n        PRIMARY_EMAIL_MISMATCH\n        MISSING_PRIMARY_EMAIL\n        MULTIPLE_PRIMARY_EMAILS\n      password\n        PASSWORD_AND_HASH_PRESENT\n        MISSING_PASSWORD\n        EMPTY_PASSWORD\n      atlassian.passwordHash\n        EMPTY_PASSWORD_HASH\n      atlassian.hashAlgorithm\n        UNKNOWN_HASH_ALG",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "The request requires user authentication. This API requires a bearer token in the `Authorization` header."
+                    },
+                    "412": {
+                        "description": "Provided credentials are valid but the given tenant has required that the email address of the account be changed"
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request"
+                    },
+                    "403": {
+                        "description": "Provided credentials are invalid"
+                    },
+                    "417": {
+                        "description": "Provided credentials are valid but the user is required to change their password"
+                    },
+                    "409": {
+                        "description": "Provided credentials are valid but the email address of this account has not been verified, or this account requires migration"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {},
+    "definitions": {
+        "AtlassianAccountProperties": {
+            "type": "object",
+            "properties": {
+                "requiresMigration": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "systemUser": {
+                    "type": "object"
+                }
+            }
+        },
+        "SearchRequest": {
+            "type": "object",
+            "properties": {
+                "filter": {
+                    "type": "string"
+                },
+                "attributes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "startIndex": {
+                    "type": "object"
+                },
+                "count": {
+                    "type": "object"
+                }
+            }
+        },
+        "Meta": {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "$ref": "#/definitions/ResourceType"
+                },
+                "created": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "lastModified": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "attributes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                }
+            }
+        },
+        "Destination": {
+            "type": "object",
+            "properties": {
+                "application": {
+                    "$ref": "#/definitions/$bslash$divObjectApplication"
+                },
+                "tenant": {
+                    "type": "string"
+                },
+                "continue": {
+                    "$ref": "#/definitions/$bslash$divObjectURI"
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "schemas": {
+                    "$ref": "#/definitions/NonEmptyListString"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "externalId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                },
+                "name": {
+                    "$ref": "#/definitions/Name"
+                },
+                "displayName": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
+                },
+                "profileUrl": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "userType": {
+                    "type": "string"
+                },
+                "preferredLanguage": {
+                    "type": "string"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "timezone": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "object"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "emails": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                },
+                "phoneNumbers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                },
+                "ims": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                },
+                "photos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                },
+                "addresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Address"
+                    }
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                },
+                "entitlements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                },
+                "x509Certificates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MultiValuedAttribute"
+                    }
+                },
+                "atlassian": {
+                    "$ref": "#/definitions/Atlassian"
+                },
+                "meta": {
+                    "$ref": "#/definitions/Meta"
+                }
+            }
+        },
+        "Address": {
+            "type": "object",
+            "properties": {
+                "formatted": {
+                    "type": "string"
+                },
+                "streetAddress": {
+                    "type": "string"
+                },
+                "locality": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "postalCode": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "primary": {
+                    "type": "object"
+                }
+            }
+        },
+        "UpdateStatusRequest": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "EitherStringURI": {
+            "type": "object",
+            "properties": {
+                "orNull": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "left": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "right": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "VerifyAppCredentialsRequest": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "$ref": "#/definitions/Username"
+                },
+                "password": {
+                    "$ref": "#/definitions/Password"
+                },
+                "initiatorTenant": {
+                    "type": "string"
+                }
+            }
+        },
+        "$bslash$divAidIdUsername": {
+            "type": "object",
+            "properties": {
+                "left": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "right": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "MultiValuedAttribute": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "display": {
+                    "type": "string"
+                },
+                "ref": {
+                    "type": "string"
+                },
+                "primary": {
+                    "type": "object"
+                },
+                "typez": {
+                    "type": "string"
+                },
+                "operation": {
+                    "type": "string"
+                }
+            }
+        },
+        "Name": {
+            "type": "object",
+            "properties": {
+                "formatted": {
+                    "type": "string"
+                },
+                "familyName": {
+                    "type": "string"
+                },
+                "givenName": {
+                    "type": "string"
+                },
+                "middleName": {
+                    "type": "string"
+                },
+                "honorificPrefix": {
+                    "type": "string"
+                },
+                "honorificSuffix": {
+                    "type": "string"
+                }
+            }
+        },
+        "EmailChangeResponseBody": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "ResetPasswordRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "$ref": "#/definitions/EmailAddress"
+                },
+                "destination": {
+                    "$ref": "#/definitions/Destination"
+                },
+                "template": {
+                    "$ref": "#/definitions/TemplateName"
+                },
+                "templateParameters": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "VerifyCredentialsResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "$bslash$divObjectApplication": {
+            "type": "object",
+            "properties": {
+                "left": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "right": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "VerifyAppCredentialsResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "VerifyCredentialsRequest": {
+            "type": "object",
+            "properties": {
+                "keyOrUsername": {
+                    "$ref": "#/definitions/$bslash$divAidIdUsername"
+                },
+                "password": {
+                    "$ref": "#/definitions/Password"
+                }
+            }
+        },
+        "NonEmptyListString": {
+            "type": "object",
+            "properties": {
+                "head": {
+                    "type": "string"
+                },
+                "tail": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "SearchUsers": {
+            "type": "object",
+            "properties": {
+                "criteria": {
+                    "$ref": "#/definitions/SearchCriteria"
+                },
+                "startIndex": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "count": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "TemplateName": {
+            "type": "object",
+            "properties": {
+                "templateName": {
+                    "type": "string"
+                }
+            }
+        },
+        "$bslash$divObjectURI": {
+            "type": "object",
+            "properties": {
+                "left": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "right": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "Password": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "$eq$eq$greater$greaterStringISetPermission": {
+            "type": "object",
+            "properties": {
+                "empty": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "EmailAddressUpdate": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "$ref": "#/definitions/EmailAddress"
+                },
+                "sendEmailNotification": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "Request": {
+            "type": "object",
+            "properties": {
+                "application": {
+                    "$ref": "#/definitions/Application"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "continueUrl": {
+                    "type": "string"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                },
+                "sender": {
+                    "type": "string"
+                },
+                "template": {
+                    "type": "string"
+                }
+            }
+        },
+        "ResourceType": {
+            "type": "object"
+        },
+        "EmailAddress": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "SearchCriteria": {
+            "type": "object"
+        },
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "errorMessages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "errors": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "errorCodes": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "globalErrorCodes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "JwtToken": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserProperties": {
+            "type": "object",
+            "properties": {
+                "taxId": {
+                    "type": "string"
+                },
+                "companyName": {
+                    "type": "string"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string"
+                },
+                "homepageUrl": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "aboutMe": {
+                    "type": "string"
+                },
+                "localUsernames": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "validatedEmails": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "pendingEmail": {
+                    "type": "string"
+                },
+                "addressLine2": {
+                    "type": "string"
+                },
+                "passwordHash": {
+                    "type": "string"
+                },
+                "hashAlgorithm": {
+                    "type": "string"
+                },
+                "googleId": {
+                    "type": "string"
+                },
+                "legacyUnicornUsername": {
+                    "type": "string"
+                },
+                "previousId": {
+                    "type": "string"
+                },
+                "samlId": {
+                    "type": "string"
+                },
+                "passwordLastChanged": {
+                    "type": "object"
+                }
+            }
+        },
+        "Atlassian": {
+            "type": "object",
+            "properties": {
+                "userbaseGuids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "latestIpAddress": {
+                    "type": "string"
+                },
+                "lastAuthenticated": {
+                    "type": "string"
+                },
+                "requiresPasswordChange": {
+                    "type": "object"
+                },
+                "permanentlyDeactivated": {
+                    "type": "object"
+                },
+                "productPermissions": {
+                    "$ref": "#/definitions/$eq$eq$greater$greaterStringISetPermission"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "attributes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AtlassianAttribute"
+                    }
+                },
+                "atlassianAccountProperties": {
+                    "$ref": "#/definitions/AtlassianAccountProperties"
+                },
+                "userProperties": {
+                    "$ref": "#/definitions/UserProperties"
+                },
+                "groupProperties": {
+                    "$ref": "#/definitions/GroupProperties"
+                }
+            }
+        },
+        "AtlassianAttribute": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "Username": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "Content": {
+            "type": "object"
+        },
+        "MigrationRequest": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/User"
+                },
+                "continueUrl": {
+                    "type": "string"
+                },
+                "application": {
+                    "type": "string"
+                },
+                "tenant": {
+                    "type": "string"
+                }
+            }
+        },
+        "InviteRequest": {
+            "type": "object",
+            "properties": {
+                "invitee": {
+                    "$ref": "#/definitions/EmailAddress"
+                },
+                "inviter": {
+                    "type": "string"
+                },
+                "application": {
+                    "$ref": "#/definitions/Application"
+                },
+                "displayName": {
+                    "type": "string"
+                },
+                "applicationName": {
+                    "type": "string"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                },
+                "continueUrl": {
+                    "type": "string"
+                },
+                "daysValidFor": {
+                    "type": "object"
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "sender": {
+                    "type": "string"
+                },
+                "newUserTemplate": {
+                    "type": "string"
+                },
+                "existingUserTemplate": {
+                    "type": "string"
+                },
+                "simplified": {
+                    "type": "object"
+                },
+                "templateParameters": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "Application": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                },
+                "logo": {
+                    "$ref": "#/definitions/EitherStringURI"
+                },
+                "baseURI": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "templateName": {
+                    "type": "string"
+                },
+                "aidCompliant": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "GroupProperties": {
+            "type": "object",
+            "properties": {
+                "privilege": {
+                    "type": "string"
+                },
+                "managementAccess": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

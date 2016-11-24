@@ -485,4 +485,62 @@ describe('swagger-mock-validator', () => {
             ));
         }, 30000);
     });
+
+    describe('real world examples', () => {
+        it('should validate micros server and semantic check executor service', async () => {
+            await invokeCommand({
+                mock: 'test/e2e/fixtures/real-world/pact-micros-server-semantic-check-executor-service.json',
+                swagger: 'test/e2e/fixtures/real-world/swagger-semantic-check-executor-service.json'
+            });
+        }, 30000);
+
+        it('should validate source tree mac and bitbucket cloud', async () => {
+            await invokeCommand({
+                mock: 'test/e2e/fixtures/real-world/pact-source-tree-mac-bitbucket-cloud.json',
+                swagger: 'test/e2e/fixtures/real-world/swagger-bitbucket-cloud.json'
+            });
+        }, 30000);
+
+        it('should validate billing ux frontend and billing ux service', async () => {
+            await invokeCommand({
+                mock: 'test/e2e/fixtures/real-world/pact-billing-ux-frontend-billing-ux-service.json',
+                swagger: 'test/e2e/fixtures/real-world/swagger-billing-ux-service.json'
+            });
+        }, 30000);
+
+        it('should validate billing ux service and atlassian id', async () => {
+            await invokeCommand({
+                mock: 'test/e2e/fixtures/real-world/pact-billing-ux-service-atlassian-id.json',
+                swagger: 'test/e2e/fixtures/real-world/swagger-atlassian-id.json'
+            });
+        }, 30000);
+
+        it('should validate billing ux servicec and billing api gateway', async () => {
+            await invokeCommand({
+                mock: 'test/e2e/fixtures/real-world/pact-billing-ux-service-billing-api-gateway.json',
+                swagger: 'test/e2e/fixtures/real-world/swagger-billing-api-gateway.json'
+            });
+        }, 30000);
+
+        it('should validate filestore client and dt api filestore', async () => {
+            await invokeCommand({
+                mock: 'test/e2e/fixtures/real-world/pact-filestore-client-dt-api-filestore.json',
+                swagger: 'test/e2e/fixtures/real-world/swagger-dt-api-filestore.json'
+            });
+        }, 30000);
+
+        it('should validate jira frontend and jira cloud', async () => {
+            await invokeCommand({
+                mock: 'test/e2e/fixtures/real-world/pact-jira-frontend-jira-cloud.json',
+                swagger: 'test/e2e/fixtures/real-world/swagger-jira-cloud.json'
+            });
+        }, 30000);
+
+        it('should validate confluence questions and confluence', async () => {
+            await invokeCommand({
+                mock: 'test/e2e/fixtures/real-world/pact-confluence-questions-confluence.json',
+                swagger: 'test/e2e/fixtures/real-world/swagger-confluence.json'
+            });
+        }, 30000);
+    });
 });

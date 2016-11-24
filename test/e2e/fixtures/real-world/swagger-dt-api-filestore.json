@@ -1,0 +1,2442 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "# Table of Contents\n\n### 1. [Introduction](#introduction)\n\n### 2. [Client Libraries](#client libraries)\n\n### 3. [Authentication](#authentication)\n\n### 4. [Errors](#errors)\n\n### 5. [Quickstart](#quickstart)\n\n### 6. [Files](#files)\n\n### 7. [Chunks](#chunks)\n\n### 8. [Grants](#grants)\n\n### 9. [Uploads](#uploads)\n\n### 10. [Clients](#clients)\n\n### 11. [Collections](#collections)\n\n### 12. [Links](#links)\n\n\n---\n# 1. Introduction\n\nFileStore - A secure file storage and conversion service.\n\nSome general notes:\n- FileStore supports **CORS** request for all domains.\n- FileStore support **byte range requests** for all endpoints that return actual file data.\n- All *Service => Media API* requests MUST go to media-api-internal.atlassian.io, while actual *Client (Desktop, Browser, Mobile Apps, etc.) => Media API* requests MUST directly go to media-api.atlassian.io.\n- Binary data SHOULD never be proxied through the integrating service. Rather than doing that, we highly recommend authenticating the request via the service and forward to signed, time-limited Media API URL via a 302 redirect.\n\n# 2. Client Libraries\n- [nodejs](https://statlas.atlassian.io/filestore-docs-master/out/index.html)\n\n# 3. Authentication\n<span id=\"AuthenticationGuide\"></span>\n*Note: To create a new client for FileStore, check the client resource.*\n\nAll requests need to be authenticated with a JSON web token and a client id, which can be passed in either as\n\n- query parameters `?client=[CLIENT_ID]&token=[JWT]`\n- headers `X-Client-Id: [CLIENT_ID]` and `Authorization: Bearer [JWT]`\n\n#### Token Creation\n\nThe **JWT header** must equal:\n\n    {\n      \"alg\": \"HS256\",\n      \"typ\": \"JWT\"\n    }\n\nThe **JWT payload** must contain:\n\n- The id of the client that issued the token (**issuer**)\n- The resources that the client wants to access (**access->urn**)\n- The operations that the clients wants to perform on a given resource (**access->methods**)\n- The time frame in which the client wants to have access (**nbf and exp**)\n\nTh **JWT signature** must be generated using HMACSHA256 and the client key.\n\n#### Development Tokens\n\nTo get started as quickly as possible, you can create a special JWT on our development environments that allows you to access all your resources forever.\nTo get such a token, ignore all the fields specified below and pass { \"iss\": YOUR_CLIENT_ID, \"unsafe\": true } as payload.\n\n#### Claims\n\nA client should issue tokens as limited in scope as possible while maintaining usability. It can set the following fields to achieve that goal:\n\n- **iss**: ClientId of issuer\n- **access**: A set from resource urn to list of access methods\n- **access->urn**: A urn describing the resource\n- **access->method**: The access method (One of: create, read, update, insert, remove, delete)\n- **nbf**: Not before timestamp\n- **exp**: Expiry timestamp (Maximally 60 minutes after \"nbf\".)\n\nHere's a list of possible urns:\n\n- **creation of new files**: \"urn:filestore:file\"\n- **read / delete of a particular file**: \"urn:filestore:file:[ID]\"\n- **read / delete of all files**: \"urn:filestore:file:*\"\n- **create, read of a particular chunk**: \"urn:filestore:chunk:[ETAG]\"\n- **create, read of all chunks**: \"urn:filestore:chunk:*\"\n- **creation of a new grant**: \"urn:filestore:grant\"\n- **read, delete of a particular grant**: \"urn:filestore:grant:[ID]\"\n- **create an upload**: \"urn:filestore:upload\"\n- **read or update a particular upload**: \"urn:filestore:upload:[ID]\"\n- **create a collection**: \"urn:filestore:collection\"\n- **read, update or delete a particular collection**: \"urn:filestore:collection:[ID]\"\n\n#### Note on scope for collection creation\n\nTo create a specific collection, it is sufficient to have an insert scope and urn with a collection ID\n\n#### Example Payload\n\nHere's an example payload that allows to ...\n\n- read and delete the file with id \"cafdc906-c7cc-4aae-ac9c-69c8e4a5a1c4\"\n- read and create every possible chunk (given their etags)\n\n... all in a time frame of 10 minutes.\n\n    {\n      \"iss\": \"7f4401d6-0abe-4b72-a8cd-b932c543aed0\",\n      \"access\": {\n        \"urn:filestore:file:cafdc906-c7cc-4aae-ac9c-69c8e4a5a1c4\": [\"delete\", \"read\"],\n        \"urn:filestore:chunk:*\": [\"read\", \"create\"]\n      },\n      \"nbf\": 1441332000,\n      \"exp\": 1441332600\n    }\n\n# 4. Errors\n<span id=\"UnauthorizedError\"></span>\n#### UnauthorizedError\nThe given auth token and/or client id isn't authorized to request the given resource. Also, the token might have expired. Refer to the\n[Authentication Guide](#AuthenticationGuide) for more details.\n\n<span id=\"InvalidArgumentError\"></span>\n#### InvalidArgumentError\nThe given argument has the wrong format and/or is invalid.\n\n<span id=\"NotFoundError\"></span>\n#### NotFoundError\nThe requested resource doesn't exist.\n\n<span id=\"InvalidStateError\"></span>\n#### InvalidStateError\nThe request could not be completed due to a conflict with the current state of the resource\n\n# 5. Quickstart\nThe Media API is a secure file storage and conversion service.\n\nSome general notes:\n- The base URL for the Media API is `https://media-api.atlassian.io`.\n- It supports **CORS** request for all domains.\n- It also supports **byte range requests** for all endpoints that return actual file data.\n- Binary data SHOULD never be proxied through the integrating service. Rather than doing that, we highly recommend authenticating the request\nvia the service and forward to signed, time-limited Media API URL via a 302 redirect.\n\n:::callout [Media API credentials needed for this part of the documentation] {type=warning}\nTo get started, please drop us a quick [email](mailto:team-files@atlassian.com) to get your personal Media API credentials.\n:::\n\nTo get a sneak peek of what you can do, we're going to start with something very simple: uploading a file, retrieving one of its converted\nartifacts and finally delete it. For this example, we'll upload an image, but you can upload any kind of file and use the `GET /file/{fileId}` [endpoint](doc:files#filefileid) to discover the generated artifacts for it.\n\nWe're going to use `curl` for our examples, but you can obviously use whatever tool you're comfortable with.\n\n# Authentication\n\nBefore we start, you might want to read the [Authentication](doc:authentication) section of the docs to understand how it works. You also\nneed to have a _client ID_ and _secret_ provided by us. If you don't have them, you will need to contact us to obtain them.\n\nWe're also going to use the following JWT payload that allows us to do all operations we require for this example (create, read and delete):\n\n```json\n{\n  \"access\": {\n    \"urn:filestore:file\": [\n      \"create\"\n    ],\n    \"urn:filestore:file:*\": [\n      \"read\",\n      \"delete\"\n    ]\n  },\n  \"nbf\": 111111,\n  \"exp\": 222222,\n  \"iss\": \"12345678-abcd-abcd-abcd-1234567890ab\"\n}\n```\n\nBefore this token is functional, you will need to do a few things:\n\n1. Replace the `nbf` value with the current UNIX timestamp (on UNIX systems, you can easily generate it with the `date +%s` command)\n2. Replace the `exp` value with the `nbf` value + 3600. That will give us 1 hour to make calls to the API, plenty of time for this example!\n3. Replace the `iss` value with your Client ID\n\nAfter you've done that, you can generate your JWT token. One way of doing this is going to the [JWT](https://jwt.io/#encoded-jwt) website\n(https://jwt.io/) and use the Debugger there: Just replace the \"secret\" word on the \"Verify signature\" section with your own _secret_\n(make sure to do this first) and then paste your payload in the \"Payload\" section of the debugger. After you've done that you'll see\n\"Signature Verified\" in blue at the bottom, and you can copy the generated JWT token to use for our example.\n\n# 1. Uploading our data\n\nNow that we have the boilerplate in place, we can make our first call to the Media API to upload our file!\n\n```curl\ncurl -v \\\n  -X POST \\\n  -H 'Authorization: Bearer eyJhb...' \\\n  -H 'X-Client-Id: 12345678-abcd-abcd-abcd-1234567890ab' \\\n  -H \"Content-Type: image/jpeg\" \\\n  https://media-api.atlassian.io/file/binary\\?name=\\\"myAwesomeFile.jpg\\\" \\\n  --data-binary @myFile.jpg\n```\n\nIn case you're new to cURL, we'll quickly explain what every line of the command is doing:\n\n1. cURL command\n2. Enable verbose mode\n3. We're using the `POST` HTTP method\n4. We send our JWT Authorization header, which always look like `Authorization: Bearer <JWT token>`\n5. We send our _client ID_ using another header, `X-Client-Id: <Client ID>`\n6. The `Content-Type` of our data, `image/jpeg`. In this case we know what it is, but if you don't, you can simply\npass `application/octet-stream`.\n7. For this first request, we're using the `POST /file/binary` [endpoint](doc:files#filebinary). You can read the\ndocumentation about it, but suffice to say it will accept streamed binary data and will return a Media API File object\nin JSON format. We're using the `name` query parameter on it to tell the Media API the name we want for our data.\n8. We tell cURL that our data comes from a file called `myFile.jpg`\n\nAfter you execute that command, the Media API will reply with something similar to this:\n```json\n{\n    \"data\": {\n        \"mediaType\": \"unknown\",\n        \"mimeType\": \"image/jpeg\",\n        \"name\": \"myAwesomeFile.jpg\",\n        \"size\": 130010,\n        \"processingStatus\": \"pending\",\n        \"artifacts\": {},\n        \"id\": \"72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920\"\n    }\n}\n```\nThe most interesting bit there is that we now have a Media API File ID we can use! Other information you can get from that object is:\n* The `mediaType` of our data is `unknown`. This will always happen after uploading data, as the media type is set\nafter the Media API processes it. You can read about the possible media types on the [Resource: Files](doc:files) section.\n* The `mimeType` matches what we sent before as the `Content-Type` of our data\n* The `name` of the Media API File matches the one we sent with the `name` query parameter\n* The `size` of the data according to the Media API (which should match with the size of the file you uploaded)\n* The `processingStatus` of our data is now \"pending\", which means conversions are in progress for it. The possible\nprocessing statuses are listed on the [Resource: Files](doc:files) section.\n* There are no `artifacts` (yet)\n\n# 2. Getting information about our File\nWe have data stored on the Media API, that's great! But what we really want is to get one of the converted artifacts\nfrom it, although if you remember we just got an object with information about our Media API File that said that the\ndata conversion was \"pending\". How do we know if our data has finished processing?\n\nWe just need to use another endpoint, `GET /file/{fileId}`, where `{fileId}` is going to be the Media API File ID we\ngot with the previous command.\n\n```curl\ncurl -v \\\n  -X GET \\\n  -H 'Authorization: Bearer eyJhb...' \\\n  -H 'X-Client-Id: 12345678-abcd-abcd-abcd-1234567890ab' \\\n  https://media-api.atlassian.io/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920\n```\n\nIf the Media API has not finished processing the data, the object we'll get in return will be very similar (or the same)\nto the previous one. But when the Media API finishes, you'll get something similar to this:\n\n```json\n{\n    \"data\": {\n        \"mediaType\": \"image\",\n        \"mimeType\": \"image/jpeg\",\n        \"name\": \"myAwesomeFile.jpg\",\n        \"size\": 130010,\n        \"processingStatus\": \"succeeded\",\n        \"artifacts\": {\n            \"image.jpg\": {\n                \"url\": \"/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920/artifact/image.jpg/binary\",\n                \"processingStatus\": \"succeeded\"\n            },\n            \"thumb_120.jpg\": {\n                \"url\": \"/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920/artifact/thumb_120.jpg/binary\",\n                \"processingStatus\": \"succeeded\"\n            },\n            \"thumb.jpg\": {\n                \"url\": \"/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920/artifact/thumb_120.jpg/binary\",\n                \"processingStatus\": \"succeeded\"\n            },\n            \"meta.json\": {\n                \"url\": \"/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920/artifact/meta.json/binary\",\n                \"processingStatus\": \"succeeded\"\n            },\n            \"thumb_320.jpg\": {\n                \"url\": \"/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920/artifact/thumb_320.jpg/binary\",\n                \"processingStatus\": \"succeeded\"\n            },\n            \"thumb_large.jpg\": {\n                \"url\": \"/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920/artifact/thumb_320.jpg/binary\",\n                \"processingStatus\": \"succeeded\"\n            }\n        },\n        \"id\": \"72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920\"\n    }\n}\n```\n\nOur new object contains the following notable changes:\n1. The `mediaType` is now `image`. This means the Media API has recognized our file and has processed it correctly.\n2. The `mimeType` might have changed. Even if we sent what we thought was the correct mime type, or we sent something\nlike `application/octet-stream`, the Media API will change it to whatever it detects. In this case, it matches what\nwe sent, `image/jpeg`.\n3. The `processingStatus` is now `succeeded`.\n4. There are now artifacts! Each artifact entry is composed of:\n  * The name of the file (like `thumb_320.jpg`)\n  * An object specifying where to retrieve it (like `/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920/artifact/thumb_320.jpg/binary`)\n  and the `processingStatus` for it.\n\n# 3. Retrieving our artifact\n\nThis one will be very easy. With the previous information about our File in hand, we can just copy and paste the URL\nof one of the artifacts we want. For example:\n\n```curl\ncurl -v \\\n  -X GET \\\n  -H 'Authorization: Bearer eyJhb...' \\\n  -H 'X-Client-Id: 12345678-abcd-abcd-abcd-1234567890ab' \\\n  https://media-api.atlassian.io/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920/artifact/thumb_320.jpg/binary \\\n  -o thumb_320.jpg\n```\n\nThe only new switch to cURL we've added is `-o thumb_320.jpg`, which just means \"save whatever data we receive to the\nfile named `thumb_320.jpg`\".\n\nIf you now open that file, you should see a thumbnail of your previously uploaded file. Neat!\n\nYou can read all possible actions on a File in the [Resource: Files](doc:files) section, but as a bonus, if what you\nwant is download the same data you uploaded earlier (instead of downloading an artifact), you can repeat the same command\nwith the `GET /file/{fileId}/binary` [endpoint](doc:files#filefileidbinary).\n\n# 4. Deleting our data\n\nIf you are like us, you want to end your testing tidying everything up. So the last action we're going to perform in\nthis small tutorial is cleaning our uploaded data. We've tried to model the Media API in a sensible way, so you can\nprobably guess what our next command is going to look like:\n\n```curl\ncurl -v \\\n  -X DELETE \\\n  -H 'Authorization: Bearer eyJhb...' \\\n  -H 'X-Client-Id: 12345678-abcd-abcd-abcd-1234567890ab' \\\n  https://media-api.atlassian.io/file/72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920\n```\n\nThat will delete your data and its artifacts and will give you a `200 OK` HTTP code (but no body). If you are curious,\nyou can always try to do the same command again, or trying to retrieve information about it using the previous endpoints\nwe've used in this tutorial. If you do that, you will receive the following response from the Media API:\n\n```json\n{\n    \"error\": {\n        \"code\": \"NotFoundError\",\n        \"title\": \"Resource 72cdd3c5-e7fd-4dd5-9d79-c6a2e9ec7920 requested does not exist\",\n        \"href\": \"https://media-api.atlassian.io#NotFoundError\"\n    }\n}\n```\n\n...which was expected, since we just deleted it!\n\n# Conclusion\n\nWe hope this small tutorial has been useful to you and has opened your appetite for more Media API goodness. We recommend\nthat you continue reading the following documentation sections and practice along the way. And if you get stuck or find\nsome bugs along the way (we try very hard not having those!) [just ask us for help](mailto:team-files@atlassian.com),\nwe're always happy to do so!\n\n# 6. Files\nBinary and metadata for files.\n\nEach file gets inspected and is assigned one of the following **media types**:\n\n- `doc`\n- `audio`\n- `video`\n- `image`\n- `unknown`\n\nBased on the **media type**, a subset of the following conversion **artifacts** is created:\n\n- `thumb_120.jpg`, `thumb_320.jpg`\n- `document.pdf`\n- `document.txt`\n- `image.jpg`\n- `audio.mp3`\n- `video_640.mp4`, `video_1280.mp4`\n- `poster_640.jpg`, `poster_1280.jpg`\n\nA file can have one of the following processing states:\n\n- `pending` the conversion hasn't started or is currently running\n- `running` this is unused at the moment\n- `succeeded` the conversion was successful\n- `failed` the conversion failed\n\n# 7. Chunks\nA chunk is a slice of the actual file data.\n\nTo get the most benefit out of our deduplication, we highly recommend to use a chunk size of 4MB (4 \\* 1024 \\* 1024 bytes) for all chunks except the last one (which should be <= 4MB).\n\nChunks are identified by an **etag** consisting of two elements joined by a dash:\n\n- the SHA1 hash of the chunk content\n- the length of the chunk in bytes\n\nA valid chunk etag would be `a6d09383157bf348f295c625400d7e444a7f4986-415` (length = 415 bytes).\n\n# 8. Grants\nGrants allow clients to share their files with other clients.\n# 9. Uploads\nUploads allow you to create ephemeral containers for your binary data.\n\nYou first create the upload container without any data.\nYou then continuously populate it with binary data.\nFinally, you can convert the upload into a file using the [POST /file/upload method](#file).\n\n# 10. Clients\nA client interacts with FileStore and owns the files it creates.\n# 11. Collections\n:::callout [Experimental] {type=warning}\nPlease be aware that this feature is still experimental, and you might encounter bugs or errors.\n:::\n\nCollections provide a way to group items.\n\nYou can add and remove files to/from a collection at any time without conflicts.\n\n# 12. Links\n:::callout [Experimental] {type=warning}\n- THIS SERVICE IS NOT PRODUCTION READY -\n:::\nThe link service provides a utility to store links and to generate previews and metadata information for them.\n\n\n---\n",
+    "version" : "1.0.0",
+    "title" : "FileStore",
+    "license" : {
+      "name" : "Atlassian",
+      "url" : "http://www.atlassian.com"
+    }
+  },
+  "tags" : [ {
+    "name" : "Files"
+  }, {
+    "name" : "Chunks"
+  }, {
+    "name" : "Grants"
+  }, {
+    "name" : "Uploads"
+  }, {
+    "name" : "Clients"
+  }, {
+    "name" : "Collections"
+  }, {
+    "name" : "Links"
+  } ],
+  "paths" : {
+    "/chunk" : {
+      "parameters" : [ ]
+    },
+    "/chunk/{etag}" : {
+      "get" : {
+        "tags" : [ "Chunks" ],
+        "description" : "Get the binary data for the chunk",
+        "produces" : [ "binary/octet-stream" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "head" : {
+        "tags" : [ "Chunks" ],
+        "description" : "Check for existence of a chunk",
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Chunks" ],
+        "description" : "Upload a chunk.",
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "201" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "etag",
+        "in" : "path",
+        "description" : "An id identifying a chunk.",
+        "required" : true,
+        "type" : "string",
+        "format" : ""
+      } ]
+    },
+    "/client" : {
+      "post" : {
+        "tags" : [ "Clients" ],
+        "description" : "Create a new client.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/createClient"
+          },
+          "x-examples" : {
+            "application/json" : "{\"title\":\"A new client\",\"description\":\"This is the description\"}"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/client"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "4a14ad4f-5511-4732-b35d-dde49c140b2a",
+                  "key" : "78fce8f62ab525ad5e07d640767c7c740621dc0087198391398b0a67fea89f16",
+                  "title" : "A new client",
+                  "description" : "This is the description"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/collection" : {
+      "post" : {
+        "tags" : [ "Collections" ],
+        "description" : "Creates a new collection.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/createCollectionRequest"
+          },
+          "x-examples" : {
+            "application/json" : "{\"name\":\"the-awesome-collection-of-stuff-42\"}"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/collection"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "name" : "29c49470-adac-4b16-82ec-301340c7b16a",
+                  "createdAt" : 1464132368
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "The specified name already exists (for your client-id)"
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/collection/{collectionName}" : {
+      "get" : {
+        "tags" : [ "Collections" ],
+        "description" : "Get a collection with the specified name",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/collection"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "name" : "the-awesome-collection-of-stuff-42",
+                  "createdAt" : 1464132368
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Collections" ],
+        "description" : "Modify a collection by executing a sequence of idempotent actions on it.\n\nExecution is atomic, which means that either all operations succeed or fail.\n\nThere is a limit on the number of actions that can be performed atomically (in one batch). Larger sequences of actions need to be broken down into multiple batches.\n\nSupported actions:\n* `insert`: adds an item into the collection based on an item type, item id and occurrence key. If the combination these three values is already in the collection, this is a no-op.\n* `remove`: deletes an item from the collection based on an item type, item id and occurrence key. If the combination of these three values is not in the collection yet, this is a no-op.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/modifyCollectionRequest"
+          },
+          "x-examples" : {
+            "application/json" : "{\"actions\":[{\"action\":\"insert\",\"item\":{\"type\":\"file\",\"id\":\"0a6f64e4-7330-4dcf-ac65-58ab10677282\",\"occurrenceKey\":\"urn:hipchat:message:12413532\"}},{\"action\":\"remove\",\"item\":{\"type\":\"file\",\"id\":\"0a6f64e4-7330-4dcf-ac65-58ab10677282\",\"occurrenceKey\":\"urn:hipchat:message:12413532\"}}]}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Collections" ],
+        "description" : "Delete a collection with the specified id",
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "collectionName",
+        "in" : "path",
+        "description" : "A name identifying a collection.",
+        "required" : true,
+        "type" : "string",
+        "format" : ""
+      } ]
+    },
+    "/collection/{collectionName}/items" : {
+      "get" : {
+        "tags" : [ "Collections" ],
+        "description" : "Retrieve a list of entities in a collection. Supports paging.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "inclusiveStartKey",
+          "in" : "query",
+          "description" : "an optional key to fetch the next batch of items",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "maximum amount of entities to fetch in one page. Must be in [1, 100].",
+          "required" : true,
+          "type" : "integer",
+          "maximum" : 100.0,
+          "minimum" : 1.0,
+          "format" : "int32"
+        }, {
+          "name" : "sortDirection",
+          "in" : "query",
+          "description" : "direction of sort",
+          "required" : false,
+          "type" : "string",
+          "format" : "",
+          "enum" : [ "asc", "desc" ]
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/getCollectionItemsResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "nextInclusiveStartKey" : "121",
+                  "contents" : [ {
+                    "type" : "file",
+                    "id" : "0a6f64e4-7330-4dcf-ac65-58ab10677282",
+                    "occurrenceKey" : "urn:hipchat:message:12413532",
+                    "details" : {
+                      "name" : "some_video.mp4",
+                      "size" : 34315
+                    }
+                  } ]
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "collectionName",
+        "in" : "path",
+        "description" : "A name identifying a collection.",
+        "required" : true,
+        "type" : "string",
+        "format" : ""
+      } ]
+    },
+    "/file" : {
+      "parameters" : [ ]
+    },
+    "/file/binary" : {
+      "post" : {
+        "tags" : [ "Files" ],
+        "description" : "Create a file entity, upload data to it and complete it.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Set the name of the file.",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name a file should be created in",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "skipConversions",
+          "in" : "query",
+          "description" : "If true, this file won't trigger any conversion process (only the original file will be stored)",
+          "required" : false,
+          "type" : "boolean",
+          "format" : ""
+        }, {
+          "name" : "expireAfter",
+          "in" : "query",
+          "description" : "Indicate that the file can be cleaned up after the provided expiry. After the file expired, we don't guarantee access to it anymore (but it might still be available). Use an absolute UNIX Epoch timestamp in seconds.",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 9.223372036854776E18,
+          "minimum" : 0.0,
+          "format" : "int64"
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/file"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "faee2a3a-f37d-11e4-aae2-3c15c2c70ce6",
+                  "mediaType" : "document",
+                  "mimeType" : "application/pdf",
+                  "name" : "example document.pdf",
+                  "processingStatus" : "pending",
+                  "size" : 231392,
+                  "hash" : "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                  "artifacts" : { }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/file/chunked" : {
+      "post" : {
+        "tags" : [ "Files" ],
+        "description" : "Create a file entity, upload a chunk list to it and complete it.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name a file should be created in",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "skipConversions",
+          "in" : "query",
+          "description" : "If true, this file won't trigger any conversion process (only the original file will be stored)",
+          "required" : false,
+          "type" : "boolean",
+          "format" : ""
+        }, {
+          "name" : "expireAfter",
+          "in" : "query",
+          "description" : "Indicate that the file can be cleaned up after the provided expiry. After the file expired, we don't guarantee access to it anymore (but it might still be available). Use an absolute UNIX Epoch timestamp in seconds.",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 9.223372036854776E18,
+          "minimum" : 0.0,
+          "format" : "int64"
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/fileChunksRequest"
+          },
+          "x-examples" : {
+            "application/json" : "{\"chunks\":[\"a6d09383157bf348f295c625400d7e444a7f4986-415\"],\"name\":\"document.pdf\",\"mimeType\":\"application/pdf\"}"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/file"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "faee2a3a-f37d-11e4-aae2-3c15c2c70ce6",
+                  "mediaType" : "document",
+                  "mimeType" : "application/pdf",
+                  "name" : "example document.pdf",
+                  "processingStatus" : "pending",
+                  "size" : 231392,
+                  "artifacts" : { }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/file/copy" : {
+      "post" : {
+        "tags" : [ "Files" ],
+        "description" : "Create a new file by copying another one.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name where file should be copied to",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "expireAfter",
+          "in" : "query",
+          "description" : "Indicate that the file can be cleaned up after the provided expiry. After the file expired, we don't guarantee access to it anymore (but it might still be available). Use an absolute UNIX Epoch timestamp in seconds.",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 9.223372036854776E18,
+          "minimum" : 0.0,
+          "format" : "int64"
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/fileCopyRequest"
+          },
+          "x-examples" : {
+            "application/json" : "{\"id\":\"faee2a3a-f37d-11e4-aae2-3c15c2c70ce6\"}"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/file"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "f126274c-409b-4e57-9d6c-7057e47baf7b",
+                  "mediaType" : "document",
+                  "mimeType" : "application/pdf",
+                  "name" : "example document.pdf",
+                  "processingStatus" : "pending",
+                  "size" : 231392,
+                  "artifacts" : { }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/file/upload" : {
+      "post" : {
+        "tags" : [ "Files" ],
+        "description" : "Create a new file from an Upload. Check the Uploads section for more information about how Uploads are created.\n\nThe `conditions` object contains a list of conditions the upload needs to match before a File can be created from\nthe Upload. If conditions are not matched, a `409` error will be returned.\n\nValid entries of the `conditions` object are:\n- **hash**: The new File hash should match this value. The format is \"<hash algorithm>:<hash value>\". Check the `/upload/{uploadId}/binary` endpoint for the possible hash algorithm values.\n- **size**: The new File size should match this value. 0 is a valid value.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name where file should be uploaded to",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "skipConversions",
+          "in" : "query",
+          "description" : "If true, this file won't trigger any conversion process (only the original file will be stored)",
+          "required" : false,
+          "type" : "boolean",
+          "format" : ""
+        }, {
+          "name" : "expireAfter",
+          "in" : "query",
+          "description" : "Indicate that the file can be cleaned up after the provided expiry. After the file expired, we don't guarantee access to it anymore (but it might still be available). Use an absolute UNIX Epoch timestamp in seconds.",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 9.223372036854776E18,
+          "minimum" : 0.0,
+          "format" : "int64"
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/fileUploadRequest"
+          },
+          "x-examples" : {
+            "application/json" : "{\"uploadId\":\"29c49470-adac-4b16-82ec-301340c7b16a\",\"mimeType\":\"application/pdf\",\"name\":\"example document.pdf\",\"conditions\":{\"hash\":\"sha1:da39a3ee5e6b4b0d3255bfef95601890afd80709\",\"size\":42}}"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/file"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "faee2a3a-f37d-11e4-aae2-3c15c2c70ce6",
+                  "mediaType" : "document",
+                  "mimeType" : "application/pdf",
+                  "name" : "example document.pdf",
+                  "processingStatus" : "pending",
+                  "size" : 231392,
+                  "artifacts" : { }
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "The upload conditions did not match the current state of the upload."
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/file/{fileId}" : {
+      "get" : {
+        "tags" : [ "Files" ],
+        "description" : "Get file metadata including metadata about the original binary file.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name a file should be checked in",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/file"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "faee2a3a-f37d-11e4-aae2-3c15c2c70ce6",
+                  "mediaType" : "document",
+                  "mimeType" : "application/pdf",
+                  "name" : "example document.pdf",
+                  "processingStatus" : "succeeded",
+                  "size" : 231392,
+                  "artifacts" : {}
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "schema": {
+                "$ref": "#/definitions/bensError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Files" ],
+        "description" : "Delete a file.",
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "fileId",
+        "in" : "path",
+        "description" : "A UUID identifying a file entity.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/file/{fileId}/artifact/{artifactName}" : {
+      "parameters" : [ {
+        "name" : "artifactName",
+        "in" : "path",
+        "description" : "The name of the artifact.",
+        "required" : true,
+        "type" : "string",
+        "format" : ""
+      }, {
+        "name" : "fileId",
+        "in" : "path",
+        "description" : "A UUID identifying a file entity.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/file/{fileId}/artifact/{artifactName}/binary" : {
+      "get" : {
+        "tags" : [ "Files" ],
+        "description" : "Retrieve a binary entity, e.g. document.pdf.\nSets the content-type of the response to the mime type of the converted asset.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "dl",
+          "in" : "query",
+          "description" : "Make the client download this file as an attachment.",
+          "required" : false,
+          "type" : "boolean",
+          "format" : ""
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Make the client receive the file with a specific name overwrite.",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "max-age",
+          "in" : "query",
+          "description" : "Make the client receive the file with the given max-age cache control header",
+          "required" : false,
+          "type" : "integer",
+          "minimum" : 0.0,
+          "format" : "int32"
+        }, {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "If the file doesn't belong to this collection, the operation will fail",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/errorResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "error" : {
+                  "message" : "Not found",
+                  "description" : "The entity does not exist"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "artifactName",
+        "in" : "path",
+        "description" : "The name of the artifact.",
+        "required" : true,
+        "type" : "string",
+        "format" : ""
+      }, {
+        "name" : "fileId",
+        "in" : "path",
+        "description" : "A UUID identifying a file entity.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/file/{fileId}/binary" : {
+      "get" : {
+        "tags" : [ "Files" ],
+        "description" : "See endpoint for artifacts.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "dl",
+          "in" : "query",
+          "description" : "Make the client download this file as an attachment.",
+          "required" : false,
+          "type" : "boolean",
+          "format" : ""
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Make the client receive the file with a specific name overwrite.",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "max-age",
+          "in" : "query",
+          "description" : "Make the client receive the file with the given max-age cache control header",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 9.223372036854776E18,
+          "minimum" : 0.0,
+          "format" : "int64"
+        }, {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name a file should be checked in",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "403": {
+            "description": "",
+            "schema": {
+                "$ref": "#/definitions/bensError"
+            }
+          },
+          "404" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/errorResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "error" : {
+                  "message" : "Not found",
+                  "description" : "The entity does not exist"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "fileId",
+        "in" : "path",
+        "description" : "A UUID identifying a file entity.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/file/{fileId}/image" : {
+      "get" : {
+        "tags" : [ "Files" ],
+        "description" : "Smart-endpoint to get image/thumb presentation of a file for embedding and previewing purposes.\n\n**Please be aware that this endpoint is quite opinionated in terms of which internal artifact\nfor a certain file/media-type will be used, etc.**\n\nThat also means that we might change the logic behind this endpoint, so results may vary\n(ideally towards improvement) over time. The idea of this (and other upcoming \"smart\" endpoints)\nis that integrating parties have to worry less about details, while we apply best practices for\ncertain use-cases around files.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "width",
+          "in" : "query",
+          "description" : "Define the required *image width* for your purpose.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "height",
+          "in" : "query",
+          "description" : "Define the required *image height* for your purpose.",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "Define the mode for this image.",
+          "required" : false,
+          "type" : "string",
+          "format" : "",
+          "enum" : [ "crop", "fit" ]
+        }, {
+          "name" : "max-age",
+          "in" : "query",
+          "description" : "Make the client receive the image with the given max-age cache control header",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 9.223372036854776E18,
+          "minimum" : 0.0,
+          "format" : "int64"
+        }, {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name a file should be checked in",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/errorResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "error" : {
+                  "message" : "Not found",
+                  "description" : "No image representation available for this resource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "fileId",
+        "in" : "path",
+        "description" : "A UUID identifying a file entity.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/grant" : {
+      "post" : {
+        "tags" : [ "Grants" ],
+        "description" : "Grant access for a file to another client.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/createGrant"
+          },
+          "x-examples" : {
+            "application/json" : "{\"fileId\":\"f126274c-409b-4e57-9d6c-7057e47baf7b\",\"granteeId\":\"7ce7180c-f2c7-4032-8e95-9a33a9c35790\",\"expiresIn\":3600}"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/grant"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "4fbaf54f-afda-4bf2-beb4-ef68f0c48c17",
+                  "disabled" : false
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/grant/{grantId}" : {
+      "get" : {
+        "tags" : [ "Grants" ],
+        "description" : "Lookup grant details.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/grant"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "4fbaf54f-afda-4bf2-beb4-ef68f0c48c17",
+                  "disabled" : true
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Grants" ],
+        "description" : "Enable or disable a grant.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/disableGrant"
+          },
+          "x-examples" : {
+            "application/json" : "{\"disabled\":true}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/grant"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "4fbaf54f-afda-4bf2-beb4-ef68f0c48c17",
+                  "disabled" : true
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Grants" ],
+        "description" : "Revoke a grant permanently.",
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "grantId",
+        "in" : "path",
+        "description" : "A UUID identifying the grant.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/link" : {
+      "post" : {
+        "tags" : [ "Links" ],
+        "description" : ":::callout [Experimental] {type=warning}\n- THIS SERVICE IS NOT PRODUCTION READY -\n:::\nCreates a new link with additional metadata information.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name a link should be created in.",
+          "required" : true,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/postLinkRequest"
+          },
+          "x-examples" : {
+            "application/json" : "{\"url\":\"http://www.google.com\"}"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/link"
+            }
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/link/preview" : {
+      "get" : {
+        "tags" : [ "Links" ],
+        "description" : ":::callout [Experimental] {type=warning}\n- THIS SERVICE IS NOT PRODUCTION READY -\n:::\nGenerates a preview snapshot for a certain url.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "url",
+          "in" : "query",
+          "description" : "url to website, image, etc.. to generate the snapshot for",
+          "required" : true,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response.",
+            "schema" : {
+              "$ref" : "#/definitions/previewLinkResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "preview" : {
+                    "type" : "image",
+                    "url" : "https://i.vimeocdn.com/portrait/58832_300x300",
+                    "title" : "58832_300x300",
+                    "image" : {
+                      "url" : "https://i.vimeocdn.com/portrait/58832_300x300",
+                      "type" : "image/jpeg",
+                      "width" : 300,
+                      "height" : 300,
+                      "length" : 3801
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/link/{linkId}" : {
+      "get" : {
+        "tags" : [ "Links" ],
+        "description" : ":::callout [Experimental] {type=warning}\n- THIS SERVICE IS NOT PRODUCTION READY -\n:::\nGet a link with the specified id\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "collection",
+          "in" : "query",
+          "description" : "Set the collection name a link should be checked in",
+          "required" : true,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response.",
+            "schema" : {
+              "$ref" : "#/definitions/link"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "id" : "f57b5f1e-d9f6-489a-aad0-04ea4da14e07",
+                  "url" : "http://wwww.atlassian.com",
+                  "createdAt" : 234234324,
+                  "metadata" : {
+                    "type" : "image",
+                    "url" : "https://i.vimeocdn.com/portrait/58832_300x300",
+                    "title" : "58832_300x300",
+                    "image" : {
+                      "url" : "https://i.vimeocdn.com/portrait/58832_300x300",
+                      "type" : "image/jpeg",
+                      "width" : 300,
+                      "height" : 300,
+                      "length" : 3801
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "linkId",
+        "in" : "path",
+        "description" : "A UUID identifying a link entity.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/upload" : {
+      "post" : {
+        "tags" : [ "Uploads" ],
+        "description" : "Creates up to N new upload sessions. Fewer sessions than requested might be returned to deal with availability\nissues. If the client relies on having exactly N new sessions, it is expected to retry with an updated count\nreflecting the remaining number of sessions until it has all the upload sessions that it needs.\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "createUpTo",
+          "in" : "query",
+          "description" : "Creates up to N new upload sessions. Must be at least 1 and at most 100.",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 100.0,
+          "minimum" : 1.0,
+          "format" : "int32"
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/uploadSession"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : [ {
+                  "id" : "29c49470-adac-4b16-82ec-301340c7b16a",
+                  "created" : 1453335978,
+                  "expires" : 1453335988
+                }, {
+                  "id" : "97a8a6b1-8462-44e7-bfc9-e65313bb118f",
+                  "created" : 1453335978,
+                  "expires" : 1453335988
+                } ]
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ ]
+    },
+    "/upload/{uploadId}" : {
+      "delete" : {
+        "tags" : [ "Uploads" ],
+        "description" : "Delete an upload.",
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "uploadId",
+        "in" : "path",
+        "description" : "A UUID identifying an upload.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/upload/{uploadId}/binary" : {
+      "put" : {
+        "tags" : [ "Uploads" ],
+        "description" : "Updates the upload session with the contents of the streamed request body.",
+        "parameters" : [ {
+          "name" : "hashAlgorithm",
+          "in" : "query",
+          "description" : "When set, the binary stream is hashed using the specified algorithm and the resulting hash value is set on the upload.",
+          "required" : false,
+          "type" : "string",
+          "format" : "",
+          "enum" : [ "sha1", "sha256" ]
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "409" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "uploadId",
+        "in" : "path",
+        "description" : "A UUID identifying an upload.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    },
+    "/upload/{uploadId}/chunks" : {
+      "get" : {
+        "tags" : [ "Uploads" ],
+        "description" : "Retrieves the chunk list set for the specified upload",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "index of the first chunk to fetch",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "maximum number of chunks to fetch",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "schema" : {
+              "$ref" : "#/definitions/getChunkList"
+            },
+            "examples" : {
+              "application/json" : {
+                "data" : {
+                  "chunks" : [ "0675a983536736a69f835438bcf8629e044f190d-4096", "e6295a0966535d295582670afeeb14059969d359-209" ],
+                  "hash" : "sha1:b0edf951dd0c86f80d989e20b9dc3060c53d66a6",
+                  "size" : 4305
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : ""
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Uploads" ],
+        "description" : "Adds new chunks for the specified upload and overrides hash if present. Offset defaults to 0 if omitted.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : ""
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/putChunkList"
+          },
+          "x-examples" : {
+            "application/json" : "{\"chunks\":[\"0675a983536736a69f835438bcf8629e044f190d-4096\",\"e6295a0966535d295582670afeeb14059969d359-209\"],\"hash\":\"sha1:b0edf951dd0c86f80d989e20b9dc3060c53d66a6\",\"offset\":0}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          },
+          "404" : {
+            "description" : ""
+          },
+          "409" : {
+            "description" : ""
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "uploadId",
+        "in" : "path",
+        "description" : "A UUID identifying an upload.",
+        "required" : true,
+        "type" : "string",
+        "format" : "uuid"
+      } ]
+    }
+  },
+  "definitions" : {
+    "createClient" : {
+      "type" : "object",
+      "required" : [ "description", "title" ],
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        }
+      }
+    },
+    "postLinkRequest" : {
+      "type" : "object",
+      "required" : [ "url" ],
+      "properties" : {
+        "url" : {
+          "type" : "string"
+        },
+        "metadata" : {
+          "type" : "object",
+          "properties" : {
+            "date" : {
+              "type" : "integer"
+            },
+            "image" : {
+              "type" : "object",
+              "properties" : {
+                "width" : {
+                  "type" : "integer"
+                },
+                "length" : {
+                  "type" : "integer"
+                },
+                "html" : {
+                  "type" : "string"
+                },
+                "type" : {
+                  "type" : "string"
+                },
+                "url" : {
+                  "type" : "string"
+                },
+                "height" : {
+                  "type" : "integer"
+                }
+              },
+              "required" : [ "type", "url" ]
+            },
+            "thumbnail" : {
+              "type" : "object",
+              "properties" : {
+                "width" : {
+                  "type" : "integer"
+                },
+                "length" : {
+                  "type" : "integer"
+                },
+                "html" : {
+                  "type" : "string"
+                },
+                "type" : {
+                  "type" : "string"
+                },
+                "url" : {
+                  "type" : "string"
+                },
+                "height" : {
+                  "type" : "integer"
+                }
+              },
+              "required" : [ "type", "url" ]
+            },
+            "author" : {
+              "type" : "string"
+            },
+            "icon" : {
+              "type" : "object",
+              "properties" : {
+                "width" : {
+                  "type" : "integer"
+                },
+                "length" : {
+                  "type" : "integer"
+                },
+                "html" : {
+                  "type" : "string"
+                },
+                "type" : {
+                  "type" : "string"
+                },
+                "url" : {
+                  "type" : "string"
+                },
+                "height" : {
+                  "type" : "integer"
+                }
+              },
+              "required" : [ "type", "url" ]
+            },
+            "description" : {
+              "type" : "string"
+            },
+            "type" : {
+              "type" : "string"
+            },
+            "title" : {
+              "type" : "string"
+            },
+            "url" : {
+              "type" : "string"
+            },
+            "site" : {
+              "type" : "string"
+            },
+            "author_url" : {
+              "type" : "string"
+            },
+            "file" : {
+              "type" : "object",
+              "properties" : {
+                "width" : {
+                  "type" : "integer"
+                },
+                "length" : {
+                  "type" : "integer"
+                },
+                "html" : {
+                  "type" : "string"
+                },
+                "type" : {
+                  "type" : "string"
+                },
+                "url" : {
+                  "type" : "string"
+                },
+                "height" : {
+                  "type" : "integer"
+                }
+              },
+              "required" : [ "type", "url" ]
+            },
+            "player" : {
+              "type" : "object",
+              "properties" : {
+                "width" : {
+                  "type" : "integer"
+                },
+                "length" : {
+                  "type" : "integer"
+                },
+                "html" : {
+                  "type" : "string"
+                },
+                "type" : {
+                  "type" : "string"
+                },
+                "url" : {
+                  "type" : "string"
+                },
+                "height" : {
+                  "type" : "integer"
+                }
+              },
+              "required" : [ "type", "url" ]
+            }
+          },
+          "required" : [ "title", "type", "url" ]
+        }
+      }
+    },
+    "createGrant" : {
+      "type" : "object",
+      "required" : [ "fileId", "granteeId" ],
+      "properties" : {
+        "fileId" : {
+          "type" : "string",
+          "description" : "id of the file"
+        },
+        "granteeId" : {
+          "type" : "string",
+          "description" : "id of the client to give access to"
+        },
+        "expiresIn" : {
+          "type" : "integer",
+          "description" : "time in seconds grant if valid for. If omitted, the created grant is permanent"
+        }
+      }
+    },
+    "getChunkList" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "size" : {
+              "type" : "integer"
+            },
+            "chunks" : {
+              "type" : "array",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "hash" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "chunks" ]
+        }
+      }
+    },
+    "putChunkList" : {
+      "type" : "object",
+      "required" : [ "chunks" ],
+      "properties" : {
+        "offset" : {
+          "type" : "integer"
+        },
+        "chunks" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "hash" : {
+          "type" : "string"
+        }
+      }
+    },
+    "fileCopyRequest" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        }
+      }
+    },
+    "link" : {
+      "type" : "object",
+      "properties" : {
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "createdAt" : {
+              "type" : "integer"
+            },
+            "metadata" : {
+              "type" : "object",
+              "properties" : { }
+            },
+            "id" : {
+              "type" : "string"
+            },
+            "url" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "fileChunksRequest" : {
+      "type" : "object",
+      "required" : [ "chunks" ],
+      "properties" : {
+        "chunks" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "mimeType" : {
+          "type" : "string"
+        }
+      }
+    },
+    "collection" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "parent" : {
+              "type" : "object",
+              "properties" : {
+                "name" : {
+                  "type" : "string"
+                },
+                "sequenceId" : {
+                  "type" : "string"
+                }
+              },
+              "required" : [ "name", "sequenceId" ]
+            },
+            "createdAt" : {
+              "type" : "integer"
+            },
+            "name" : {
+              "type" : "string"
+            },
+            "sequenceId" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "createdAt", "name" ]
+        }
+      }
+    },
+    "createCollectionRequest" : {
+      "type" : "object",
+      "required" : [ "name" ],
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        }
+      }
+    },
+    "previewLinkResponse" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "preview" : {
+              "type" : "object",
+              "properties" : {
+                "date" : {
+                  "type" : "integer",
+                  "format" : "long"
+                },
+                "image" : {
+                  "type" : "object",
+                  "properties" : {
+                    "width" : {
+                      "type" : "integer"
+                    },
+                    "length" : {
+                      "type" : "integer"
+                    },
+                    "html" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    },
+                    "url" : {
+                      "type" : "string"
+                    },
+                    "height" : {
+                      "type" : "integer"
+                    }
+                  },
+                  "required" : [ "type", "url" ]
+                },
+                "thumbnail" : {
+                  "type" : "object",
+                  "properties" : {
+                    "width" : {
+                      "type" : "integer"
+                    },
+                    "length" : {
+                      "type" : "integer"
+                    },
+                    "html" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    },
+                    "url" : {
+                      "type" : "string"
+                    },
+                    "height" : {
+                      "type" : "integer"
+                    }
+                  },
+                  "required" : [ "type", "url" ]
+                },
+                "author" : {
+                  "type" : "string"
+                },
+                "icon" : {
+                  "type" : "object",
+                  "properties" : {
+                    "width" : {
+                      "type" : "integer"
+                    },
+                    "length" : {
+                      "type" : "integer"
+                    },
+                    "html" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    },
+                    "url" : {
+                      "type" : "string"
+                    },
+                    "height" : {
+                      "type" : "integer"
+                    }
+                  },
+                  "required" : [ "type", "url" ]
+                },
+                "description" : {
+                  "type" : "string"
+                },
+                "type" : {
+                  "type" : "string"
+                },
+                "title" : {
+                  "type" : "string"
+                },
+                "url" : {
+                  "type" : "string"
+                },
+                "site" : {
+                  "type" : "string"
+                },
+                "author_url" : {
+                  "type" : "string"
+                },
+                "file" : {
+                  "type" : "object",
+                  "properties" : {
+                    "width" : {
+                      "type" : "integer"
+                    },
+                    "length" : {
+                      "type" : "integer"
+                    },
+                    "html" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    },
+                    "url" : {
+                      "type" : "string"
+                    },
+                    "height" : {
+                      "type" : "integer"
+                    }
+                  },
+                  "required" : [ "type", "url" ]
+                },
+                "player" : {
+                  "type" : "object",
+                  "properties" : {
+                    "width" : {
+                      "type" : "integer"
+                    },
+                    "length" : {
+                      "type" : "integer"
+                    },
+                    "html" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    },
+                    "url" : {
+                      "type" : "string"
+                    },
+                    "height" : {
+                      "type" : "integer"
+                    }
+                  },
+                  "required" : [ "type", "url" ]
+                }
+              },
+              "required" : [ "title", "type", "url" ]
+            },
+            "previewError" : {
+              "type" : "object",
+              "properties" : {
+                "code" : {
+                  "type" : "integer"
+                },
+                "name" : {
+                  "type" : "string"
+                }
+              },
+              "required" : [ "code", "name" ]
+            }
+          }
+        }
+      }
+    },
+    "errorResponse" : {
+      "type" : "object",
+      "required" : [ "error" ],
+      "properties" : {
+        "error" : {
+          "type" : "object",
+          "properties" : {
+            "description" : {
+              "type" : "string"
+            },
+            "message" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "description", "message" ]
+        }
+      }
+    },
+    "uploadSession" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "expires" : {
+                "type" : "integer"
+              },
+              "created" : {
+                "type" : "integer"
+              },
+              "id" : {
+                "type" : "string"
+              }
+            },
+            "required" : [ "created", "expires", "id" ]
+          }
+        }
+      }
+    },
+    "getCollectionItemsResponse" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "contents" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "details" : {
+                    "type" : "object",
+                    "properties" : {
+                        "fileSize": {
+                            "type": "number"
+                        },
+                        "detectedMimeType": {
+                            "type": "string"
+                        },
+                        "fileName": {
+                            "type": "string"
+                        }
+                    }
+                  },
+                  "id" : {
+                    "type" : "string"
+                  },
+                  "type" : {
+                    "type" : "string"
+                  },
+                  "occurrenceKey" : {
+                    "type" : "string"
+                  }
+                },
+                "required" : [ "details", "id", "occurrenceKey", "type" ]
+              }
+            },
+            "nextInclusiveStartKey" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "contents", "nextInclusiveStartKey" ]
+        }
+      }
+    },
+    "file" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "processingStatus" : {
+              "type" : "string"
+            },
+            "size" : {
+              "type" : "integer"
+            },
+            "name" : {
+              "type" : "string"
+            },
+            "mediaType" : {
+              "type" : "string"
+            },
+            "id" : {
+              "type" : "string"
+            },
+            "mimeType" : {
+              "type" : "string"
+            },
+            "hash" : {
+              "type" : "string"
+            },
+            "artifacts" : {
+              "type" : "object",
+              "properties" : { }
+            }
+          },
+          "required" : [ "artifacts", "id", "mediaType", "mimeType", "name", "processingStatus", "size" ]
+        }
+      }
+    },
+    "getCollectionHistoryResponse" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "item" : {
+                "type" : "object",
+                "properties" : {
+                  "id" : {
+                    "type" : "string"
+                  },
+                  "type" : {
+                    "type" : "string",
+                    "enum" : [ "file" ]
+                  },
+                  "occurenceKey" : {
+                    "type" : "string"
+                  }
+                },
+                "required" : [ "id", "type" ]
+              },
+              "action" : {
+                "type" : "string",
+                "enum" : [ "insert", "remove" ]
+              }
+            },
+            "required" : [ "action", "item" ]
+          }
+        }
+      }
+    },
+    "previewLinkObject" : {
+      "type" : "object",
+      "required" : [ "type", "url" ],
+      "properties" : {
+        "url" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "width" : {
+          "type" : "integer"
+        },
+        "height" : {
+          "type" : "integer"
+        },
+        "length" : {
+          "type" : "integer"
+        },
+        "html" : {
+          "type" : "string"
+        }
+      }
+    },
+    "collectionItem" : {
+      "type" : "object",
+      "required" : [ "id", "occurrenceKey", "type" ],
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "The type of this item (file, etc)"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "The ID for this item"
+        },
+        "occurrenceKey" : {
+          "type" : "string"
+        }
+      },
+      "description" : "Contains the information that defines a Collection item"
+    },
+    "modifyCollectionRequest" : {
+      "type" : "object",
+      "required" : [ "actions" ],
+      "properties" : {
+        "actions" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "item" : {
+                "type" : "object",
+                "properties" : {
+                  "id" : {
+                    "type" : "string"
+                  },
+                  "type" : {
+                    "type" : "string"
+                  },
+                  "occurrenceKey" : {
+                    "type" : "string"
+                  }
+                },
+                "required" : [ "id", "occurrenceKey", "type" ]
+              },
+              "action" : {
+                "type" : "string",
+                "enum" : [ "insert", "remove" ]
+              }
+            },
+            "required" : [ "action", "item" ]
+          }
+        }
+      }
+    },
+    "fileUploadRequest" : {
+      "type" : "object",
+      "required" : [ "uploadId" ],
+      "properties" : {
+        "uploadId" : {
+          "type" : "string"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "mimeType" : {
+          "type" : "string"
+        },
+        "conditions" : {
+          "type" : "object",
+          "properties" : {
+            "size" : {
+              "type" : "integer"
+            },
+            "hash" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "client" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "description" : {
+              "type" : "string"
+            },
+            "id" : {
+              "type" : "string"
+            },
+            "title" : {
+              "type" : "string"
+            },
+            "key" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "description", "id", "key", "title" ]
+        }
+      }
+    },
+    "grant" : {
+      "type" : "object",
+      "required" : [ "data" ],
+      "properties" : {
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "disabled" : {
+              "type" : "boolean"
+            },
+            "id" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "disabled", "id" ]
+        }
+      }
+    },
+    "disableGrant" : {
+      "type" : "object",
+      "required" : [ "disabled" ],
+      "properties" : {
+        "disabled" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "bensError": {
+        "type": "object",
+        "properties": {
+            "error": {
+                "type": "object",
+                "properties": {
+                    "href": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+  }
+}

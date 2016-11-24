@@ -1,0 +1,121 @@
+{
+    "provider": {
+        "name": "billing-api-gateway"
+    },
+    "consumer": {
+        "name": "billing-ux-service"
+    },
+    "interactions": [{
+        "providerState": null,
+        "description": "a request to get billing details for a valid entitlement group",
+        "request": {
+            "method": "GET",
+            "path": "/api/entitlement-groups/VALID/billing-details",
+            "body": null
+        },
+        "response": {
+            "status": 200,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": {
+                "addressLine1": "1 George Street",
+                "addressLine2": "bis",
+                "city": "Sydney",
+                "country": "Australia",
+                "creditCard": {
+                    "expiryMonth": 10,
+                    "expiryYear": 2018,
+                    "suffix": "1234",
+                    "type": "AMEX"
+                },
+                "firstName": "Alana",
+                "lastName": "Aware",
+                "postcode": "2000",
+                "state": "NSW"
+            }
+        }
+    }, {
+        "providerState": null,
+        "description": "a request to get billing details for an non-existing entitlement group",
+        "request": {
+            "method": "GET",
+            "path": "/api/entitlement-groups/NON-EXISTING/billing-details",
+            "body": null
+        },
+        "response": {
+            "status": 404,
+            "body": null
+        }
+    }, {
+        "providerState": null,
+        "description": "a request to get billing details for an unauthorized entitlement group",
+        "request": {
+            "method": "GET",
+            "path": "/api/entitlement-groups/UNAUTHORIZED/billing-details",
+            "body": null
+        },
+        "response": {
+            "status": 401,
+            "body": null
+        }
+    }],
+    "metadata": {
+        "pact-specification": {
+            "version": "2.0.0"
+        },
+        "pact-jvm": {
+            "version": "3.2.6"
+        }
+    },
+    "createdAt": "2016-09-29T04:36:23+00:00",
+    "_links": {
+        "self": {
+            "title": "Pact",
+            "name": "Pact between billing-ux-service (v1.0.0) and billing-api-gateway",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/billing-api-gateway/consumer/billing-ux-service/version/1.0.0"
+        },
+        "pb:consumer": {
+            "title": "Consumer",
+            "name": "billing-ux-service",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-service"
+        },
+        "pb:provider": {
+            "title": "Provider",
+            "name": "billing-api-gateway",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-api-gateway"
+        },
+        "pb:latest-pact-version": {
+            "title": "Pact",
+            "name": "Latest version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/billing-api-gateway/consumer/billing-ux-service/latest"
+        },
+        "pb:previous-distinct": {
+            "title": "Pact",
+            "name": "Previous distinct version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/billing-api-gateway/consumer/billing-ux-service/version/1.0.0/previous-distinct"
+        },
+        "pb:diff-previous-distinct": {
+            "title": "Diff",
+            "name": "Diff with previous distinct version of this pact",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacts/provider/billing-api-gateway/consumer/billing-ux-service/version/1.0.0/diff/previous-distinct"
+        },
+        "pb:pact-webhooks": {
+            "title": "Webhooks for the pact between billing-ux-service and billing-api-gateway",
+            "href": "https://pact-broker.internal.useast.atlassian.io/webhooks/provider/billing-api-gateway/consumer/billing-ux-service"
+        },
+        "pb:tag-prod-version": {
+            "title": "Tag this version as 'production'",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-service/versions/1.0.0/tags/prod"
+        },
+        "pb:tag-version": {
+            "title": "Tag version",
+            "href": "https://pact-broker.internal.useast.atlassian.io/pacticipants/billing-ux-service/versions/1.0.0/tags/{tag}"
+        },
+        "curies": [{
+            "name": "pb",
+            "href": "https://pact-broker.internal.useast.atlassian.io/doc/{rel}",
+            "templated": true
+        }]
+    }
+}

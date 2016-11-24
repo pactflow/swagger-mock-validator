@@ -1,0 +1,141 @@
+{
+  "consumer": {
+    "name": "cq-connect"
+  },
+  "provider": {
+    "name": "confluence"
+  },
+  "interactions": [
+    {
+      "description": "receiving a request to post comment to Confluence",
+      "provider_state": "default",
+      "request": {
+        "method": "POST",
+        "path": "/wiki/rest/api/content",
+        "headers": {
+          "Authorization": "Basic YWRtaW46YWRtaW4=",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "type": "comment",
+          "space": {
+            "key": "KOAL"
+          },
+          "container": {
+            "type": "page",
+            "id": "2533858"
+          },
+          "body": {
+            "editor2": {
+              "value": "<p>ffff</p>",
+              "representation": "editor2"
+            }
+          },
+          "metadata": {
+            "properties": {
+              "atl_cq_votes": {
+                "key": "atl_cq_votes",
+                "value": {
+                  "total": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": "1",
+          "type": "comment",
+          "status": "current",
+          "title": "Re: Where is Earth?",
+          "space": {
+            "key": "KOAL"
+          },
+          "version": {
+            "number": 1
+          },
+          "container": {
+            "id": "2533858",
+            "type": "page",
+            "title": "Where is Earth?"
+          },
+          "body": {
+            "editor2": {
+              "value": "<p>ffff</p>",
+              "representation": "editor2"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecificationVersion": "2.0.0"
+  },
+  "createdAt": "2017-06-22T07:33:00+00:00",
+  "_links": {
+    "self": {
+      "title": "Pact",
+      "name": "Pact between cq-connect (v0.0.8) and confluence",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacts/provider/confluence/consumer/cq-connect/version/0.0.8"
+    },
+    "pb:consumer": {
+      "title": "Consumer",
+      "name": "cq-connect",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacticipants/cq-connect"
+    },
+    "pb:provider": {
+      "title": "Provider",
+      "name": "confluence",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacticipants/confluence"
+    },
+    "pb:latest-pact-version": {
+      "title": "Pact",
+      "name": "Latest version of this pact",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacts/provider/confluence/consumer/cq-connect/latest"
+    },
+    "pb:previous-distinct": {
+      "title": "Pact",
+      "name": "Previous distinct version of this pact",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacts/provider/confluence/consumer/cq-connect/version/0.0.8/previous-distinct"
+    },
+    "pb:diff-previous-distinct": {
+      "title": "Diff",
+      "name": "Diff with previous distinct version of this pact",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacts/provider/confluence/consumer/cq-connect/version/0.0.8/diff/previous-distinct"
+    },
+    "pb:pact-webhooks": {
+      "title": "Webhooks for the pact between cq-connect and confluence",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/webhooks/provider/confluence/consumer/cq-connect"
+    },
+    "pb:tag-prod-version": {
+      "title": "Tag this version as 'production'",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacticipants/cq-connect/versions/0.0.8/tags/prod"
+    },
+    "pb:tag-version": {
+      "title": "Tag version",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacticipants/cq-connect/versions/0.0.8/tags/{tag}"
+    },
+    "pb:publish-verification-results": {
+      "title": "Publish verification results",
+      "href": "https://pact-broker.internal.useast.staging.atlassian.io/pacts/provider/confluence/consumer/cq-connect/pact-version/55e5c63cb7a1ba7351cbc6191b6a0f5cfb70e6f7/verification-results"
+    },
+    "curies": [
+      {
+        "name": "pb",
+        "href": "https://pact-broker.internal.useast.staging.atlassian.io/doc/{rel}",
+        "templated": true
+      }
+    ]
+  }
+}

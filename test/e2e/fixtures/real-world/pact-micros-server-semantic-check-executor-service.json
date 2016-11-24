@@ -1,0 +1,169 @@
+{
+  "consumer": {
+    "name": "micros-server"
+  },
+  "provider": {
+    "name": "semantic-check-executor-service"
+  },
+  "interactions": [
+    {
+      "description": "a request to execute a SC",
+      "provider_state": "SC Executor is running",
+      "request": {
+        "method": "POST",
+        "path": "/execute",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer "
+        },
+        "body": {
+          "serviceName": "test-service",
+          "dockerImage": "docker.atlassian.io/version_tester:v1",
+          "serviceUrl": "https://some.url",
+          "microsEnv": "pdev",
+          "requiresAsap": false
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "progressUri": "https://localhost:1234/executions/exec_1"
+        }
+      }
+    },
+    {
+      "description": "a malformed request to execute a SC",
+      "provider_state": "SC Executor is running",
+      "request": {
+        "method": "POST",
+        "path": "/execute",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "serviceName": "null",
+          "dockerImage": "docker.atlassian.io/version_tester:v1",
+          "serviceUrl": "https://some.url",
+          "microsEnv": "pdev",
+          "requiresAsap": false
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "$.body.stack": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to get the SC status",
+      "provider_state": "SC Executor is running and the semantic check was successful",
+      "request": {
+        "method": "GET",
+        "path": "/executions/successful",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "SUCCESS",
+          "logs": "Success logs"
+        }
+      }
+    },
+    {
+      "description": "a request to get the SC status",
+      "provider_state": "SC Executor is running and the semantic check was failure",
+      "request": {
+        "method": "GET",
+        "path": "/executions/failed",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "FAILURE",
+          "logs": "Failed logs"
+        }
+      }
+    },
+    {
+      "description": "a request to get the SC status",
+      "provider_state": "SC Executor is running and the semantic check is in progress",
+      "request": {
+        "method": "GET",
+        "path": "/executions/inprogress",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "INPROGRESS"
+        }
+      }
+    },
+    {
+      "description": "a request to get the SC status",
+      "provider_state": "SC Executor is running and the semantic check was not scheduled",
+      "request": {
+        "method": "GET",
+        "path": "/executions/acknowledged",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "ACKNOWLEDGED"
+        }
+      }
+    },
+    {
+      "description": "a request to get the SC status",
+      "provider_state": "SC Executor is running and the semantic check does not exist",
+      "request": {
+        "method": "GET",
+        "path": "/executions/non_existent",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecificationVersion": "2.0.0"
+  }
+}
