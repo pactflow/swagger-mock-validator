@@ -1,3 +1,13 @@
+<a name="0.0.10"></a>
+## [0.0.10](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.9...v0.0.10) (2016-11-24)
+
+
+### Features
+
+* add validation for json request bodies ([7dfb267](https://bitbucket.org/atlassian/swagger-pact-validator/commits/7dfb267)), closes [#22](https://bitbucket.org/atlassian/swagger-pact-validator/issue/22)
+
+
+
 <a name="0.0.9"></a>
 ## [0.0.9](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.8...v0.0.9) (2016-11-21)
 
