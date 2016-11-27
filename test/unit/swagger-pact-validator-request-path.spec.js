@@ -50,7 +50,7 @@ describe('swagger-pact-validator request path', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
-                message: 'Path not defined in swagger file: /does/not/exist',
+                message: 'Path or method not defined in swagger file: GET /does/not/exist',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -87,7 +87,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /almost/matches',
+                    message: 'Path or method not defined in swagger file: GET /almost/matches',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -123,7 +123,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /almost',
+                    message: 'Path or method not defined in swagger file: GET /almost',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -162,7 +162,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /almost',
+                    message: 'Path or method not defined in swagger file: GET /almost',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -274,41 +274,6 @@ describe('swagger-pact-validator request path', () => {
                 expect(result).toContainNoWarnings();
             });
         }));
-
-        it('should ignore path parameters that have no parameter definition', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(pactBuilder.interaction
-                    .withRequestPath('/users/1')
-                    .withDescription('interaction description')
-                )
-                .build();
-
-            const swaggerFile = swaggerBuilder
-                .withPath('/users/{userId}', swaggerBuilder.path)
-                .build();
-
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error.details).toContainWarnings([{
-                    message: 'No parameter definition found for "userId", assuming value is valid',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '1'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths./users/{userId}',
-                        pathMethod: null,
-                        pathName: '/users/{userId}',
-                        value: '{userId}'
-                    },
-                    type: 'warning'
-                }]);
-            });
-        }));
     });
 
     describe('number parameters', () => {
@@ -346,7 +311,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /api/foo/comments',
+                    message: 'Path or method not defined in swagger file: GET /api/foo/comments',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -380,7 +345,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /api//comments',
+                    message: 'Path or method not defined in swagger file: GET /api//comments',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -435,7 +400,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /jobs/renewal/enabled/on',
+                    message: 'Path or method not defined in swagger file: GET /jobs/renewal/enabled/on',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -490,7 +455,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /products/',
+                    message: 'Path or method not defined in swagger file: GET /products/',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -545,7 +510,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /api/1.1/comments',
+                    message: 'Path or method not defined in swagger file: GET /api/1.1/comments',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -579,7 +544,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /api//comments',
+                    message: 'Path or method not defined in swagger file: GET /api//comments',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -628,7 +593,7 @@ describe('swagger-pact-validator request path', () => {
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
                         location: '[swaggerRoot].paths./api/{userIds}/comments.parameters[0]',
-                        pathMethod: null,
+                        pathMethod: 'get',
                         pathName: '/api/{userIds}/comments',
                         value: userIdsParameter.build()
                     },
@@ -668,7 +633,7 @@ describe('swagger-pact-validator request path', () => {
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
                         location: '[swaggerRoot].paths./{accountIds}/users/{userIds}.parameters[0]',
-                        pathMethod: null,
+                        pathMethod: 'get',
                         pathName: '/{accountIds}/users/{userIds}',
                         value: accountIdsParameter.build()
                     },
@@ -684,7 +649,7 @@ describe('swagger-pact-validator request path', () => {
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
                         location: '[swaggerRoot].paths./{accountIds}/users/{userIds}.parameters[1]',
-                        pathMethod: null,
+                        pathMethod: 'get',
                         pathName: '/{accountIds}/users/{userIds}',
                         value: userIdsParameter.build()
                     },
@@ -752,7 +717,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /1/users/a',
+                    message: 'Path or method not defined in swagger file: GET /1/users/a',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -798,7 +763,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /1/users/a',
+                    message: 'Path or method not defined in swagger file: GET /1/users/a',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -814,7 +779,7 @@ describe('swagger-pact-validator request path', () => {
                     },
                     type: 'error'
                 }, {
-                    message: 'Path not defined in swagger file: /a/users/1',
+                    message: 'Path or method not defined in swagger file: GET /a/users/1',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -854,7 +819,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /users/1',
+                    message: 'Path or method not defined in swagger file: GET /users/1',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -892,7 +857,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
-                    message: 'Path not defined in swagger file: /users/1',
+                    message: 'Path or method not defined in swagger file: GET /users/1',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -907,48 +872,6 @@ describe('swagger-pact-validator request path', () => {
                         value: {'/users/userId}': getUserPath.build()}
                     },
                     type: 'error'
-                }]);
-            });
-        }));
-    });
-
-    describe('parameters not in path', () => {
-        it('should not match paramters that are not defined for the path', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(pactBuilder.interaction
-                    .withDescription('interaction description')
-                    .withRequestPath('/users/1')
-                )
-                .build();
-
-            const swaggerFile = swaggerBuilder
-                .withPath('/users/{userId}', swaggerBuilder.path
-                    .withParameter(swaggerBuilder.parameter
-                        .withRequiredNumberInQueryNamed('userId')
-                    )
-                )
-                .build();
-
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainWarnings([{
-                    message: 'No parameter definition found for "userId", assuming value is valid',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '1'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths./users/{userId}',
-                        pathMethod: null,
-                        pathName: '/users/{userId}',
-                        value: '{userId}'
-                    },
-                    type: 'warning'
                 }]);
             });
         }));

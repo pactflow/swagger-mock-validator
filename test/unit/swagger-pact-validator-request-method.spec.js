@@ -53,19 +53,19 @@ describe('swagger-pact-validator request method', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
-                message: 'Method not defined in swagger file: post',
+                message: 'Path or method not defined in swagger file: POST /does/exist',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.method',
-                    value: 'post'
+                    location: '[pactRoot].interactions[0].request.path',
+                    value: '/does/exist'
                 },
                 source: 'swagger-pact-validation',
                 swaggerDetails: {
-                    location: '[swaggerRoot].paths./does/exist',
+                    location: '[swaggerRoot].paths',
                     pathMethod: null,
-                    pathName: '/does/exist',
-                    value: pathWithGetOperationBuilder.build()
+                    pathName: null,
+                    value: {'/does/exist': pathWithGetOperationBuilder.build()}
                 },
                 type: 'error'
             }]);
