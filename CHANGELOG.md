@@ -1,3 +1,18 @@
+<a name="0.0.11"></a>
+## [0.0.11](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.10...v0.0.11) (2016-11-30)
+
+
+### Features
+
+* add validation for response status ([6a1feec](https://bitbucket.org/atlassian/swagger-pact-validator/commits/6a1feec)), closes [#4](https://bitbucket.org/atlassian/swagger-pact-validator/issue/4)
+
+
+### Performance Improvements
+
+* improve validation speed for large swagger files ([e009399](https://bitbucket.org/atlassian/swagger-pact-validator/commits/e009399))
+
+
+
 <a name="0.0.10"></a>
 ## [0.0.10](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.9...v0.0.10) (2016-11-24)
 
