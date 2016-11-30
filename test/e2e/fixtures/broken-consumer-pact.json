@@ -57,6 +57,15 @@
                 "userId": 2
             }
         }
+    }, {
+        "description": "request status missing test",
+        "request": {
+            "method": "get",
+            "path": "/1/users/2"
+        },
+        "response": {
+            "status": 202
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

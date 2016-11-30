@@ -10,7 +10,8 @@ const createInteractionBuilder = (interaction) => ({
     withRequestMethodGet: () => createInteractionBuilder(setValueOn(interaction, 'request.method', 'GET')),
     withRequestMethodPost: () => createInteractionBuilder(setValueOn(interaction, 'request.method', 'POST')),
     withRequestPath: (path) => createInteractionBuilder(setValueOn(interaction, 'request.path', path)),
-    withResponseBody: (body) => createInteractionBuilder(setValueOn(interaction, 'response.body', body))
+    withResponseBody: (body) => createInteractionBuilder(setValueOn(interaction, 'response.body', body)),
+    withResponseStatus: (status) => createInteractionBuilder(setValueOn(interaction, 'response.status', status))
 });
 
 module.exports = createInteractionBuilder({
