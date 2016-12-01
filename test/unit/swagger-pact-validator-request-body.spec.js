@@ -19,15 +19,15 @@ describe('swagger-pact-validator request body', () => {
         .withDescription('interaction description')
         .withRequestPath('/does/exist');
 
-    const validateRequestBody = (requestBody, bodyParameter) => {
-        const interactionBuilder = requestBody
-            ? defaultInteractionBuilder.withRequestBody(requestBody)
+    const validateRequestBody = (pactRequestBody, swaggerBodyParameter) => {
+        const interactionBuilder = pactRequestBody
+            ? defaultInteractionBuilder.withRequestBody(pactRequestBody)
             : defaultInteractionBuilder;
 
         const pactFile = pactBuilder.withInteraction(interactionBuilder).build();
 
-        const operationBuilder = bodyParameter
-            ? swaggerBuilder.operation.withParameter(bodyParameter)
+        const operationBuilder = swaggerBodyParameter
+            ? swaggerBuilder.operation.withParameter(swaggerBodyParameter)
             : swaggerBuilder.operation;
 
         const swaggerFile = swaggerBuilder
@@ -37,26 +37,26 @@ describe('swagger-pact-validator request body', () => {
         return invokeSwaggerPactValidator(swaggerFile, pactFile);
     };
 
-    it('should pass when a pact calls a method that is defined in the swagger', willResolve(() => {
-        const requestBody = {id: 1};
-        const bodyParameter = swaggerBuilder.parameter.withRequiredSchemaInBody(swaggerBuilder.schema
+    it('should pass when a pact request body is compatible with the swagger schema', willResolve(() => {
+        const pactRequestBody = {id: 1};
+        const swaggerBodyParameter = swaggerBuilder.parameter.withRequiredSchemaInBody(swaggerBuilder.schema
             .withTypeObject()
             .withRequiredProperty('id', swaggerBuilder.schema.withTypeNumber())
         );
 
-        return validateRequestBody(requestBody, bodyParameter).then((result) => {
+        return validateRequestBody(pactRequestBody, swaggerBodyParameter).then((result) => {
             expect(result).toContainNoWarnings();
         });
     }));
 
     it('should return the error when a pact request body is not compatible with the swagger schema', willResolve(() => {
-        const requestBody = {id: 'not-a-number'};
-        const bodyParameter = swaggerBuilder.parameter.withRequiredSchemaInBody(swaggerBuilder.schema
+        const pactRequestBody = {id: 'not-a-number'};
+        const swaggerBodyParameter = swaggerBuilder.parameter.withRequiredSchemaInBody(swaggerBuilder.schema
             .withTypeObject()
             .withRequiredProperty('id', swaggerBuilder.schema.withTypeNumber())
         );
 
-        const result = validateRequestBody(requestBody, bodyParameter);
+        const result = validateRequestBody(pactRequestBody, swaggerBodyParameter);
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
@@ -82,17 +82,17 @@ describe('swagger-pact-validator request body', () => {
     }));
 
     it('should return the error when a pact request body has multiple invalid properties', willResolve(() => {
-        const requestBody = {
+        const pactRequestBody = {
             value1: '1',
             value2: '2'
         };
-        const bodyParameter = swaggerBuilder.parameter.withRequiredSchemaInBody(swaggerBuilder.schema
+        const swaggerBodyParameter = swaggerBuilder.parameter.withRequiredSchemaInBody(swaggerBuilder.schema
             .withTypeObject()
             .withRequiredProperty('value1', swaggerBuilder.schema.withTypeNumber())
             .withRequiredProperty('value2', swaggerBuilder.schema.withTypeNumber())
         );
 
-        const result = validateRequestBody(requestBody, bodyParameter);
+        const result = validateRequestBody(pactRequestBody, swaggerBodyParameter);
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
@@ -135,9 +135,9 @@ describe('swagger-pact-validator request body', () => {
     }));
 
     it('should return a warning when a pact request body is passed when there is no schema', willResolve(() => {
-        const requestBody = {id: 1};
+        const pactRequestBody = {id: 1};
 
-        return validateRequestBody(requestBody, null).then((result) => {
+        return validateRequestBody(pactRequestBody, null).then((result) => {
             expect(result).toContainWarnings([{
                 message: 'No schema found for request body',
                 pactDetails: {
@@ -159,12 +159,12 @@ describe('swagger-pact-validator request body', () => {
     }));
 
     it('should return the error when no pact request body and a schema with required fields', willResolve(() => {
-        const bodyParameter = swaggerBuilder.parameter.withRequiredSchemaInBody(swaggerBuilder.schema
+        const swaggerBodyParameter = swaggerBuilder.parameter.withRequiredSchemaInBody(swaggerBuilder.schema
             .withTypeObject()
             .withRequiredProperty('id', swaggerBuilder.schema.withTypeNumber())
         );
 
-        const result = validateRequestBody(null, bodyParameter);
+        const result = validateRequestBody(null, swaggerBodyParameter);
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
@@ -190,22 +190,24 @@ describe('swagger-pact-validator request body', () => {
     }));
 
     it('should pass when there is no pact request body and an optional schema', willResolve(() => {
-        const bodyParameter = swaggerBuilder.parameter.withOptionalSchemaInBody(swaggerBuilder.schema
+        const swaggerBodyParameter = swaggerBuilder.parameter.withOptionalSchemaInBody(swaggerBuilder.schema
             .withTypeObject()
             .withOptionalProperty('id', swaggerBuilder.schema.withTypeNumber())
         );
 
-        return validateRequestBody(null, bodyParameter).then((result) => {
+        return validateRequestBody(null, swaggerBodyParameter).then((result) => {
             expect(result).toContainNoWarnings();
         });
     }));
 
     it('should return the error when the pact request body is a string when an object is expected', willResolve(() => {
-        const requestBody = 'a-string';
+        const pactRequestBody = 'a-string';
 
-        const bodyParameter = swaggerBuilder.parameter.withOptionalSchemaInBody(swaggerBuilder.schema.withTypeObject());
+        const swaggerBodyParameter = swaggerBuilder.parameter.withOptionalSchemaInBody(
+            swaggerBuilder.schema.withTypeObject()
+        );
 
-        const result = validateRequestBody(requestBody, bodyParameter);
+        const result = validateRequestBody(pactRequestBody, swaggerBodyParameter);
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);

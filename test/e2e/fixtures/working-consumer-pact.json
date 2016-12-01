@@ -12,18 +12,9 @@
             "path": "/1/users/2"
         },
         "response": {
-            "status": 200,
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "body": {
-                "email": "bsmith@domain.com",
-                "firstName": "Bob",
-                "lastName": "Smith",
-                "userId": 2
-            }
+            "status": 200
         }
-    },{
+    }, {
         "description": "request method exists test",
         "request": {
             "method": "get",
@@ -40,23 +31,11 @@
                 "firstName": "Bob",
                 "lastName": "Smith"
             },
-            "headers": {
-                "Content-Type": "application/json"
-            },
             "method": "post",
             "path": "/1/users"
         },
         "response": {
-            "status": 200,
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "body": {
-                "email": "bsmith@domain.com",
-                "firstName": "Bob",
-                "lastName": "Smith",
-                "userId": 2
-            }
+            "status": 200
         }
     }, {
         "description": "request status exists test",
@@ -65,6 +44,21 @@
             "path": "/1/users/2"
         },
         "response": {
+            "status": 200
+        }
+    }, {
+        "description": "response body valid test",
+        "request": {
+            "method": "get",
+            "path": "/1/users/2"
+        },
+        "response": {
+            "body": {
+                "email": "bsmith@domain.com",
+                "firstName": "Bob",
+                "lastName": "Smith",
+                "userId": 2
+            },
             "status": 200
         }
     }],

@@ -72,6 +72,11 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching(
                 'Response status code not defined in swagger file: 202'
             ));
+
+            expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[4]\.response\.body/));
+            expect(error).toEqual(jasmine.stringMatching(
+                'Response body is incompatible with the response body schema in the swagger file'
+            ));
         })
     ));
 
