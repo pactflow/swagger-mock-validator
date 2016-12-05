@@ -8,24 +8,33 @@ const swaggerPactValidatorLoader = require('./support/swagger-pact-validator-loa
 const willResolve = require('jasmine-promise-tools').willResolve;
 
 describe('swagger-pact-validator reading urls', () => {
-    let mockUrls;
+    let mockFileSystem;
     let mockHttpClient;
+    let mockUrls;
     let swaggerPactValidator;
 
     beforeEach(() => {
         mockUrls = {};
         mockHttpClient = swaggerPactValidatorLoader.createMockHttpClient(mockUrls);
-        const mockFileSystem = swaggerPactValidatorLoader.createMockFileSystem({});
+        mockFileSystem = swaggerPactValidatorLoader.createMockFileSystem({});
 
         swaggerPactValidator = swaggerPactValidatorLoader.createInstance(mockFileSystem, mockHttpClient);
     });
+
+    const invokeValidate = (swaggerPathOrUrl, pactPathOrUrl) =>
+        swaggerPactValidator.validate({
+            fileSystem: mockFileSystem,
+            httpClient: mockHttpClient,
+            pactPathOrUrl,
+            swaggerPathOrUrl
+        });
 
     describe('reading the swagger file', () => {
         it('should make a request for a http swagger url', willResolve(() => {
             mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
             mockUrls['http://domain.com/pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
-            const result = swaggerPactValidator.validate(
+            const result = invokeValidate(
                 'http://domain.com/swagger.json',
                 'http://domain.com/pact.json'
             );
@@ -39,7 +48,7 @@ describe('swagger-pact-validator reading urls', () => {
             mockUrls['https://domain.com/swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
             mockUrls['http://domain.com/pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
-            const result = swaggerPactValidator.validate(
+            const result = invokeValidate(
                 'https://domain.com/swagger.json',
                 'http://domain.com/pact.json'
             );
@@ -53,7 +62,7 @@ describe('swagger-pact-validator reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = q.reject(new Error('error-message'));
             mockUrls['http://domain.com/pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
-            const result = swaggerPactValidator.validate(
+            const result = invokeValidate(
                 'http://domain.com/swagger.json',
                 'http://domain.com/pact.json'
             );
@@ -67,7 +76,7 @@ describe('swagger-pact-validator reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = q('');
             mockUrls['http://domain.com/pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
-            const result = swaggerPactValidator.validate(
+            const result = invokeValidate(
                 'http://domain.com/swagger.json',
                 'http://domain.com/pact.json'
             );
@@ -85,7 +94,7 @@ describe('swagger-pact-validator reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
             mockUrls['http://domain.com/pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
-            const result = swaggerPactValidator.validate(
+            const result = invokeValidate(
                 'http://domain.com/swagger.json',
                 'http://domain.com/pact.json'
             );
@@ -99,7 +108,7 @@ describe('swagger-pact-validator reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
             mockUrls['http://domain.com/pact.json'] = q.reject(new Error('error-message'));
 
-            const result = swaggerPactValidator.validate(
+            const result = invokeValidate(
                 'http://domain.com/swagger.json',
                 'http://domain.com/pact.json'
             );
@@ -113,7 +122,7 @@ describe('swagger-pact-validator reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
             mockUrls['http://domain.com/pact.json'] = q('');
 
-            const result = swaggerPactValidator.validate(
+            const result = invokeValidate(
                 'http://domain.com/swagger.json',
                 'http://domain.com/pact.json'
             );

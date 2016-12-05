@@ -43,7 +43,6 @@
     "gulp-util": "^3.0.7",
     "jasmine-promise-tools": "^1.0.5",
     "minimist": "^1.2.0",
-    "proxyquire": "^1.7.10",
     "run-sequence": "^1.2.2"
   },
   "dependencies": {

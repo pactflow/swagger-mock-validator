@@ -1,17 +1,10 @@
 'use strict';
 
-const proxyquire = require('proxyquire').noCallThru();
+const swaggerPactValidator = require('../../../lib/swagger-pact-validator');
 const q = require('q');
 
 const swaggerPactValidatorLoader = {
-    createInstance: (mockFileSystem, mockHttpClient) => {
-        const jsonLoader = proxyquire('../../../lib/swagger-pact-validator/json-loader', {
-            './json-loader/file-system': mockFileSystem,
-            './json-loader/http-client': mockHttpClient
-        });
-
-        return proxyquire('../../../lib/swagger-pact-validator', {'./swagger-pact-validator/json-loader': jsonLoader});
-    },
+    createInstance: () => swaggerPactValidator,
     createMockFileSystem: (mockFiles) => {
         const mockFileSystem = jasmine.createSpyObj('mockFileSystem', ['readFile']);
 
@@ -36,9 +29,13 @@ const swaggerPactValidatorLoader = {
             'swagger.json': q(JSON.stringify(swaggerFile))
         });
         const mockHttpClient = swaggerPactValidatorLoader.createMockHttpClient({});
-        const swaggerPactValidator = swaggerPactValidatorLoader.createInstance(mockFileSystem, mockHttpClient);
 
-        return swaggerPactValidator.validate('swagger.json', 'pact.json');
+        return swaggerPactValidator.validate({
+            fileSystem: mockFileSystem,
+            httpClient: mockHttpClient,
+            pactPathOrUrl: 'pact.json',
+            swaggerPathOrUrl: 'swagger.json'
+        });
     }
 };
 
