@@ -1,3 +1,14 @@
+<a name="0.0.12"></a>
+## [0.0.12](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.11...v0.0.12) (2016-12-05)
+
+
+### Features
+
+* add validation for response body ([ac2c479](https://bitbucket.org/atlassian/swagger-pact-validator/commits/ac2c479)), closes [#6](https://bitbucket.org/atlassian/swagger-pact-validator/issue/6)
+* reduce verbosity of the output when errors are detected ([d300546](https://bitbucket.org/atlassian/swagger-pact-validator/commits/d300546)), closes [#27](https://bitbucket.org/atlassian/swagger-pact-validator/issue/27)
+
+
+
 <a name="0.0.11"></a>
 ## [0.0.11](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.10...v0.0.11) (2016-11-30)
 
