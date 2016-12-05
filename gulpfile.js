@@ -56,7 +56,7 @@ gulp.task('create-new-tag', (callback) => {
 gulp.task('lint', ['lint-javascript', 'lint-commits']);
 
 gulp.task('lint-commits', () =>
-    exec('./node_modules/.bin/conventional-changelog-lint --from=2614d72 --preset angular')
+    exec('./node_modules/.bin/conventional-changelog-lint --from=HEAD~40 --preset angular')
 );
 
 gulp.task('lint-javascript', () =>
