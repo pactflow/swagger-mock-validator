@@ -7,6 +7,8 @@
 - Supports swagger files in json format
 - Can be invoked from the command line in any language
 
+For a list of all the validation rules see [RULES.md](RULES.md).
+
 ## Requirements
 - nodejs 4.4.7 or higher
 - npm 2.15.8 or higher
