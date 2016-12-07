@@ -21,10 +21,10 @@ This is a list of all the possible validation rules and if they are currently su
 
 | Feature | Supported |
 |---|---|
-| Response Body Schema | yes, but not default response bodies |
+| Response Body Schema | yes |
 | Response Body Form | no |
 | Response Headers | no |
-| Response Status | yes, but not default response statuses |
+| Response Status | yes |
 
 ## Parameter Validation
 
