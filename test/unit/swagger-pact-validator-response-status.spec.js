@@ -65,4 +65,30 @@ describe('swagger-pact-validator response status', () => {
             }]);
         });
     }));
+
+    it('should return warning when pact mocks status matches the swagger default response', willResolve(() => {
+        const operation = swaggerBuilder.operation
+            .withResponse(200, swaggerBuilder.response)
+            .withDefaultResponse(swaggerBuilder.response);
+
+        return validateResponseStatus(202, operation).then((result) => {
+            expect(result).toContainWarnings([{
+                message: 'Response status code matched default response in swagger file: 202',
+                pactDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].response.status',
+                    value: 202
+                },
+                source: 'swagger-pact-validation',
+                swaggerDetails: {
+                    location: '[swaggerRoot].paths./does/exist.get.responses',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    value: operation.build().responses
+                },
+                type: 'warning'
+            }]);
+        });
+    }));
 });

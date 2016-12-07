@@ -330,4 +330,47 @@ describe('swagger-pact-validator response body', () => {
             }]);
         });
     }));
+
+    it('should pass when a pact resposne body matches a default schema', willResolve(() => {
+        const pactFile = pactBuilder
+            .withInteraction(pactBuilder.interaction
+                .withDescription('interaction description')
+                .withRequestPath('/does/exist')
+                .withResponseStatus(202)
+                .withResponseBody({value: 1})
+            )
+            .build();
+
+        const operation = swaggerBuilder.operation
+            .withDefaultResponse(swaggerBuilder.response
+                .withSchema(swaggerBuilder.schema
+                    .withTypeObject()
+                    .withRequiredProperty('value', swaggerBuilder.schema.withTypeNumber())
+                )
+            );
+
+        const swaggerFile = swaggerBuilder
+            .withPath('/does/exist', swaggerBuilder.path.withGetOperation(operation))
+            .build();
+
+        return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            expect(result).toContainWarnings([{
+                message: 'Response status code matched default response in swagger file: 202',
+                pactDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].response.status',
+                    value: 202
+                },
+                source: 'swagger-pact-validation',
+                swaggerDetails: {
+                    location: '[swaggerRoot].paths./does/exist.get.responses',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    value: operation.build().responses
+                },
+                type: 'warning'
+            }]);
+        });
+    }));
 });

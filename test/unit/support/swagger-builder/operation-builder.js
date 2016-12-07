@@ -7,6 +7,9 @@ const defaultResponseBuilder = require('./response-builder');
 
 const createOperationBuilder = (operation) => ({
     build: () => cloneDeep(operation),
+    withDefaultResponse: (responseBuilder) => createOperationBuilder(
+        setValueOn(operation, 'responses.default', responseBuilder.build())
+    ),
     withParameter: (parameterBuilder) => createOperationBuilder(
         addToArrayOn(operation, 'parameters', parameterBuilder.build())
     ),
