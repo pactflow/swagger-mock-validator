@@ -1,3 +1,13 @@
+<a name="0.0.13"></a>
+## [0.0.13](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.12...v0.0.13) (2016-12-07)
+
+
+### Features
+
+* add support for default swagger responses ([a391c8b](https://bitbucket.org/atlassian/swagger-pact-validator/commits/a391c8b)), closes [#30](https://bitbucket.org/atlassian/swagger-pact-validator/issue/30)
+
+
+
 <a name="0.0.12"></a>
 ## [0.0.12](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.11...v0.0.12) (2016-12-05)
 
