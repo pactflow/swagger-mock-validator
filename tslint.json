@@ -1,0 +1,10 @@
+{
+    "extends": "tslint:latest",
+    "rules": {
+        "cyclomatic-complexity": [true, 4],
+        "interface-name": [true, "never-prefix"],
+        "no-console": [false],
+        "quotemark": [true, "single"],
+        "trailing-comma": [true, {"multiline": "never", "singleline": "never"}]
+    }
+}
