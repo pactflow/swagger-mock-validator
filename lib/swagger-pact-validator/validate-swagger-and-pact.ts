@@ -1,5 +1,3 @@
-'use strict';
-
 import * as _ from 'lodash';
 import * as q from 'q';
 import {
@@ -13,13 +11,16 @@ import {
 import getSwaggerOperation from './validate-swagger-and-pact/get-swagger-operation';
 import getSwaggerResponse from './validate-swagger-and-pact/get-swagger-response';
 import validatePactRequestBody from './validate-swagger-and-pact/validate-pact-request-body';
+import validatePactRequestHeaders from './validate-swagger-and-pact/validate-pact-request-headers';
 import validatePactResponseBody from './validate-swagger-and-pact/validate-pact-response-body';
 
 const validatePactInteractionRequest = (
     pactInteraction: ParsedMockInteraction,
     swaggerOperation: ParsedSpecOperation
-) =>
-    validatePactRequestBody(pactInteraction, swaggerOperation);
+) => _.concat(
+    validatePactRequestBody(pactInteraction, swaggerOperation),
+    validatePactRequestHeaders(pactInteraction, swaggerOperation)
+);
 
 const validatePactInteractionResponse = (
     pactInteraction: ParsedMockInteraction,

@@ -1,5 +1,3 @@
-'use strict';
-
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
 import result from '../result';

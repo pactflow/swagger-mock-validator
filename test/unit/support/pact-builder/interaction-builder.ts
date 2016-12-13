@@ -11,6 +11,8 @@ const createInteractionBuilder = (interaction: PactInteraction) => ({
     withDescription: (description: string) =>
         createInteractionBuilder(setValueOn(interaction, 'description', description)),
     withRequestBody: (body: any) => createInteractionBuilder(setValueOn(interaction, 'request.body', body)),
+    withRequestHeader: (name: string, value: string) =>
+        createInteractionBuilder(setValueOn(interaction, `request.headers.${name}`, value)),
     withRequestMethodGet: () => createInteractionBuilder(setValueOn(interaction, 'request.method', 'GET')),
     withRequestMethodPost: () => createInteractionBuilder(setValueOn(interaction, 'request.method', 'POST')),
     withRequestPath: (path: string) => createInteractionBuilder(setValueOn(interaction, 'request.path', path)),

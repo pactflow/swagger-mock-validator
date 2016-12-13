@@ -11,7 +11,7 @@ This is a list of all the possible validation rules and if they are currently su
 | Request Body Schema | yes |
 | Request Body Form | no |
 | Request Content Type | no |
-| Request Headers | no |
+| Request Headers | yes |
 | Request Path | yes |
 | Request path params | yes |
 | Request query params | no |

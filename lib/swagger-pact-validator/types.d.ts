@@ -7,18 +7,22 @@ export interface ParsedMock {
     pathOrUrl: string;
 }
 
-export interface ParsedMockInteraction {
+export interface ParsedMockInteraction extends ParsedMockValue<any> {
     description: string;
     getRequestBodyPath: (path: string) => ParsedMockValue<any>;
     getResponseBodyPath: (path: string) => ParsedMockValue<any>;
-    location: string;
     requestBody: ParsedMockValue<any>;
+    requestHeaders: ParsedMockHeaderCollection;
     requestMethod: ParsedMockValue<string>;
     requestPath: ParsedMockValue<string>;
     requestPathSegments: Array<ParsedMockValue<string>>;
     responseBody: ParsedMockValue<any>;
     responseStatus: ParsedMockValue<number>;
     state: string;
+}
+
+export interface ParsedMockHeaderCollection {
+    [headerName: string]: ParsedMockValue<string>;
 }
 
 export interface ParsedMockValue<T> {
@@ -34,11 +38,16 @@ export interface ParsedSpec {
 }
 
 export interface ParsedSpecOperation extends ParsedSpecValue<any> {
+    headerParameters: ParsedSpecHeaderCollection;
     method: string;
     pathName: string;
     pathNameSegments: ParsedSpecPathNameSegment[];
     requestBodyParameter: ParsedSpecParameter;
     responses: ParsedSpecResponses;
+}
+
+export interface ParsedSpecHeaderCollection {
+    [headerName: string]: ParsedSpecParameter;
 }
 
 export interface ParsedSpecParameter extends ParsedSpecValue<any> {
@@ -47,17 +56,19 @@ export interface ParsedSpecParameter extends ParsedSpecValue<any> {
     name: string;
     required?: boolean;
     schema?: JsonSchema;
-    type: string;
+    type: ParsedSpecParameterType;
 }
 
-export type ParsedSpecPathNameSegmentValidatorType =
-    'boolean' | 'equal' | 'integer' | 'number'| 'string' | 'unsupported';
+type ParsedSpecParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'file';
 
 export interface ParsedSpecPathNameSegment extends ParsedSpecValue<string> {
     parameter: ParsedSpecParameter;
     type?: string;
     validatorType: ParsedSpecPathNameSegmentValidatorType;
 }
+
+export type ParsedSpecPathNameSegmentValidatorType =
+    'boolean' | 'equal' | 'integer' | 'number'| 'string' | 'unsupported';
 
 export interface ParsedSpecResponses extends ParsedSpecValue<any> {
     [statusCode: number]: ParsedSpecResponse;
@@ -92,9 +103,14 @@ export interface PactInteraction {
 }
 
 export interface PactInteractionRequest {
+    headers?: PactInteractionRequestHeaders;
     body?: any;
     method: string;
     path: string;
+}
+
+export interface PactInteractionRequestHeaders {
+    [headerName: string]: string;
 }
 
 export interface PactInteractionResponse {
@@ -139,8 +155,10 @@ export interface SwaggerParameter {
     name: string;
     required?: boolean;
     schema?: JsonSchema;
-    type?: string;
+    type?: SwaggerParameterType;
 }
+
+export type SwaggerParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'file';
 
 export interface SwaggerResponses {
     [index: string]: SwaggerResponse;
@@ -169,9 +187,11 @@ export interface JsonSchema {
     additionalProperties?: boolean;
     items?: JsonSchema;
     properties?: JsonSchemaProperties;
-    required?: boolean;
-    type: 'null' | 'boolean' | 'object' | 'array' | 'number' | 'string';
+    required?: string[];
+    type: JsonSchemaType;
 }
+
+export type JsonSchemaType = 'null' | 'boolean' | 'object' | 'array' | 'number' | 'string';
 
 export interface JsonSchemaProperties {
     [name: string]: JsonSchema;

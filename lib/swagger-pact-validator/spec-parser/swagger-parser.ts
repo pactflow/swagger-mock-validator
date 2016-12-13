@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import {
     JsonSchema,
     ParsedSpec,
+    ParsedSpecHeaderCollection,
     ParsedSpecOperation,
     ParsedSpecParameter,
     ParsedSpecPathNameSegment,
@@ -167,6 +168,12 @@ const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpec
     return parsedResponses;
 };
 
+const parseHeaderParameters = (headerParameters: ParsedSpecParameter[]) =>
+    _.reduce<ParsedSpecParameter, ParsedSpecHeaderCollection>(headerParameters, (result, headerParameter) => {
+        result[headerParameter.name] = headerParameter;
+        return result;
+    }, {});
+
 const parseOperationFromPath = (path: SwaggerPath, pathName: string): ParsedSpecOperation[] => _(path)
     .omit(['parameters'])
     .map((operation: SwaggerOperation, operationName: string) => {
@@ -182,11 +189,11 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string): ParsedSpec
         const parsedOperationParameters = parseParameters(operation.parameters, operationLocation, parsedOperation);
         const mergedParameters = mergePathAndOperationParameters(parsedPathParameters, parsedOperationParameters);
         const pathParameters = _.filter(mergedParameters, {in: 'path'});
-        const bodyParameter = _.find(mergedParameters, {in: 'body'});
 
+        parsedOperation.headerParameters = parseHeaderParameters(_.filter(mergedParameters, {in: 'header'}));
         parsedOperation.parentOperation = parsedOperation;
         parsedOperation.pathNameSegments = parsePathNameSegments(pathName, pathParameters, parsedOperation);
-        parsedOperation.requestBodyParameter = bodyParameter;
+        parsedOperation.requestBodyParameter = _.find(mergedParameters, {in: 'body'});
         parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
 
         return parsedOperation;
@@ -205,6 +212,7 @@ export default {
         paths: {
             location: '[swaggerRoot].paths',
             parentOperation: {
+                headerParameters: null,
                 location: null,
                 method: null,
                 parentOperation: null,

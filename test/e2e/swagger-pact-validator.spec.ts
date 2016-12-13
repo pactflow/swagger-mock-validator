@@ -1,5 +1,3 @@
-'use strict';
-
 import {exec} from 'child_process';
 import * as express from 'express';
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
@@ -81,6 +79,11 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[4]\.response\.body/));
             expect(error).toEqual(jasmine.stringMatching(
                 'Response body is incompatible with the response body schema in the swagger file'
+            ));
+
+            expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[5]\.request\.headers\.x-version/));
+            expect(error).toEqual(jasmine.stringMatching(
+                'Request header is incompatible with the header parameter defined in the swagger file'
             ));
         })
     ));

@@ -35,6 +35,12 @@ const createParameterBuilder = (parameter: SwaggerParameter) => {
             required: true,
             type: 'number'
         })),
+        withOptionalNumberInHeaderNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'header',
+            name,
+            required: false,
+            type: 'number'
+        })),
         withOptionalSchemaInBody: (schemaBuilder: SchemaBuilder) => createParameterBuilder(setValuesOn(parameter, {
             in: 'body',
             name: 'body',
@@ -42,8 +48,15 @@ const createParameterBuilder = (parameter: SwaggerParameter) => {
             schema: schemaBuilder.build(),
             type: undefined
         })),
-        withRequiredNumberInQueryNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
-            in: 'query',
+        withRequiredArrayOfNumbersInHeaderNamed: (name: string) => createParameterBuilder((setValuesOn(parameter, {
+            in: 'header',
+            items: {type: 'number'},
+            name,
+            required: true,
+            type: 'array'
+        }))),
+        withRequiredNumberInHeaderNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
+            in: 'header',
             name,
             required: true,
             type: 'number'

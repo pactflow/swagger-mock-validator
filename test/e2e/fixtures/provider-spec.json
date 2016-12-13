@@ -58,6 +58,10 @@
                     "required": true,
                     "type": "integer",
                     "format": "int32"
+                }, {
+                    "name": "x-version",
+                    "in": "header",
+                    "type": "number"
                 }],
                 "responses": {
                     "200": {
