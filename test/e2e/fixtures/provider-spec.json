@@ -56,8 +56,7 @@
                     "in": "path",
                     "description": "The user id of the user to get",
                     "required": true,
-                    "type": "integer",
-                    "format": "int32"
+                    "type": "integer"
                 }, {
                     "name": "x-version",
                     "in": "header",
@@ -107,8 +106,7 @@
             "type": "object",
             "properties": {
                 "userId": {
-                    "type": "integer",
-                    "format": "int32"
+                    "type": "integer"
                 },
                 "firstName": {
                     "type": "string"
@@ -132,7 +130,6 @@
         "accountId": {
             "name": "accountId",
             "type": "integer",
-            "format": "int32",
             "in": "path",
             "required": true
         }
