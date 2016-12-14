@@ -124,6 +124,9 @@
                 "lastName",
                 "email"
             ]
+        },
+        "unused": {
+            "type": "string"
         }
     },
     "parameters": {

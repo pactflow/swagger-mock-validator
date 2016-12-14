@@ -46,6 +46,10 @@ describe('swagger-pact-validator', () => {
         invokeCommand({
             pact: 'test/e2e/fixtures/working-consumer-pact.json',
             swagger: 'test/e2e/fixtures/provider-spec.json'
+        }).then((result) => {
+            expect(result).toEqual(
+                jasmine.stringMatching('Definition is defined but is not used: #/definitions/unused')
+            );
         })
     ));
 

@@ -19,7 +19,13 @@ commander
         swaggerPactValidator.validate({
             pactPathOrUrl: pact,
             swaggerPathOrUrl: swagger
-        }).catch((error) => {
+        })
+        .then((results) => {
+            if (results && results.warnings.length > 0) {
+                console.log(`${util.inspect(results, {depth: 4})}\n`);
+            }
+        })
+        .catch((error) => {
             console.log(`${error.message}\n`);
             if (error.details) {
                 console.log(`${util.inspect(error.details, {depth: 4})}\n`);
