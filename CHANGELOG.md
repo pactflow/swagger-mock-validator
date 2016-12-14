@@ -1,3 +1,14 @@
+<a name="0.0.14"></a>
+## [0.0.14](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.13...v0.0.14) (2016-12-14)
+
+
+### Features
+
+* add validation for request headers ([2676b27](https://bitbucket.org/atlassian/swagger-pact-validator/commits/2676b27)), closes [#2](https://bitbucket.org/atlassian/swagger-pact-validator/issue/2) [#7](https://bitbucket.org/atlassian/swagger-pact-validator/issue/7)
+* undefined non-standard request headers are now warnings ([adca8bd](https://bitbucket.org/atlassian/swagger-pact-validator/commits/adca8bd))
+
+
+
 <a name="0.0.13"></a>
 ## [0.0.13](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.12...v0.0.13) (2016-12-07)
 
