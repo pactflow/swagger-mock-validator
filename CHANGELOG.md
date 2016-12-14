@@ -1,3 +1,13 @@
+<a name="0.0.15"></a>
+## [0.0.15](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.14...v0.0.15) (2016-12-14)
+
+
+### Features
+
+* display warnings when validation succeeds ([1be61b5](https://bitbucket.org/atlassian/swagger-pact-validator/commits/1be61b5))
+
+
+
 <a name="0.0.14"></a>
 ## [0.0.14](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.13...v0.0.14) (2016-12-14)
 
