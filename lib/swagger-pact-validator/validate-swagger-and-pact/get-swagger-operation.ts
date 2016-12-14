@@ -8,6 +8,7 @@ import {
     ParsedSpecPathNameSegment,
     ValidationResult
 } from '../types';
+import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
 
 interface MatchResult {
     match: boolean;
@@ -20,47 +21,27 @@ interface TypeValidators {
         (pactPathSegment: ParsedMockValue<string>, swaggerPathSegment: ParsedSpecPathNameSegment) => MatchResult;
 }
 
-const typeValidators: TypeValidators = {
-    boolean: (pactPathSegment: ParsedMockValue<string>) => {
-        const lowerCasePathSegment = pactPathSegment.value.toLowerCase();
-        const match = lowerCasePathSegment === 'true' || lowerCasePathSegment === 'false';
+const validateMockValueAgainstPathNameSegment = (
+    pactPathSegment: ParsedMockValue<string>,
+    swaggerPathSegment: ParsedSpecPathNameSegment
+) => validateMockValueAgainstSpec(
+    swaggerPathSegment.parameter.name,
+    swaggerPathSegment.parameter,
+    pactPathSegment,
+    pactPathSegment.parentInteraction
+);
 
-        return {match, results: []};
-    },
+const typeValidators: TypeValidators = {
+    boolean: validateMockValueAgainstPathNameSegment,
     equal: (pactPathSegment: ParsedMockValue<string>, swaggerPathNameSegment: ParsedSpecPathNameSegment) => {
         const match = swaggerPathNameSegment.value === pactPathSegment.value;
 
         return {match, results: []};
     },
-    integer: (pactPathSegment: ParsedMockValue<string>) => {
-        const match =
-            pactPathSegment.value.length > 0 && _.isInteger(_.toNumber(pactPathSegment.value));
-
-        return {match, results: []};
-    },
-    number: (pactPathSegment: ParsedMockValue<string>) => {
-        const match =
-            pactPathSegment.value.length > 0 && _.isFinite(_.toNumber(pactPathSegment.value));
-
-        return {match, results: []};
-    },
-    string: (pactPathSegment: ParsedMockValue<string>) => {
-        const match = pactPathSegment.value.length > 0;
-
-        return {match, results: []};
-    },
-    unsupported: (pactPathSegment: ParsedMockValue<string>, swaggerPathSegment: ParsedSpecPathNameSegment) => ({
-        match: true,
-        results: [
-            result.warning({
-                message: `Validating parameters of type "${swaggerPathSegment.parameter.type}" ` +
-                    'are not supported, assuming value is valid',
-                pactSegment: pactPathSegment,
-                source: 'swagger-pact-validation',
-                swaggerSegment: swaggerPathSegment.parameter
-            })
-        ]
-    })
+    integer: validateMockValueAgainstPathNameSegment,
+    number: validateMockValueAgainstPathNameSegment,
+    string: validateMockValueAgainstPathNameSegment,
+    unsupported: validateMockValueAgainstPathNameSegment
 };
 
 const doInteractionAndOperationMatchPaths = (

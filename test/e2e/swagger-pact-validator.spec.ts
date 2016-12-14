@@ -87,8 +87,9 @@ describe('swagger-pact-validator', () => {
 
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[5]\.request\.headers\.x-version/));
             expect(error).toEqual(jasmine.stringMatching(
-                'Request header is incompatible with the header parameter defined in the swagger file'
+                'Value is incompatible with the parameter defined in the swagger file: should be number'
             ));
+            expect(error).toEqual(jasmine.stringMatching('name: \'x-version\', in: \'header\''));
         })
     ));
 

@@ -59,8 +59,7 @@ describe('swagger-pact-validator request headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             (expect(error.details) as any).toContainErrors([{
-                message: 'Request header is incompatible with the header parameter defined ' +
-                'in the swagger file: should be number',
+                message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -86,7 +85,7 @@ describe('swagger-pact-validator request headers', () => {
         return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {
             (expect(result) as any).toContainWarnings([{
                 message:
-                    'Validating headers of type "array" are not supported, assuming value is valid: x-custom-header',
+                    'Validating parameters of type "array" are not supported, assuming value is valid: x-custom-header',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -121,8 +120,8 @@ describe('swagger-pact-validator request headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             (expect(error.details) as any).toContainErrors([{
-                message: 'Request header is incompatible with the header parameter defined ' +
-                'in the swagger file: should have required property \'value\'',
+                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                    'should have required property \'value\'',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',

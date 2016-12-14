@@ -1,7 +1,7 @@
-import * as Ajv from 'ajv';
 import * as _ from 'lodash';
 import result from '../result';
-import {JsonSchema, ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation, ParsedSpecParameter} from '../types';
+import {ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation} from '../types';
+import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
 
 const standardHttpRequestHeaders = [
     'Accept',
@@ -56,63 +56,6 @@ const getWarningForUndefinedHeaderOrNone = (
     })];
 };
 
-const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
-    const schema: JsonSchema = {
-        properties: {
-            value: {
-                type: parameter.type as any
-            }
-        },
-        type: 'object'
-    };
-
-    if (parameter.required) {
-        schema.required = ['value'];
-    }
-
-    return schema;
-};
-
-const validateJson = (jsonSchema: JsonSchema, json: any) => {
-    const ajv = new Ajv({
-        allErrors: true,
-        coerceTypes: true,
-        verbose: true
-    });
-
-    ajv.validate(jsonSchema, json);
-
-    return ajv.errors;
-};
-
-const validateMockHeaderAgainstSpec = <T>(
-    headerName: string,
-    swaggerHeader: ParsedSpecParameter,
-    pactHeader: ParsedMockValue<T>,
-    pactInteraction: ParsedMockInteraction
-) => {
-    if (swaggerHeader.type === 'array') {
-        return [result.warning({
-            message: `Validating headers of type "${swaggerHeader.type}" are not supported, ` +
-            `assuming value is valid: ${headerName}`,
-            pactSegment: pactHeader,
-            source: 'swagger-pact-validation',
-            swaggerSegment: swaggerHeader
-        })];
-    }
-
-    const swaggerHeaderSchema = toJsonSchema(swaggerHeader);
-    const errors = validateJson(swaggerHeaderSchema, {value: (pactHeader || {value: undefined}).value});
-
-    return _.map(errors, (error) => result.error({
-        message: 'Request header is incompatible with the header parameter defined in the swagger file: ' +
-        error.message,
-        pactSegment: pactHeader || pactInteraction,
-        source: 'swagger-pact-validation',
-        swaggerSegment: swaggerHeader
-    }));
-};
-
 export default (pactInteraction: ParsedMockInteraction, swaggerOperation: ParsedSpecOperation) => {
     const allHeaders = _.union(_.keys(pactInteraction.requestHeaders), _.keys(swaggerOperation.headerParameters));
 
@@ -124,7 +67,7 @@ export default (pactInteraction: ParsedMockInteraction, swaggerOperation: Parsed
             return getWarningForUndefinedHeaderOrNone(headerName, pactHeader, swaggerOperation);
         }
 
-        return validateMockHeaderAgainstSpec(headerName, swaggerHeader, pactHeader, pactInteraction);
+        return validateMockValueAgainstSpec(headerName, swaggerHeader, pactHeader, pactInteraction).results;
     });
 
     return _.flatten(validationErrors);

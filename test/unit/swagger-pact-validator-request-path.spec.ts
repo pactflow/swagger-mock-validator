@@ -582,7 +582,8 @@ describe('swagger-pact-validator request path', () => {
 
             return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainWarnings([{
-                    message: 'Validating parameters of type "array" are not supported, assuming value is valid',
+                    message:
+                        'Validating parameters of type "array" are not supported, assuming value is valid: userIds',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -622,7 +623,8 @@ describe('swagger-pact-validator request path', () => {
 
             return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainWarnings([{
-                    message: 'Validating parameters of type "array" are not supported, assuming value is valid',
+                    message:
+                        'Validating parameters of type "array" are not supported, assuming value is valid: accountIds',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -638,7 +640,8 @@ describe('swagger-pact-validator request path', () => {
                     },
                     type: 'warning'
                 }, {
-                    message: 'Validating parameters of type "array" are not supported, assuming value is valid',
+                    message:
+                        'Validating parameters of type "array" are not supported, assuming value is valid: userIds',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -674,7 +677,8 @@ describe('swagger-pact-validator request path', () => {
 
             return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainWarnings([{
-                    message: 'Validating parameters of type "array" are not supported, assuming value is valid',
+                    message:
+                        'Validating parameters of type "array" are not supported, assuming value is valid: userIds',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
