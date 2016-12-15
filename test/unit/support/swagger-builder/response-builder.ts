@@ -1,6 +1,7 @@
 import {cloneDeep} from 'lodash';
 import {SwaggerResponse} from '../../../../lib/swagger-pact-validator/types';
 import {setValueOn} from '../builder-utilities';
+import {ResponseHeaderBuilder} from './response-header-builder';
 import {SchemaBuilder} from './schema-builder';
 
 export interface ResponseBuilder {
@@ -10,6 +11,8 @@ export interface ResponseBuilder {
 const createResponseBuilder = (response: SwaggerResponse) => ({
     build: () => cloneDeep(response),
     withDescription: (description: string) => createResponseBuilder(setValueOn(response, 'description', description)),
+    withHeader: (name: string, headerBuilder: ResponseHeaderBuilder) =>
+        createResponseBuilder(setValueOn(response, `headers.${name}`, headerBuilder.build())),
     withSchema: (schemaBuilder: SchemaBuilder) =>
         createResponseBuilder(setValueOn(response, 'schema', schemaBuilder.build()))
 });

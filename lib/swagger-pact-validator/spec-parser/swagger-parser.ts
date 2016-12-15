@@ -2,11 +2,12 @@ import * as _ from 'lodash';
 import {
     JsonSchema,
     ParsedSpec,
-    ParsedSpecHeaderCollection,
     ParsedSpecOperation,
     ParsedSpecParameter,
     ParsedSpecPathNameSegment,
     ParsedSpecPathNameSegmentValidatorType,
+    ParsedSpecRequestHeaderCollection,
+    ParsedSpecResponseHeaderCollection,
     ParsedSpecResponses,
     ParsedSpecValue,
     Swagger,
@@ -14,6 +15,8 @@ import {
     SwaggerParameter,
     SwaggerPath,
     SwaggerPaths,
+    SwaggerResponseHeader,
+    SwaggerResponseHeaderCollection,
     SwaggerResponses
 } from '../types';
 
@@ -137,6 +140,21 @@ const addAdditionalPropertiesFalseToSchema = (schema: JsonSchema) => {
     return undefined;
 };
 
+const parseResponseHeaders = (
+    headers: SwaggerResponseHeaderCollection,
+    responseLocation: string,
+    parentOperation: ParsedSpecOperation
+) => _.reduce<SwaggerResponseHeader, ParsedSpecResponseHeaderCollection>(headers, (result, header, headerName) => {
+    result[headerName.toLowerCase()] = {
+        location: `${responseLocation}.headers.${headerName}`,
+        parentOperation,
+        type: header.type,
+        value: header
+    };
+
+    return result;
+}, {});
+
 const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpecOperation) => {
     const parsedResponses = {
         location: `${parentOperation.location}.responses`,
@@ -158,6 +176,7 @@ const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpec
                 parentOperation,
                 value: _.get(originalSchema, pathToGet)
             }),
+            headers: parseResponseHeaders(response.headers, responseLocation, parentOperation),
             location: responseLocation,
             parentOperation,
             schema: modifiedSchema,
@@ -169,8 +188,8 @@ const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpec
 };
 
 const parseHeaderParameters = (headerParameters: ParsedSpecParameter[]) =>
-    _.reduce<ParsedSpecParameter, ParsedSpecHeaderCollection>(headerParameters, (result, headerParameter) => {
-        result[headerParameter.name] = headerParameter;
+    _.reduce<ParsedSpecParameter, ParsedSpecRequestHeaderCollection>(headerParameters, (result, headerParameter) => {
+        result[headerParameter.name.toLowerCase()] = headerParameter;
         return result;
     }, {});
 

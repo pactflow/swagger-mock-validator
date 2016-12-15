@@ -13,6 +13,7 @@ import getSwaggerResponse from './validate-swagger-and-pact/get-swagger-response
 import validatePactRequestBody from './validate-swagger-and-pact/validate-pact-request-body';
 import validatePactRequestHeaders from './validate-swagger-and-pact/validate-pact-request-headers';
 import validatePactResponseBody from './validate-swagger-and-pact/validate-pact-response-body';
+import validatePactResponseHeaders from './validate-swagger-and-pact/validate-pact-response-headers';
 
 const validatePactInteractionRequest = (
     pactInteraction: ParsedMockInteraction,
@@ -34,7 +35,8 @@ const validatePactInteractionResponse = (
 
     return _.concat(
         swaggerResponseSearchResult.results,
-        validatePactResponseBody(pactInteraction, swaggerResponseSearchResult.value)
+        validatePactResponseBody(pactInteraction, swaggerResponseSearchResult.value),
+        validatePactResponseHeaders(pactInteraction, swaggerResponseSearchResult.value)
     );
 };
 

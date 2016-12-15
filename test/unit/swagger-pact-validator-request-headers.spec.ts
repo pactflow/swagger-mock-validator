@@ -205,4 +205,13 @@ describe('swagger-pact-validator request headers', () => {
             (expect(result) as any).toContainNoWarnings();
         });
     }));
+
+    it('should not be case sensitive when comparing mock and spec headers', willResolve(() => {
+        const requestHeaders = {'content-Type': 'application/json', 'x-Custom-header': '1'};
+        const headerParameter = parameterBuilder.withRequiredNumberInHeaderNamed('X-custom-header');
+
+        return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {
+            (expect(result) as any).toContainNoWarnings();
+        });
+    }));
 });

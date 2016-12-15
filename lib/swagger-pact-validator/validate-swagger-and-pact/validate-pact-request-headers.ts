@@ -4,42 +4,42 @@ import {ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation} from '../ty
 import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
 
 const standardHttpRequestHeaders = [
-    'Accept',
-    'Accept-Charset',
-    'Accept-Datetime',
-    'Accept-Encoding',
-    'Accept-Language',
-    'Authorization',
-    'Cache-Control',
-    'Connection',
-    'Content-Length',
-    'Content-MD5',
-    'Content-Type',
-    'Cookie',
-    'Date',
-    'Expect',
-    'Forwarded',
-    'From',
-    'Host',
-    'If-Match',
-    'If-Modified-Since',
-    'If-None-Match',
-    'If-Range',
-    'If-Unmodified-Since',
-    'Max-Forwards',
-    'Origin',
-    'Pragma',
-    'Proxy-Authorization',
-    'Range',
-    'Referer',
-    'TE',
-    'Upgrade',
-    'User-Agent',
-    'Via',
-    'Warning'
+    'accept',
+    'accept-charset',
+    'accept-datetime',
+    'accept-encoding',
+    'accept-language',
+    'authorization',
+    'cache-control',
+    'connection',
+    'content-length',
+    'content-md5',
+    'content-type',
+    'cookie',
+    'date',
+    'expect',
+    'forwarded',
+    'from',
+    'host',
+    'if-match',
+    'if-modified-since',
+    'if-none-match',
+    'if-range',
+    'if-unmodified-since',
+    'max-forwards',
+    'origin',
+    'pragma',
+    'proxy-authorization',
+    'range',
+    'referer',
+    'te',
+    'upgrade',
+    'user-agent',
+    'via',
+    'warning'
 ];
 
-const getWarningForUndefinedHeaderOrNone = (
+const getWarningForUndefinedHeader = (
     headerName: string,
     pactHeader: ParsedMockValue<string>,
     swaggerOperation: ParsedSpecOperation
@@ -56,19 +56,18 @@ const getWarningForUndefinedHeaderOrNone = (
     })];
 };
 
-export default (pactInteraction: ParsedMockInteraction, swaggerOperation: ParsedSpecOperation) => {
-    const allHeaders = _.union(_.keys(pactInteraction.requestHeaders), _.keys(swaggerOperation.headerParameters));
+export default (pactInteraction: ParsedMockInteraction, swaggerOperation: ParsedSpecOperation) =>
+    _(_.keys(pactInteraction.requestHeaders))
+        .union(_.keys(swaggerOperation.headerParameters))
+        .map((headerName) => {
+            const pactHeader = pactInteraction.requestHeaders[headerName];
+            const swaggerHeader = swaggerOperation.headerParameters[headerName];
 
-    const validationErrors = _.map(allHeaders, (headerName) => {
-        const pactHeader = pactInteraction.requestHeaders[headerName];
-        const swaggerHeader = swaggerOperation.headerParameters[headerName];
+            if (!swaggerHeader && pactHeader) {
+                return getWarningForUndefinedHeader(headerName, pactHeader, swaggerOperation);
+            }
 
-        if (!swaggerHeader && pactHeader) {
-            return getWarningForUndefinedHeaderOrNone(headerName, pactHeader, swaggerOperation);
-        }
-
-        return validateMockValueAgainstSpec(headerName, swaggerHeader, pactHeader, pactInteraction).results;
-    });
-
-    return _.flatten(validationErrors);
-};
+            return validateMockValueAgainstSpec(headerName, swaggerHeader, pactHeader, pactInteraction).results;
+        })
+        .flatten()
+        .value();

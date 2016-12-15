@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {
     Pact,
     PactInteraction,
-    PactInteractionRequestHeaders,
+    PactInteractionHeaders,
     ParsedMock,
     ParsedMockHeaderCollection,
     ParsedMockInteraction
@@ -18,13 +18,14 @@ const parseRequestPathSegments = (requestPath: string, parentInteraction: Parsed
         }))
         .value();
 
-const parseRequestHeaders = (
-    headers: PactInteractionRequestHeaders,
+const parseHeaders = (
+    headers: PactInteractionHeaders,
+    headerLocation: 'request' | 'response',
     parentInteraction: ParsedMockInteraction
 ): ParsedMockHeaderCollection => {
     return _.reduce(headers, (result: ParsedMockHeaderCollection, headerValue: string, headerName: string) => {
-        result[headerName] = {
-            location: `${parentInteraction.location}.request.headers.${headerName}`,
+        result[headerName.toLowerCase()] = {
+            location: `${parentInteraction.location}.${headerLocation}.headers.${headerName}`,
             parentInteraction,
             value: headerValue
         };
@@ -66,7 +67,7 @@ const parseInteraction = (interaction: PactInteraction, interactionIndex: number
         parentInteraction: parsedInteraction,
         value: interaction.request.body
     };
-    parsedInteraction.requestHeaders = parseRequestHeaders(interaction.request.headers, parsedInteraction);
+    parsedInteraction.requestHeaders = parseHeaders(interaction.request.headers, 'request', parsedInteraction);
     parsedInteraction.requestMethod = {
         location: `${parsedInteraction.location}.request.method`,
         parentInteraction: parsedInteraction,
@@ -83,6 +84,8 @@ const parseInteraction = (interaction: PactInteraction, interactionIndex: number
         parentInteraction: parsedInteraction,
         value: interaction.response.body
     };
+    parsedInteraction.responseHeaders =
+        parseHeaders(interaction.response.headers, 'response', parsedInteraction);
     parsedInteraction.responseStatus = {
         location: `${parsedInteraction.location}.response.status`,
         parentInteraction: parsedInteraction,

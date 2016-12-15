@@ -1,9 +1,9 @@
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
 import result from '../result';
-import {JsonSchema, ParsedMockInteraction, ParsedMockValue, ParsedSpecParameter} from '../types';
+import {JsonSchema, ParsedMockInteraction, ParsedMockValue, ParsedSpecValue} from '../types';
 
-const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
+const toJsonSchema = (parameter: ParsedSpecValueWithType): JsonSchema => {
     const schema: JsonSchema = {
         properties: {
             value: {
@@ -32,9 +32,14 @@ const validateJson = (jsonSchema: JsonSchema, json: any) => {
     return ajv.errors || [];
 };
 
+interface ParsedSpecValueWithType extends ParsedSpecValue<any> {
+    required?: boolean;
+    type: 'string' | 'number' | 'integer' | 'boolean' | 'array';
+}
+
 export default <T>(
     name: string,
-    swaggerValue: ParsedSpecParameter,
+    swaggerValue: ParsedSpecValueWithType,
     pactHeader: ParsedMockValue<T>,
     pactInteraction: ParsedMockInteraction
 ) => {

@@ -1,6 +1,6 @@
 import * as q from 'q';
 
-// Parsed Interfaces
+// Parsed Mock
 
 export interface ParsedMock {
     interactions: ParsedMockInteraction[];
@@ -17,6 +17,7 @@ export interface ParsedMockInteraction extends ParsedMockValue<any> {
     requestPath: ParsedMockValue<string>;
     requestPathSegments: Array<ParsedMockValue<string>>;
     responseBody: ParsedMockValue<any>;
+    responseHeaders: ParsedMockHeaderCollection;
     responseStatus: ParsedMockValue<number>;
     state: string;
 }
@@ -31,6 +32,8 @@ export interface ParsedMockValue<T> {
     value: T;
 }
 
+// Parsed Spec
+
 export interface ParsedSpec {
     operations: ParsedSpecOperation[];
     pathOrUrl: string;
@@ -38,7 +41,7 @@ export interface ParsedSpec {
 }
 
 export interface ParsedSpecOperation extends ParsedSpecValue<any> {
-    headerParameters: ParsedSpecHeaderCollection;
+    headerParameters: ParsedSpecRequestHeaderCollection;
     method: string;
     pathName: string;
     pathNameSegments: ParsedSpecPathNameSegment[];
@@ -46,7 +49,13 @@ export interface ParsedSpecOperation extends ParsedSpecValue<any> {
     responses: ParsedSpecResponses;
 }
 
-export interface ParsedSpecHeaderCollection {
+export interface ParsedSpecPathNameSegment extends ParsedSpecValue<string> {
+    parameter: ParsedSpecParameter;
+    type?: string;
+    validatorType: ParsedSpecPathNameSegmentValidatorType;
+}
+
+export interface ParsedSpecRequestHeaderCollection {
     [headerName: string]: ParsedSpecParameter;
 }
 
@@ -59,13 +68,7 @@ export interface ParsedSpecParameter extends ParsedSpecValue<any> {
     type: ParsedSpecParameterType;
 }
 
-type ParsedSpecParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'file';
-
-export interface ParsedSpecPathNameSegment extends ParsedSpecValue<string> {
-    parameter: ParsedSpecParameter;
-    type?: string;
-    validatorType: ParsedSpecPathNameSegmentValidatorType;
-}
+type ParsedSpecParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 export type ParsedSpecPathNameSegmentValidatorType =
     'boolean' | 'equal' | 'integer' | 'number'| 'string' | 'unsupported';
@@ -76,9 +79,20 @@ export interface ParsedSpecResponses extends ParsedSpecValue<any> {
 }
 
 export interface ParsedSpecResponse extends ParsedSpecValue<any> {
+    headers: ParsedSpecResponseHeaderCollection;
     getFromSchema: (pathToGet: string) => ParsedSpecValue<any>;
     schema: JsonSchema;
 }
+
+export interface ParsedSpecResponseHeaderCollection {
+    [headerName: string]: ParsedSpecResponseHeader;
+}
+
+export interface ParsedSpecResponseHeader extends ParsedSpecValue<any> {
+    type: ParsedSpecResponseHeaderType;
+}
+
+export type ParsedSpecResponseHeaderType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 export interface ParsedSpecValue<T> {
     location: string;
@@ -103,22 +117,24 @@ export interface PactInteraction {
 }
 
 export interface PactInteractionRequest {
-    headers?: PactInteractionRequestHeaders;
+    headers?: PactInteractionHeaders;
     body?: any;
     method: string;
     path: string;
 }
 
-export interface PactInteractionRequestHeaders {
-    [headerName: string]: string;
-}
-
 export interface PactInteractionResponse {
     body?: any;
+    headers?: PactInteractionHeaders;
     status: number;
 }
 
+export interface PactInteractionHeaders {
+    [headerName: string]: string;
+}
+
 // Spec Interfaces - Swagger
+
 export interface Swagger {
     info: SwaggerInfo;
     paths: SwaggerPaths;
@@ -158,7 +174,7 @@ export interface SwaggerParameter {
     type?: SwaggerParameterType;
 }
 
-export type SwaggerParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'file';
+export type SwaggerParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 export interface SwaggerResponses {
     [index: string]: SwaggerResponse;
@@ -166,8 +182,19 @@ export interface SwaggerResponses {
 
 export interface SwaggerResponse {
     description: string;
+    headers?: SwaggerResponseHeaderCollection;
     schema?: JsonSchema;
 }
+
+export interface SwaggerResponseHeaderCollection {
+    [headerName: string]: SwaggerResponseHeader;
+}
+
+export interface SwaggerResponseHeader {
+    type: SwaggerResponseHeaderType;
+}
+
+export type SwaggerResponseHeaderType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 // Other Interfaces
 
