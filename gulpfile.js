@@ -136,8 +136,8 @@ gulp.task('watch-e2e', () => {
 
 gulp.task('default', (callback) => {
     runSequence(
-        'clean-copy-and-compile-build-output',
-        ['lint-commits', 'lint-typescript', 'test'],
+        ['clean-copy-and-compile-build-output', 'lint-commits'],
+        ['lint-typescript', 'test'],
         callback
     );
 });
