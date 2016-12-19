@@ -47,6 +47,8 @@ describe('swagger-pact-validator', () => {
             pact: 'test/e2e/fixtures/working-consumer-pact.json',
             swagger: 'test/e2e/fixtures/provider-spec.json'
         }).then((result) => {
+            expect(result).toEqual(jasmine.stringMatching('0 error'));
+            expect(result).toEqual(jasmine.stringMatching('1 warning'));
             expect(result).toEqual(
                 jasmine.stringMatching('Definition is defined but is not used: #/definitions/unused')
             );
@@ -60,6 +62,10 @@ describe('swagger-pact-validator', () => {
         }).then((error) => {
             expect(error).toEqual(jasmine.stringMatching('Pact file "test/e2e/fixtures/broken-consumer-pact.json" ' +
                 'is not compatible with swagger file "test/e2e/fixtures/provider-spec.json"'));
+
+            expect(error).toEqual(jasmine.stringMatching('6 error'));
+            expect(error).toEqual(jasmine.stringMatching('0 warning'));
+
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[0]\.request\.path/));
             expect(error).toEqual(
                 jasmine.stringMatching('Path or method not defined in swagger file: GET /one/users/2')
