@@ -1,3 +1,14 @@
+<a name="0.0.16"></a>
+## [0.0.16](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.15...v0.0.16) (2016-12-19)
+
+
+### Features
+
+* add counts of errors and warnings detected ([0846030](https://bitbucket.org/atlassian/swagger-pact-validator/commits/0846030)), closes [#38](https://bitbucket.org/atlassian/swagger-pact-validator/issue/38)
+* add validation for response headers ([2218cb3](https://bitbucket.org/atlassian/swagger-pact-validator/commits/2218cb3)), closes [#5](https://bitbucket.org/atlassian/swagger-pact-validator/issue/5)
+
+
+
 <a name="0.0.15"></a>
 ## [0.0.15](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.14...v0.0.15) (2016-12-14)
 

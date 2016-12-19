@@ -8,10 +8,10 @@ const parseRequestPathSegments = (requestPath, parentInteraction) => _(requestPa
     value: requestPathSegment
 }))
     .value();
-const parseRequestHeaders = (headers, parentInteraction) => {
+const parseHeaders = (headers, headerLocation, parentInteraction) => {
     return _.reduce(headers, (result, headerValue, headerName) => {
-        result[headerName] = {
-            location: `${parentInteraction.location}.request.headers.${headerName}`,
+        result[headerName.toLowerCase()] = {
+            location: `${parentInteraction.location}.${headerLocation}.headers.${headerName}`,
             parentInteraction,
             value: headerValue
         };
@@ -46,7 +46,7 @@ const parseInteraction = (interaction, interactionIndex) => {
         parentInteraction: parsedInteraction,
         value: interaction.request.body
     };
-    parsedInteraction.requestHeaders = parseRequestHeaders(interaction.request.headers, parsedInteraction);
+    parsedInteraction.requestHeaders = parseHeaders(interaction.request.headers, 'request', parsedInteraction);
     parsedInteraction.requestMethod = {
         location: `${parsedInteraction.location}.request.method`,
         parentInteraction: parsedInteraction,
@@ -63,6 +63,8 @@ const parseInteraction = (interaction, interactionIndex) => {
         parentInteraction: parsedInteraction,
         value: interaction.response.body
     };
+    parsedInteraction.responseHeaders =
+        parseHeaders(interaction.response.headers, 'response', parsedInteraction);
     parsedInteraction.responseStatus = {
         location: `${parsedInteraction.location}.response.status`,
         parentInteraction: parsedInteraction,

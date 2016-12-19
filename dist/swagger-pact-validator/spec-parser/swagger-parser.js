@@ -90,6 +90,15 @@ const addAdditionalPropertiesFalseToSchema = (schema) => {
     }
     return undefined;
 };
+const parseResponseHeaders = (headers, responseLocation, parentOperation) => _.reduce(headers, (result, header, headerName) => {
+    result[headerName.toLowerCase()] = {
+        location: `${responseLocation}.headers.${headerName}`,
+        parentOperation,
+        type: header.type,
+        value: header
+    };
+    return result;
+}, {});
 const parseResponses = (responses, parentOperation) => {
     const parsedResponses = {
         location: `${parentOperation.location}.responses`,
@@ -108,6 +117,7 @@ const parseResponses = (responses, parentOperation) => {
                 parentOperation,
                 value: _.get(originalSchema, pathToGet)
             }),
+            headers: parseResponseHeaders(response.headers, responseLocation, parentOperation),
             location: responseLocation,
             parentOperation,
             schema: modifiedSchema,
@@ -117,7 +127,7 @@ const parseResponses = (responses, parentOperation) => {
     return parsedResponses;
 };
 const parseHeaderParameters = (headerParameters) => _.reduce(headerParameters, (result, headerParameter) => {
-    result[headerParameter.name] = headerParameter;
+    result[headerParameter.name.toLowerCase()] = headerParameter;
     return result;
 }, {});
 const parseOperationFromPath = (path, pathName) => _(path)

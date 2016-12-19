@@ -1,43 +1,43 @@
 "use strict";
-const Ajv = require("ajv");
 const _ = require("lodash");
 const result_1 = require("../result");
+const validate_mock_value_against_spec_1 = require("./validate-mock-value-against-spec");
 const standardHttpRequestHeaders = [
-    'Accept',
-    'Accept-Charset',
-    'Accept-Datetime',
-    'Accept-Encoding',
-    'Accept-Language',
-    'Authorization',
-    'Cache-Control',
-    'Connection',
-    'Content-Length',
-    'Content-MD5',
-    'Content-Type',
-    'Cookie',
-    'Date',
-    'Expect',
-    'Forwarded',
-    'From',
-    'Host',
-    'If-Match',
-    'If-Modified-Since',
-    'If-None-Match',
-    'If-Range',
-    'If-Unmodified-Since',
-    'Max-Forwards',
-    'Origin',
-    'Pragma',
-    'Proxy-Authorization',
-    'Range',
-    'Referer',
-    'TE',
-    'Upgrade',
-    'User-Agent',
-    'Via',
-    'Warning'
+    'accept',
+    'accept-charset',
+    'accept-datetime',
+    'accept-encoding',
+    'accept-language',
+    'authorization',
+    'cache-control',
+    'connection',
+    'content-length',
+    'content-md5',
+    'content-type',
+    'cookie',
+    'date',
+    'expect',
+    'forwarded',
+    'from',
+    'host',
+    'if-match',
+    'if-modified-since',
+    'if-none-match',
+    'if-range',
+    'if-unmodified-since',
+    'max-forwards',
+    'origin',
+    'pragma',
+    'proxy-authorization',
+    'range',
+    'referer',
+    'te',
+    'upgrade',
+    'user-agent',
+    'via',
+    'warning'
 ];
-const getWarningForUndefinedHeaderOrNone = (headerName, pactHeader, swaggerOperation) => {
+const getWarningForUndefinedHeader = (headerName, pactHeader, swaggerOperation) => {
     if (standardHttpRequestHeaders.indexOf(headerName) > -1) {
         return [];
     }
@@ -48,59 +48,16 @@ const getWarningForUndefinedHeaderOrNone = (headerName, pactHeader, swaggerOpera
             swaggerSegment: swaggerOperation
         })];
 };
-const toJsonSchema = (parameter) => {
-    const schema = {
-        properties: {
-            value: {
-                type: parameter.type
-            }
-        },
-        type: 'object'
-    };
-    if (parameter.required) {
-        schema.required = ['value'];
-    }
-    return schema;
-};
-const validateJson = (jsonSchema, json) => {
-    const ajv = new Ajv({
-        allErrors: true,
-        coerceTypes: true,
-        verbose: true
-    });
-    ajv.validate(jsonSchema, json);
-    return ajv.errors;
-};
-const validateMockHeaderAgainstSpec = (headerName, swaggerHeader, pactHeader, pactInteraction) => {
-    if (swaggerHeader.type === 'array') {
-        return [result_1.default.warning({
-                message: `Validating headers of type "${swaggerHeader.type}" are not supported, ` +
-                    `assuming value is valid: ${headerName}`,
-                pactSegment: pactHeader,
-                source: 'swagger-pact-validation',
-                swaggerSegment: swaggerHeader
-            })];
-    }
-    const swaggerHeaderSchema = toJsonSchema(swaggerHeader);
-    const errors = validateJson(swaggerHeaderSchema, { value: (pactHeader || { value: undefined }).value });
-    return _.map(errors, (error) => result_1.default.error({
-        message: 'Request header is incompatible with the header parameter defined in the swagger file: ' +
-            error.message,
-        pactSegment: pactHeader || pactInteraction,
-        source: 'swagger-pact-validation',
-        swaggerSegment: swaggerHeader
-    }));
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (pactInteraction, swaggerOperation) => {
-    const allHeaders = _.union(_.keys(pactInteraction.requestHeaders), _.keys(swaggerOperation.headerParameters));
-    const validationErrors = _.map(allHeaders, (headerName) => {
-        const pactHeader = pactInteraction.requestHeaders[headerName];
-        const swaggerHeader = swaggerOperation.headerParameters[headerName];
-        if (!swaggerHeader && pactHeader) {
-            return getWarningForUndefinedHeaderOrNone(headerName, pactHeader, swaggerOperation);
-        }
-        return validateMockHeaderAgainstSpec(headerName, swaggerHeader, pactHeader, pactInteraction);
-    });
-    return _.flatten(validationErrors);
-};
+exports.default = (pactInteraction, swaggerOperation) => _(_.keys(pactInteraction.requestHeaders))
+    .union(_.keys(swaggerOperation.headerParameters))
+    .map((headerName) => {
+    const pactHeader = pactInteraction.requestHeaders[headerName];
+    const swaggerHeader = swaggerOperation.headerParameters[headerName];
+    if (!swaggerHeader && pactHeader) {
+        return getWarningForUndefinedHeader(headerName, pactHeader, swaggerOperation);
+    }
+    return validate_mock_value_against_spec_1.default(headerName, swaggerHeader, pactHeader, pactInteraction).results;
+})
+    .flatten()
+    .value();

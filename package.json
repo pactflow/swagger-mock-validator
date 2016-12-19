@@ -1,6 +1,6 @@
 {
   "name": "@atlassian/swagger-pact-validator",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "A CLI tool to validate pact files against swagger specs.",
   "bin": {
     "swagger-pact-validator": "./bin/swagger-pact-validator"

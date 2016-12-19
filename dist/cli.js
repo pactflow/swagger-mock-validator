@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 "use strict";
 const commander = require("commander");
+const _ = require("lodash");
 const util = require("util");
 const swagger_pact_validator_1 = require("./swagger-pact-validator");
 // tslint:disable:no-var-requires
@@ -16,13 +17,19 @@ commander
     swaggerPathOrUrl: swagger
 })
     .then((results) => {
-    if (results && results.warnings.length > 0) {
+    const errors = _.get(results, 'errors', []);
+    const warnings = _.get(results, 'warnings', []);
+    console.log(`${errors.length} error(s)`);
+    console.log(`${warnings.length} warning(s)\n`);
+    if (warnings.length > 0) {
         console.log(`${util.inspect(results, { depth: 4 })}\n`);
     }
 })
     .catch((error) => {
     console.log(`${error.message}\n`);
     if (error.details) {
+        console.log(`${error.details.errors.length} error(s)`);
+        console.log(`${error.details.warnings.length} warning(s)\n`);
         console.log(`${util.inspect(error.details, { depth: 4 })}\n`);
     }
     console.log(error.stack);
