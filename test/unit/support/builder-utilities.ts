@@ -34,34 +34,3 @@ export function setValuesOn (obj: any, values: {[name: string]: any}) {
         copyOfObj
     );
 }
-
-export default {
-    addToArrayOn (obj: any, path: string, value: any) {
-        const copyOfArray = _.cloneDeep(_.get(obj, path, []));
-        const copyOfValue = _.cloneDeep(value);
-
-        copyOfArray.push(copyOfValue);
-
-        return setMutableValueOn(obj, path, copyOfArray);
-    },
-    removeValueOn (obj: any, path: string) {
-        const copyOfObj = _.cloneDeep(obj);
-
-        _.unset(copyOfObj, path);
-
-        return copyOfObj;
-    },
-    setValueOn (obj: any, path: string, value: any) {
-        return setMutableValueOn(obj, path, _.cloneDeep(value));
-    },
-    setValuesOn (obj: any, values: string[]) {
-        const copyOfObj = _.cloneDeep(obj);
-        const copyOfValues = _.cloneDeep(values);
-
-        return _.reduce(
-            copyOfValues,
-            (updatedCopyOfObj, value, path) => _.set(updatedCopyOfObj, path, value),
-            copyOfObj
-        );
-    }
-};

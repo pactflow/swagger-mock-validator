@@ -21,27 +21,19 @@ interface TypeValidators {
         (pactPathSegment: ParsedMockValue<string>, swaggerPathSegment: ParsedSpecPathNameSegment) => MatchResult;
 }
 
-const validateMockValueAgainstPathNameSegment = (
-    pactPathSegment: ParsedMockValue<string>,
-    swaggerPathSegment: ParsedSpecPathNameSegment
-) => validateMockValueAgainstSpec(
-    swaggerPathSegment.parameter.name,
-    swaggerPathSegment.parameter,
-    pactPathSegment,
-    pactPathSegment.parentInteraction
-);
-
 const typeValidators: TypeValidators = {
-    boolean: validateMockValueAgainstPathNameSegment,
     equal: (pactPathSegment: ParsedMockValue<string>, swaggerPathNameSegment: ParsedSpecPathNameSegment) => {
         const match = swaggerPathNameSegment.value === pactPathSegment.value;
 
         return {match, results: []};
     },
-    integer: validateMockValueAgainstPathNameSegment,
-    number: validateMockValueAgainstPathNameSegment,
-    string: validateMockValueAgainstPathNameSegment,
-    unsupported: validateMockValueAgainstPathNameSegment
+    jsonSchema: (pactPathSegment: ParsedMockValue<string>, swaggerPathSegment: ParsedSpecPathNameSegment) =>
+        validateMockValueAgainstSpec(
+            swaggerPathSegment.parameter.name,
+            swaggerPathSegment.parameter,
+            pactPathSegment,
+            pactPathSegment.parentInteraction
+        )
 };
 
 const doInteractionAndOperationMatchPaths = (

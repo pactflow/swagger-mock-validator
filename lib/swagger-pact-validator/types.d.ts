@@ -41,37 +41,24 @@ export interface ParsedSpec {
 }
 
 export interface ParsedSpecOperation extends ParsedSpecValue<any> {
-    headerParameters: ParsedSpecRequestHeaderCollection;
     method: string;
     pathName: string;
     pathNameSegments: ParsedSpecPathNameSegment[];
-    requestBodyParameter: ParsedSpecParameter;
+    requestBodyParameter?: ParsedSpecBody;
+    requestHeaderParameters: ParsedSpecHeaderCollection;
     responses: ParsedSpecResponses;
 }
 
 export interface ParsedSpecPathNameSegment extends ParsedSpecValue<string> {
     parameter: ParsedSpecParameter;
-    type?: string;
     validatorType: ParsedSpecPathNameSegmentValidatorType;
 }
 
-export interface ParsedSpecRequestHeaderCollection {
+export type ParsedSpecPathNameSegmentValidatorType = 'equal' | 'jsonSchema';
+
+export interface ParsedSpecHeaderCollection {
     [headerName: string]: ParsedSpecParameter;
 }
-
-export interface ParsedSpecParameter extends ParsedSpecValue<any> {
-    getFromSchema: (pathToGet: string) => ParsedSpecValue<any>;
-    in: string;
-    name: string;
-    required?: boolean;
-    schema?: JsonSchema;
-    type: ParsedSpecParameterType;
-}
-
-type ParsedSpecParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
-
-export type ParsedSpecPathNameSegmentValidatorType =
-    'boolean' | 'equal' | 'integer' | 'number'| 'string' | 'unsupported';
 
 export interface ParsedSpecResponses extends ParsedSpecValue<any> {
     [statusCode: number]: ParsedSpecResponse;
@@ -79,20 +66,29 @@ export interface ParsedSpecResponses extends ParsedSpecValue<any> {
 }
 
 export interface ParsedSpecResponse extends ParsedSpecValue<any> {
-    headers: ParsedSpecResponseHeaderCollection;
+    headers: ParsedSpecHeaderCollection;
     getFromSchema: (pathToGet: string) => ParsedSpecValue<any>;
     schema: JsonSchema;
 }
 
-export interface ParsedSpecResponseHeaderCollection {
-    [headerName: string]: ParsedSpecResponseHeader;
+export interface ParsedSpecParameter extends ParsedSpecValue<any> {
+    format: ParsedSpecParameterFormat;
+    name: string;
+    required?: boolean;
+    type: ParsedSpecParameterType;
 }
 
-export interface ParsedSpecResponseHeader extends ParsedSpecValue<any> {
-    type: ParsedSpecResponseHeaderType;
+export interface ParsedSpecBody {
+    getFromSchema: (pathToGet: string) => ParsedSpecValue<any>;
+    name: string;
+    required?: boolean;
+    schema: JsonSchema;
 }
 
-export type ParsedSpecResponseHeaderType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
+export type ParsedSpecParameterFormat =
+    'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' | 'password';
+
+export type ParsedSpecParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 export interface ParsedSpecValue<T> {
     location: string;
@@ -166,15 +162,55 @@ export interface SwaggerOperation {
     responses: SwaggerResponses;
 }
 
-export interface SwaggerParameter {
-    in: string;
+export type SwaggerParameter = SwaggerPathParameter | SwaggerQueryParameter |
+    SwaggerRequestHeaderParameter | SwaggerBodyParameter | SwaggerFormParameter;
+
+export interface SwaggerPathParameter {
+    format?: SwaggerParameterFormat;
+    in: 'path';
+    items?: JsonSchema;
     name: string;
-    required?: boolean;
-    schema?: JsonSchema;
-    type?: SwaggerParameterType;
+    required: true;
+    type: SwaggerParameterType;
 }
 
+export interface SwaggerQueryParameter {
+    format?: SwaggerParameterFormat;
+    in: 'query';
+    name: string;
+    required?: boolean;
+    type: SwaggerParameterType;
+}
+
+export interface SwaggerRequestHeaderParameter {
+    format?: SwaggerParameterFormat;
+    in: 'header';
+    name: string;
+    required?: boolean;
+    type: SwaggerParameterType;
+}
+
+export interface SwaggerBodyParameter {
+    in: 'body';
+    name: string;
+    required?: boolean;
+    schema: JsonSchema;
+}
+
+export interface SwaggerFormParameter {
+    format?: SwaggerParameterFormat;
+    in: 'formData';
+    name: string;
+    required?: boolean;
+    type: SwaggerFormParameterType;
+}
+
+export type SwaggerParameterFormat =
+    'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' | 'password';
+
 export type SwaggerParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
+
+export type SwaggerFormParameterType = SwaggerParameterType | 'file';
 
 export interface SwaggerResponses {
     [index: string]: SwaggerResponse;
@@ -191,10 +227,9 @@ export interface SwaggerResponseHeaderCollection {
 }
 
 export interface SwaggerResponseHeader {
-    type: SwaggerResponseHeaderType;
+    format?: SwaggerParameterFormat;
+    type: SwaggerParameterType;
 }
-
-export type SwaggerResponseHeaderType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 // Other Interfaces
 
@@ -212,13 +247,16 @@ export interface JsonLoaderFunction {
 
 export interface JsonSchema {
     additionalProperties?: boolean;
+    format?: JsonSchemaFormat;
     items?: JsonSchema;
     properties?: JsonSchemaProperties;
     required?: string[];
     type: JsonSchemaType;
 }
 
-export type JsonSchemaType = 'null' | 'boolean' | 'object' | 'array' | 'number' | 'string';
+export type JsonSchemaFormat = 'date-time' | 'email' | 'hostname' | 'ipv4' | 'ipv6' | 'uri';
+
+export type JsonSchemaType = 'null' | 'boolean' | 'object' | 'array' | 'number' | 'string' | 'integer';
 
 export interface JsonSchemaProperties {
     [name: string]: JsonSchema;

@@ -1,20 +1,35 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import customJasmineMatchers from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder, parameterBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
+import {
+    operationBuilder,
+    PathBuilder,
+    pathBuilder,
+    pathParameterBuilder,
+    swaggerBuilder
+} from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
 
 describe('swagger-pact-validator request path', () => {
     const expectedFailedValidationError =
         new Error('Pact file "pact.json" is not compatible with swagger file "swagger.json"');
 
-    const invokeSwaggerPactValidator = swaggerPactValidatorLoader.invoke;
+    const defaultSwaggerPathBuilder = pathBuilder.withGetOperation(operationBuilder);
 
-    const userIdNumberPathParameterBuilder = parameterBuilder.withNumberInPathNamed('userId');
+    const invokeValidatorWithPath = (swaggerPath: PathBuilder, pactValue: string) => {
+        const pactFile = pactBuilder
+            .withInteraction(interactionBuilder
+                .withDescription('interaction description')
+                .withRequestPath(`/${pactValue}`)
+            )
+            .build();
 
-    const userIdIntegerPathParameterBuilder = parameterBuilder.withIntegerInPathNamed('userId');
+        const swaggerFile = swaggerBuilder
+            .withPath('/{value}', swaggerPath)
+            .build();
 
-    const userIdBooleanPathParameterBuilder = parameterBuilder.withBooleanInPathNamed('userId');
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+    };
 
     beforeEach(() => {
         jasmine.addMatchers(customJasmineMatchers);
@@ -29,7 +44,7 @@ describe('swagger-pact-validator request path', () => {
             .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
             .build();
 
-        return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
             (expect(result) as any).toContainNoWarnings();
         });
     }));
@@ -44,7 +59,7 @@ describe('swagger-pact-validator request path', () => {
 
         const swaggerFile = swaggerBuilder.build();
 
-        const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
@@ -69,7 +84,7 @@ describe('swagger-pact-validator request path', () => {
     }));
 
     describe('partial matching', () => {
-        it('should return the error when a pact path partialy matches a shorter swagger spec', willResolve(() => {
+        it('should return the error when a pact path partially matches a shorter swagger spec', willResolve(() => {
             const pactFile = pactBuilder
                 .withInteraction(interactionBuilder
                     .withDescription('interaction description')
@@ -81,7 +96,7 @@ describe('swagger-pact-validator request path', () => {
                 .withPath('/almost', pathBuilder)
                 .build();
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -117,7 +132,7 @@ describe('swagger-pact-validator request path', () => {
                 .withPath('/almost/matches', pathBuilder)
                 .build();
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -150,13 +165,13 @@ describe('swagger-pact-validator request path', () => {
                 .build();
 
             const swaggerPathBuilder = pathBuilder
-                .withGetOperation(operationBuilder.withParameter(userIdNumberPathParameterBuilder));
+                .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')));
 
             const swaggerFile = swaggerBuilder
                 .withPath('/almost/matches/{userId}', swaggerPathBuilder)
                 .build();
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -187,11 +202,11 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', pathBuilder
-                    .withGetOperation(operationBuilder.withParameter(userIdNumberPathParameterBuilder))
+                    .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                 )
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainNoWarnings();
             });
         }));
@@ -203,11 +218,11 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', pathBuilder
-                    .withPostOperation(operationBuilder.withParameter(userIdNumberPathParameterBuilder))
+                    .withPostOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                 )
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainNoWarnings();
             });
         }));
@@ -217,12 +232,12 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', pathBuilder
-                    .withParameter(userIdNumberPathParameterBuilder)
+                    .withParameter(pathParameterBuilder.withNumberNamed('userId'))
                     .withGetOperation(operationBuilder)
                 )
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainNoWarnings();
             });
         }));
@@ -235,10 +250,10 @@ describe('swagger-pact-validator request path', () => {
                     .withParameterReference('userId')
                     .withGetOperation(operationBuilder)
                 )
-                .withParameter('userId', userIdNumberPathParameterBuilder)
+                .withParameter('userId', pathParameterBuilder.withNumberNamed('userId'))
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainNoWarnings();
             });
         }));
@@ -248,12 +263,12 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', pathBuilder
-                    .withGetOperation(operationBuilder.withParameter(userIdNumberPathParameterBuilder))
-                    .withParameter(userIdBooleanPathParameterBuilder)
+                    .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
+                    .withParameter(pathParameterBuilder.withBooleanNamed('userId'))
                 )
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainNoWarnings();
             });
         }));
@@ -263,304 +278,212 @@ describe('swagger-pact-validator request path', () => {
 
             const swaggerFile = swaggerBuilder
                 .withPath('/users/{userId}', pathBuilder
-                    .withPostOperation(operationBuilder.withParameter(userIdBooleanPathParameterBuilder))
+                    .withPostOperation(operationBuilder.withParameter(pathParameterBuilder.withBooleanNamed('userId')))
                     .withGetOperation(operationBuilder)
-                    .withParameter(userIdNumberPathParameterBuilder)
+                    .withParameter(pathParameterBuilder.withNumberNamed('userId'))
                 )
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainNoWarnings();
             });
         }));
     });
 
-    describe('number parameters', () => {
-        const swaggerPathWithNumberParameterBuilder = pathBuilder
-            .withParameter(userIdNumberPathParameterBuilder)
-            .withGetOperation(operationBuilder);
+    describe('parameter types', () => {
+        describe('number parameters', () => {
+            const swaggerPathWithNumberParameterBuilder = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withNumberNamed('value'));
 
-        const swaggerWithNumberParameterInPathBuilder = swaggerBuilder
-            .withPath('/api/{userId}/comments', swaggerPathWithNumberParameterBuilder);
+            it('should pass when the pact path matches a number param defined in the swagger', willResolve(() =>
+                invokeValidatorWithPath(swaggerPathWithNumberParameterBuilder, '1.1').then((result) => {
+                    (expect(result) as any).toContainNoWarnings();
+                })
+            ));
 
-        it('should pass when the pact path matches a number param defined in the swagger', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder.withRequestPath('/api/1.1/comments'))
-                .build();
+            it('should return the error when a pact path has an incorrect type as a number param', willResolve(() => {
+                const result = invokeValidatorWithPath(swaggerPathWithNumberParameterBuilder, 'foo');
 
-            const swaggerFile = swaggerWithNumberParameterInPathBuilder.build();
+                return expectToReject(result).then((error) => {
+                    expect(error).toEqual(expectedFailedValidationError);
+                    (expect(error.details) as any).toContainErrors([{
+                        message: 'Path or method not defined in swagger file: GET /foo',
+                        pactDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            value: '/foo'
+                        },
+                        source: 'swagger-pact-validation',
+                        swaggerDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            value: {'/{value}': swaggerPathWithNumberParameterBuilder.build()}
+                        },
+                        type: 'error'
+                    }]);
+                });
+            }));
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
-                (expect(result) as any).toContainNoWarnings();
-            });
-        }));
+            it('should return the error when a pact path has no value as a number param', willResolve(() => {
+                const result = invokeValidatorWithPath(swaggerPathWithNumberParameterBuilder, '');
 
-        it('should return the error when a pact path has an incorrect type as a number param', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/api/foo/comments')
-                )
-                .build();
+                return expectToReject(result).then((error) => {
+                    expect(error).toEqual(expectedFailedValidationError);
+                    (expect(error.details) as any).toContainErrors([{
+                        message: 'Path or method not defined in swagger file: GET /',
+                        pactDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            value: '/'
+                        },
+                        source: 'swagger-pact-validation',
+                        swaggerDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            value: {'/{value}': swaggerPathWithNumberParameterBuilder.build()}
+                        },
+                        type: 'error'
+                    }]);
+                });
+            }));
+        });
 
-            const swaggerFile = swaggerWithNumberParameterInPathBuilder.build();
+        describe('boolean parameters', () => {
+            const swaggerPathWithBooleanParameterBuilder = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withBooleanNamed('value'));
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            it('should pass when the pact path matches a boolean param defined in the swagger', willResolve(() =>
+                invokeValidatorWithPath(swaggerPathWithBooleanParameterBuilder, 'true').then((result) => {
+                    (expect(result) as any).toContainNoWarnings();
+                })
+            ));
 
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET /api/foo/comments',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/api/foo/comments'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/api/{userId}/comments': swaggerPathWithNumberParameterBuilder.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
+            it('should return the error when a pact has an incorrect type as a boolean param', willResolve(() => {
+                const result = invokeValidatorWithPath(swaggerPathWithBooleanParameterBuilder, 'on');
 
-        it('should return the error when a pact path has no value as a number param', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/api//comments')
-                )
-                .build();
+                return expectToReject(result).then((error) => {
+                    expect(error).toEqual(expectedFailedValidationError);
+                    (expect(error.details) as any).toContainErrors([{
+                        message: 'Path or method not defined in swagger file: GET /on',
+                        pactDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            value: '/on'
+                        },
+                        source: 'swagger-pact-validation',
+                        swaggerDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            value: {'/{value}': swaggerPathWithBooleanParameterBuilder.build()}
+                        },
+                        type: 'error'
+                    }]);
+                });
+            }));
+        });
 
-            const swaggerFile = swaggerWithNumberParameterInPathBuilder.build();
+        describe('string parameters', () => {
+            const swaggerPathWithStringParameterBuilder = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withStringNamed('value'));
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            it('should pass when the pact path matches a string param defined in the swagger', willResolve(() =>
+                invokeValidatorWithPath(swaggerPathWithStringParameterBuilder, 'jira').then((result) => {
+                    (expect(result) as any).toContainNoWarnings();
+                })
+            ));
 
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET /api//comments',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/api//comments'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/api/{userId}/comments': swaggerPathWithNumberParameterBuilder.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
-    });
+            it('should return the error when a pact path has no value as a string param', willResolve(() => {
+                const result = invokeValidatorWithPath(swaggerPathWithStringParameterBuilder, '');
 
-    describe('boolean parameters', () => {
-        const swaggerPathWithBooleanParameterBuilder = pathBuilder
-            .withParameter(parameterBuilder.withBooleanInPathNamed('enabled'))
-            .withGetOperation(operationBuilder);
+                return expectToReject(result).then((error) => {
+                    expect(error).toEqual(expectedFailedValidationError);
+                    (expect(error.details) as any).toContainErrors([{
+                        message: 'Path or method not defined in swagger file: GET /',
+                        pactDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            value: '/'
+                        },
+                        source: 'swagger-pact-validation',
+                        swaggerDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            value: {'/{value}': swaggerPathWithStringParameterBuilder.build()}
+                        },
+                        type: 'error'
+                    }]);
+                });
+            }));
+        });
 
-        const swaggerWithBooleanParameterInPathBuilder = swaggerBuilder
-            .withPath('/jobs/renewal/enabled/{enabled}', swaggerPathWithBooleanParameterBuilder);
+        describe('integer parameters', () => {
+            const swaggerPathWithIntegerParameterBuilder = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withIntegerNamed('value'));
 
-        it('should pass when the pact path matches a boolean param defined in the swagger', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder.withRequestPath('/jobs/renewal/enabled/true'))
-                .build();
+            it('should pass when the pact path matches a integer param defined in the swagger', willResolve(() =>
+                invokeValidatorWithPath(swaggerPathWithIntegerParameterBuilder, '1').then((result) => {
+                    (expect(result) as any).toContainNoWarnings();
+                })
+            ));
 
-            const swaggerFile = swaggerWithBooleanParameterInPathBuilder.build();
+            it('should return the error when a pact path has an incorrect type as a integer param', willResolve(() => {
+                const result = invokeValidatorWithPath(swaggerPathWithIntegerParameterBuilder, '1.1');
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
-                (expect(result) as any).toContainNoWarnings();
-            });
-        }));
+                return expectToReject(result).then((error) => {
+                    expect(error).toEqual(expectedFailedValidationError);
+                    (expect(error.details) as any).toContainErrors([{
+                        message: 'Path or method not defined in swagger file: GET /1.1',
+                        pactDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            value: '/1.1'
+                        },
+                        source: 'swagger-pact-validation',
+                        swaggerDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            value: {'/{value}': swaggerPathWithIntegerParameterBuilder.build()}
+                        },
+                        type: 'error'
+                    }]);
+                });
+            }));
 
-        it('should return the error when a pact has an incorrect type as a boolean param', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/jobs/renewal/enabled/on')
-                )
-                .build();
+            it('should return the error when a pact path has no value as a integer param', willResolve(() => {
+                const result = invokeValidatorWithPath(swaggerPathWithIntegerParameterBuilder, '');
 
-            const swaggerFile = swaggerWithBooleanParameterInPathBuilder.build();
-
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET /jobs/renewal/enabled/on',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/jobs/renewal/enabled/on'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/jobs/renewal/enabled/{enabled}': swaggerPathWithBooleanParameterBuilder.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
-    });
-
-    describe('string parameters', () => {
-        const swaggerPathWithStringParameterBuilder = pathBuilder
-                .withParameter(parameterBuilder.withStringInPathNamed('productName'))
-                .withGetOperation(operationBuilder);
-
-        const swaggerWithStringParameterInPathBuilder = swaggerBuilder
-            .withPath('/products/{productName}', swaggerPathWithStringParameterBuilder);
-
-        it('should pass when the pact path matches a string param defined in the swagger', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder.withRequestPath('/products/jira'))
-                .build();
-
-            const swaggerFile = swaggerWithStringParameterInPathBuilder.build();
-
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
-                (expect(result) as any).toContainNoWarnings();
-            });
-        }));
-
-        it('should return the error when a pact path has no value as a string param', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/products/')
-                )
-                .build();
-
-            const swaggerFile = swaggerWithStringParameterInPathBuilder.build();
-
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET /products/',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/products/'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/products/{productName}': swaggerPathWithStringParameterBuilder.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
-    });
-
-    describe('integer parameters', () => {
-        const swaggerPathWithIntegerParameterBuilder = pathBuilder
-            .withParameter(userIdIntegerPathParameterBuilder)
-            .withGetOperation(operationBuilder);
-
-        const swaggerWithIntegerParameterInPathBuilder = swaggerBuilder
-            .withPath('/api/{userId}/comments', swaggerPathWithIntegerParameterBuilder);
-
-        it('should pass when the pact path matches a integer param defined in the swagger', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder.withRequestPath('/api/1/comments'))
-                .build();
-
-            const swaggerFile = swaggerWithIntegerParameterInPathBuilder.build();
-
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
-                (expect(result) as any).toContainNoWarnings();
-            });
-        }));
-
-        it('should return the error when a pact path has an incorrect type as a integer param', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/api/1.1/comments')
-                )
-                .build();
-
-            const swaggerFile = swaggerWithIntegerParameterInPathBuilder.build();
-
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET /api/1.1/comments',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/api/1.1/comments'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/api/{userId}/comments': swaggerPathWithIntegerParameterBuilder.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
-
-        it('should return the error when a pact path has no value as a integer param', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/api//comments')
-                )
-                .build();
-
-            const swaggerFile = swaggerWithIntegerParameterInPathBuilder.build();
-
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET /api//comments',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/api//comments'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/api/{userId}/comments': swaggerPathWithIntegerParameterBuilder.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
+                return expectToReject(result).then((error) => {
+                    expect(error).toEqual(expectedFailedValidationError);
+                    (expect(error.details) as any).toContainErrors([{
+                        message: 'Path or method not defined in swagger file: GET /',
+                        pactDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            value: '/'
+                        },
+                        source: 'swagger-pact-validation',
+                        swaggerDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            value: {'/{value}': swaggerPathWithIntegerParameterBuilder.build()}
+                        },
+                        type: 'error'
+                    }]);
+                });
+            }));
+        });
     });
 
     describe('unsupported types', () => {
@@ -571,7 +494,7 @@ describe('swagger-pact-validator request path', () => {
                     .withRequestPath('/api/1,2,3/comments'))
                 .build();
 
-            const userIdsParameter = parameterBuilder.withArrayOfNumberInPathNamed('userIds');
+            const userIdsParameter = pathParameterBuilder.withArrayOfNumberNamed('userIds');
 
             const swaggerFile = swaggerBuilder
                 .withPath('/api/{userIds}/comments', pathBuilder
@@ -580,7 +503,7 @@ describe('swagger-pact-validator request path', () => {
                 )
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainWarnings([{
                     message:
                         'Validating parameters of type "array" are not supported, assuming value is valid: userIds',
@@ -609,9 +532,9 @@ describe('swagger-pact-validator request path', () => {
                     .withRequestPath('/1,2,3/users/4,5,6'))
                 .build();
 
-            const accountIdsParameter = parameterBuilder.withArrayOfNumberInPathNamed('accountIds');
+            const accountIdsParameter = pathParameterBuilder.withArrayOfNumberNamed('accountIds');
 
-            const userIdsParameter = parameterBuilder.withArrayOfNumberInPathNamed('userIds');
+            const userIdsParameter = pathParameterBuilder.withArrayOfNumberNamed('userIds');
 
             const swaggerFile = swaggerBuilder
                 .withPath('/{accountIds}/users/{userIds}', pathBuilder
@@ -621,7 +544,7 @@ describe('swagger-pact-validator request path', () => {
                 )
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainWarnings([{
                     message:
                         'Validating parameters of type "array" are not supported, assuming value is valid: accountIds',
@@ -667,7 +590,7 @@ describe('swagger-pact-validator request path', () => {
                     .withRequestPath('/api/1,2,3/comments'))
                 .build();
 
-            const userIdsParameter = parameterBuilder.withArrayOfNumberInPathNamed('userIds');
+            const userIdsParameter = pathParameterBuilder.withArrayOfNumberNamed('userIds');
 
             const swaggerFile = swaggerBuilder
                 .withPath('/api/{userIds}/comments', pathBuilder
@@ -675,7 +598,7 @@ describe('swagger-pact-validator request path', () => {
                 )
                 .build();
 
-            return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
                 (expect(result) as any).toContainWarnings([{
                     message:
                         'Validating parameters of type "array" are not supported, assuming value is valid: userIds',
@@ -707,15 +630,15 @@ describe('swagger-pact-validator request path', () => {
                 )
                 .build();
 
-            const accountIdParameter = parameterBuilder.withNumberInPathNamed('accountId');
+            const accountIdParameter = pathParameterBuilder.withNumberNamed('accountId');
             const getUserIdPath = pathBuilder
-                .withGetOperation(operationBuilder.withParameter(userIdNumberPathParameterBuilder))
+                .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                 .withParameter(accountIdParameter);
             const swaggerFile = swaggerBuilder
                 .withPath('/{accountId}/users/{userId}', getUserIdPath)
                 .build();
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -753,15 +676,15 @@ describe('swagger-pact-validator request path', () => {
                 )
                 .build();
 
-            const accountIdParameter = parameterBuilder.withNumberInPathNamed('accountId');
+            const accountIdParameter = pathParameterBuilder.withNumberNamed('accountId');
             const getUserIdPath = pathBuilder
-                .withGetOperation(operationBuilder.withParameter(userIdNumberPathParameterBuilder))
+                .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                 .withParameter(accountIdParameter);
             const swaggerFile = swaggerBuilder
                 .withPath('/{accountId}/users/{userId}', getUserIdPath)
                 .build();
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -817,7 +740,7 @@ describe('swagger-pact-validator request path', () => {
                 .withPath('/users/{userId', getUserPath)
                 .build();
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -855,7 +778,7 @@ describe('swagger-pact-validator request path', () => {
                 .withPath('/users/userId}', getUserPath)
                 .build();
 
-            const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);

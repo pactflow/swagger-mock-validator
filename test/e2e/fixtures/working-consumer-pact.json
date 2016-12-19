@@ -73,6 +73,18 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "format valid test",
+        "request": {
+            "headers": {
+                "x-client-id": "12345"
+            },
+            "method": "get",
+            "path": "/1/users/2"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

@@ -245,7 +245,7 @@ describe('swagger-pact-validator response body', () => {
         });
     }));
 
-    it('should pass when a pact resposne body is missing a required property within an array', willResolve(() => {
+    it('should pass when a pact response body is missing a required property within an array', willResolve(() => {
         const pactResponseBody = [{customer: {first: 'Bob'}}];
         const swaggerBodySchema = schemaBuilder
             .withTypeArray(schemaBuilder
@@ -335,7 +335,7 @@ describe('swagger-pact-validator response body', () => {
         });
     }));
 
-    it('should pass when a pact resposne body matches a default schema', willResolve(() => {
+    it('should pass when a pact response body matches a default schema', willResolve(() => {
         const pactFile = pactBuilder
             .withInteraction(interactionBuilder
                 .withDescription('interaction description')

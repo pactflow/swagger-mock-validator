@@ -61,6 +61,11 @@
                     "name": "x-version",
                     "in": "header",
                     "type": "number"
+                }, {
+                    "name": "x-client-id",
+                    "in": "header",
+                    "type": "integer",
+                    "format": "int64"
                 }],
                 "responses": {
                     "200": {

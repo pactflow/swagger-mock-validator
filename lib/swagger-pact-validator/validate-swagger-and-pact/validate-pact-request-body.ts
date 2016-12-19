@@ -1,22 +1,11 @@
-import * as Ajv from 'ajv';
 import * as _ from 'lodash';
 import result from '../result';
-import {JsonSchema, ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation, ParsedSpecParameter} from '../types';
-
-const validateJson = (jsonSchema: JsonSchema, json: any) => {
-    const ajv = new Ajv({
-        allErrors: true,
-        verbose: true
-    });
-
-    ajv.validate(jsonSchema, json);
-
-    return ajv.errors;
-};
+import {ParsedMockInteraction, ParsedMockValue, ParsedSpecBody, ParsedSpecOperation} from '../types';
+import validateJson from './validate-json';
 
 const validateRequestBodyAgainstSchema = (
     pactRequestBody: ParsedMockValue<any>,
-    requestBodyParameter: ParsedSpecParameter
+    requestBodyParameter: ParsedSpecBody
 ) => {
     const validationErrors = validateJson(requestBodyParameter.schema, pactRequestBody.value);
 

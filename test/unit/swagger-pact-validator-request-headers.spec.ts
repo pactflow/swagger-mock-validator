@@ -2,8 +2,13 @@ import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import * as _ from 'lodash';
 import customJasmineMatchers from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder, parameterBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
-import {ParameterBuilder} from './support/swagger-builder/parameter-builder';
+import {
+    operationBuilder,
+    parameterBuilder,
+    ParameterBuilder,
+    pathBuilder,
+    swaggerBuilder
+} from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
 
 describe('swagger-pact-validator request headers', () => {

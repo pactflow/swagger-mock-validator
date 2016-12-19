@@ -8,7 +8,7 @@ export interface ParameterBuilder {
 }
 
 const createParameterBuilder = (parameter: SwaggerParameter) => {
-    const builder = {
+    return {
         build: () => cloneDeep(parameter),
         withArrayOfNumberInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
             in: 'path',
@@ -22,6 +22,20 @@ const createParameterBuilder = (parameter: SwaggerParameter) => {
             name,
             required: true,
             type: 'boolean'
+        })),
+        withDateInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
+            format: 'date',
+            in: 'path',
+            name,
+            required: true,
+            type: 'string'
+        })),
+        withDateTimeInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
+            format: 'date',
+            in: 'path',
+            name,
+            required: true,
+            type: 'string'
         })),
         withIntegerInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
             in: 'path',
@@ -75,13 +89,11 @@ const createParameterBuilder = (parameter: SwaggerParameter) => {
             type: 'string'
         }))
     };
-
-    return builder;
 };
 
 export default createParameterBuilder({
     in: 'path',
     name: 'default-name',
-    required: false,
+    required: true,
     type: 'number'
 });

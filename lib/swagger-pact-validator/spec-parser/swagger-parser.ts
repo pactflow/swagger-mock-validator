@@ -2,83 +2,58 @@ import * as _ from 'lodash';
 import {
     JsonSchema,
     ParsedSpec,
+    ParsedSpecBody,
+    ParsedSpecHeaderCollection,
     ParsedSpecOperation,
     ParsedSpecParameter,
     ParsedSpecPathNameSegment,
-    ParsedSpecPathNameSegmentValidatorType,
-    ParsedSpecRequestHeaderCollection,
-    ParsedSpecResponseHeaderCollection,
     ParsedSpecResponses,
     ParsedSpecValue,
     Swagger,
+    SwaggerBodyParameter,
     SwaggerOperation,
     SwaggerParameter,
     SwaggerPath,
-    SwaggerPaths,
+    SwaggerPathParameter,
+    SwaggerQueryParameter,
+    SwaggerRequestHeaderParameter,
     SwaggerResponseHeader,
     SwaggerResponseHeaderCollection,
     SwaggerResponses
 } from '../types';
 
-const parseParameters = (
+const toParsedSpecValue = (
     parameters: SwaggerParameter[],
     parentLocation: string,
     parentOperation: ParsedSpecOperation
-) => {
-    return _.map(parameters, (parameter, parameterIndex) => {
-        const parameterLocation = `${parentLocation}.parameters[${parameterIndex}]`;
-
-        return {
-            getFromSchema: (pathToGet: string): ParsedSpecValue<any> => ({
-                location: `${parameterLocation}.schema.${pathToGet}`,
-                parentOperation,
-                value: _.get(parameter.schema, pathToGet)
-            }),
-            in: parameter.in,
-            location: parameterLocation,
-            name: parameter.name,
-            parentOperation,
-            required: parameter.required,
-            schema: parameter.schema,
-            type: parameter.type,
-            value: parameter
-        };
-    });
-};
+) => _.map(parameters, (parameter, index) => ({
+    location: `${parentLocation}.parameters[${index}]`,
+    parentOperation,
+    value: parameter
+}));
 
 const mergePathAndOperationParameters = (
-    pathParameters: ParsedSpecParameter[],
-    operationParameters: ParsedSpecParameter[]
+    pathParameters: Array<ParsedSpecValue<SwaggerParameter>>,
+    operationParameters: Array<ParsedSpecValue<SwaggerParameter>>
 ) => {
     const mergedParameters = _.clone(pathParameters);
 
-    _.each(operationParameters, (parameter) => {
+    _.each(operationParameters, (operationParameter) => {
         const duplicateIndex = _.findIndex(mergedParameters, {
-            in: parameter.in,
-            name: parameter.name
+            value: {
+                in: operationParameter.value.in,
+                name: operationParameter.value.name
+            }
         });
 
         if (duplicateIndex > -1) {
-            mergedParameters[duplicateIndex] = parameter;
+            mergedParameters[duplicateIndex] = operationParameter;
         } else {
-            mergedParameters.push(parameter);
+            mergedParameters.push(operationParameter);
         }
     });
 
     return mergedParameters;
-};
-
-const supportedTypes = ['boolean', 'integer', 'number', 'string'];
-
-const findMatchingPathParameter = (pathParameters: ParsedSpecParameter[], pathNameSegmentValue: string) =>
-    _.find(pathParameters, (pathParameter) => pathParameter.name === pathNameSegmentValue);
-
-const getSwaggerPathNameSegmentType = (pathParameter: ParsedSpecParameter): ParsedSpecPathNameSegmentValidatorType => {
-    if (supportedTypes.indexOf(pathParameter.type) > -1) {
-        return pathParameter.type as ParsedSpecPathNameSegmentValidatorType;
-    }
-
-    return 'unsupported';
 };
 
 const parsePathNameSegments = (
@@ -94,11 +69,9 @@ const parsePathNameSegments = (
 
             if (isParameter) {
                 const pathNameSegmentValue = pathNameSegment.substring(1, pathNameSegment.length - 1);
-                const matchingPathParameter = findMatchingPathParameter(pathParameters, pathNameSegmentValue);
 
-                parsedPathNameSegment.parameter = matchingPathParameter;
-                parsedPathNameSegment.type = _.get<string>(matchingPathParameter, 'type');
-                parsedPathNameSegment.validatorType = getSwaggerPathNameSegmentType(matchingPathParameter);
+                parsedPathNameSegment.parameter = _.find(pathParameters, {name: pathNameSegmentValue});
+                parsedPathNameSegment.validatorType = 'jsonSchema';
                 parsedPathNameSegment.value = pathNameSegmentValue;
             } else {
                 parsedPathNameSegment.validatorType = 'equal';
@@ -144,16 +117,19 @@ const parseResponseHeaders = (
     headers: SwaggerResponseHeaderCollection,
     responseLocation: string,
     parentOperation: ParsedSpecOperation
-) => _.reduce<SwaggerResponseHeader, ParsedSpecResponseHeaderCollection>(headers, (result, header, headerName) => {
-    result[headerName.toLowerCase()] = {
-        location: `${responseLocation}.headers.${headerName}`,
-        parentOperation,
-        type: header.type,
-        value: header
-    };
+): ParsedSpecHeaderCollection =>
+    _.reduce<SwaggerResponseHeader, ParsedSpecHeaderCollection>(headers, (result, header, headerName) => {
+        result[headerName.toLowerCase()] = {
+            format: header.format,
+            location: `${responseLocation}.headers.${headerName}`,
+            name: headerName,
+            parentOperation,
+            type: header.type,
+            value: header
+        };
 
-    return result;
-}, {});
+        return result;
+    }, {});
 
 const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpecOperation) => {
     const parsedResponses = {
@@ -187,57 +163,112 @@ const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpec
     return parsedResponses;
 };
 
-const parseHeaderParameters = (headerParameters: ParsedSpecParameter[]) =>
-    _.reduce<ParsedSpecParameter, ParsedSpecRequestHeaderCollection>(headerParameters, (result, headerParameter) => {
+const toHeaderCollection = (headerParameters: ParsedSpecParameter[]) =>
+    _.reduce<ParsedSpecParameter, ParsedSpecHeaderCollection>(headerParameters, (result, headerParameter) => {
         result[headerParameter.name.toLowerCase()] = headerParameter;
         return result;
     }, {});
 
-const parseOperationFromPath = (path: SwaggerPath, pathName: string): ParsedSpecOperation[] => _(path)
-    .omit(['parameters'])
-    .map((operation: SwaggerOperation, operationName: string) => {
-        const pathLocation = `[swaggerRoot].paths.${pathName}`;
-        const operationLocation = `${pathLocation}.${operationName}`;
-        const parsedOperation = {
-            location: operationLocation,
-            method: operationName,
-            pathName,
-            value: operation
-        } as ParsedSpecOperation;
-        const parsedPathParameters = parseParameters(path.parameters, pathLocation, parsedOperation);
-        const parsedOperationParameters = parseParameters(operation.parameters, operationLocation, parsedOperation);
-        const mergedParameters = mergePathAndOperationParameters(parsedPathParameters, parsedOperationParameters);
-        const pathParameters = _.filter(mergedParameters, {in: 'path'});
+const toRequestBodyParameter = (parameters: Array<ParsedSpecValue<SwaggerParameter>>): ParsedSpecBody =>
+    _(parameters)
+        .filter((parameter) => parameter.value.in === 'body')
+        .map((parameter: ParsedSpecValue<SwaggerBodyParameter>) => ({
+            getFromSchema: (pathToGet: string): ParsedSpecValue<any> => ({
+                location: `${parameter.location}.schema.${pathToGet}`,
+                parentOperation: parameter.parentOperation,
+                value: _.get(parameter.value.schema, pathToGet)
+            }),
+            location: parameter.location,
+            name: parameter.value.name,
+            parentOperation: parameter.parentOperation,
+            required: parameter.value.required,
+            schema: parameter.value.schema,
+            value: parameter.value
+        }))
+        .first();
 
-        parsedOperation.headerParameters = parseHeaderParameters(_.filter(mergedParameters, {in: 'header'}));
-        parsedOperation.parentOperation = parsedOperation;
-        parsedOperation.pathNameSegments = parsePathNameSegments(pathName, pathParameters, parsedOperation);
-        parsedOperation.requestBodyParameter = _.find(mergedParameters, {in: 'body'});
-        parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
+type SwaggerHeaderPathOrQueryParameter = SwaggerRequestHeaderParameter | SwaggerPathParameter | SwaggerQueryParameter;
 
-        return parsedOperation;
-    })
-    .value();
+const toParsedParameter = (parameter: ParsedSpecValue<SwaggerHeaderPathOrQueryParameter>) => {
+    return {
+        format: parameter.value.format,
+        location: parameter.location,
+        name: parameter.value.name,
+        parentOperation: parameter.parentOperation,
+        required: parameter.value.required,
+        type: parameter.value.type,
+        value: parameter.value
+    };
+};
 
-const parseOperationsFromPaths = (paths: SwaggerPaths) => _(paths)
-    .map(parseOperationFromPath)
-    .flatten<ParsedSpecOperation>()
-    .value();
+const toParsedParametersFor = (
+    inValue: 'header' | 'path' | 'query',
+    parameters: Array<ParsedSpecValue<SwaggerParameter>>
+): ParsedSpecParameter[] =>
+    _(parameters)
+        .filter({value: {in: inValue}})
+        .map(toParsedParameter)
+        .value();
+
+const parseParameters = (path: SwaggerPath, pathLocation: string, parsedOperation: ParsedSpecOperation) => {
+    const pathParameters = toParsedSpecValue(path.parameters, pathLocation, parsedOperation);
+    const operationParameters = toParsedSpecValue(
+        parsedOperation.value.parameters,
+        parsedOperation.location,
+        parsedOperation
+    );
+    const mergedParameters = mergePathAndOperationParameters(pathParameters, operationParameters);
+
+    return {
+        requestBody: toRequestBodyParameter(mergedParameters),
+        requestHeaders: toHeaderCollection(toParsedParametersFor('header', mergedParameters)),
+        requestPath: toParsedParametersFor('path', mergedParameters)
+    };
+};
+
+const parseOperationFromPath = (path: SwaggerPath, pathName: string): ParsedSpecOperation[] =>
+    _(path)
+        .omit(['parameters'])
+        .map((operation: SwaggerOperation, operationName: string) => {
+            const pathLocation = `[swaggerRoot].paths.${pathName}`;
+            const operationLocation = `${pathLocation}.${operationName}`;
+            const parsedOperation = {
+                location: operationLocation,
+                method: operationName,
+                pathName,
+                value: operation
+            } as ParsedSpecOperation;
+
+            const parsedParameters = parseParameters(path, pathLocation, parsedOperation);
+
+            parsedOperation.parentOperation = parsedOperation;
+            parsedOperation.pathNameSegments =
+                parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
+            parsedOperation.requestBodyParameter = parsedParameters.requestBody;
+            parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
+            parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
+
+            return parsedOperation;
+        })
+        .value();
 
 export default {
     parse: (swaggerJson: Swagger, swaggerPathOrUrl: string): ParsedSpec => ({
-        operations: parseOperationsFromPaths(swaggerJson.paths),
+        operations: _(swaggerJson.paths)
+            .map(parseOperationFromPath)
+            .flatten<ParsedSpecOperation>()
+            .value(),
         pathOrUrl: swaggerPathOrUrl,
         paths: {
             location: '[swaggerRoot].paths',
             parentOperation: {
-                headerParameters: null,
                 location: null,
                 method: null,
                 parentOperation: null,
                 pathName: null,
                 pathNameSegments: [],
                 requestBodyParameter: null,
+                requestHeaderParameters: null,
                 responses: null,
                 value: null
             },

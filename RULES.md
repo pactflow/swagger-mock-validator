@@ -23,22 +23,22 @@ This is a list of all the possible validation rules and if they are currently su
 |---|---|
 | Response Body Schema | yes |
 | Response Body Form | no |
-| Response Headers | no |
+| Response Headers | yes |
 | Response Status | yes |
 
 ## Parameter Validation
 
 | Feature | Supported |
 |---|---|
-| Format Binary | no |
-| Format Byte | no |
-| Format Date | no |
-| Format Date-Time | no |
-| Format Double | no |
-| Format Float | no |
-| Format Int32 | no |
-| Format Int64 | no |
-| Format Password | no |
+| Format Binary | yes |
+| Format Byte | yes |
+| Format Date | yes |
+| Format Date-Time | yes |
+| Format Double | yes |
+| Format Float | yes |
+| Format Int32 | yes |
+| Format Int64 | yes |
+| Format Password | yes |
 | Type Array | no |
 | Type File | no |
 | Type Integer | yes |

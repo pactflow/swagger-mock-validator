@@ -12,6 +12,10 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
         items: {type: 'number'},
         type: 'array'
     })),
+    withTypeDate: () => createResponseHeader(setValuesOn(responseHeader, {
+        format: 'date',
+        type: 'string'
+    })),
     withTypeNumber: () => createResponseHeader(setValueOn(responseHeader, 'type', 'number'))
 });
 

@@ -30,12 +30,14 @@
   },
   "devDependencies": {
     "@types/commander": "^2.3.31",
+    "@types/decimal.js": "0.0.29",
     "@types/express": "^4.0.34",
     "@types/jasmine": "^2.5.38",
     "@types/lodash": "^4.14.43",
     "@types/node": "^6.0.52",
     "@types/q": "0.0.32",
     "@types/request": "0.0.36",
+    "@types/validator": "^5.7.35",
     "@types/verror": "^1.9.0",
     "conventional-changelog": "^1.1.0",
     "conventional-changelog-lint": "^1.1.0",
@@ -59,10 +61,12 @@
   "dependencies": {
     "ajv": "^4.9.0",
     "commander": "^2.9.0",
+    "decimal.js": "^7.1.0",
     "lodash": "^4.17.2",
     "q": "^1.4.1",
     "request": "^2.78.0",
     "swagger-tools": "^0.10.1",
+    "validator": "^6.2.0",
     "verror": "^1.8.1"
   }
 }

@@ -8,6 +8,10 @@ export interface SchemaBuilder {
 
 const createSchemaBuilder = (schema: JsonSchema) => ({
     build: () => cloneDeep(schema),
+    withFormatDouble: () => createSchemaBuilder(setValueOn(schema, 'format', 'double')),
+    withFormatFloat: () => createSchemaBuilder(setValueOn(schema, 'format', 'float')),
+    withFormatInt32: () => createSchemaBuilder(setValueOn(schema, 'format', 'int32')),
+    withFormatInt64: () => createSchemaBuilder(setValueOn(schema, 'format', 'int64')),
     withOptionalProperty: (name: string, propertySchemaBuilder: SchemaBuilder) =>
         createSchemaBuilder(setValueOn(schema, `properties.${name}`, propertySchemaBuilder.build())),
     withRequiredProperty: (name: string, propertySchemaBuilder: SchemaBuilder) =>
@@ -21,6 +25,7 @@ const createSchemaBuilder = (schema: JsonSchema) => ({
             type: 'array'
         })
     ),
+    withTypeInteger: () => createSchemaBuilder(setValueOn(schema, 'type', 'integer')),
     withTypeNumber: () => createSchemaBuilder(setValueOn(schema, 'type', 'number')),
     withTypeObject: () => createSchemaBuilder(setValueOn(schema, 'type', 'object')),
     withTypeString: () => createSchemaBuilder(setValueOn(schema, 'type', 'string'))

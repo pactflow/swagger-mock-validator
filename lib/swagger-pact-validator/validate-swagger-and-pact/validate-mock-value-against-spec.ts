@@ -1,12 +1,20 @@
-import * as Ajv from 'ajv';
 import * as _ from 'lodash';
 import result from '../result';
-import {JsonSchema, ParsedMockInteraction, ParsedMockValue, ParsedSpecValue} from '../types';
+import {
+    JsonSchema,
+    ParsedMockInteraction,
+    ParsedMockValue,
+    ParsedSpecParameterFormat,
+    ParsedSpecParameterType,
+    ParsedSpecValue
+} from '../types';
+import validateJson from './validate-json';
 
 const toJsonSchema = (parameter: ParsedSpecValueWithType): JsonSchema => {
     const schema: JsonSchema = {
         properties: {
             value: {
+                format: parameter.format as any,
                 type: parameter.type as any
             }
         },
@@ -20,21 +28,10 @@ const toJsonSchema = (parameter: ParsedSpecValueWithType): JsonSchema => {
     return schema;
 };
 
-const validateJson = (jsonSchema: JsonSchema, json: any) => {
-    const ajv = new Ajv({
-        allErrors: true,
-        coerceTypes: true,
-        verbose: true
-    });
-
-    ajv.validate(jsonSchema, json);
-
-    return ajv.errors || [];
-};
-
 interface ParsedSpecValueWithType extends ParsedSpecValue<any> {
+    format?: ParsedSpecParameterFormat;
     required?: boolean;
-    type: 'string' | 'number' | 'integer' | 'boolean' | 'array';
+    type: ParsedSpecParameterType;
 }
 
 export default <T>(
@@ -57,7 +54,7 @@ export default <T>(
     }
 
     const swaggerHeaderSchema = toJsonSchema(swaggerValue);
-    const errors = validateJson(swaggerHeaderSchema, {value: (pactHeader || {value: undefined}).value});
+    const errors = validateJson(swaggerHeaderSchema, {value: (pactHeader || {value: undefined}).value}, true);
 
     return {
         match: errors.length === 0,

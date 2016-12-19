@@ -1,18 +1,8 @@
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
 import result from '../result';
-import {JsonSchema, ParsedMockInteraction, ParsedSpecResponse} from '../types';
-
-const validateJson = (jsonSchema: JsonSchema, json: any) => {
-    const ajv = new Ajv({
-        allErrors: true,
-        verbose: true
-    });
-
-    ajv.validate(jsonSchema, json);
-
-    return ajv.errors;
-};
+import {ParsedMockInteraction, ParsedSpecResponse} from '../types';
+import validateJson from './validate-json';
 
 export default (pactInteraction: ParsedMockInteraction, swaggerResponse: ParsedSpecResponse) => {
     if (!pactInteraction.responseBody.value) {
