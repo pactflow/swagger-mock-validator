@@ -120,6 +120,7 @@ const parseResponseHeaders = (
 ): ParsedSpecHeaderCollection =>
     _.reduce<SwaggerResponseHeader, ParsedSpecHeaderCollection>(headers, (result, header, headerName) => {
         result[headerName.toLowerCase()] = {
+            enum: header.enum,
             format: header.format,
             location: `${responseLocation}.headers.${headerName}`,
             name: headerName,
@@ -189,8 +190,9 @@ const toRequestBodyParameter = (parameters: Array<ParsedSpecValue<SwaggerParamet
 
 type SwaggerHeaderPathOrQueryParameter = SwaggerRequestHeaderParameter | SwaggerPathParameter | SwaggerQueryParameter;
 
-const toParsedParameter = (parameter: ParsedSpecValue<SwaggerHeaderPathOrQueryParameter>) => {
+const toParsedParameter = (parameter: ParsedSpecValue<SwaggerHeaderPathOrQueryParameter>): ParsedSpecParameter => {
     return {
+        enum: parameter.value.enum,
         format: parameter.value.format,
         location: parameter.location,
         name: parameter.value.name,

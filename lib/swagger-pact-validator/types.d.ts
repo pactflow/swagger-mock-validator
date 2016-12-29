@@ -72,6 +72,7 @@ export interface ParsedSpecResponse extends ParsedSpecValue<any> {
 }
 
 export interface ParsedSpecParameter extends ParsedSpecValue<any> {
+    enum?: any[];
     format: ParsedSpecParameterFormat;
     name: string;
     required?: boolean;
@@ -166,6 +167,7 @@ export type SwaggerParameter = SwaggerPathParameter | SwaggerQueryParameter |
     SwaggerRequestHeaderParameter | SwaggerBodyParameter | SwaggerFormParameter;
 
 export interface SwaggerPathParameter {
+    enum?: any[];
     format?: SwaggerParameterFormat;
     in: 'path';
     items?: JsonSchema;
@@ -175,6 +177,7 @@ export interface SwaggerPathParameter {
 }
 
 export interface SwaggerQueryParameter {
+    enum?: any[];
     format?: SwaggerParameterFormat;
     in: 'query';
     name: string;
@@ -183,6 +186,7 @@ export interface SwaggerQueryParameter {
 }
 
 export interface SwaggerRequestHeaderParameter {
+    enum?: any[];
     format?: SwaggerParameterFormat;
     in: 'header';
     name: string;
@@ -227,7 +231,9 @@ export interface SwaggerResponseHeaderCollection {
 }
 
 export interface SwaggerResponseHeader {
+    enum?: any[];
     format?: SwaggerParameterFormat;
+    items?: SwaggerResponseHeader;
     type: SwaggerParameterType;
 }
 
@@ -247,6 +253,7 @@ export interface JsonLoaderFunction {
 
 export interface JsonSchema {
     additionalProperties?: boolean;
+    enum?: any[];
     format?: JsonSchemaFormat;
     items?: JsonSchema;
     properties?: JsonSchemaProperties;

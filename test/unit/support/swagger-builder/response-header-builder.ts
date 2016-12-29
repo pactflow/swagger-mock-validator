@@ -1,6 +1,5 @@
 import {cloneDeep} from 'lodash';
 import {SwaggerResponseHeader} from '../../../../lib/swagger-pact-validator/types';
-import {setValueOn, setValuesOn} from '../builder-utilities';
 
 export interface ResponseHeaderBuilder {
     build: () => SwaggerResponseHeader;
@@ -8,15 +7,20 @@ export interface ResponseHeaderBuilder {
 
 const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
     build: () => cloneDeep(responseHeader),
-    withTypeArrayOfNumber: () => createResponseHeader(setValuesOn(responseHeader, {
+    withStringEnum: (newEnum: any[]) => createResponseHeader({
+        enum: newEnum,
+        type: 'string'
+    }),
+    withTypeArrayOfNumber: () => createResponseHeader({
         items: {type: 'number'},
         type: 'array'
-    })),
-    withTypeDate: () => createResponseHeader(setValuesOn(responseHeader, {
+    }),
+    withTypeDate: () => createResponseHeader({
         format: 'date',
         type: 'string'
-    })),
-    withTypeNumber: () => createResponseHeader(setValueOn(responseHeader, 'type', 'number'))
+    }),
+    withTypeNumber: () => createResponseHeader({type: 'number'}),
+    withTypeString: () => createResponseHeader({type: 'string'})
 });
 
-export default createResponseHeader({type: 'string'});
+export default createResponseHeader(null).withTypeString();

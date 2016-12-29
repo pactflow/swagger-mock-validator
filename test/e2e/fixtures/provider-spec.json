@@ -85,6 +85,25 @@
                     }
                 }
             }
+        },
+        "/test": {
+            "get": {
+                "summary": "A test endpoint",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "name": "x-enum-value",
+                    "in": "header",
+                    "type": "string",
+                    "enum": ["value1", "value2"]
+                }],
+                "responses": {
+                    "200": {
+                        "description": "The result"
+                    }
+                }
+            }
         }
     },
     "definitions": {

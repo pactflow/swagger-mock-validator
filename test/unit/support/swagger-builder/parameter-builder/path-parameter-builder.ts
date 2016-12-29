@@ -92,6 +92,13 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
             required: true,
             type: 'string'
         }),
+        withStringEnumNamed: (name: string, enumValues: any[]) => createPathParameterBuilder({
+            enum: cloneDeep(enumValues),
+            in: 'path',
+            name,
+            required: true,
+            type: 'string'
+        }),
         withStringNamed: (name: string) => createPathParameterBuilder({
             in: 'path',
             name,

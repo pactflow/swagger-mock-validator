@@ -84,6 +84,18 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "enum invalid test",
+        "request": {
+            "headers": {
+                "x-enum-value": "value-missing"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

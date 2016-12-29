@@ -10,39 +10,6 @@ export interface ParameterBuilder {
 const createParameterBuilder = (parameter: SwaggerParameter) => {
     return {
         build: () => cloneDeep(parameter),
-        withArrayOfNumberInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
-            in: 'path',
-            items: {type: 'number'},
-            name,
-            required: true,
-            type: 'array'
-        })),
-        withBooleanInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
-            in: 'path',
-            name,
-            required: true,
-            type: 'boolean'
-        })),
-        withDateInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
-            format: 'date',
-            in: 'path',
-            name,
-            required: true,
-            type: 'string'
-        })),
-        withDateTimeInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
-            format: 'date',
-            in: 'path',
-            name,
-            required: true,
-            type: 'string'
-        })),
-        withIntegerInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
-            in: 'path',
-            name,
-            required: true,
-            type: 'integer'
-        })),
         withNumberInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
             in: 'path',
             name,
@@ -81,12 +48,6 @@ const createParameterBuilder = (parameter: SwaggerParameter) => {
             required: true,
             schema: schemaBuilder.build(),
             type: undefined
-        })),
-        withStringInPathNamed: (name: string) => createParameterBuilder(setValuesOn(parameter, {
-            in: 'path',
-            name,
-            required: true,
-            type: 'string'
         }))
     };
 };

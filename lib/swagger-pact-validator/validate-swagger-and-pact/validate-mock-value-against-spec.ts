@@ -4,16 +4,15 @@ import {
     JsonSchema,
     ParsedMockInteraction,
     ParsedMockValue,
-    ParsedSpecParameterFormat,
-    ParsedSpecParameterType,
-    ParsedSpecValue
+    ParsedSpecParameter
 } from '../types';
 import validateJson from './validate-json';
 
-const toJsonSchema = (parameter: ParsedSpecValueWithType): JsonSchema => {
+const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
     const schema: JsonSchema = {
         properties: {
             value: {
+                enum: parameter.enum,
                 format: parameter.format as any,
                 type: parameter.type as any
             }
@@ -28,15 +27,9 @@ const toJsonSchema = (parameter: ParsedSpecValueWithType): JsonSchema => {
     return schema;
 };
 
-interface ParsedSpecValueWithType extends ParsedSpecValue<any> {
-    format?: ParsedSpecParameterFormat;
-    required?: boolean;
-    type: ParsedSpecParameterType;
-}
-
 export default <T>(
     name: string,
-    swaggerValue: ParsedSpecValueWithType,
+    swaggerValue: ParsedSpecParameter,
     pactHeader: ParsedMockValue<T>,
     pactInteraction: ParsedMockInteraction
 ) => {
