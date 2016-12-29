@@ -1,48 +1,27 @@
 "use strict";
 const _ = require("lodash");
-const parseParameters = (parameters, parentLocation, parentOperation) => {
-    return _.map(parameters, (parameter, parameterIndex) => {
-        const parameterLocation = `${parentLocation}.parameters[${parameterIndex}]`;
-        return {
-            getFromSchema: (pathToGet) => ({
-                location: `${parameterLocation}.schema.${pathToGet}`,
-                parentOperation,
-                value: _.get(parameter.schema, pathToGet)
-            }),
-            in: parameter.in,
-            location: parameterLocation,
-            name: parameter.name,
-            parentOperation,
-            required: parameter.required,
-            schema: parameter.schema,
-            type: parameter.type,
-            value: parameter
-        };
-    });
-};
+const toParsedSpecValue = (parameters, parentLocation, parentOperation) => _.map(parameters, (parameter, index) => ({
+    location: `${parentLocation}.parameters[${index}]`,
+    parentOperation,
+    value: parameter
+}));
 const mergePathAndOperationParameters = (pathParameters, operationParameters) => {
     const mergedParameters = _.clone(pathParameters);
-    _.each(operationParameters, (parameter) => {
+    _.each(operationParameters, (operationParameter) => {
         const duplicateIndex = _.findIndex(mergedParameters, {
-            in: parameter.in,
-            name: parameter.name
+            value: {
+                in: operationParameter.value.in,
+                name: operationParameter.value.name
+            }
         });
         if (duplicateIndex > -1) {
-            mergedParameters[duplicateIndex] = parameter;
+            mergedParameters[duplicateIndex] = operationParameter;
         }
         else {
-            mergedParameters.push(parameter);
+            mergedParameters.push(operationParameter);
         }
     });
     return mergedParameters;
-};
-const supportedTypes = ['boolean', 'integer', 'number', 'string'];
-const findMatchingPathParameter = (pathParameters, pathNameSegmentValue) => _.find(pathParameters, (pathParameter) => pathParameter.name === pathNameSegmentValue);
-const getSwaggerPathNameSegmentType = (pathParameter) => {
-    if (supportedTypes.indexOf(pathParameter.type) > -1) {
-        return pathParameter.type;
-    }
-    return 'unsupported';
 };
 const parsePathNameSegments = (pathName, pathParameters, parsedOperation) => {
     return _(pathName.split('/'))
@@ -52,10 +31,8 @@ const parsePathNameSegments = (pathName, pathParameters, parsedOperation) => {
         const isParameter = pathNameSegment[0] === '{' && pathNameSegment[pathNameSegment.length - 1] === '}';
         if (isParameter) {
             const pathNameSegmentValue = pathNameSegment.substring(1, pathNameSegment.length - 1);
-            const matchingPathParameter = findMatchingPathParameter(pathParameters, pathNameSegmentValue);
-            parsedPathNameSegment.parameter = matchingPathParameter;
-            parsedPathNameSegment.type = _.get(matchingPathParameter, 'type');
-            parsedPathNameSegment.validatorType = getSwaggerPathNameSegmentType(matchingPathParameter);
+            parsedPathNameSegment.parameter = _.find(pathParameters, { name: pathNameSegmentValue });
+            parsedPathNameSegment.validatorType = 'jsonSchema';
             parsedPathNameSegment.value = pathNameSegmentValue;
         }
         else {
@@ -92,7 +69,9 @@ const addAdditionalPropertiesFalseToSchema = (schema) => {
 };
 const parseResponseHeaders = (headers, responseLocation, parentOperation) => _.reduce(headers, (result, header, headerName) => {
     result[headerName.toLowerCase()] = {
+        format: header.format,
         location: `${responseLocation}.headers.${headerName}`,
+        name: headerName,
         parentOperation,
         type: header.type,
         value: header
@@ -126,10 +105,51 @@ const parseResponses = (responses, parentOperation) => {
     });
     return parsedResponses;
 };
-const parseHeaderParameters = (headerParameters) => _.reduce(headerParameters, (result, headerParameter) => {
+const toHeaderCollection = (headerParameters) => _.reduce(headerParameters, (result, headerParameter) => {
     result[headerParameter.name.toLowerCase()] = headerParameter;
     return result;
 }, {});
+const toRequestBodyParameter = (parameters) => _(parameters)
+    .filter((parameter) => parameter.value.in === 'body')
+    .map((parameter) => ({
+    getFromSchema: (pathToGet) => ({
+        location: `${parameter.location}.schema.${pathToGet}`,
+        parentOperation: parameter.parentOperation,
+        value: _.get(parameter.value.schema, pathToGet)
+    }),
+    location: parameter.location,
+    name: parameter.value.name,
+    parentOperation: parameter.parentOperation,
+    required: parameter.value.required,
+    schema: parameter.value.schema,
+    value: parameter.value
+}))
+    .first();
+const toParsedParameter = (parameter) => {
+    return {
+        format: parameter.value.format,
+        location: parameter.location,
+        name: parameter.value.name,
+        parentOperation: parameter.parentOperation,
+        required: parameter.value.required,
+        type: parameter.value.type,
+        value: parameter.value
+    };
+};
+const toParsedParametersFor = (inValue, parameters) => _(parameters)
+    .filter({ value: { in: inValue } })
+    .map(toParsedParameter)
+    .value();
+const parseParameters = (path, pathLocation, parsedOperation) => {
+    const pathParameters = toParsedSpecValue(path.parameters, pathLocation, parsedOperation);
+    const operationParameters = toParsedSpecValue(parsedOperation.value.parameters, parsedOperation.location, parsedOperation);
+    const mergedParameters = mergePathAndOperationParameters(pathParameters, operationParameters);
+    return {
+        requestBody: toRequestBodyParameter(mergedParameters),
+        requestHeaders: toHeaderCollection(toParsedParametersFor('header', mergedParameters)),
+        requestPath: toParsedParametersFor('path', mergedParameters)
+    };
+};
 const parseOperationFromPath = (path, pathName) => _(path)
     .omit(['parameters'])
     .map((operation, operationName) => {
@@ -141,37 +161,34 @@ const parseOperationFromPath = (path, pathName) => _(path)
         pathName,
         value: operation
     };
-    const parsedPathParameters = parseParameters(path.parameters, pathLocation, parsedOperation);
-    const parsedOperationParameters = parseParameters(operation.parameters, operationLocation, parsedOperation);
-    const mergedParameters = mergePathAndOperationParameters(parsedPathParameters, parsedOperationParameters);
-    const pathParameters = _.filter(mergedParameters, { in: 'path' });
-    parsedOperation.headerParameters = parseHeaderParameters(_.filter(mergedParameters, { in: 'header' }));
+    const parsedParameters = parseParameters(path, pathLocation, parsedOperation);
     parsedOperation.parentOperation = parsedOperation;
-    parsedOperation.pathNameSegments = parsePathNameSegments(pathName, pathParameters, parsedOperation);
-    parsedOperation.requestBodyParameter = _.find(mergedParameters, { in: 'body' });
+    parsedOperation.pathNameSegments =
+        parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
+    parsedOperation.requestBodyParameter = parsedParameters.requestBody;
+    parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
     parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
     return parsedOperation;
 })
     .value();
-const parseOperationsFromPaths = (paths) => _(paths)
-    .map(parseOperationFromPath)
-    .flatten()
-    .value();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     parse: (swaggerJson, swaggerPathOrUrl) => ({
-        operations: parseOperationsFromPaths(swaggerJson.paths),
+        operations: _(swaggerJson.paths)
+            .map(parseOperationFromPath)
+            .flatten()
+            .value(),
         pathOrUrl: swaggerPathOrUrl,
         paths: {
             location: '[swaggerRoot].paths',
             parentOperation: {
-                headerParameters: null,
                 location: null,
                 method: null,
                 parentOperation: null,
                 pathName: null,
                 pathNameSegments: [],
                 requestBodyParameter: null,
+                requestHeaderParameters: null,
                 responses: null,
                 value: null
             },

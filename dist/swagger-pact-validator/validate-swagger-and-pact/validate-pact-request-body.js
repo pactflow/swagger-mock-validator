@@ -1,17 +1,9 @@
 "use strict";
-const Ajv = require("ajv");
 const _ = require("lodash");
 const result_1 = require("../result");
-const validateJson = (jsonSchema, json) => {
-    const ajv = new Ajv({
-        allErrors: true,
-        verbose: true
-    });
-    ajv.validate(jsonSchema, json);
-    return ajv.errors;
-};
+const validate_json_1 = require("./validate-json");
 const validateRequestBodyAgainstSchema = (pactRequestBody, requestBodyParameter) => {
-    const validationErrors = validateJson(requestBodyParameter.schema, pactRequestBody.value);
+    const validationErrors = validate_json_1.default(requestBodyParameter.schema, pactRequestBody.value);
     return _.map(validationErrors, (error) => result_1.default.error({
         message: `Request body is incompatible with the request body schema in the swagger file: ${error.message}`,
         pactSegment: pactRequestBody.parentInteraction.getRequestBodyPath(error.dataPath),

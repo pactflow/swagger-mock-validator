@@ -50,10 +50,10 @@ const getWarningForUndefinedHeader = (headerName, pactHeader, swaggerOperation) 
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (pactInteraction, swaggerOperation) => _(_.keys(pactInteraction.requestHeaders))
-    .union(_.keys(swaggerOperation.headerParameters))
+    .union(_.keys(swaggerOperation.requestHeaderParameters))
     .map((headerName) => {
     const pactHeader = pactInteraction.requestHeaders[headerName];
-    const swaggerHeader = swaggerOperation.headerParameters[headerName];
+    const swaggerHeader = swaggerOperation.requestHeaderParameters[headerName];
     if (!swaggerHeader && pactHeader) {
         return getWarningForUndefinedHeader(headerName, pactHeader, swaggerOperation);
     }

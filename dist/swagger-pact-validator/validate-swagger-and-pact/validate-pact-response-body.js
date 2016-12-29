@@ -1,15 +1,7 @@
 "use strict";
-const Ajv = require("ajv");
 const _ = require("lodash");
 const result_1 = require("../result");
-const validateJson = (jsonSchema, json) => {
-    const ajv = new Ajv({
-        allErrors: true,
-        verbose: true
-    });
-    ajv.validate(jsonSchema, json);
-    return ajv.errors;
-};
+const validate_json_1 = require("./validate-json");
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (pactInteraction, swaggerResponse) => {
     if (!pactInteraction.responseBody.value) {
@@ -25,7 +17,7 @@ exports.default = (pactInteraction, swaggerResponse) => {
             })
         ];
     }
-    const validationErrors = validateJson(swaggerResponse.schema, pactInteraction.responseBody.value);
+    const validationErrors = validate_json_1.default(swaggerResponse.schema, pactInteraction.responseBody.value);
     return _.map(validationErrors, (error) => {
         const message = error.keyword === 'additionalProperties'
             ? `${error.message} - ${error.params.additionalProperty}`

@@ -1,11 +1,12 @@
 "use strict";
-const Ajv = require("ajv");
 const _ = require("lodash");
 const result_1 = require("../result");
+const validate_json_1 = require("./validate-json");
 const toJsonSchema = (parameter) => {
     const schema = {
         properties: {
             value: {
+                format: parameter.format,
                 type: parameter.type
             }
         },
@@ -15,15 +16,6 @@ const toJsonSchema = (parameter) => {
         schema.required = ['value'];
     }
     return schema;
-};
-const validateJson = (jsonSchema, json) => {
-    const ajv = new Ajv({
-        allErrors: true,
-        coerceTypes: true,
-        verbose: true
-    });
-    ajv.validate(jsonSchema, json);
-    return ajv.errors || [];
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (name, swaggerValue, pactHeader, pactInteraction) => {
@@ -40,7 +32,7 @@ exports.default = (name, swaggerValue, pactHeader, pactInteraction) => {
         };
     }
     const swaggerHeaderSchema = toJsonSchema(swaggerValue);
-    const errors = validateJson(swaggerHeaderSchema, { value: (pactHeader || { value: undefined }).value });
+    const errors = validate_json_1.default(swaggerHeaderSchema, { value: (pactHeader || { value: undefined }).value }, true);
     return {
         match: errors.length === 0,
         results: _.map(errors, (error) => result_1.default.error({

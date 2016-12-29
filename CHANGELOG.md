@@ -1,3 +1,13 @@
+<a name="0.0.17"></a>
+## [0.0.17](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.16...v0.0.17) (2016-12-29)
+
+
+### Features
+
+* add validation for swagger formats ([5bab1fd](https://bitbucket.org/atlassian/swagger-pact-validator/commits/5bab1fd)), closes [#29](https://bitbucket.org/atlassian/swagger-pact-validator/issue/29)
+
+
+
 <a name="0.0.16"></a>
 ## [0.0.16](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.15...v0.0.16) (2016-12-19)
 

@@ -2,17 +2,12 @@
 const _ = require("lodash");
 const result_1 = require("../result");
 const validate_mock_value_against_spec_1 = require("./validate-mock-value-against-spec");
-const validateMockValueAgainstPathNameSegment = (pactPathSegment, swaggerPathSegment) => validate_mock_value_against_spec_1.default(swaggerPathSegment.parameter.name, swaggerPathSegment.parameter, pactPathSegment, pactPathSegment.parentInteraction);
 const typeValidators = {
-    boolean: validateMockValueAgainstPathNameSegment,
     equal: (pactPathSegment, swaggerPathNameSegment) => {
         const match = swaggerPathNameSegment.value === pactPathSegment.value;
         return { match, results: [] };
     },
-    integer: validateMockValueAgainstPathNameSegment,
-    number: validateMockValueAgainstPathNameSegment,
-    string: validateMockValueAgainstPathNameSegment,
-    unsupported: validateMockValueAgainstPathNameSegment
+    jsonSchema: (pactPathSegment, swaggerPathSegment) => validate_mock_value_against_spec_1.default(swaggerPathSegment.parameter.name, swaggerPathSegment.parameter, pactPathSegment, pactPathSegment.parentInteraction)
 };
 const doInteractionAndOperationMatchPaths = (pactInteraction, swaggerOperation) => {
     const swaggerPathSegments = swaggerOperation.pathNameSegments;
