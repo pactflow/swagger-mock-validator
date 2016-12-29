@@ -59,6 +59,15 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
             required: true,
             type: 'number'
         }),
+        withInt32ExclusiveMaximumNamed: (name: string, maximum: number) => createPathParameterBuilder({
+            exclusiveMaximum: true,
+            format: 'int32',
+            in: 'path',
+            maximum,
+            name,
+            required: true,
+            type: 'integer'
+        }),
         withInt32Named: (name: string) => createPathParameterBuilder({
             format: 'int32',
             in: 'path',
@@ -78,6 +87,21 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
             name,
             required: true,
             type: 'integer'
+        }),
+        withNumberExclusiveMaximumNamed: (name: string, maximum: number) => createPathParameterBuilder({
+            exclusiveMaximum: true,
+            in: 'path',
+            maximum,
+            name,
+            required: true,
+            type: 'number'
+        }),
+        withNumberMaximumNamed: (name: string, maximum: number) => createPathParameterBuilder({
+            in: 'path',
+            maximum,
+            name,
+            required: true,
+            type: 'number'
         }),
         withNumberNamed: (name: string) => createPathParameterBuilder({
             in: 'path',

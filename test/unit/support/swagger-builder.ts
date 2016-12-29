@@ -28,5 +28,5 @@ export {default as parameterBuilder, ParameterBuilder} from './swagger-builder/p
 export {pathParameterBuilder} from './swagger-builder/parameter-builder/path-parameter-builder';
 export {default as pathBuilder, PathBuilder} from './swagger-builder/path-builder';
 export {default as responseBuilder, ResponseBuilder} from './swagger-builder/response-builder';
-export {default as responseHeaderBuilder} from './swagger-builder/response-header-builder';
+export {default as responseHeaderBuilder, ResponseHeaderBuilder} from './swagger-builder/response-header-builder';
 export {default as schemaBuilder, SchemaBuilder} from './swagger-builder/schema-builder';

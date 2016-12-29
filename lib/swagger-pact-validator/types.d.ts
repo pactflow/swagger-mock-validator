@@ -73,7 +73,9 @@ export interface ParsedSpecResponse extends ParsedSpecValue<any> {
 
 export interface ParsedSpecParameter extends ParsedSpecValue<any> {
     enum?: any[];
+    exclusiveMaximum?: boolean;
     format: ParsedSpecParameterFormat;
+    maximum?: number;
     name: string;
     required?: boolean;
     type: ParsedSpecParameterType;
@@ -168,9 +170,11 @@ export type SwaggerParameter = SwaggerPathParameter | SwaggerQueryParameter |
 
 export interface SwaggerPathParameter {
     enum?: any[];
+    exclusiveMaximum?: boolean;
     format?: SwaggerParameterFormat;
     in: 'path';
     items?: JsonSchema;
+    maximum?: number;
     name: string;
     required: true;
     type: SwaggerParameterType;
@@ -178,8 +182,10 @@ export interface SwaggerPathParameter {
 
 export interface SwaggerQueryParameter {
     enum?: any[];
+    exclusiveMaximum?: boolean;
     format?: SwaggerParameterFormat;
     in: 'query';
+    maximum?: number;
     name: string;
     required?: boolean;
     type: SwaggerParameterType;
@@ -187,8 +193,10 @@ export interface SwaggerQueryParameter {
 
 export interface SwaggerRequestHeaderParameter {
     enum?: any[];
+    exclusiveMaximum?: boolean;
     format?: SwaggerParameterFormat;
     in: 'header';
+    maximum?: number;
     name: string;
     required?: boolean;
     type: SwaggerParameterType;
@@ -232,8 +240,10 @@ export interface SwaggerResponseHeaderCollection {
 
 export interface SwaggerResponseHeader {
     enum?: any[];
+    exclusiveMaximum?: boolean;
     format?: SwaggerParameterFormat;
     items?: SwaggerResponseHeader;
+    maximum?: number;
     type: SwaggerParameterType;
 }
 
@@ -254,8 +264,10 @@ export interface JsonLoaderFunction {
 export interface JsonSchema {
     additionalProperties?: boolean;
     enum?: any[];
+    exclusiveMaximum?: boolean;
     format?: JsonSchemaFormat;
     items?: JsonSchema;
+    maximum?: number;
     properties?: JsonSchemaProperties;
     required?: string[];
     type: JsonSchemaType;

@@ -121,8 +121,10 @@ const parseResponseHeaders = (
     _.reduce<SwaggerResponseHeader, ParsedSpecHeaderCollection>(headers, (result, header, headerName) => {
         result[headerName.toLowerCase()] = {
             enum: header.enum,
+            exclusiveMaximum: header.exclusiveMaximum,
             format: header.format,
             location: `${responseLocation}.headers.${headerName}`,
+            maximum: header.maximum,
             name: headerName,
             parentOperation,
             type: header.type,
@@ -193,8 +195,10 @@ type SwaggerHeaderPathOrQueryParameter = SwaggerRequestHeaderParameter | Swagger
 const toParsedParameter = (parameter: ParsedSpecValue<SwaggerHeaderPathOrQueryParameter>): ParsedSpecParameter => {
     return {
         enum: parameter.value.enum,
+        exclusiveMaximum: parameter.value.exclusiveMaximum,
         format: parameter.value.format,
         location: parameter.location,
+        maximum: parameter.value.maximum,
         name: parameter.value.name,
         parentOperation: parameter.parentOperation,
         required: parameter.value.required,

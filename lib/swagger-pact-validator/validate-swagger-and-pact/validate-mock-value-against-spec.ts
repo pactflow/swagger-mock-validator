@@ -13,8 +13,10 @@ const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
         properties: {
             value: {
                 enum: parameter.enum,
+                exclusiveMaximum: parameter.exclusiveMaximum,
                 format: parameter.format as any,
-                type: parameter.type as any
+                maximum: parameter.maximum,
+                type: parameter.type
             }
         },
         type: 'object'

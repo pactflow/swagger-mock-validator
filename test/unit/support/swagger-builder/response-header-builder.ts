@@ -7,6 +7,15 @@ export interface ResponseHeaderBuilder {
 
 const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
     build: () => cloneDeep(responseHeader),
+    withNumberExclusiveMaximum: (maximum: number) => createResponseHeader({
+        exclusiveMaximum: true,
+        maximum,
+        type: 'number'
+    }),
+    withNumberMaximum: (maximum: number) => createResponseHeader({
+        maximum,
+        type: 'number'
+    }),
     withStringEnum: (newEnum: any[]) => createResponseHeader({
         enum: newEnum,
         type: 'string'

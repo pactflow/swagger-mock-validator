@@ -37,7 +37,7 @@ This is a list of all the possible validation rules and if they are currently su
 | Format Double | yes |
 | Format Float | yes |
 | Format Int32 | yes |
-| Format Int64 | yes |
+| Format Int64* | yes |
 | Format Password | yes |
 | Type Array | no |
 | Type File | no |
@@ -52,11 +52,13 @@ This is a list of all the possible validation rules and if they are currently su
 | multipleOf | no |
 | minimum | no |
 | exclusiveMinimum | no |
-| maximum | no |
-| exclusiveMaximum | no |
+| maximum | yes |
+| exclusiveMaximum | yes |
 | minItems | no |
 | maxItems | no |
 | uniqueItems | no |
+
+\* JavaScript and JSON numbers are [IEEE 754-2008](https://en.wikipedia.org/wiki/IEEE_floating_point) 64bit Floating Point numbers. This means the safe integer range is -(2^53 - 1) to 2^53 - 1, less then the range of int64. Values outside this range can be represented, but some precision is lost. So be aware that when validating values that fall outside the safe integer range that the lost precision means not all invalid int64 values can be detected.        
 
 ## JSON Schema
 

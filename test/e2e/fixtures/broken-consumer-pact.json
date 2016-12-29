@@ -76,7 +76,7 @@
         "description": "format invalid test",
         "request": {
             "headers": {
-                "x-client-id": "9223372036854775808"
+                "x-client-id": "9223372036854777000"
             },
             "method": "get",
             "path": "/1/users/2"
@@ -89,6 +89,18 @@
         "request": {
             "headers": {
                 "x-enum-value": "value-missing"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
+        "description": "maximum valid test",
+        "request": {
+            "headers": {
+                "x-maximum-value": "100"
             },
             "method": "get",
             "path": "/test"

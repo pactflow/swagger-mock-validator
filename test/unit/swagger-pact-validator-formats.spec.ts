@@ -232,30 +232,11 @@ describe('swagger-pact-validator formats', () => {
             });
         }));
 
-        it('should return the error when a pact path contains blank int32 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt32Builder, ' ');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET / ',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/ '
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/{value}': swaggerPathWithInt32Builder.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
+        it('should return the error when a pact path contains blank int32 value', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithInt32Builder, ' ').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
 
         it('should pass when the pact response body contains the a valid int32 value', willResolve(() => {
             const pactResponseBody = {id: 1};
@@ -339,10 +320,13 @@ describe('swagger-pact-validator formats', () => {
         const swaggerPathWithInt64Parameter = defaultSwaggerPathBuilder
             .withParameter(pathParameterBuilder.withInt64Named('value'));
 
-        const minimumInt64Allowed = '-9223372036854775808';
-        const minimumInt64AllowedMinusOne = '-9223372036854775809';
-        const maximumInt64Allowed = '9223372036854775807';
-        const maximumInt64AllowedPlusOne = '9223372036854775808';
+        // loss of precision due to javascript 64bit floating point number format
+        // https://en.wikipedia.org/wiki/Double-precision_floating-point_format
+
+        const minimumInt64Allowed = '-9223372036854776000';
+        const minimumInt64AllowedMinusOneThousand = '-9223372036854777000';
+        const maximumInt64Allowed = '9223372036854776000';
+        const maximumInt64AllowedPlusOneThousand = '9223372036854777000';
 
         it('should pass when the pact path contains the minimum int64 value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithInt64Parameter, minimumInt64Allowed).then((result) => {
@@ -357,17 +341,17 @@ describe('swagger-pact-validator formats', () => {
         ));
 
         it('should return the error when a pact path contains smaller then the min int64 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt64Parameter, minimumInt64AllowedMinusOne);
+            const result = invokeValidatorWithPath(swaggerPathWithInt64Parameter, minimumInt64AllowedMinusOneThousand);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 (expect(error.details) as any).toContainErrors([{
-                    message: `Path or method not defined in swagger file: GET /${minimumInt64AllowedMinusOne}`,
+                    message: `Path or method not defined in swagger file: GET /${minimumInt64AllowedMinusOneThousand}`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
-                        value: `/${minimumInt64AllowedMinusOne}`
+                        value: `/${minimumInt64AllowedMinusOneThousand}`
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
@@ -382,17 +366,17 @@ describe('swagger-pact-validator formats', () => {
         }));
 
         it('should return the error when a pact path contains bigger then the max int64 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt64Parameter, maximumInt64AllowedPlusOne);
+            const result = invokeValidatorWithPath(swaggerPathWithInt64Parameter, maximumInt64AllowedPlusOneThousand);
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 (expect(error.details) as any).toContainErrors([{
-                    message: `Path or method not defined in swagger file: GET /${maximumInt64AllowedPlusOne}`,
+                    message: `Path or method not defined in swagger file: GET /${maximumInt64AllowedPlusOneThousand}`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
-                        value: `/${maximumInt64AllowedPlusOne}`
+                        value: `/${maximumInt64AllowedPlusOneThousand}`
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
@@ -431,30 +415,11 @@ describe('swagger-pact-validator formats', () => {
             });
         }));
 
-        it('should return the error when a pact path contains blank int32 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt64Parameter, ' ');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET / ',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/ '
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/{value}': swaggerPathWithInt64Parameter.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
+        it('should pass when a pact path contains blank int64 value', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithInt64Parameter, ' ').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
 
         it('should pass when the pact response body contains the a valid int64 value', willResolve(() => {
             const pactResponseBody = {id: 1};
@@ -605,30 +570,11 @@ describe('swagger-pact-validator formats', () => {
             });
         }));
 
-        it('should return the error when a pact path contains blank float value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithFloatParameter, ' ');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET / ',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/ '
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/{value}': swaggerPathWithFloatParameter.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
+        it('should pass when a pact path contains blank float value', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithFloatParameter, ' ').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
 
         it('should pass when the pact response body contains the a valid float value', willResolve(() => {
             const pactResponseBody = {id: 1.1};
@@ -779,30 +725,11 @@ describe('swagger-pact-validator formats', () => {
             });
         }));
 
-        it('should return the error when a pact path contains blank double value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithDoubleParameter, ' ');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
-                    message: 'Path or method not defined in swagger file: GET / ',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '/ '
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        value: {'/{value}': swaggerPathWithDoubleParameter.build()}
-                    },
-                    type: 'error'
-                }]);
-            });
-        }));
+        it('should pass when a pact path contains blank double value', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithDoubleParameter, ' ').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
 
         it('should pass when the pact response body contains the a valid double value', willResolve(() => {
             const pactResponseBody = {id: 1.1};

@@ -97,6 +97,18 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "maximum valid test",
+        "request": {
+            "headers": {
+                "x-maximum-value": "99"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

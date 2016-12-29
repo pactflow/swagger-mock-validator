@@ -97,6 +97,12 @@
                     "in": "header",
                     "type": "string",
                     "enum": ["value1", "value2"]
+                }, {
+                    "name": "x-maximum-value",
+                    "in": "header",
+                    "type": "integer",
+                    "maximum": 100,
+                    "exclusiveMaximum": true
                 }],
                 "responses": {
                     "200": {
