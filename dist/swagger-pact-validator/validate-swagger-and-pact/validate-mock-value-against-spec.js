@@ -6,7 +6,16 @@ const toJsonSchema = (parameter) => {
     const schema = {
         properties: {
             value: {
+                enum: parameter.enum,
+                exclusiveMaximum: parameter.exclusiveMaximum,
+                exclusiveMinimum: parameter.exclusiveMinimum,
                 format: parameter.format,
+                maxLength: parameter.maxLength,
+                maximum: parameter.maximum,
+                minLength: parameter.minLength,
+                minimum: parameter.minimum,
+                multipleOf: parameter.multipleOf,
+                pattern: parameter.pattern,
                 type: parameter.type
             }
         },

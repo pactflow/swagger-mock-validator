@@ -1,3 +1,18 @@
+<a name="0.0.18"></a>
+## [0.0.18](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.17...v0.0.18) (2016-12-30)
+
+
+### Features
+
+* add validation for enum ([e83600e](https://bitbucket.org/atlassian/swagger-pact-validator/commits/e83600e)), closes [#40](https://bitbucket.org/atlassian/swagger-pact-validator/issue/40)
+* add validation for maximum and exclusiveMaximum ([8371cc2](https://bitbucket.org/atlassian/swagger-pact-validator/commits/8371cc2)), closes [#41](https://bitbucket.org/atlassian/swagger-pact-validator/issue/41)
+* add validation for maxLength and minLength ([8aa82e8](https://bitbucket.org/atlassian/swagger-pact-validator/commits/8aa82e8)), closes [#45](https://bitbucket.org/atlassian/swagger-pact-validator/issue/45) [#46](https://bitbucket.org/atlassian/swagger-pact-validator/issue/46)
+* add validation for minimum and exclusiveMinimum ([11e7eba](https://bitbucket.org/atlassian/swagger-pact-validator/commits/11e7eba)), closes [#43](https://bitbucket.org/atlassian/swagger-pact-validator/issue/43)
+* add validation for multipleOf ([bfe149e](https://bitbucket.org/atlassian/swagger-pact-validator/commits/bfe149e)), closes [#48](https://bitbucket.org/atlassian/swagger-pact-validator/issue/48)
+* add validation for pattern ([d20251e](https://bitbucket.org/atlassian/swagger-pact-validator/commits/d20251e)), closes [#47](https://bitbucket.org/atlassian/swagger-pact-validator/issue/47)
+
+
+
 <a name="0.0.17"></a>
 ## [0.0.17](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.16...v0.0.17) (2016-12-29)
 

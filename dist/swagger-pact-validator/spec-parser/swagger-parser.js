@@ -67,15 +67,31 @@ const addAdditionalPropertiesFalseToSchema = (schema) => {
     }
     return undefined;
 };
+const toParsedParameter = (parameter, name) => ({
+    enum: parameter.value.enum,
+    exclusiveMaximum: parameter.value.exclusiveMaximum,
+    exclusiveMinimum: parameter.value.exclusiveMinimum,
+    format: parameter.value.format,
+    location: parameter.location,
+    maxLength: parameter.value.maxLength,
+    maximum: parameter.value.maximum,
+    minLength: parameter.value.minLength,
+    minimum: parameter.value.minimum,
+    multipleOf: parameter.value.multipleOf,
+    name,
+    parentOperation: parameter.parentOperation,
+    pattern: parameter.value.pattern,
+    required: parameter.value.required || false,
+    type: parameter.value.type,
+    value: parameter.value
+});
 const parseResponseHeaders = (headers, responseLocation, parentOperation) => _.reduce(headers, (result, header, headerName) => {
-    result[headerName.toLowerCase()] = {
-        format: header.format,
+    const value = {
         location: `${responseLocation}.headers.${headerName}`,
-        name: headerName,
         parentOperation,
-        type: header.type,
         value: header
     };
+    result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
     return result;
 }, {});
 const parseResponses = (responses, parentOperation) => {
@@ -125,20 +141,9 @@ const toRequestBodyParameter = (parameters) => _(parameters)
     value: parameter.value
 }))
     .first();
-const toParsedParameter = (parameter) => {
-    return {
-        format: parameter.value.format,
-        location: parameter.location,
-        name: parameter.value.name,
-        parentOperation: parameter.parentOperation,
-        required: parameter.value.required,
-        type: parameter.value.type,
-        value: parameter.value
-    };
-};
 const toParsedParametersFor = (inValue, parameters) => _(parameters)
     .filter({ value: { in: inValue } })
-    .map(toParsedParameter)
+    .map((parameter) => toParsedParameter(parameter, parameter.value.name))
     .value();
 const parseParameters = (path, pathLocation, parsedOperation) => {
     const pathParameters = toParsedSpecValue(path.parameters, pathLocation, parsedOperation);
