@@ -47,11 +47,11 @@ This is a list of all the possible validation rules and if they are currently su
 | required | yes |
 | enum | yes |
 | pattern | no |
-| minLength | no |
-| maxLength | no |
+| minLength | yes |
+| maxLength | yes |
 | multipleOf | no |
-| minimum | no |
-| exclusiveMinimum | no |
+| minimum | yes |
+| exclusiveMinimum | yes |
 | maximum | yes |
 | exclusiveMaximum | yes |
 | minItems | no |

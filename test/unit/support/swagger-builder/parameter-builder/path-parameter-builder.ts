@@ -129,6 +129,20 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
             required: true,
             type: 'string'
         }),
+        withStringMaxLengthNamed: (name: string, maxLength: number) => createPathParameterBuilder({
+            in: 'path',
+            maxLength,
+            name,
+            required: true,
+            type: 'string'
+        }),
+        withStringMinLengthNamed: (name: string, minLength: number) => createPathParameterBuilder({
+            in: 'path',
+            minLength,
+            name,
+            required: true,
+            type: 'string'
+        }),
         withStringNamed: (name: string) => createPathParameterBuilder({
             in: 'path',
             name,

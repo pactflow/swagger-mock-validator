@@ -63,7 +63,7 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching('Pact file "test/e2e/fixtures/broken-consumer-pact.json" ' +
                 'is not compatible with swagger file "test/e2e/fixtures/provider-spec.json"'));
 
-            expect(error).toEqual(jasmine.stringMatching('10 error'));
+            expect(error).toEqual(jasmine.stringMatching('12 error'));
             expect(error).toEqual(jasmine.stringMatching('0 warning'));
 
             // request path missing
@@ -135,6 +135,24 @@ describe('swagger-pact-validator', () => {
             );
             expect(error).toEqual(jasmine.stringMatching(
                 'Value is incompatible with the parameter defined in the swagger file: should be > 0'
+            ));
+
+            // maxlength invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[10]\.request\.headers\.x-maxlength-value/)
+            );
+            expect(error).toEqual(jasmine.stringMatching(
+                'Value is incompatible with the parameter defined in the swagger file: ' +
+                'should NOT be longer than 3 characters'
+            ));
+
+            // minlength invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[11]\.request\.headers\.x-minlength-value/)
+            );
+            expect(error).toEqual(jasmine.stringMatching(
+                'Value is incompatible with the parameter defined in the swagger file: ' +
+                'should NOT be shorter than 3 characters'
             ));
         })
     ));

@@ -21,6 +21,14 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
         enum: newEnum,
         type: 'string'
     }),
+    withStringMaxLength: (maxLength: number) => createResponseHeader({
+        maxLength,
+        type: 'string'
+    }),
+    withStringMinLength: (minLength: number) => createResponseHeader({
+        minLength,
+        type: 'string'
+    }),
     withTypeArrayOfNumber: () => createResponseHeader({
         items: {type: 'number'},
         type: 'array'

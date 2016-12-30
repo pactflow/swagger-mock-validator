@@ -109,6 +109,16 @@
                     "type": "integer",
                     "minimum": 0,
                     "exclusiveMinimum": true
+                }, {
+                    "name": "x-maxlength-value",
+                    "in": "header",
+                    "type": "string",
+                    "maxLength": 3
+                }, {
+                    "name": "x-minlength-value",
+                    "in": "header",
+                    "type": "string",
+                    "minLength": 3
                 }],
                 "responses": {
                     "200": {

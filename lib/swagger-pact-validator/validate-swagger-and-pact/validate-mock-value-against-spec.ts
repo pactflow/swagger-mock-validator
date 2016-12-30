@@ -16,7 +16,9 @@ const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
                 exclusiveMaximum: parameter.exclusiveMaximum,
                 exclusiveMinimum: parameter.exclusiveMinimum,
                 format: parameter.format as any,
+                maxLength: parameter.maxLength,
                 maximum: parameter.maximum,
+                minLength: parameter.minLength,
                 minimum: parameter.minimum,
                 type: parameter.type
             }

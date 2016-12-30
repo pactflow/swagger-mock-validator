@@ -120,6 +120,30 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "maxlength invalid test",
+        "request": {
+            "headers": {
+                "x-maxlength-value": "abcd"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
+        "description": "minlength invalid test",
+        "request": {
+            "headers": {
+                "x-minlength-value": "ab"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

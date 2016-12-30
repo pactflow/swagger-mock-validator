@@ -100,8 +100,8 @@ describe('swagger-pact-validator keywords', () => {
         }));
 
         it('should fail when the pact header does not contain an enum value', willResolve(() => {
-            const responseHeaderWithEnumBuilder = responseHeaderBuilder.withStringEnum(['a']);
-            const result = invokeValidatorWithResponseHeader(responseHeaderWithEnumBuilder, 'b');
+            const responseHeaderWithEnum = responseHeaderBuilder.withStringEnum(['a']);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithEnum, 'b');
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -119,7 +119,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
-                        value: responseHeaderWithEnumBuilder.build()
+                        value: responseHeaderWithEnum.build()
                     },
                     type: 'error'
                 }]);
@@ -190,8 +190,8 @@ describe('swagger-pact-validator keywords', () => {
         }));
 
         it('should fail when the pact header contains a value equal to the exclusive maximum', willResolve(() => {
-            const responseHeaderWithEnumBuilder = responseHeaderBuilder.withNumberExclusiveMaximum(100);
-            const result = invokeValidatorWithResponseHeader(responseHeaderWithEnumBuilder, '100');
+            const responseHeaderWithExclusiveMaximum = responseHeaderBuilder.withNumberExclusiveMaximum(100);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithExclusiveMaximum, '100');
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -208,7 +208,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
-                        value: responseHeaderWithEnumBuilder.build()
+                        value: responseHeaderWithExclusiveMaximum.build()
                     },
                     type: 'error'
                 }]);
@@ -252,9 +252,9 @@ describe('swagger-pact-validator keywords', () => {
         }));
 
         it('should fail when the pact path contains a value equal to the exclusive minimum', willResolve(() => {
-            const swaggerPathWithExclusiveMaximum = defaultSwaggerPathBuilder
+            const swaggerPathWithExclusiveMinimum = defaultSwaggerPathBuilder
                 .withParameter(pathParameterBuilder.withNumberExclusiveMinimumNamed('value', 100));
-            const result = invokeValidatorWithPath(swaggerPathWithExclusiveMaximum, '100');
+            const result = invokeValidatorWithPath(swaggerPathWithExclusiveMinimum, '100');
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -271,7 +271,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
-                        value: {'/{value}': swaggerPathWithExclusiveMaximum.build()}
+                        value: {'/{value}': swaggerPathWithExclusiveMinimum.build()}
                     },
                     type: 'error'
                 }]);
@@ -279,8 +279,8 @@ describe('swagger-pact-validator keywords', () => {
         }));
 
         it('should fail when the pact header contains a value equal to the exclusive minimum', willResolve(() => {
-            const responseHeaderWithEnumBuilder = responseHeaderBuilder.withNumberExclusiveMinimum(100);
-            const result = invokeValidatorWithResponseHeader(responseHeaderWithEnumBuilder, '100');
+            const responseHeaderWithExclusiveMinimum = responseHeaderBuilder.withNumberExclusiveMinimum(100);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithExclusiveMinimum, '100');
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -297,7 +297,133 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
-                        value: responseHeaderWithEnumBuilder.build()
+                        value: responseHeaderWithExclusiveMinimum.build()
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
+
+    describe('maxLength', () => {
+        const swaggerPathWithMaxLengthBuilder = defaultSwaggerPathBuilder
+            .withParameter(pathParameterBuilder.withStringMaxLengthNamed('value', 3));
+
+        it('should pass when the pact path contains an value length equal to maxLength', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithMaxLengthBuilder, 'abc').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
+
+        it('should fail when the pact path contains a value length greater then maxLength', willResolve(() => {
+            const result = invokeValidatorWithPath(swaggerPathWithMaxLengthBuilder, 'abcd');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /abcd',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/abcd'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithMaxLengthBuilder.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact header contains a value length greater then maxLength', willResolve(() => {
+            const responseHeaderWithMaxLength = responseHeaderBuilder.withStringMaxLength(3);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithMaxLength, 'abcd');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                        'should NOT be longer than 3 characters',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.headers.x-value',
+                        value: 'abcd'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        value: responseHeaderWithMaxLength.build()
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
+
+    describe('minLength', () => {
+        const swaggerPathWithMinLengthBuilder = defaultSwaggerPathBuilder
+            .withParameter(pathParameterBuilder.withStringMinLengthNamed('value', 3));
+
+        it('should pass when the pact path contains an value length equal to minLength', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithMinLengthBuilder, 'abc').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
+
+        it('should fail when the pact path contains a value length less then minLength', willResolve(() => {
+            const result = invokeValidatorWithPath(swaggerPathWithMinLengthBuilder, 'ab');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /ab',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/ab'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithMinLengthBuilder.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact header contains a value length less then minLength', willResolve(() => {
+            const responseHeaderWithMinLength = responseHeaderBuilder.withStringMinLength(3);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithMinLength, 'ab');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                    'should NOT be shorter than 3 characters',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.headers.x-value',
+                        value: 'ab'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        value: responseHeaderWithMinLength.build()
                     },
                     type: 'error'
                 }]);
