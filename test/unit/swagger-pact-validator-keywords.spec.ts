@@ -430,4 +430,67 @@ describe('swagger-pact-validator keywords', () => {
             });
         }));
     });
+
+    describe('pattern', () => {
+        const swaggerPathWithPatternBuilder = defaultSwaggerPathBuilder
+            .withParameter(pathParameterBuilder.withStringPatternNamed('value', '^[a-f]+$'));
+
+        it('should pass when the pact path contains an value that matches the pattern', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithPatternBuilder, 'abcdef').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
+
+        it('should fail when the pact path contains a value that does not match the pattern', willResolve(() => {
+            const result = invokeValidatorWithPath(swaggerPathWithPatternBuilder, 'abcdefg');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /abcdefg',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/abcdefg'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithPatternBuilder.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact header contains a value that does not match the pattern', willResolve(() => {
+            const responseHeaderWithPattern = responseHeaderBuilder.withStringPattern('^[a-f]+$');
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithPattern, 'abcdefg');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                    'should match pattern "^[a-f]+$"',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.headers.x-value',
+                        value: 'abcdefg'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        value: responseHeaderWithPattern.build()
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
 });

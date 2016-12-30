@@ -119,6 +119,11 @@
                     "in": "header",
                     "type": "string",
                     "minLength": 3
+                }, {
+                    "name": "x-pattern-value",
+                    "in": "header",
+                    "type": "string",
+                    "pattern": "^[a-f0-9]+$"
                 }],
                 "responses": {
                     "200": {

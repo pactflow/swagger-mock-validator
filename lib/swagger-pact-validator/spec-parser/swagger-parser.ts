@@ -131,6 +131,7 @@ const toParsedParameter = (
     minimum: parameter.value.minimum,
     name,
     parentOperation: parameter.parentOperation,
+    pattern: parameter.value.pattern,
     required: (parameter.value as SwaggerHeaderPathOrQueryParameter).required || false,
     type: parameter.value.type,
     value: parameter.value

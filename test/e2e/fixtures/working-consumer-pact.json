@@ -145,6 +145,18 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "pattern valid test",
+        "request": {
+            "headers": {
+                "x-pattern-value": "1234567890abcdef"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

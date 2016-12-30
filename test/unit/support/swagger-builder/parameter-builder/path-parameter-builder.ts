@@ -149,6 +149,13 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
             required: true,
             type: 'string'
         }),
+        withStringPatternNamed: (name: string, pattern: string) => createPathParameterBuilder({
+            in: 'path',
+            name,
+            pattern,
+            required: true,
+            type: 'string'
+        }),
         withUnknownStringFormatNamed: (format: string, name: string) => {
             const parameterWithUnknownFormat = {
                 format,

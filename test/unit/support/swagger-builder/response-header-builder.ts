@@ -29,6 +29,10 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
         minLength,
         type: 'string'
     }),
+    withStringPattern: (pattern: string) => createResponseHeader({
+        pattern,
+        type: 'string'
+    }),
     withTypeArrayOfNumber: () => createResponseHeader({
         items: {type: 'number'},
         type: 'array'

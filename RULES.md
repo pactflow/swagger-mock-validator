@@ -46,7 +46,7 @@ This is a list of all the possible validation rules and if they are currently su
 | Type String | yes |
 | required | yes |
 | enum | yes |
-| pattern | no |
+| pattern | yes |
 | minLength | yes |
 | maxLength | yes |
 | multipleOf | no |
