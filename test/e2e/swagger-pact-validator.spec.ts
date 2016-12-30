@@ -63,40 +63,47 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching('Pact file "test/e2e/fixtures/broken-consumer-pact.json" ' +
                 'is not compatible with swagger file "test/e2e/fixtures/provider-spec.json"'));
 
-            expect(error).toEqual(jasmine.stringMatching('9 error'));
+            expect(error).toEqual(jasmine.stringMatching('10 error'));
             expect(error).toEqual(jasmine.stringMatching('0 warning'));
 
+            // request path missing
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[0]\.request\.path/));
             expect(error).toEqual(
                 jasmine.stringMatching('Path or method not defined in swagger file: GET /one/users/2')
             );
 
+            // request method missing
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[1]\.request\.path/));
             expect(error).toEqual(
                 jasmine.stringMatching('Path or method not defined in swagger file: DELETE /one/users/2')
             );
 
+            // request body invalid
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[2]\.request\.body/));
             expect(error).toEqual(jasmine.stringMatching(
                 'Request body is incompatible with the request body schema in the swagger file'
             ));
 
+            // request status missing
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[3]\.response\.status/));
             expect(error).toEqual(jasmine.stringMatching(
                 'Response status code not defined in swagger file: 202'
             ));
 
+            // response body invalid
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[4]\.response\.body/));
             expect(error).toEqual(jasmine.stringMatching(
                 'Response body is incompatible with the response body schema in the swagger file'
             ));
 
+            // request header invalid
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[5]\.request\.headers\.x-version/));
             expect(error).toEqual(jasmine.stringMatching(
                 'Value is incompatible with the parameter defined in the swagger file: should be number'
             ));
             expect(error).toEqual(jasmine.stringMatching('name: \'x-version\', in: \'header\''));
 
+            // format invalid
             expect(error).toEqual(jasmine.stringMatching(
                 /\[pactRoot].interactions\[6]\.request\.headers\.x-client-id/)
             );
@@ -105,6 +112,7 @@ describe('swagger-pact-validator', () => {
                 'should pass "formatInt64" keyword validation'
             ));
 
+            // enum invalid
             expect(error).toEqual(jasmine.stringMatching(
                 /\[pactRoot].interactions\[7]\.request\.headers\.x-enum-value/)
             );
@@ -113,11 +121,20 @@ describe('swagger-pact-validator', () => {
                 'should be equal to one of the allowed values'
             ));
 
+            // maximum invalid
             expect(error).toEqual(jasmine.stringMatching(
                 /\[pactRoot].interactions\[8]\.request\.headers\.x-maximum-value/)
             );
             expect(error).toEqual(jasmine.stringMatching(
                 'Value is incompatible with the parameter defined in the swagger file: should be < 100'
+            ));
+
+            // minimum invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[9]\.request\.headers\.x-minimum-value/)
+            );
+            expect(error).toEqual(jasmine.stringMatching(
+                'Value is incompatible with the parameter defined in the swagger file: should be > 0'
             ));
         })
     ));

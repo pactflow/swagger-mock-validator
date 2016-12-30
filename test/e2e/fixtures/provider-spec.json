@@ -103,6 +103,12 @@
                     "type": "integer",
                     "maximum": 100,
                     "exclusiveMaximum": true
+                }, {
+                    "name": "x-minimum-value",
+                    "in": "header",
+                    "type": "integer",
+                    "minimum": 0,
+                    "exclusiveMinimum": true
                 }],
                 "responses": {
                     "200": {

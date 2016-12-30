@@ -109,6 +109,18 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "minimum valid test",
+        "request": {
+            "headers": {
+                "x-minimum-value": "1"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

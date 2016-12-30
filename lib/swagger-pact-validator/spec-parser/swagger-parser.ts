@@ -13,6 +13,7 @@ import {
     SwaggerBodyParameter,
     SwaggerOperation,
     SwaggerParameter,
+    SwaggerParameterBase,
     SwaggerPath,
     SwaggerPathParameter,
     SwaggerQueryParameter,
@@ -113,23 +114,39 @@ const addAdditionalPropertiesFalseToSchema = (schema: JsonSchema) => {
     return undefined;
 };
 
+type SwaggerHeaderPathOrQueryParameter = SwaggerRequestHeaderParameter | SwaggerPathParameter | SwaggerQueryParameter;
+
+const toParsedParameter = (
+    parameter: ParsedSpecValue<SwaggerParameterBase>,
+    name: string
+): ParsedSpecParameter => ({
+    enum: parameter.value.enum,
+    exclusiveMaximum: parameter.value.exclusiveMaximum,
+    exclusiveMinimum: parameter.value.exclusiveMinimum,
+    format: parameter.value.format,
+    location: parameter.location,
+    maximum: parameter.value.maximum,
+    minimum: parameter.value.minimum,
+    name,
+    parentOperation: parameter.parentOperation,
+    required: (parameter.value as SwaggerHeaderPathOrQueryParameter).required || false,
+    type: parameter.value.type,
+    value: parameter.value
+});
+
 const parseResponseHeaders = (
     headers: SwaggerResponseHeaderCollection,
     responseLocation: string,
     parentOperation: ParsedSpecOperation
 ): ParsedSpecHeaderCollection =>
     _.reduce<SwaggerResponseHeader, ParsedSpecHeaderCollection>(headers, (result, header, headerName) => {
-        result[headerName.toLowerCase()] = {
-            enum: header.enum,
-            exclusiveMaximum: header.exclusiveMaximum,
-            format: header.format,
+        const value = {
             location: `${responseLocation}.headers.${headerName}`,
-            maximum: header.maximum,
-            name: headerName,
             parentOperation,
-            type: header.type,
             value: header
         };
+
+        result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
 
         return result;
     }, {});
@@ -190,30 +207,14 @@ const toRequestBodyParameter = (parameters: Array<ParsedSpecValue<SwaggerParamet
         }))
         .first();
 
-type SwaggerHeaderPathOrQueryParameter = SwaggerRequestHeaderParameter | SwaggerPathParameter | SwaggerQueryParameter;
-
-const toParsedParameter = (parameter: ParsedSpecValue<SwaggerHeaderPathOrQueryParameter>): ParsedSpecParameter => {
-    return {
-        enum: parameter.value.enum,
-        exclusiveMaximum: parameter.value.exclusiveMaximum,
-        format: parameter.value.format,
-        location: parameter.location,
-        maximum: parameter.value.maximum,
-        name: parameter.value.name,
-        parentOperation: parameter.parentOperation,
-        required: parameter.value.required,
-        type: parameter.value.type,
-        value: parameter.value
-    };
-};
-
 const toParsedParametersFor = (
     inValue: 'header' | 'path' | 'query',
     parameters: Array<ParsedSpecValue<SwaggerParameter>>
 ): ParsedSpecParameter[] =>
     _(parameters)
         .filter({value: {in: inValue}})
-        .map(toParsedParameter)
+        .map((parameter: ParsedSpecValue<SwaggerHeaderPathOrQueryParameter>) =>
+            toParsedParameter(parameter, parameter.value.name))
         .value();
 
 const parseParameters = (path: SwaggerPath, pathLocation: string, parsedOperation: ParsedSpecOperation) => {

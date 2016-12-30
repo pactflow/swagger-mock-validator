@@ -97,10 +97,22 @@
             "status": 200
         }
     }, {
-        "description": "maximum valid test",
+        "description": "maximum invalid test",
         "request": {
             "headers": {
                 "x-maximum-value": "100"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
+        "description": "minimum invalid test",
+        "request": {
+            "headers": {
+                "x-minimum-value": "0"
             },
             "method": "get",
             "path": "/test"

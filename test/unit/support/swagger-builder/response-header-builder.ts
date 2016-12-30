@@ -12,8 +12,9 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
         maximum,
         type: 'number'
     }),
-    withNumberMaximum: (maximum: number) => createResponseHeader({
-        maximum,
+    withNumberExclusiveMinimum: (minimum: number) => createResponseHeader({
+        exclusiveMinimum: true,
+        minimum,
         type: 'number'
     }),
     withStringEnum: (newEnum: any[]) => createResponseHeader({

@@ -189,19 +189,19 @@ describe('swagger-pact-validator keywords', () => {
             });
         }));
 
-        it('should fail when the pact header contains a value greater then maximum', willResolve(() => {
-            const responseHeaderWithEnumBuilder = responseHeaderBuilder.withNumberMaximum(100);
-            const result = invokeValidatorWithResponseHeader(responseHeaderWithEnumBuilder, '101');
+        it('should fail when the pact header contains a value equal to the exclusive maximum', willResolve(() => {
+            const responseHeaderWithEnumBuilder = responseHeaderBuilder.withNumberExclusiveMaximum(100);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithEnumBuilder, '100');
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 (expect(error.details) as any).toContainErrors([{
-                    message: 'Value is incompatible with the parameter defined in the swagger file: should be <= 100',
+                    message: 'Value is incompatible with the parameter defined in the swagger file: should be < 100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
-                        value: '101'
+                        value: '100'
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
@@ -214,15 +214,78 @@ describe('swagger-pact-validator keywords', () => {
                 }]);
             });
         }));
+    });
 
-        it('should fail when the pact header contains a value equal to the exclusive maximum', willResolve(() => {
-            const responseHeaderWithEnumBuilder = responseHeaderBuilder.withNumberExclusiveMaximum(100);
+    describe('minimum and exclusiveMinimum', () => {
+        const swaggerPathWithMinimumBuilder = defaultSwaggerPathBuilder
+            .withParameter(pathParameterBuilder.withNumberMinimumNamed('value', 100));
+
+        it('should pass when the pact path contains an value equal to minimum', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithMinimumBuilder, '100').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
+
+        it('should fail when the pact path contains a value less then minimum', willResolve(() => {
+            const result = invokeValidatorWithPath(swaggerPathWithMinimumBuilder, '99');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /99',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/99'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithMinimumBuilder.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact path contains a value equal to the exclusive minimum', willResolve(() => {
+            const swaggerPathWithExclusiveMaximum = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withNumberExclusiveMinimumNamed('value', 100));
+            const result = invokeValidatorWithPath(swaggerPathWithExclusiveMaximum, '100');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /100',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/100'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithExclusiveMaximum.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact header contains a value equal to the exclusive minimum', willResolve(() => {
+            const responseHeaderWithEnumBuilder = responseHeaderBuilder.withNumberExclusiveMinimum(100);
             const result = invokeValidatorWithResponseHeader(responseHeaderWithEnumBuilder, '100');
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 (expect(error.details) as any).toContainErrors([{
-                    message: 'Value is incompatible with the parameter defined in the swagger file: should be < 100',
+                    message: 'Value is incompatible with the parameter defined in the swagger file: should be > 100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
