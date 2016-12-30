@@ -17,6 +17,10 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
         minimum,
         type: 'number'
     }),
+    withNumberMultipleOf: (multipleOf: number) => createResponseHeader({
+        multipleOf,
+        type: 'number'
+    }),
     withStringEnum: (newEnum: any[]) => createResponseHeader({
         enum: newEnum,
         type: 'string'

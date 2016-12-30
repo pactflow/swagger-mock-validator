@@ -63,7 +63,7 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching('Pact file "test/e2e/fixtures/broken-consumer-pact.json" ' +
                 'is not compatible with swagger file "test/e2e/fixtures/provider-spec.json"'));
 
-            expect(error).toEqual(jasmine.stringMatching('13 error'));
+            expect(error).toEqual(jasmine.stringMatching('14 error'));
             expect(error).toEqual(jasmine.stringMatching('0 warning'));
 
             // request path missing
@@ -162,6 +162,15 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching(
                 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should match pattern'
+            ));
+
+            // multipleof invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[13]\.request\.headers\.x-multipleof-value/)
+            );
+            expect(error).toEqual(jasmine.stringMatching(
+                'Value is incompatible with the parameter defined in the swagger file: ' +
+                'should be multiple of 2'
             ));
         })
     ));

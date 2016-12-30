@@ -129,6 +129,7 @@ const toParsedParameter = (
     maximum: parameter.value.maximum,
     minLength: parameter.value.minLength,
     minimum: parameter.value.minimum,
+    multipleOf: parameter.value.multipleOf,
     name,
     parentOperation: parameter.parentOperation,
     pattern: parameter.value.pattern,

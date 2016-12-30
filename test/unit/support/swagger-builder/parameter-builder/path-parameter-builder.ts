@@ -109,6 +109,13 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
             required: true,
             type: 'number'
         }),
+        withNumberMultipleOfNamed: (name: string, multipleOf: number) => createPathParameterBuilder({
+            in: 'path',
+            multipleOf,
+            name,
+            required: true,
+            type: 'number'
+        }),
         withNumberNamed: (name: string) => createPathParameterBuilder({
             in: 'path',
             name,

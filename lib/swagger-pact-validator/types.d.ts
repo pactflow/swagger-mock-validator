@@ -80,6 +80,7 @@ export interface ParsedSpecParameter extends ParsedSpecValue<any> {
     maximum?: number;
     minLength?: number;
     minimum?: number;
+    multipleOf?: number;
     name: string;
     pattern?: string;
     required?: boolean;
@@ -241,6 +242,7 @@ export interface SwaggerParameterBase {
     maximum?: number;
     minLength?: number;
     minimum?: number;
+    multipleOf?: number;
     pattern?: string;
     type: SwaggerParameterType;
 }
@@ -270,6 +272,7 @@ export interface JsonSchema {
     maximum?: number;
     minLength?: number;
     minimum?: number;
+    multipleOf?: number;
     pattern?: string;
     properties?: JsonSchemaProperties;
     required?: string[];

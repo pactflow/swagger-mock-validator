@@ -493,4 +493,67 @@ describe('swagger-pact-validator keywords', () => {
             });
         }));
     });
+
+    describe('multipleOf', () => {
+        const swaggerPathWithMultipleOfBuilder = defaultSwaggerPathBuilder
+            .withParameter(pathParameterBuilder.withNumberMultipleOfNamed('value', 3));
+
+        it('should pass when the pact path contains an value that is a multiple', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithMultipleOfBuilder, '6').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
+
+        it('should fail when the pact path contains a value that is not a multiple', willResolve(() => {
+            const result = invokeValidatorWithPath(swaggerPathWithMultipleOfBuilder, '7');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /7',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/7'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithMultipleOfBuilder.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact header contains a value that is not a multiple', willResolve(() => {
+            const responseHeaderWithPattern = responseHeaderBuilder.withNumberMultipleOf(3);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithPattern, '7');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                    'should be multiple of 3',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.headers.x-value',
+                        value: '7'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        value: responseHeaderWithPattern.build()
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
 });

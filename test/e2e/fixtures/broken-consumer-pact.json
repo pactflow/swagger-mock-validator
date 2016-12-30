@@ -156,6 +156,18 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "multipleof invalid test",
+        "request": {
+            "headers": {
+                "x-multipleof-value": "1"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

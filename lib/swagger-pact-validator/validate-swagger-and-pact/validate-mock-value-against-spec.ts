@@ -20,6 +20,7 @@ const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
                 maximum: parameter.maximum,
                 minLength: parameter.minLength,
                 minimum: parameter.minimum,
+                multipleOf: parameter.multipleOf,
                 pattern: parameter.pattern,
                 type: parameter.type
             }

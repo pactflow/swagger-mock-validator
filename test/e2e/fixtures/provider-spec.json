@@ -124,6 +124,11 @@
                     "in": "header",
                     "type": "string",
                     "pattern": "^[a-f0-9]+$"
+                }, {
+                    "name": "x-multipleof-value",
+                    "in": "header",
+                    "type": "integer",
+                    "multipleOf": 2
                 }],
                 "responses": {
                     "200": {
