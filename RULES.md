@@ -49,7 +49,7 @@ This is a list of all the possible validation rules and if they are currently su
 | pattern | yes |
 | minLength | yes |
 | maxLength | yes |
-| multipleOf | no |
+| multipleOf | yes |
 | minimum | yes |
 | exclusiveMinimum | yes |
 | maximum | yes |
