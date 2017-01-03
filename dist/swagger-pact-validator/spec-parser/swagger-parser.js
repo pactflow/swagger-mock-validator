@@ -68,13 +68,17 @@ const addAdditionalPropertiesFalseToSchema = (schema) => {
     return undefined;
 };
 const toParsedParameter = (parameter, name) => ({
+    collectionFormat: parameter.value.collectionFormat,
     enum: parameter.value.enum,
     exclusiveMaximum: parameter.value.exclusiveMaximum,
     exclusiveMinimum: parameter.value.exclusiveMinimum,
     format: parameter.value.format,
+    items: parameter.value.items,
     location: parameter.location,
+    maxItems: parameter.value.maxItems,
     maxLength: parameter.value.maxLength,
     maximum: parameter.value.maximum,
+    minItems: parameter.value.minItems,
     minLength: parameter.value.minLength,
     minimum: parameter.value.minimum,
     multipleOf: parameter.value.multipleOf,
@@ -83,6 +87,7 @@ const toParsedParameter = (parameter, name) => ({
     pattern: parameter.value.pattern,
     required: parameter.value.required || false,
     type: parameter.value.type,
+    uniqueItems: parameter.value.uniqueItems,
     value: parameter.value
 });
 const parseResponseHeaders = (headers, responseLocation, parentOperation) => _.reduce(headers, (result, header, headerName) => {

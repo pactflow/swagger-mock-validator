@@ -10,13 +10,17 @@ const toJsonSchema = (parameter) => {
                 exclusiveMaximum: parameter.exclusiveMaximum,
                 exclusiveMinimum: parameter.exclusiveMinimum,
                 format: parameter.format,
+                items: parameter.items,
+                maxItems: parameter.maxItems,
                 maxLength: parameter.maxLength,
                 maximum: parameter.maximum,
+                minItems: parameter.minItems,
                 minLength: parameter.minLength,
                 minimum: parameter.minimum,
                 multipleOf: parameter.multipleOf,
                 pattern: parameter.pattern,
-                type: parameter.type
+                type: parameter.type,
+                uniqueItems: parameter.uniqueItems
             }
         },
         type: 'object'
@@ -26,28 +30,44 @@ const toJsonSchema = (parameter) => {
     }
     return schema;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (name, swaggerValue, pactHeader, pactInteraction) => {
-    if (swaggerValue.type === 'array') {
-        return {
-            match: true,
-            results: [result_1.default.warning({
-                    message: `Validating parameters of type "${swaggerValue.type}" are not supported, ` +
-                        `assuming value is valid: ${name}`,
-                    pactSegment: pactHeader,
-                    source: 'swagger-pact-validation',
-                    swaggerSegment: swaggerValue
-                })]
-        };
+const getCollectionSeparator = (collectionFormat) => {
+    if (collectionFormat === 'ssv') {
+        return ' ';
     }
-    const swaggerHeaderSchema = toJsonSchema(swaggerValue);
-    const errors = validate_json_1.default(swaggerHeaderSchema, { value: (pactHeader || { value: undefined }).value }, true);
+    else if (collectionFormat === 'tsv') {
+        return '\t';
+    }
+    else if (collectionFormat === 'pipes') {
+        return '|';
+    }
+    return ',';
+};
+const toArrayMockValue = (pactValue, swaggerValue) => {
+    if (swaggerValue.type === 'array') {
+        const values = pactValue.split(getCollectionSeparator(swaggerValue.collectionFormat));
+        return _.map(values, (value) => toArrayMockValue(value, swaggerValue.items));
+    }
+    else {
+        return pactValue;
+    }
+};
+const toMockValue = (pactValue, swaggerValue) => {
+    if (!pactValue) {
+        return { value: undefined };
+    }
+    return { value: toArrayMockValue(pactValue.value.toString(), swaggerValue) };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = (swaggerValue, pactValue, pactInteraction) => {
+    const schema = toJsonSchema(swaggerValue);
+    const mockValue = toMockValue(pactValue, swaggerValue);
+    const errors = validate_json_1.default(schema, mockValue, true);
     return {
         match: errors.length === 0,
         results: _.map(errors, (error) => result_1.default.error({
             message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 error.message,
-            pactSegment: pactHeader || pactInteraction,
+            pactSegment: pactValue || pactInteraction,
             source: 'swagger-pact-validation',
             swaggerSegment: swaggerValue
         }))

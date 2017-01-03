@@ -7,7 +7,7 @@ const typeValidators = {
         const match = swaggerPathNameSegment.value === pactPathSegment.value;
         return { match, results: [] };
     },
-    jsonSchema: (pactPathSegment, swaggerPathSegment) => validate_mock_value_against_spec_1.default(swaggerPathSegment.parameter.name, swaggerPathSegment.parameter, pactPathSegment, pactPathSegment.parentInteraction)
+    jsonSchema: (pactPathSegment, swaggerPathSegment) => validate_mock_value_against_spec_1.default(swaggerPathSegment.parameter, pactPathSegment, pactPathSegment.parentInteraction)
 };
 const doInteractionAndOperationMatchPaths = (pactInteraction, swaggerOperation) => {
     const swaggerPathSegments = swaggerOperation.pathNameSegments;

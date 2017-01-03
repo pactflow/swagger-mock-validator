@@ -57,7 +57,7 @@ exports.default = (pactInteraction, swaggerOperation) => _(_.keys(pactInteractio
     if (!swaggerHeader && pactHeader) {
         return getWarningForUndefinedHeader(headerName, pactHeader, swaggerOperation);
     }
-    return validate_mock_value_against_spec_1.default(headerName, swaggerHeader, pactHeader, pactInteraction).results;
+    return validate_mock_value_against_spec_1.default(swaggerHeader, pactHeader, pactInteraction).results;
 })
     .flatten()
     .value();

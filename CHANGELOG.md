@@ -1,3 +1,13 @@
+<a name="0.0.19"></a>
+## [0.0.19](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.18...v0.0.19) (2017-01-03)
+
+
+### Features
+
+* add validation for type array ([96b44a9](https://bitbucket.org/atlassian/swagger-pact-validator/commits/96b44a9)), closes [#49](https://bitbucket.org/atlassian/swagger-pact-validator/issue/49)
+
+
+
 <a name="0.0.18"></a>
 ## [0.0.18](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.17...v0.0.18) (2016-12-30)
 

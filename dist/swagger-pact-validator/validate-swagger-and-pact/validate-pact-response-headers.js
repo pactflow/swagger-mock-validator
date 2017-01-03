@@ -70,7 +70,7 @@ exports.default = (pactInteraction, swaggerResponse) => _(pactInteraction.respon
                 swaggerSegment: swaggerResponse
             })];
     }
-    return validate_mock_value_against_spec_1.default(headerName, swaggerHeader, headerValue, pactInteraction).results;
+    return validate_mock_value_against_spec_1.default(swaggerHeader, headerValue, pactInteraction).results;
 })
     .flatten()
     .value();
