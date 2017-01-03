@@ -129,6 +129,37 @@
                     "in": "header",
                     "type": "integer",
                     "multipleOf": 2
+                }, {
+                    "name": "x-array-value",
+                    "in": "header",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                }, {
+                    "name": "x-maxitems-value",
+                    "in": "header",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "maxItems": 2
+                }, {
+                    "name": "x-minitems-value",
+                    "in": "header",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "minItems": 2
+                }, {
+                    "name": "x-uniqueitems-value",
+                    "in": "header",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "uniqueItems": true
                 }],
                 "responses": {
                     "200": {

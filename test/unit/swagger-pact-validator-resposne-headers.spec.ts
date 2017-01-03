@@ -83,20 +83,23 @@ describe('swagger-pact-validator response headers', () => {
         });
     }));
 
-    it('should return a warning when the spec uses the array type', willResolve(() => {
-        const pactResponseHeaders = {'x-custom-header': '1,2,3'};
+    it('should return the error when the pact response header does not match the array spec', willResolve(() => {
+        const pactResponseHeaders = {'x-custom-header': '1,2,a'};
         const responseHeaderSpec = responseHeaderBuilder.withTypeArrayOfNumber();
         const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderSpec);
 
-        return validateResponseHeaders(responseSpec, pactResponseHeaders).then((result) => {
-            (expect(result) as any).toContainWarnings([{
+        const result = validateResponseHeaders(responseSpec, pactResponseHeaders);
+
+        return expectToReject(result).then((error) => {
+            expect(error).toEqual(expectedFailedValidationError);
+            (expect(error.details) as any).toContainErrors([{
                 message:
-                    'Validating parameters of type "array" are not supported, assuming value is valid: x-custom-header',
+                    'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.headers.x-custom-header',
-                    value: '1,2,3'
+                    value: '1,2,a'
                 },
                 source: 'swagger-pact-validation',
                 swaggerDetails: {
@@ -105,7 +108,7 @@ describe('swagger-pact-validator response headers', () => {
                     pathName: '/does/exist',
                     value: responseHeaderSpec.build()
                 },
-                type: 'warning'
+                type: 'error'
             }]);
         });
     }));

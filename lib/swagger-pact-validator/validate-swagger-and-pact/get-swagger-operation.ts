@@ -29,7 +29,6 @@ const typeValidators: TypeValidators = {
     },
     jsonSchema: (pactPathSegment: ParsedMockValue<string>, swaggerPathSegment: ParsedSpecPathNameSegment) =>
         validateMockValueAgainstSpec(
-            swaggerPathSegment.parameter.name,
             swaggerPathSegment.parameter,
             pactPathSegment,
             pactPathSegment.parentInteraction

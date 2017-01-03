@@ -67,7 +67,7 @@ export default (pactInteraction: ParsedMockInteraction, swaggerOperation: Parsed
                 return getWarningForUndefinedHeader(headerName, pactHeader, swaggerOperation);
             }
 
-            return validateMockValueAgainstSpec(headerName, swaggerHeader, pactHeader, pactInteraction).results;
+            return validateMockValueAgainstSpec(swaggerHeader, pactHeader, pactInteraction).results;
         })
         .flatten()
         .value();

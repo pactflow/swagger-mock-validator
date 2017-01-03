@@ -11,9 +11,9 @@ import {
     ParsedSpecValue,
     Swagger,
     SwaggerBodyParameter,
+    SwaggerItem,
     SwaggerOperation,
     SwaggerParameter,
-    SwaggerParameterBase,
     SwaggerPath,
     SwaggerPathParameter,
     SwaggerQueryParameter,
@@ -117,16 +117,20 @@ const addAdditionalPropertiesFalseToSchema = (schema: JsonSchema) => {
 type SwaggerHeaderPathOrQueryParameter = SwaggerRequestHeaderParameter | SwaggerPathParameter | SwaggerQueryParameter;
 
 const toParsedParameter = (
-    parameter: ParsedSpecValue<SwaggerParameterBase>,
+    parameter: ParsedSpecValue<SwaggerItem>,
     name: string
 ): ParsedSpecParameter => ({
+    collectionFormat: parameter.value.collectionFormat,
     enum: parameter.value.enum,
     exclusiveMaximum: parameter.value.exclusiveMaximum,
     exclusiveMinimum: parameter.value.exclusiveMinimum,
     format: parameter.value.format,
+    items: parameter.value.items,
     location: parameter.location,
+    maxItems: parameter.value.maxItems,
     maxLength: parameter.value.maxLength,
     maximum: parameter.value.maximum,
+    minItems: parameter.value.minItems,
     minLength: parameter.value.minLength,
     minimum: parameter.value.minimum,
     multipleOf: parameter.value.multipleOf,
@@ -135,6 +139,7 @@ const toParsedParameter = (
     pattern: parameter.value.pattern,
     required: (parameter.value as SwaggerHeaderPathOrQueryParameter).required || false,
     type: parameter.value.type,
+    uniqueItems: parameter.value.uniqueItems,
     value: parameter.value
 });
 

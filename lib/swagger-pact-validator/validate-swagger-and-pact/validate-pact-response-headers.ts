@@ -77,7 +77,7 @@ export default (pactInteraction: ParsedMockInteraction, swaggerResponse: ParsedS
                 })];
             }
 
-            return validateMockValueAgainstSpec(headerName, swaggerHeader, headerValue, pactInteraction).results;
+            return validateMockValueAgainstSpec(swaggerHeader, headerValue, pactInteraction).results;
         })
         .flatten()
         .value();

@@ -486,136 +486,117 @@ describe('swagger-pact-validator request path', () => {
         });
     });
 
-    describe('unsupported types', () => {
-        it('should return warnings for type parameters that are unsupported', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/api/1,2,3/comments'))
-                .build();
+    describe('array params', () => {
+        it('should pass when a pact path has a correct type as an array param with default commas', willResolve(() => {
+            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withArrayOfNumberNamed('value'));
 
-            const userIdsParameter = pathParameterBuilder.withArrayOfNumberNamed('userIds');
+            return invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2,3').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            });
+        }));
 
-            const swaggerFile = swaggerBuilder
-                .withPath('/api/{userIds}/comments', pathBuilder
-                    .withParameter(userIdsParameter)
-                    .withGetOperation(operationBuilder)
-                )
-                .build();
+        it('should pass when a pact path has a correct type as an array param with commas', willResolve(() => {
+            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withArrayOfNumberCommaSeparatedNamed('value'));
 
-            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-                (expect(result) as any).toContainWarnings([{
-                    message:
-                        'Validating parameters of type "array" are not supported, assuming value is valid: userIds',
+            return invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2,3').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            });
+        }));
+
+        it('should pass when a pact path has a correct type as an array param with spaces', willResolve(() => {
+            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withArrayOfNumberSpaceSeparatedNamed('value'));
+
+            return invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1 2 3').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            });
+        }));
+
+        it('should pass when a pact path has a correct type as an array param with tabs', willResolve(() => {
+            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withArrayOfNumberTabSeparatedNamed('value'));
+
+            return invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1\t2\t3').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            });
+        }));
+
+        it('should pass when a pact path has a correct type as an array param with pipes', willResolve(() => {
+            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withArrayOfNumberPipeSeparatedNamed('value'));
+
+            return invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1|2|3').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            });
+        }));
+
+        it('should pass when a pact path has a correct type as an array param with 2 levels', willResolve(() => {
+            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withArrayOfArrayOfNumberTabAndCommaSeparatedNamed('value'));
+
+            return invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2\t3,4\t5,6').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            });
+        }));
+
+        it('should return the error when a pact path has an incorrect type as an array param', willResolve(() => {
+            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withArrayOfNumberNamed('value'));
+
+            const result = invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, 'a,b,c');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /a,b,c',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
-                        value: '1,2,3'
+                        value: '/a,b,c'
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        location: '[swaggerRoot].paths./api/{userIds}/comments.parameters[0]',
-                        pathMethod: 'get',
-                        pathName: '/api/{userIds}/comments',
-                        value: userIdsParameter.build()
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithArrayOfNumbersParameter.build()}
                     },
-                    type: 'warning'
+                    type: 'error'
                 }]);
             });
         }));
 
-        it('should return multiple warnings when multiple parameters have unsupported types', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/1,2,3/users/4,5,6'))
-                .build();
+        it('should return the error when a pact path has incorrect type as an array of int32 param', willResolve(() => {
+            const swaggerPathWithArrayOfInt32Parameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withArrayOfInt32Named('value'));
 
-            const accountIdsParameter = pathParameterBuilder.withArrayOfNumberNamed('accountIds');
+            const maxInt32 = Math.pow(2, 31) - 1;
+            const maxInt32PlusOne = maxInt32 + 1;
+            const pactValue = `${maxInt32},${maxInt32PlusOne}`;
 
-            const userIdsParameter = pathParameterBuilder.withArrayOfNumberNamed('userIds');
+            const result = invokeValidatorWithPath(swaggerPathWithArrayOfInt32Parameter, pactValue);
 
-            const swaggerFile = swaggerBuilder
-                .withPath('/{accountIds}/users/{userIds}', pathBuilder
-                    .withParameter(accountIdsParameter)
-                    .withParameter(userIdsParameter)
-                    .withGetOperation(operationBuilder)
-                )
-                .build();
-
-            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-                (expect(result) as any).toContainWarnings([{
-                    message:
-                        'Validating parameters of type "array" are not supported, assuming value is valid: accountIds',
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: `Path or method not defined in swagger file: GET /${pactValue}`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
-                        value: '1,2,3'
+                        value: `/${pactValue}`
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
-                        location: '[swaggerRoot].paths./{accountIds}/users/{userIds}.parameters[0]',
-                        pathMethod: 'get',
-                        pathName: '/{accountIds}/users/{userIds}',
-                        value: accountIdsParameter.build()
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithArrayOfInt32Parameter.build()}
                     },
-                    type: 'warning'
-                }, {
-                    message:
-                        'Validating parameters of type "array" are not supported, assuming value is valid: userIds',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '4,5,6'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths./{accountIds}/users/{userIds}.parameters[1]',
-                        pathMethod: 'get',
-                        pathName: '/{accountIds}/users/{userIds}',
-                        value: userIdsParameter.build()
-                    },
-                    type: 'warning'
-                }]);
-            });
-        }));
-
-        it('should return a warning for unsupported parameters that are defined on the operation', willResolve(() => {
-            const pactFile = pactBuilder
-                .withInteraction(interactionBuilder
-                    .withDescription('interaction description')
-                    .withRequestPath('/api/1,2,3/comments'))
-                .build();
-
-            const userIdsParameter = pathParameterBuilder.withArrayOfNumberNamed('userIds');
-
-            const swaggerFile = swaggerBuilder
-                .withPath('/api/{userIds}/comments', pathBuilder
-                    .withGetOperation(operationBuilder.withParameter(userIdsParameter))
-                )
-                .build();
-
-            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-                (expect(result) as any).toContainWarnings([{
-                    message:
-                        'Validating parameters of type "array" are not supported, assuming value is valid: userIds',
-                    pactDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        value: '1,2,3'
-                    },
-                    source: 'swagger-pact-validation',
-                    swaggerDetails: {
-                        location: '[swaggerRoot].paths./api/{userIds}/comments.get.parameters[0]',
-                        pathMethod: 'get',
-                        pathName: '/api/{userIds}/comments',
-                        value: userIdsParameter.build()
-                    },
-                    type: 'warning'
+                    type: 'error'
                 }]);
             });
         }));

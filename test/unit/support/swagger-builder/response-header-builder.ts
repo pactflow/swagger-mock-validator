@@ -7,6 +7,21 @@ export interface ResponseHeaderBuilder {
 
 const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
     build: () => cloneDeep(responseHeader),
+    withArrayOfNumberMaxItems: (maxItems: number) => createResponseHeader({
+        items: {type: 'number'},
+        maxItems,
+        type: 'array'
+    }),
+    withArrayOfNumberMinItems: (minItems: number) => createResponseHeader({
+        items: {type: 'number'},
+        minItems,
+        type: 'array'
+    }),
+    withArrayOfNumberUniqueItems: () => createResponseHeader({
+        items: {type: 'number'},
+        type: 'array',
+        uniqueItems: true
+    }),
     withNumberExclusiveMaximum: (maximum: number) => createResponseHeader({
         exclusiveMaximum: true,
         maximum,

@@ -4,6 +4,8 @@ import {
     JsonSchema,
     ParsedMockInteraction,
     ParsedMockValue,
+    ParsedSpecItem,
+    ParsedSpecItemCollectionFormat,
     ParsedSpecParameter
 } from '../types';
 import validateJson from './validate-json';
@@ -16,13 +18,17 @@ const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
                 exclusiveMaximum: parameter.exclusiveMaximum,
                 exclusiveMinimum: parameter.exclusiveMinimum,
                 format: parameter.format as any,
+                items: parameter.items as any,
+                maxItems: parameter.maxItems,
                 maxLength: parameter.maxLength,
                 maximum: parameter.maximum,
+                minItems: parameter.minItems,
                 minLength: parameter.minLength,
                 minimum: parameter.minimum,
                 multipleOf: parameter.multipleOf,
                 pattern: parameter.pattern,
-                type: parameter.type
+                type: parameter.type,
+                uniqueItems: parameter.uniqueItems
             }
         },
         type: 'object'
@@ -35,34 +41,53 @@ const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
     return schema;
 };
 
-export default <T>(
-    name: string,
-    swaggerValue: ParsedSpecParameter,
-    pactHeader: ParsedMockValue<T>,
-    pactInteraction: ParsedMockInteraction
-) => {
-    if (swaggerValue.type === 'array') {
-        return {
-            match: true,
-            results: [result.warning({
-                message: `Validating parameters of type "${swaggerValue.type}" are not supported, ` +
-                `assuming value is valid: ${name}`,
-                pactSegment: pactHeader,
-                source: 'swagger-pact-validation',
-                swaggerSegment: swaggerValue
-            })]
-        };
+const getCollectionSeparator = (collectionFormat: ParsedSpecItemCollectionFormat) => {
+    if (collectionFormat === 'ssv') {
+        return ' ';
+    } else if (collectionFormat === 'tsv') {
+        return '\t';
+    } else if (collectionFormat === 'pipes') {
+        return '|';
     }
 
-    const swaggerHeaderSchema = toJsonSchema(swaggerValue);
-    const errors = validateJson(swaggerHeaderSchema, {value: (pactHeader || {value: undefined}).value}, true);
+    return ',';
+};
+
+const toArrayMockValue = (pactValue: string, swaggerValue: ParsedSpecItem): any => {
+    if (swaggerValue.type === 'array') {
+        const values = pactValue.split(getCollectionSeparator(swaggerValue.collectionFormat));
+        return _.map(values, (value) => toArrayMockValue(value, swaggerValue.items));
+    } else {
+        return pactValue;
+    }
+};
+
+const toMockValue = <T>(
+    pactValue: ParsedMockValue<T>,
+    swaggerValue: ParsedSpecItem
+): {value: any} => {
+    if (!pactValue) {
+        return {value: undefined};
+    }
+
+    return {value: toArrayMockValue(pactValue.value.toString(), swaggerValue)};
+};
+
+export default <T>(
+    swaggerValue: ParsedSpecParameter,
+    pactValue: ParsedMockValue<T>,
+    pactInteraction: ParsedMockInteraction
+) => {
+    const schema = toJsonSchema(swaggerValue);
+    const mockValue = toMockValue(pactValue, swaggerValue);
+    const errors = validateJson(schema, mockValue, true);
 
     return {
         match: errors.length === 0,
         results: _.map(errors, (error) => result.error({
             message: 'Value is incompatible with the parameter defined in the swagger file: ' +
             error.message,
-            pactSegment: pactHeader || pactInteraction,
+            pactSegment: pactValue || pactInteraction,
             source: 'swagger-pact-validation',
             swaggerSegment: swaggerValue
         }))

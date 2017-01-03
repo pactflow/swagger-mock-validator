@@ -4,12 +4,90 @@ import {SwaggerPathParameter} from '../../../../../lib/swagger-pact-validator/ty
 const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
     return {
         build: () => cloneDeep(parameter),
+        withArrayOfArrayOfNumberTabAndCommaSeparatedNamed: (name: string) => createPathParameterBuilder({
+            collectionFormat: 'tsv',
+            in: 'path',
+            items: {
+                collectionFormat: 'csv',
+                items: {type: 'number'},
+                type: 'array'
+            },
+            name,
+            required: true,
+            type: 'array'
+        }),
+        withArrayOfInt32Named: (name: string) => createPathParameterBuilder({
+            in: 'path',
+            items: {
+                format: 'int32',
+                type: 'integer'
+            },
+            name,
+            required: true,
+            type: 'array'
+        }),
+        withArrayOfNumberCommaSeparatedNamed: (name: string) => createPathParameterBuilder({
+            collectionFormat: 'csv',
+            in: 'path',
+            items: {type: 'number'},
+            name,
+            required: true,
+            type: 'array'
+        }),
+        withArrayOfNumberMaxItemsNamed: (name: string, maxItems: number) => createPathParameterBuilder({
+            in: 'path',
+            items: {type: 'number'},
+            name,
+            maxItems,
+            required: true,
+            type: 'array'
+        }),
+        withArrayOfNumberMinItemsNamed: (name: string, minItems: number) => createPathParameterBuilder({
+            in: 'path',
+            items: {type: 'number'},
+            name,
+            minItems,
+            required: true,
+            type: 'array'
+        }),
         withArrayOfNumberNamed: (name: string) => createPathParameterBuilder({
             in: 'path',
             items: {type: 'number'},
             name,
             required: true,
             type: 'array'
+        }),
+        withArrayOfNumberPipeSeparatedNamed: (name: string) => createPathParameterBuilder({
+            collectionFormat: 'pipes',
+            in: 'path',
+            items: {type: 'number'},
+            name,
+            required: true,
+            type: 'array'
+        }),
+        withArrayOfNumberSpaceSeparatedNamed: (name: string) => createPathParameterBuilder({
+            collectionFormat: 'ssv',
+            in: 'path',
+            items: {type: 'number'},
+            name,
+            required: true,
+            type: 'array'
+        }),
+        withArrayOfNumberTabSeparatedNamed: (name: string) => createPathParameterBuilder({
+            collectionFormat: 'tsv',
+            in: 'path',
+            items: {type: 'number'},
+            name,
+            required: true,
+            type: 'array'
+        }),
+        withArrayOfNumberUniqueItemsNamed: (name: string) => createPathParameterBuilder({
+            in: 'path',
+            items: {type: 'number'},
+            name,
+            required: true,
+            type: 'array',
+            uniqueItems: true
         }),
         withBinaryNamed: (name: string) => createPathParameterBuilder({
             format: 'binary',

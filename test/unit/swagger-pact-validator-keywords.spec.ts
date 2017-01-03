@@ -530,8 +530,8 @@ describe('swagger-pact-validator keywords', () => {
         }));
 
         it('should fail when the pact header contains a value that is not a multiple', willResolve(() => {
-            const responseHeaderWithPattern = responseHeaderBuilder.withNumberMultipleOf(3);
-            const result = invokeValidatorWithResponseHeader(responseHeaderWithPattern, '7');
+            const responseHeaderWithMultipleOf = responseHeaderBuilder.withNumberMultipleOf(3);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithMultipleOf, '7');
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
@@ -549,7 +549,196 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
-                        value: responseHeaderWithPattern.build()
+                        value: responseHeaderWithMultipleOf.build()
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
+
+    describe('maxItems', () => {
+        const swaggerPathWithMaxItemsBuilder = defaultSwaggerPathBuilder
+            .withParameter(pathParameterBuilder.withArrayOfNumberMaxItemsNamed('value', 3));
+
+        it('should pass when the pact path contains an value that has the max items', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithMaxItemsBuilder, '1,2,3').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
+
+        it('should fail when the pact path contains a value that exceeds max items', willResolve(() => {
+            const result = invokeValidatorWithPath(swaggerPathWithMaxItemsBuilder, '1,2,3,4');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /1,2,3,4',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/1,2,3,4'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithMaxItemsBuilder.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact header contains a value that exceeds max items', willResolve(() => {
+            const responseHeaderWithMaxItems = responseHeaderBuilder.withArrayOfNumberMaxItems(3);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithMaxItems, '1,2,3,4');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                    'should NOT have more than 3 items',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.headers.x-value',
+                        value: '1,2,3,4'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        value: responseHeaderWithMaxItems.build()
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
+
+    describe('minItems', () => {
+        const swaggerPathWithMinItemsBuilder = defaultSwaggerPathBuilder
+            .withParameter(pathParameterBuilder.withArrayOfNumberMinItemsNamed('value', 3));
+
+        it('should pass when the pact path contains an value that has the min items', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithMinItemsBuilder, '1,2,3').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
+
+        it('should fail when the pact path contains a value that has less then min items', willResolve(() => {
+            const result = invokeValidatorWithPath(swaggerPathWithMinItemsBuilder, '1,2');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /1,2',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/1,2'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithMinItemsBuilder.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact header contains a value that has less then min items', willResolve(() => {
+            const responseHeaderWithMinItems = responseHeaderBuilder.withArrayOfNumberMinItems(3);
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithMinItems, '1,2');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                    'should NOT have less than 3 items',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.headers.x-value',
+                        value: '1,2'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        value: responseHeaderWithMinItems.build()
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
+
+    describe('uniqueItems', () => {
+        const swaggerPathWithUniqueItemsBuilder = defaultSwaggerPathBuilder
+            .withParameter(pathParameterBuilder.withArrayOfNumberUniqueItemsNamed('value'));
+
+        it('should pass when the pact path contains an value that has unique items', willResolve(() =>
+            invokeValidatorWithPath(swaggerPathWithUniqueItemsBuilder, '1,2').then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            })
+        ));
+
+        it('should fail when the pact path contains a value that does not have unique items', willResolve(() => {
+            const result = invokeValidatorWithPath(swaggerPathWithUniqueItemsBuilder, '1,1');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /1,1',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        value: '/1,1'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        value: {'/{value}': swaggerPathWithUniqueItemsBuilder.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should fail when the pact header contains a value that does not have unique items', willResolve(() => {
+            const responseHeaderWithUniqueItems = responseHeaderBuilder.withArrayOfNumberUniqueItems();
+            const result = invokeValidatorWithResponseHeader(responseHeaderWithUniqueItems, '1,1');
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                    'should NOT have duplicate items (items ## 0 and 1 are identical)',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.headers.x-value',
+                        value: '1,1'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        value: responseHeaderWithUniqueItems.build()
                     },
                     type: 'error'
                 }]);

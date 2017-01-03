@@ -47,6 +47,9 @@ const changeTypeToKeywordForCustomFormats = (schema: JsonSchema) => {
     formatForInt32Numbers(schema);
     formatForInt64Numbers(schema);
     _.each(schema.properties, changeTypeToKeywordForCustomFormats);
+    if (schema.items) {
+        changeTypeToKeywordForCustomFormats(schema.items);
+    }
 };
 
 export default (jsonSchema: JsonSchema, json: any, numbersSentAsStrings: boolean = false) => {
@@ -60,7 +63,7 @@ export default (jsonSchema: JsonSchema, json: any, numbersSentAsStrings: boolean
     addSwaggerFormatsAndKeywords(ajv);
     removeNonSwaggerAjvFormats(ajv);
 
-    const ajvCompatibleJsonSchema = _.clone(jsonSchema);
+    const ajvCompatibleJsonSchema = _.cloneDeep(jsonSchema);
 
     changeTypeToKeywordForCustomFormats(ajvCompatibleJsonSchema);
 

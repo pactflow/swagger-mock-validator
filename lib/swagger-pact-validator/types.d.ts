@@ -71,20 +71,28 @@ export interface ParsedSpecResponse extends ParsedSpecValue<any> {
     schema: JsonSchema;
 }
 
-export interface ParsedSpecParameter extends ParsedSpecValue<any> {
+export interface ParsedSpecParameter extends ParsedSpecValue<any>, ParsedSpecItem {
+    name: string;
+    required: boolean;
+}
+
+export interface ParsedSpecItem {
+    collectionFormat?: ParsedSpecItemCollectionFormat;
     enum?: any[];
     exclusiveMaximum?: boolean;
     exclusiveMinimum?: boolean;
-    format: ParsedSpecParameterFormat;
+    format?: ParsedSpecItemFormat;
+    items?: ParsedSpecItem;
+    maxItems?: number;
     maxLength?: number;
     maximum?: number;
+    minItems?: number;
     minLength?: number;
     minimum?: number;
     multipleOf?: number;
-    name: string;
     pattern?: string;
-    required?: boolean;
-    type: ParsedSpecParameterType;
+    type: ParsedSpecItemType;
+    uniqueItems?: boolean;
 }
 
 export interface ParsedSpecBody {
@@ -94,10 +102,12 @@ export interface ParsedSpecBody {
     schema: JsonSchema;
 }
 
-export type ParsedSpecParameterFormat =
+export type ParsedSpecItemCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes';
+
+export type ParsedSpecItemFormat =
     'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' | 'password';
 
-export type ParsedSpecParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
+export type ParsedSpecItemType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 export interface ParsedSpecValue<T> {
     location: string;
@@ -174,20 +184,19 @@ export interface SwaggerOperation {
 export type SwaggerParameter = SwaggerPathParameter | SwaggerQueryParameter |
     SwaggerRequestHeaderParameter | SwaggerBodyParameter | SwaggerFormParameter;
 
-export interface SwaggerPathParameter extends SwaggerParameterBase {
+export interface SwaggerPathParameter extends SwaggerItem {
     in: 'path';
-    items?: JsonSchema;
     name: string;
     required: true;
 }
 
-export interface SwaggerQueryParameter extends SwaggerParameterBase {
+export interface SwaggerQueryParameter extends SwaggerItem {
     in: 'query';
     name: string;
     required?: boolean;
 }
 
-export interface SwaggerRequestHeaderParameter extends SwaggerParameterBase {
+export interface SwaggerRequestHeaderParameter extends SwaggerItem {
     in: 'header';
     name: string;
     required?: boolean;
@@ -201,19 +210,14 @@ export interface SwaggerBodyParameter {
 }
 
 export interface SwaggerFormParameter {
-    format?: SwaggerParameterFormat;
+    format?: SwaggerItemFormat;
     in: 'formData';
     name: string;
     required?: boolean;
     type: SwaggerFormParameterType;
 }
 
-export type SwaggerParameterFormat =
-    'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' | 'password';
-
-export type SwaggerParameterType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
-
-export type SwaggerFormParameterType = SwaggerParameterType | 'file';
+export type SwaggerFormParameterType = SwaggerItemType | 'file';
 
 export interface SwaggerResponses {
     [index: string]: SwaggerResponse;
@@ -226,26 +230,38 @@ export interface SwaggerResponse {
 }
 
 export interface SwaggerResponseHeaderCollection {
-    [headerName: string]: SwaggerResponseHeader;
+    [headerName: string]: SwaggerItem;
 }
 
-export interface SwaggerResponseHeader extends SwaggerParameterBase {
-    items?: SwaggerResponseHeader;
+export interface SwaggerResponseHeader extends SwaggerItem {
+    description?: string;
 }
 
-export interface SwaggerParameterBase {
+export interface SwaggerItem {
+    collectionFormat?: SwaggerItemCollectionFormat;
     enum?: any[];
     exclusiveMaximum?: boolean;
     exclusiveMinimum?: boolean;
-    format?: SwaggerParameterFormat;
+    format?: SwaggerItemFormat;
+    items?: SwaggerItem;
+    maxItems?: number;
     maxLength?: number;
     maximum?: number;
+    minItems?: number;
     minLength?: number;
     minimum?: number;
     multipleOf?: number;
     pattern?: string;
-    type: SwaggerParameterType;
+    type: SwaggerItemType;
+    uniqueItems?: boolean;
 }
+
+export type SwaggerItemCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes';
+
+export type SwaggerItemFormat =
+    'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' | 'password';
+
+export type SwaggerItemType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 // Other Interfaces
 
@@ -268,8 +284,10 @@ export interface JsonSchema {
     exclusiveMinimum?: boolean;
     format?: JsonSchemaFormat;
     items?: JsonSchema;
+    maxItems?: number;
     maxLength?: number;
     maximum?: number;
+    minItems?: number;
     minLength?: number;
     minimum?: number;
     multipleOf?: number;
@@ -277,6 +295,7 @@ export interface JsonSchema {
     properties?: JsonSchemaProperties;
     required?: string[];
     type: JsonSchemaType;
+    uniqueItems?: boolean;
 }
 
 export type JsonSchemaFormat = 'date-time' | 'email' | 'hostname' | 'ipv4' | 'ipv6' | 'uri';

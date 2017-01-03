@@ -168,6 +168,54 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "array valid test",
+        "request": {
+            "headers": {
+                "x-array-value": "a,1,2"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
+        "description": "maxitems invalid test",
+        "request": {
+            "headers": {
+                "x-maxitems-value": "1,2,3"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
+        "description": "minitems invalid test",
+        "request": {
+            "headers": {
+                "x-minitems-value": "1"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
+        "description": "uniqueitems invalid test",
+        "request": {
+            "headers": {
+                "x-uniqueitems-value": "1,2,1"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

@@ -63,7 +63,7 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching('Pact file "test/e2e/fixtures/broken-consumer-pact.json" ' +
                 'is not compatible with swagger file "test/e2e/fixtures/provider-spec.json"'));
 
-            expect(error).toEqual(jasmine.stringMatching('14 error'));
+            expect(error).toEqual(jasmine.stringMatching('18 error'));
             expect(error).toEqual(jasmine.stringMatching('0 warning'));
 
             // request path missing
@@ -171,6 +171,42 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching(
                 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should be multiple of 2'
+            ));
+
+            // array invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[14]\.request\.headers\.x-array-value/)
+            );
+            expect(error).toEqual(jasmine.stringMatching(
+                'Value is incompatible with the parameter defined in the swagger file: ' +
+                'should be number'
+            ));
+
+            // maxitems invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[15]\.request\.headers\.x-maxitems-value/
+            ));
+            expect(error).toEqual(jasmine.stringMatching(
+                'Value is incompatible with the parameter defined in the swagger file: ' +
+                'should NOT have more than 2 items'
+            ));
+
+            // minitems invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[16]\.request\.headers\.x-minitems-value/
+            ));
+            expect(error).toEqual(jasmine.stringMatching(
+                'Value is incompatible with the parameter defined in the swagger file: ' +
+                'should NOT have less than 2 items'
+            ));
+
+            // uniqueitems invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[17]\.request\.headers\.x-uniqueitems-value/
+            ));
+            expect(error).toEqual(jasmine.stringMatching(
+                'Value is incompatible with the parameter defined in the swagger file: ' +
+                'should NOT have duplicate items'
             ));
         })
     ));
