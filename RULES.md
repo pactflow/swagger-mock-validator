@@ -70,6 +70,7 @@ This is a list of all the possible validation rules and if they are currently su
 | Inline schema | yes |
 | allOf | no |
 | discriminator | no |
+| additional properties with Swagger formats | yes |
 
 ## Source Location
 

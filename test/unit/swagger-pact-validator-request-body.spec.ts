@@ -235,4 +235,71 @@ describe('swagger-pact-validator request body', () => {
             }]);
         });
     }));
+
+    it('should return error when pact request body has additional properties when none are allowed', willResolve(() => {
+        const pactRequestBody = {a: 1};
+
+        const swaggerBodyParameter = parameterBuilder.withRequiredSchemaInBody(schemaBuilder
+            .withTypeObject()
+            .withAdditionalPropertiesBoolean(false)
+        );
+
+        const result = validateRequestBody(pactRequestBody, swaggerBodyParameter);
+
+        return expectToReject(result).then((error) => {
+            expect(error).toEqual(expectedFailedValidationError);
+            (expect(error.details) as any).toContainErrors([{
+                message:
+                    'Request body is incompatible with the request body schema in the swagger file: ' +
+                    'should NOT have additional properties',
+                pactDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.body',
+                    value: {a: 1}
+                },
+                source: 'swagger-pact-validation',
+                swaggerDetails: {
+                    location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.additionalProperties',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    value: false
+                },
+                type: 'error'
+            }]);
+        });
+    }));
+
+    it('should return error when pact request body has additional properties not matching schema', willResolve(() => {
+        const pactRequestBody = {a: '1'};
+
+        const swaggerBodyParameter = parameterBuilder.withRequiredSchemaInBody(schemaBuilder
+            .withTypeObject()
+            .withAdditionalPropertiesSchema(schemaBuilder.withTypeNumber())
+        );
+
+        const result = validateRequestBody(pactRequestBody, swaggerBodyParameter);
+
+        return expectToReject(result).then((error) => {
+            expect(error).toEqual(expectedFailedValidationError);
+            (expect(error.details) as any).toContainErrors([{
+                message:
+                'Request body is incompatible with the request body schema in the swagger file: should be number',
+                pactDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.body[\'a\']',
+                    value: '1'
+                },
+                source: 'swagger-pact-validation',
+                swaggerDetails: {
+                    location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.additionalProperties.type',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    value: 'number'
+                },
+                type: 'error'
+            }]);
+        });
+    }));
 });

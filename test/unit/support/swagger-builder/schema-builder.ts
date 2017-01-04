@@ -8,7 +8,10 @@ export interface SchemaBuilder {
 
 const createSchemaBuilder = (schema: JsonSchema) => ({
     build: () => cloneDeep(schema),
-    withEnum: (newEnum: any[]) => createSchemaBuilder(setValueOn(schema, 'enum', newEnum)),
+    withAdditionalPropertiesBoolean: (value: boolean) =>
+        createSchemaBuilder(setValueOn(schema, 'additionalProperties', value)),
+    withAdditionalPropertiesSchema: (additionalPropertiesSchemaBuilder: SchemaBuilder) =>
+        createSchemaBuilder(setValueOn(schema, 'additionalProperties', additionalPropertiesSchemaBuilder.build())),
     withFormatDouble: () => createSchemaBuilder(setValueOn(schema, 'format', 'double')),
     withFormatFloat: () => createSchemaBuilder(setValueOn(schema, 'format', 'float')),
     withFormatInt32: () => createSchemaBuilder(setValueOn(schema, 'format', 'int32')),

@@ -99,14 +99,21 @@ const removeRequiredPropertiesFromSchema = (schema: JsonSchema) => {
     return undefined;
 };
 
+const addAdditionalPropertiesFalseToObjectSchema = (objectSchema: JsonSchema) => {
+    if (typeof objectSchema.additionalProperties !== 'object') {
+        objectSchema.additionalProperties = false;
+    }
+
+    _.each(objectSchema.properties, addAdditionalPropertiesFalseToSchema);
+};
+
 const addAdditionalPropertiesFalseToSchema = (schema: JsonSchema) => {
     if (!schema) {
         return schema;
     }
 
     if (schema.type === 'object') {
-        schema.additionalProperties = false;
-        _.each(schema.properties, addAdditionalPropertiesFalseToSchema);
+        addAdditionalPropertiesFalseToObjectSchema(schema);
     } else if (schema.type === 'array') {
         addAdditionalPropertiesFalseToSchema(schema.items);
     }

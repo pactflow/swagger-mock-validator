@@ -958,16 +958,18 @@ describe('swagger-pact-validator formats', () => {
 
     describe('location', () => {
         it('should validate headers with formats', willResolve(() => {
+            const tooBigInteger = (Math.pow(2, 31) + 1).toString();
+
             const pactFile = pactBuilder
                 .withInteraction(interactionBuilder
                     .withDescription('interaction description')
                     .withRequestPath('/does/exist')
                     .withResponseStatus(200)
-                    .withResponseHeader('x-custom-header', 'not-a-date')
+                    .withResponseHeader('x-custom-header', tooBigInteger)
                 )
                 .build();
 
-            const responseHeaderSpec = responseHeaderBuilder.withTypeDate();
+            const responseHeaderSpec = responseHeaderBuilder.withInt32();
 
             const swaggerFile = swaggerBuilder
                 .withPath('/does/exist', pathBuilder
@@ -983,12 +985,12 @@ describe('swagger-pact-validator formats', () => {
                 expect(error).toEqual(expectedFailedValidationError);
                 (expect(error.details) as any).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
-                    'should match format "date"',
+                    'should pass "formatInt32" keyword validation',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-custom-header',
-                        value: 'not-a-date'
+                        value: tooBigInteger
                     },
                     source: 'swagger-pact-validation',
                     swaggerDetails: {
@@ -996,6 +998,56 @@ describe('swagger-pact-validator formats', () => {
                         pathMethod: 'get',
                         pathName: '/does/exist',
                         value: responseHeaderSpec.build()
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+
+        it('should validate additional property schemas with formats', willResolve(() => {
+            const tooBigInteger = Math.pow(2, 31) + 1;
+
+            const pactFile = pactBuilder
+                .withInteraction(interactionBuilder
+                    .withDescription('interaction description')
+                    .withRequestPath('/does/exist')
+                    .withResponseStatus(200)
+                    .withResponseBody({value: tooBigInteger})
+                )
+                .build();
+
+            const responseBodySchema = schemaBuilder
+                .withTypeObject()
+                .withAdditionalPropertiesSchema(schemaBuilder.withTypeInteger().withFormatInt32());
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/does/exist', pathBuilder
+                    .withGetOperation(operationBuilder
+                        .withResponse(200, responseBuilder.withSchema(responseBodySchema))
+                    )
+                )
+                .build();
+
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                (expect(error.details) as any).toContainErrors([{
+                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                    'should pass "formatInt32" keyword validation',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.body[\'value\']',
+                        value: tooBigInteger
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location:
+                            '[swaggerRoot].paths./does/exist.get.responses.200.schema.additionalProperties.formatInt32',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        value: undefined
                     },
                     type: 'error'
                 }]);

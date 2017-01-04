@@ -7,6 +7,10 @@ export interface ResponseHeaderBuilder {
 
 const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
     build: () => cloneDeep(responseHeader),
+    withArrayOfNumber: () => createResponseHeader({
+        items: {type: 'number'},
+        type: 'array'
+    }),
     withArrayOfNumberMaxItems: (maxItems: number) => createResponseHeader({
         items: {type: 'number'},
         maxItems,
@@ -22,6 +26,11 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
         type: 'array',
         uniqueItems: true
     }),
+    withInt32: () => createResponseHeader(({
+        format: 'int32',
+        type: 'integer'
+    })),
+    withNumber: () => createResponseHeader({type: 'number'}),
     withNumberExclusiveMaximum: (maximum: number) => createResponseHeader({
         exclusiveMaximum: true,
         maximum,
@@ -36,6 +45,7 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
         multipleOf,
         type: 'number'
     }),
+    withString: () => createResponseHeader({type: 'string'}),
     withStringEnum: (newEnum: any[]) => createResponseHeader({
         enum: newEnum,
         type: 'string'
@@ -51,17 +61,7 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
     withStringPattern: (pattern: string) => createResponseHeader({
         pattern,
         type: 'string'
-    }),
-    withTypeArrayOfNumber: () => createResponseHeader({
-        items: {type: 'number'},
-        type: 'array'
-    }),
-    withTypeDate: () => createResponseHeader({
-        format: 'date',
-        type: 'string'
-    }),
-    withTypeNumber: () => createResponseHeader({type: 'number'}),
-    withTypeString: () => createResponseHeader({type: 'string'})
+    })
 });
 
-export default createResponseHeader(null).withTypeString();
+export default createResponseHeader(null).withString();

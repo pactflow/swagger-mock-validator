@@ -47,7 +47,7 @@ describe('swagger-pact-validator response headers', () => {
 
     it('should pass when the pact response header matches the spec', willResolve(() => {
         const pactResponseHeaders = {'x-custom-header': '1'};
-        const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderBuilder.withTypeNumber());
+        const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderBuilder.withNumber());
 
         return validateResponseHeaders(responseSpec, pactResponseHeaders).then((result) => {
             (expect(result) as any).toContainNoWarnings();
@@ -56,7 +56,7 @@ describe('swagger-pact-validator response headers', () => {
 
     it('should return the error when the pact response header does not match the spec', willResolve(() => {
         const pactResponseHeaders = {'x-custom-header': 'not-a-number'};
-        const responseHeaderSpec = responseHeaderBuilder.withTypeNumber();
+        const responseHeaderSpec = responseHeaderBuilder.withNumber();
         const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderSpec);
 
         const result = validateResponseHeaders(responseSpec, pactResponseHeaders);
@@ -85,7 +85,7 @@ describe('swagger-pact-validator response headers', () => {
 
     it('should return the error when the pact response header does not match the array spec', willResolve(() => {
         const pactResponseHeaders = {'x-custom-header': '1,2,a'};
-        const responseHeaderSpec = responseHeaderBuilder.withTypeArrayOfNumber();
+        const responseHeaderSpec = responseHeaderBuilder.withArrayOfNumber();
         const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderSpec);
 
         const result = validateResponseHeaders(responseSpec, pactResponseHeaders);
@@ -114,7 +114,7 @@ describe('swagger-pact-validator response headers', () => {
     }));
 
     it('should pass when the pact response header is missing and the spec defines it', willResolve(() => {
-        const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderBuilder.withTypeNumber());
+        const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderBuilder.withNumber());
 
         return validateResponseHeaders(responseSpec, null).then((result) => {
             (expect(result) as any).toContainNoWarnings();
@@ -226,7 +226,7 @@ describe('swagger-pact-validator response headers', () => {
 
     it('should not be case sensitive when comparing mock and spec response headers', willResolve(() => {
         const pactResponseHeaders = {'content-Type': 'application/json', 'X-Custom-Header': '1'};
-        const responseSpec = responseBuilder.withHeader('X-custom-header', responseHeaderBuilder.withTypeNumber());
+        const responseSpec = responseBuilder.withHeader('X-custom-header', responseHeaderBuilder.withNumber());
 
         return validateResponseHeaders(responseSpec, pactResponseHeaders).then((result) => {
             (expect(result) as any).toContainNoWarnings();
@@ -240,7 +240,7 @@ describe('swagger-pact-validator response headers', () => {
                 .withResponseHeader('x-custom-header', 'not-a-number'))
             .build();
 
-        const responseHeader = responseHeaderBuilder.withTypeNumber();
+        const responseHeader = responseHeaderBuilder.withNumber();
 
         const swaggerFile = swaggerBuilder
             .withPath('/does/exist', pathBuilder

@@ -47,8 +47,13 @@ const changeTypeToKeywordForCustomFormats = (schema: JsonSchema) => {
     formatForInt32Numbers(schema);
     formatForInt64Numbers(schema);
     _.each(schema.properties, changeTypeToKeywordForCustomFormats);
+
     if (schema.items) {
         changeTypeToKeywordForCustomFormats(schema.items);
+    }
+
+    if (typeof schema.additionalProperties === 'object') {
+        changeTypeToKeywordForCustomFormats(schema.additionalProperties);
     }
 };
 
