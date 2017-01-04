@@ -47,10 +47,10 @@ const changeTypeToKeywordForCustomFormats = (schema) => {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (jsonSchema, json, numbersSentAsStrings = false) => {
+exports.default = (jsonSchema, json, numbersSentAsStrings) => {
     const ajv = new Ajv({
         allErrors: true,
-        coerceTypes: numbersSentAsStrings,
+        coerceTypes: numbersSentAsStrings || false,
         unknownFormats: 'ignore',
         verbose: true
     });

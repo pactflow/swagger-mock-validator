@@ -1,3 +1,13 @@
+<a name="0.0.20"></a>
+## [0.0.20](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.19...v0.0.20) (2017-01-04)
+
+
+### Bug Fixes
+
+* remove default parameters for node 4.x compatibility ([ddbdb45](https://bitbucket.org/atlassian/swagger-pact-validator/commits/ddbdb45)), closes [#50](https://bitbucket.org/atlassian/swagger-pact-validator/issue/50)
+
+
+
 <a name="0.0.19"></a>
 ## [0.0.19](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.18...v0.0.19) (2017-01-03)
 
