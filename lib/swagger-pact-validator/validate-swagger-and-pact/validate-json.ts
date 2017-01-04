@@ -52,10 +52,10 @@ const changeTypeToKeywordForCustomFormats = (schema: JsonSchema) => {
     }
 };
 
-export default (jsonSchema: JsonSchema, json: any, numbersSentAsStrings: boolean = false) => {
+export default (jsonSchema: JsonSchema, json: any, numbersSentAsStrings?: boolean) => {
     const ajv = new Ajv({
         allErrors: true,
-        coerceTypes: numbersSentAsStrings,
+        coerceTypes: numbersSentAsStrings || false,
         unknownFormats: 'ignore',
         verbose: true
     });

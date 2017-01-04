@@ -55,9 +55,9 @@ describe('swagger-pact-validator reading files', () => {
             const result = invokeValidate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                expect(error).toEqual(
-                    new Error('Unable to parse "swagger.json" as json: Unexpected end of JSON input')
-                );
+                expect(error.message).toEqual(jasmine.stringMatching(
+                    'Unable to parse "swagger.json" as json: Unexpected end'
+                ));
             });
         }));
 
@@ -234,7 +234,9 @@ describe('swagger-pact-validator reading files', () => {
             const result = invokeValidate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error('Unable to parse "pact.json" as json: Unexpected end of JSON input'));
+                expect(error.message).toEqual(jasmine.stringMatching(
+                    'Unable to parse "pact.json" as json: Unexpected end'
+                ));
             });
         }));
     });
