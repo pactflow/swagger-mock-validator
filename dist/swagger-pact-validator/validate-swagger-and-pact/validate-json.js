@@ -45,6 +45,9 @@ const changeTypeToKeywordForCustomFormats = (schema) => {
     if (schema.items) {
         changeTypeToKeywordForCustomFormats(schema.items);
     }
+    if (typeof schema.additionalProperties === 'object') {
+        changeTypeToKeywordForCustomFormats(schema.additionalProperties);
+    }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (jsonSchema, json, numbersSentAsStrings) => {

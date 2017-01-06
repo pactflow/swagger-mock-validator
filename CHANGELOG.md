@@ -1,3 +1,13 @@
+<a name="0.0.21"></a>
+## [0.0.21](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.20...v0.0.21) (2017-01-06)
+
+
+### Features
+
+* add validation for additional property schemas ([e4967b9](https://bitbucket.org/atlassian/swagger-pact-validator/commits/e4967b9)), closes [#35](https://bitbucket.org/atlassian/swagger-pact-validator/issue/35)
+
+
+
 <a name="0.0.20"></a>
 ## [0.0.20](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.19...v0.0.20) (2017-01-04)
 

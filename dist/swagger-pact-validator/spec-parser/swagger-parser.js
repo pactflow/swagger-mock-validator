@@ -54,13 +54,18 @@ const removeRequiredPropertiesFromSchema = (schema) => {
     _.each(schema.properties, removeRequiredPropertiesFromSchema);
     return undefined;
 };
+const addAdditionalPropertiesFalseToObjectSchema = (objectSchema) => {
+    if (typeof objectSchema.additionalProperties !== 'object') {
+        objectSchema.additionalProperties = false;
+    }
+    _.each(objectSchema.properties, addAdditionalPropertiesFalseToSchema);
+};
 const addAdditionalPropertiesFalseToSchema = (schema) => {
     if (!schema) {
         return schema;
     }
     if (schema.type === 'object') {
-        schema.additionalProperties = false;
-        _.each(schema.properties, addAdditionalPropertiesFalseToSchema);
+        addAdditionalPropertiesFalseToObjectSchema(schema);
     }
     else if (schema.type === 'array') {
         addAdditionalPropertiesFalseToSchema(schema.items);
