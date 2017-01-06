@@ -1,0 +1,21 @@
+{
+  "provider": {
+    "name": "provider-1"
+  },
+  "consumer": {
+    "name": "consumer-1"
+  },
+  "interactions": [{
+    "description": "consumer-1 request-1",
+    "request": {
+      "method": "get",
+      "path": "/test"
+    },
+    "response": {
+      "status": 200
+    }
+  }],
+  "metadata": {
+    "pactSpecificationVersion": "1.0.0"
+  }
+}

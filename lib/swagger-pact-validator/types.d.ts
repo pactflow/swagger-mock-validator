@@ -19,6 +19,7 @@ export interface ParsedMockInteraction extends ParsedMockValue<any> {
     responseBody: ParsedMockValue<any>;
     responseHeaders: ParsedMockHeaderCollection;
     responseStatus: ParsedMockValue<number>;
+    pactFile: string;
     state: string;
 }
 
@@ -47,6 +48,7 @@ export interface ParsedSpecOperation extends ParsedSpecValue<any> {
     requestBodyParameter?: ParsedSpecBody;
     requestHeaderParameters: ParsedSpecHeaderCollection;
     responses: ParsedSpecResponses;
+    swaggerFile: string;
 }
 
 export interface ParsedSpecPathNameSegment extends ParsedSpecValue<string> {
@@ -113,6 +115,32 @@ export interface ParsedSpecValue<T> {
     location: string;
     parentOperation: ParsedSpecOperation;
     value: T;
+}
+
+// Pact Broker
+
+export interface PactBroker {
+    _links: PactBrokerLinks;
+}
+
+export interface PactBrokerLinks {
+    'pb:latest-provider-pacts': PactBrokerLinksLatestProviderPacts;
+}
+
+export interface PactBrokerLinksLatestProviderPacts {
+    href: string;
+}
+
+export interface PactBrokerProviderPacts {
+    _links: PactBrokerProviderPactsLinks;
+}
+
+export interface PactBrokerProviderPactsLinks {
+    pacts: PactBrokerProviderPactsLinksPact[];
+}
+
+export interface PactBrokerProviderPactsLinksPact {
+    href: string;
 }
 
 // Mock Interfaces - Pact
@@ -314,6 +342,7 @@ export interface SwaggerPactValidatorOptions {
     fileSystem?: FileSystem;
     httpClient?: HttpClient;
     pactPathOrUrl: string;
+    providerName?: string;
     swaggerPathOrUrl: string;
 }
 
@@ -322,7 +351,12 @@ export interface ValidationSuccess {
 }
 
 export interface ValidationFailureError extends Error {
-    details: {errors: ValidationResult[], warnings: ValidationResult[]};
+    details: ValidationFailureErrorDetails;
+}
+
+export interface ValidationFailureErrorDetails {
+    errors: ValidationResult[];
+    warnings: ValidationResult[];
 }
 
 export interface ValidationResult {
@@ -337,6 +371,7 @@ export interface ValidationResultPactDetails {
     interactionDescription: string;
     interactionState: string;
     location: string;
+    pactFile: string;
     value: any;
 }
 
@@ -344,6 +379,7 @@ export interface ValidationResultSwaggerDetails {
     location: string;
     pathMethod: string;
     pathName: string;
+    swaggerFile: string;
     value: any;
 }
 

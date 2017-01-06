@@ -1,5 +1,5 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
-import customJasmineMatchers from './support/custom-jasmine-matchers';
+import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     operationBuilder,
@@ -11,12 +11,14 @@ import {
 } from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
 
+declare function expect(actual: any): CustomMatchers;
+
 describe('swagger-pact-validator response body', () => {
     const expectedFailedValidationError =
         new Error('Pact file "pact.json" is not compatible with swagger file "swagger.json"');
 
     beforeEach(() => {
-        jasmine.addMatchers(customJasmineMatchers);
+        jasmine.addMatchers(customMatchers);
     });
 
     const validateResponseBody = (pactResponseBody: any, swaggerBodySchema: SchemaBuilder) => {
@@ -64,13 +66,14 @@ describe('swagger-pact-validator response body', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body.id',
+                    pactFile: 'pact.json',
                     value: 'not-a-number'
                 },
                 source: 'swagger-pact-validation',
@@ -78,6 +81,7 @@ describe('swagger-pact-validator response body', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: 'number'
                 },
                 type: 'error'
@@ -107,13 +111,14 @@ describe('swagger-pact-validator response body', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: should be string',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body[0].customer.last',
+                    pactFile: 'pact.json',
                     value: 1
                 },
                 source: 'swagger-pact-validation',
@@ -122,6 +127,7 @@ describe('swagger-pact-validator response body', () => {
                         '.schema.items.properties.customer.properties.last.type',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: 'string'
                 },
                 type: 'error'
@@ -143,13 +149,14 @@ describe('swagger-pact-validator response body', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body.value1',
+                    pactFile: 'pact.json',
                     value: '1'
                 },
                 source: 'swagger-pact-validation',
@@ -157,6 +164,7 @@ describe('swagger-pact-validator response body', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.value1.type',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: 'number'
                 },
                 type: 'error'
@@ -167,6 +175,7 @@ describe('swagger-pact-validator response body', () => {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body.value2',
+                    pactFile: 'pact.json',
                     value: '2'
                 },
                 source: 'swagger-pact-validation',
@@ -174,6 +183,7 @@ describe('swagger-pact-validator response body', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.value2.type',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: 'number'
                 },
                 type: 'error'
@@ -188,12 +198,13 @@ describe('swagger-pact-validator response body', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message: 'No schema found for response body',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body',
+                    pactFile: 'pact.json',
                     value: {id: 1}
                 },
                 source: 'swagger-pact-validation',
@@ -201,6 +212,7 @@ describe('swagger-pact-validator response body', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: {description: 'default-response'}
                 },
                 type: 'error'
@@ -274,7 +286,7 @@ describe('swagger-pact-validator response body', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should NOT have additional properties - firstName',
@@ -282,6 +294,7 @@ describe('swagger-pact-validator response body', () => {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body',
+                    pactFile: 'pact.json',
                     value: {firstName: 'Bob'}
                 },
                 source: 'swagger-pact-validation',
@@ -289,6 +302,7 @@ describe('swagger-pact-validator response body', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.additionalProperties',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: undefined
                 },
                 type: 'error'
@@ -307,13 +321,14 @@ describe('swagger-pact-validator response body', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body[\'b\']',
+                    pactFile: 'pact.json',
                     value: '2'
                 },
                 source: 'swagger-pact-validation',
@@ -321,6 +336,7 @@ describe('swagger-pact-validator response body', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.additionalProperties.type',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: 'number'
                 },
                 type: 'error'
@@ -339,7 +355,7 @@ describe('swagger-pact-validator response body', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should NOT have additional properties - a',
@@ -347,6 +363,7 @@ describe('swagger-pact-validator response body', () => {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body',
+                    pactFile: 'pact.json',
                     value: {a: 1}
                 },
                 source: 'swagger-pact-validation',
@@ -354,6 +371,7 @@ describe('swagger-pact-validator response body', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.additionalProperties',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: true
                 },
                 type: 'error'
@@ -377,7 +395,7 @@ describe('swagger-pact-validator response body', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should NOT have additional properties - firstName',
@@ -385,6 +403,7 @@ describe('swagger-pact-validator response body', () => {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.body[0].customer',
+                    pactFile: 'pact.json',
                     value: {firstName: 'Bob'}
                 },
                 source: 'swagger-pact-validation',
@@ -393,6 +412,7 @@ describe('swagger-pact-validator response body', () => {
                         '.schema.items.properties.customer.additionalProperties',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: undefined
                 },
                 type: 'error'
@@ -429,6 +449,7 @@ describe('swagger-pact-validator response body', () => {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.status',
+                    pactFile: 'pact.json',
                     value: 202
                 },
                 source: 'swagger-pact-validation',
@@ -436,6 +457,7 @@ describe('swagger-pact-validator response body', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: operation.build().responses
                 },
                 type: 'warning'

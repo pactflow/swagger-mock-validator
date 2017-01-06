@@ -1,0 +1,16 @@
+{
+  "_links": {
+    "pacts": [
+      {
+        "href": "http://localhost:8000/test/e2e/fixtures/pact-broker-consumer-1-to-provider-1-pact.json",
+        "title": "Pact between consumer-1 (v1) and provider-1",
+        "name": "consumer-1"
+      },
+      {
+        "href": "http://localhost:8000/test/e2e/fixtures/pact-broker-consumer-2-to-provider-1-pact.json",
+        "title": "Pact between consumer-2 (v3) and provider-1",
+        "name": "consumer-2"
+      }
+    ]
+  }
+}

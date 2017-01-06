@@ -3,6 +3,10 @@ import * as util from 'util';
 import CustomMatcherFactories = jasmine.CustomMatcherFactories;
 import CustomEqualityTester = jasmine.CustomEqualityTester;
 import MatchersUtil = jasmine.MatchersUtil;
+import {
+    ValidationFailureErrorDetails,
+    ValidationResult
+} from '../../../lib/swagger-pact-validator/types';
 
 interface CompareResultCollectionOptions<T> {
     actualResults: T[];
@@ -38,11 +42,13 @@ const propertiesToCompare = [
     'pactDetails.interactionDescription',
     'pactDetails.interactionState',
     'pactDetails.location',
+    'pactDetails.pactFile',
     'pactDetails.value',
     'source',
     'swaggerDetails.pathName',
     'swaggerDetails.pathMethod',
     'swaggerDetails.location',
+    'swaggerDetails.swaggerFile',
     'swaggerDetails.value',
     'type'
 ];
@@ -119,9 +125,9 @@ const compareResults = <T>(options: CompareResultCollectionOptions<T>) => {
     };
 };
 
-const customMatchers: CustomMatcherFactories = {
+export const customMatchers: CustomMatcherFactories = {
     toContainErrors: (utilities, customEqualityTesters) => ({
-        compare: <T>(actual: T[], expected: T[]) => compareResults({
+        compare: (actual: ValidationFailureErrorDetails, expected: ValidationResult[]) => compareResults({
             actualResults: _.get(actual, 'errors', []),
             customEqualityTesters,
             expectedResults: expected,
@@ -146,4 +152,8 @@ const customMatchers: CustomMatcherFactories = {
     })
 };
 
-export default customMatchers;
+export interface CustomMatchers extends jasmine.Matchers {
+    toContainErrors(expected: ValidationResult[]): boolean;
+    toContainNoWarnings(): boolean;
+    toContainWarnings(expected: ValidationResult[]): boolean;
+}

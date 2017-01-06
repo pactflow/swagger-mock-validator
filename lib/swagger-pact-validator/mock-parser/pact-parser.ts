@@ -33,10 +33,11 @@ const parseHeaders = (
     }, {});
 };
 
-const parseInteraction = (interaction: PactInteraction, interactionIndex: number) => {
+const parseInteraction = (interaction: PactInteraction, interactionIndex: number, pactPathOrUrl: string) => {
     const parsedInteraction = {
         description: interaction.description,
         location: `[pactRoot].interactions[${interactionIndex}]`,
+        pactFile: pactPathOrUrl,
         state: interaction.state || '[none]',
         value: interaction
     } as ParsedMockInteraction;
@@ -97,7 +98,9 @@ const parseInteraction = (interaction: PactInteraction, interactionIndex: number
 
 export default {
     parse: (pactJson: Pact, pactPathOrUrl: string): ParsedMock => ({
-        interactions: _.map(pactJson.interactions, parseInteraction),
+        interactions: _.map(pactJson.interactions, (interaction: PactInteraction, interactionIndex: number) =>
+            parseInteraction(interaction, interactionIndex, pactPathOrUrl)
+        ),
         pathOrUrl: pactPathOrUrl
     })
 };

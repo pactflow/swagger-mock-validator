@@ -1,6 +1,6 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import * as _ from 'lodash';
-import customJasmineMatchers from './support/custom-jasmine-matchers';
+import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     operationBuilder,
@@ -12,6 +12,8 @@ import {
 } from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
 
+declare function expect(actual: any): CustomMatchers;
+
 describe('swagger-pact-validator response headers', () => {
     const expectedFailedValidationError =
         new Error('Pact file "pact.json" is not compatible with swagger file "swagger.json"');
@@ -21,7 +23,7 @@ describe('swagger-pact-validator response headers', () => {
         .withResponseStatus(200);
 
     beforeEach(() => {
-        jasmine.addMatchers(customJasmineMatchers);
+        jasmine.addMatchers(customMatchers);
     });
 
     const validateResponseHeaders = (
@@ -63,12 +65,13 @@ describe('swagger-pact-validator response headers', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                    pactFile: 'pact.json',
                     value: 'not-a-number'
                 },
                 source: 'swagger-pact-validation',
@@ -76,6 +79,7 @@ describe('swagger-pact-validator response headers', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-custom-header',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: responseHeaderSpec.build()
                 },
                 type: 'error'
@@ -92,13 +96,14 @@ describe('swagger-pact-validator response headers', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message:
                     'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                    pactFile: 'pact.json',
                     value: '1,2,a'
                 },
                 source: 'swagger-pact-validation',
@@ -106,6 +111,7 @@ describe('swagger-pact-validator response headers', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-custom-header',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: responseHeaderSpec.build()
                 },
                 type: 'error'
@@ -128,12 +134,13 @@ describe('swagger-pact-validator response headers', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message: 'Response header is not defined in the swagger file: x-custom-header',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                    pactFile: 'pact.json',
                     value: 'value'
                 },
                 source: 'swagger-pact-validation',
@@ -141,6 +148,7 @@ describe('swagger-pact-validator response headers', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: responseBuilder.build()
                 },
                 type: 'error'
@@ -200,6 +208,7 @@ describe('swagger-pact-validator response headers', () => {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: `[pactRoot].interactions[0].response.headers.${headerName}`,
+                    pactFile: 'pact.json',
                     value: headerValue
                 },
                 source: 'swagger-pact-validation',
@@ -207,6 +216,7 @@ describe('swagger-pact-validator response headers', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.200',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: responseBuilder.build()
                 },
                 type: 'warning'
@@ -254,12 +264,13 @@ describe('swagger-pact-validator response headers', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                    pactFile: 'pact.json',
                     value: 'not-a-number'
                 },
                 source: 'swagger-pact-validation',
@@ -267,6 +278,7 @@ describe('swagger-pact-validator response headers', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses.default.headers.x-custom-header',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: responseHeader.build()
                 },
                 type: 'error'

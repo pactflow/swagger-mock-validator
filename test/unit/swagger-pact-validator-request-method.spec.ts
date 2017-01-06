@@ -1,8 +1,10 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
-import customJasmineMatchers from './support/custom-jasmine-matchers';
+import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {operationBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
+
+declare function expect(actual: any): CustomMatchers;
 
 describe('swagger-pact-validator request method', () => {
     const expectedFailedValidationError =
@@ -11,7 +13,7 @@ describe('swagger-pact-validator request method', () => {
     const invokeSwaggerPactValidator = swaggerPactValidatorLoader.invoke;
 
     beforeEach(() => {
-        jasmine.addMatchers(customJasmineMatchers);
+        jasmine.addMatchers(customMatchers);
     });
 
     it('should pass when a pact calls a method that is defined in the swagger', willResolve(() => {
@@ -51,12 +53,13 @@ describe('swagger-pact-validator request method', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message: 'Path or method not defined in swagger file: POST /does/exist',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].request.path',
+                    pactFile: 'pact.json',
                     value: '/does/exist'
                 },
                 source: 'swagger-pact-validation',
@@ -64,6 +67,7 @@ describe('swagger-pact-validator request method', () => {
                     location: '[swaggerRoot].paths',
                     pathMethod: null,
                     pathName: null,
+                    swaggerFile: 'swagger.json',
                     value: {'/does/exist': pathWithGetOperationBuilder.build()}
                 },
                 type: 'error'

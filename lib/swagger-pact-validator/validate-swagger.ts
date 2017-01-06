@@ -25,33 +25,52 @@ const generateLocation = (path: string[]) => {
     return '[swaggerRoot]';
 };
 
-const generateResult = (type: ValidationResultType, message: string, swaggerLocation: string): ValidationResult => ({
-    message,
+interface GenerateResultOptions {
+    message: string;
+    swaggerPathOrUrl: string;
+    swaggerLocation: string;
+    type: ValidationResultType;
+}
+
+const generateResult = (options: GenerateResultOptions): ValidationResult => ({
+    message: options.message,
     pactDetails: {
         interactionDescription: null,
-        interactionState: '[none]',
-        location: '[pactRoot]',
+        interactionState: null,
+        location: null,
+        pactFile: null,
         value: null
     },
     source: 'swagger-validation',
     swaggerDetails: {
-        location: swaggerLocation,
+        location: options.swaggerLocation,
         pathMethod: null,
         pathName: null,
+        swaggerFile: options.swaggerPathOrUrl,
         value: null
     },
-    type
+    type: options.type
 });
 
 const parseValidationResult = (validationResult: SwaggerTools.ValidationResultCollection, swaggerPathOrUrl: string) => {
     const validationErrors = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'errors', [])
         .map((swaggerValidationError) =>
-            generateResult('error', swaggerValidationError.message, generateLocation(swaggerValidationError.path))
+            generateResult({
+                message: swaggerValidationError.message,
+                swaggerPathOrUrl,
+                swaggerLocation: generateLocation(swaggerValidationError.path),
+                type: 'error'
+            })
     );
 
     const validationWarnings = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'warnings', [])
         .map((swaggerValidationWarning) =>
-            generateResult('warning', swaggerValidationWarning.message, generateLocation(swaggerValidationWarning.path))
+            generateResult({
+                message: swaggerValidationWarning.message,
+                swaggerPathOrUrl,
+                swaggerLocation: generateLocation(swaggerValidationWarning.path),
+                type: 'warning'
+            })
         );
 
     if (validationErrors.length > 0) {

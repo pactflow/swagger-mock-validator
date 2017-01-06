@@ -1,5 +1,5 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
-import customJasmineMatchers from './support/custom-jasmine-matchers';
+import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     operationBuilder,
@@ -10,12 +10,14 @@ import {
 } from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
 
+declare function expect(actual: any): CustomMatchers;
+
 describe('swagger-pact-validator response status', () => {
     const expectedFailedValidationError =
         new Error('Pact file "pact.json" is not compatible with swagger file "swagger.json"');
 
     beforeEach(() => {
-        jasmine.addMatchers(customJasmineMatchers);
+        jasmine.addMatchers(customMatchers);
     });
 
     const validateResponseStatus = (pactStatus: number, swaggerOperation: OperationBuilder) => {
@@ -49,12 +51,13 @@ describe('swagger-pact-validator response status', () => {
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
-            (expect(error.details) as any).toContainErrors([{
+            expect(error.details).toContainErrors([{
                 message: 'Response status code not defined in swagger file: 202',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.status',
+                    pactFile: 'pact.json',
                     value: 202
                 },
                 source: 'swagger-pact-validation',
@@ -62,6 +65,7 @@ describe('swagger-pact-validator response status', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: operation.build().responses
                 },
                 type: 'error'
@@ -81,6 +85,7 @@ describe('swagger-pact-validator response status', () => {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].response.status',
+                    pactFile: 'pact.json',
                     value: 202
                 },
                 source: 'swagger-pact-validation',
@@ -88,6 +93,7 @@ describe('swagger-pact-validator response status', () => {
                     location: '[swaggerRoot].paths./does/exist.get.responses',
                     pathMethod: 'get',
                     pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
                     value: operation.build().responses
                 },
                 type: 'warning'

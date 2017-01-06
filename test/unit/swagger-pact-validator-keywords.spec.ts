@@ -1,5 +1,5 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
-import customJasmineMatchers from './support/custom-jasmine-matchers';
+import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     operationBuilder,
@@ -12,6 +12,8 @@ import {
     swaggerBuilder
 } from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
+
+declare function expect(actual: any): CustomMatchers;
 
 describe('swagger-pact-validator keywords', () => {
     const expectedFailedValidationError =
@@ -61,7 +63,7 @@ describe('swagger-pact-validator keywords', () => {
     };
 
     beforeEach(() => {
-        jasmine.addMatchers(customJasmineMatchers);
+        jasmine.addMatchers(customMatchers);
     });
 
     describe('enum', () => {
@@ -70,7 +72,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an enum value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithEnumBuilder, 'a').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -79,12 +81,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /b',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/b'
                     },
                     source: 'swagger-pact-validation',
@@ -92,6 +95,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithEnumBuilder.build()}
                     },
                     type: 'error'
@@ -105,13 +109,14 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                         'should be equal to one of the allowed values',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: 'b'
                     },
                     source: 'swagger-pact-validation',
@@ -119,6 +124,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithEnum.build()
                     },
                     type: 'error'
@@ -133,7 +139,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value equal to maximum', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithMaximumBuilder, '100').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -142,12 +148,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /101',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/101'
                     },
                     source: 'swagger-pact-validation',
@@ -155,6 +162,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithMaximumBuilder.build()}
                     },
                     type: 'error'
@@ -169,12 +177,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/100'
                     },
                     source: 'swagger-pact-validation',
@@ -182,6 +191,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithExclusiveMaximum.build()}
                     },
                     type: 'error'
@@ -195,12 +205,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: should be < 100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: '100'
                     },
                     source: 'swagger-pact-validation',
@@ -208,6 +219,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithExclusiveMaximum.build()
                     },
                     type: 'error'
@@ -222,7 +234,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value equal to minimum', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithMinimumBuilder, '100').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -231,12 +243,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /99',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/99'
                     },
                     source: 'swagger-pact-validation',
@@ -244,6 +257,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithMinimumBuilder.build()}
                     },
                     type: 'error'
@@ -258,12 +272,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/100'
                     },
                     source: 'swagger-pact-validation',
@@ -271,6 +286,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithExclusiveMinimum.build()}
                     },
                     type: 'error'
@@ -284,12 +300,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: should be > 100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: '100'
                     },
                     source: 'swagger-pact-validation',
@@ -297,6 +314,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithExclusiveMinimum.build()
                     },
                     type: 'error'
@@ -311,7 +329,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value length equal to maxLength', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithMaxLengthBuilder, 'abc').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -320,12 +338,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /abcd',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/abcd'
                     },
                     source: 'swagger-pact-validation',
@@ -333,6 +352,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithMaxLengthBuilder.build()}
                     },
                     type: 'error'
@@ -346,13 +366,14 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                         'should NOT be longer than 3 characters',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: 'abcd'
                     },
                     source: 'swagger-pact-validation',
@@ -360,6 +381,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithMaxLength.build()
                     },
                     type: 'error'
@@ -374,7 +396,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value length equal to minLength', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithMinLengthBuilder, 'abc').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -383,12 +405,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /ab',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/ab'
                     },
                     source: 'swagger-pact-validation',
@@ -396,6 +419,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithMinLengthBuilder.build()}
                     },
                     type: 'error'
@@ -409,13 +433,14 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should NOT be shorter than 3 characters',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: 'ab'
                     },
                     source: 'swagger-pact-validation',
@@ -423,6 +448,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithMinLength.build()
                     },
                     type: 'error'
@@ -437,7 +463,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value that matches the pattern', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithPatternBuilder, 'abcdef').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -446,12 +472,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /abcdefg',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/abcdefg'
                     },
                     source: 'swagger-pact-validation',
@@ -459,6 +486,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithPatternBuilder.build()}
                     },
                     type: 'error'
@@ -472,13 +500,14 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should match pattern "^[a-f]+$"',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: 'abcdefg'
                     },
                     source: 'swagger-pact-validation',
@@ -486,6 +515,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithPattern.build()
                     },
                     type: 'error'
@@ -500,7 +530,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value that is a multiple', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithMultipleOfBuilder, '6').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -509,12 +539,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /7',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/7'
                     },
                     source: 'swagger-pact-validation',
@@ -522,6 +553,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithMultipleOfBuilder.build()}
                     },
                     type: 'error'
@@ -535,13 +567,14 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should be multiple of 3',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: '7'
                     },
                     source: 'swagger-pact-validation',
@@ -549,6 +582,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithMultipleOf.build()
                     },
                     type: 'error'
@@ -563,7 +597,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value that has the max items', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithMaxItemsBuilder, '1,2,3').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -572,12 +606,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /1,2,3,4',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/1,2,3,4'
                     },
                     source: 'swagger-pact-validation',
@@ -585,6 +620,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithMaxItemsBuilder.build()}
                     },
                     type: 'error'
@@ -598,13 +634,14 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should NOT have more than 3 items',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: '1,2,3,4'
                     },
                     source: 'swagger-pact-validation',
@@ -612,6 +649,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithMaxItems.build()
                     },
                     type: 'error'
@@ -626,7 +664,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value that has the min items', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithMinItemsBuilder, '1,2,3').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -635,12 +673,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /1,2',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/1,2'
                     },
                     source: 'swagger-pact-validation',
@@ -648,6 +687,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithMinItemsBuilder.build()}
                     },
                     type: 'error'
@@ -661,13 +701,14 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should NOT have less than 3 items',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: '1,2'
                     },
                     source: 'swagger-pact-validation',
@@ -675,6 +716,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithMinItems.build()
                     },
                     type: 'error'
@@ -689,7 +731,7 @@ describe('swagger-pact-validator keywords', () => {
 
         it('should pass when the pact path contains an value that has unique items', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithUniqueItemsBuilder, '1,2').then((result) => {
-                (expect(result) as any).toContainNoWarnings();
+                expect(result).toContainNoWarnings();
             })
         ));
 
@@ -698,12 +740,13 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Path or method not defined in swagger file: GET /1,1',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
                         value: '/1,1'
                     },
                     source: 'swagger-pact-validation',
@@ -711,6 +754,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: {'/{value}': swaggerPathWithUniqueItemsBuilder.build()}
                     },
                     type: 'error'
@@ -724,13 +768,14 @@ describe('swagger-pact-validator keywords', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should NOT have duplicate items (items ## 0 and 1 are identical)',
                     pactDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
                         location: '[pactRoot].interactions[0].response.headers.x-value',
+                        pactFile: 'pact.json',
                         value: '1,1'
                     },
                     source: 'swagger-pact-validation',
@@ -738,6 +783,7 @@ describe('swagger-pact-validator keywords', () => {
                         location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
                         pathMethod: 'get',
                         pathName: '/does/exist',
+                        swaggerFile: 'swagger.json',
                         value: responseHeaderWithUniqueItems.build()
                     },
                     type: 'error'

@@ -249,7 +249,7 @@ const parseParameters = (path: SwaggerPath, pathLocation: string, parsedOperatio
     };
 };
 
-const parseOperationFromPath = (path: SwaggerPath, pathName: string): ParsedSpecOperation[] =>
+const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPathOrUrl: string): ParsedSpecOperation[] =>
     _(path)
         .omit(['parameters'])
         .map((operation: SwaggerOperation, operationName: string) => {
@@ -259,6 +259,7 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string): ParsedSpec
                 location: operationLocation,
                 method: operationName,
                 pathName,
+                swaggerFile: swaggerPathOrUrl,
                 value: operation
             } as ParsedSpecOperation;
 
@@ -278,7 +279,7 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string): ParsedSpec
 export default {
     parse: (swaggerJson: Swagger, swaggerPathOrUrl: string): ParsedSpec => ({
         operations: _(swaggerJson.paths)
-            .map(parseOperationFromPath)
+            .map((path: SwaggerPath, pathName: string) => parseOperationFromPath(path, pathName, swaggerPathOrUrl))
             .flatten<ParsedSpecOperation>()
             .value(),
         pathOrUrl: swaggerPathOrUrl,
@@ -293,6 +294,7 @@ export default {
                 requestBodyParameter: null,
                 requestHeaderParameters: null,
                 responses: null,
+                swaggerFile: swaggerPathOrUrl,
                 value: null
             },
             value: swaggerJson.paths

@@ -7,13 +7,18 @@ import {Server} from 'http';
 
 interface InvokeCommandOptions {
     pact: string;
+    pactProviderName?: string;
     swagger: string;
 }
 
 const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
     const deferred = q.defer();
 
-    const command = `./bin/swagger-pact-validator-local ${options.swagger} ${options.pact}`;
+    let command = `./bin/swagger-pact-validator-local ${options.swagger} ${options.pact}`;
+
+    if (options.pactProviderName) {
+        command += ` --provider ${options.pactProviderName}`;
+    }
 
     exec(command, (error, stdout) => {
         if (error) {
@@ -234,6 +239,14 @@ describe('swagger-pact-validator', () => {
             swagger: urlTo('test/e2e/fixtures/provider-spec.json')
         }).then((error) => {
             expect(error).toEqual(jasmine.stringMatching('Expected 200 but received 404'));
+        })
+    ));
+
+    it('should succeed when a pact broker url and a swagger url are compatible', willResolve(() =>
+        invokeCommand({
+            pact: urlTo('test/e2e/fixtures/pact-broker.json'),
+            pactProviderName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/provider-spec.json')
         })
     ));
 });

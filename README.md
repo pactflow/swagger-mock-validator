@@ -3,9 +3,10 @@
 
 ## What is Swagger Pact Validator
 - A command line tool that confirms the request and responses captured in a pact file conform to the schema specified in a swagger specification.
-- Supports local files
+- Supports local files and urls
 - Supports swagger files in json format
 - Can be invoked from the command line in any language
+- Supports the [Pact Broker](https://github.com/bethesque/pact_broker)
 
 For a list of all the validation rules see [RULES.md](RULES.md).
 
@@ -35,7 +36,7 @@ swagger-pact-validator http://api.com/swagger.json https://pact-broker.com/pact.
 swagger-pact-validator /path/to/swagger.json https://pact-broker.com/pact.json
 ```
 
-Invoking this command will confirm the swagger spec and pact are compatible with each other.
+Invoking this command will confirm the swagger spec and pact are compatible with each other. [RULES.md](RULES.md) contains the details of what is verified.
 
 If the two files are compatible with each other an exit status of 0 is returned.
 
@@ -45,6 +46,14 @@ For more options on how to use the command run the command with the help flag.
 ```
 swagger-pact-validator --help
 ```
+
+### Providers using the Pact Broker
+
+Provider services can easily verify all the consumer pact files uploaded to a Pact Broker using this tool. Invoke the tool with a url to the Pact Broker along with the name of the provider service and the tool will automatically discover and validate the latest versions of the consumer pact files for the provider service.
+```
+swagger-pact-validator /path/to/swagger.json http://pact-broker.com --providerName my-provider-name
+```
+
 
 ## Changelog
 See [CHANGELOG.md](CHANGELOG.md)

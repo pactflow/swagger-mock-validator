@@ -1,0 +1,9 @@
+{
+  "_links": {
+    "pb:latest-provider-pacts": {
+      "href": "http://localhost:8000/test/e2e/fixtures/pact-broker-pacts-for-{provider}.json",
+      "title": "Latest pacts by provider",
+      "templated": true
+    }
+  }
+}

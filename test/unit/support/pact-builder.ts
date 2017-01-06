@@ -1,12 +1,13 @@
 import {cloneDeep} from 'lodash';
 import {Pact} from '../../../lib/swagger-pact-validator/types';
-import {addToArrayOn} from './builder-utilities';
+import {addToArrayOn, removeValueOn} from './builder-utilities';
 import {InteractionBuilder} from './pact-builder/interaction-builder';
 
 const createPactBuilder = (pact: Pact) => ({
     build: () => cloneDeep(pact),
     withInteraction: (interactionBuilder: InteractionBuilder) =>
-        createPactBuilder(addToArrayOn(pact, 'interactions', interactionBuilder.build()))
+        createPactBuilder(addToArrayOn(pact, 'interactions', interactionBuilder.build())),
+    withMissingInteractions: () => createPactBuilder(removeValueOn(pact, 'interactions'))
 });
 
 export const pactBuilder = createPactBuilder({

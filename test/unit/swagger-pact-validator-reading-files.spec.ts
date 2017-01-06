@@ -1,10 +1,12 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import * as q from 'q';
 import {FileSystem, HttpClient, SwaggerPactValidator, ValidationSuccess} from '../../lib/swagger-pact-validator/types';
-import customJasmineMatchers from './support/custom-jasmine-matchers';
+import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBuilder} from './support/pact-builder';
 import {operationBuilder, parameterBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
+
+declare function expect(actual: any): CustomMatchers;
 
 describe('swagger-pact-validator reading files', () => {
     let mockFiles: {[fileName: string]: q.Promise<string>};
@@ -13,7 +15,7 @@ describe('swagger-pact-validator reading files', () => {
     let swaggerPactValidator: SwaggerPactValidator;
 
     beforeEach(() => {
-        jasmine.addMatchers(customJasmineMatchers);
+        jasmine.addMatchers(customMatchers);
 
         mockFiles = {};
         mockFileSystem = swaggerPactValidatorLoader.createMockFileSystem(mockFiles);
@@ -68,12 +70,13 @@ describe('swagger-pact-validator reading files', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(new Error('"swagger.json" is not a valid swagger file'));
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Missing required property: paths',
                     pactDetails: {
                         interactionDescription: null,
-                        interactionState: '[none]',
-                        location: '[pactRoot]',
+                        interactionState: null,
+                        location: null,
+                        pactFile: null,
                         value: null
                     },
                     source: 'swagger-validation',
@@ -81,6 +84,7 @@ describe('swagger-pact-validator reading files', () => {
                         location: '[swaggerRoot]',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: null
                     },
                     type: 'error'
@@ -88,8 +92,9 @@ describe('swagger-pact-validator reading files', () => {
                     message: 'Missing required property: info',
                     pactDetails: {
                         interactionDescription: null,
-                        interactionState: '[none]',
-                        location: '[pactRoot]',
+                        interactionState: null,
+                        location: null,
+                        pactFile: null,
                         value: null
                     },
                     source: 'swagger-validation',
@@ -97,6 +102,7 @@ describe('swagger-pact-validator reading files', () => {
                         location: '[swaggerRoot]',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: null
                     },
                     type: 'error'
@@ -104,8 +110,9 @@ describe('swagger-pact-validator reading files', () => {
                     message: 'Missing required property: swagger',
                     pactDetails: {
                         interactionDescription: null,
-                        interactionState: '[none]',
-                        location: '[pactRoot]',
+                        interactionState: null,
+                        location: null,
+                        pactFile: null,
                         value: null
                     },
                     source: 'swagger-validation',
@@ -113,6 +120,7 @@ describe('swagger-pact-validator reading files', () => {
                         location: '[swaggerRoot]',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: null
                     },
                     type: 'error'
@@ -126,12 +134,13 @@ describe('swagger-pact-validator reading files', () => {
             const result = invokeValidate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                (expect(error.details) as any).toContainErrors([{
+                expect(error.details).toContainErrors([{
                     message: 'Missing required property: title',
                     pactDetails: {
                         interactionDescription: null,
-                        interactionState: '[none]',
-                        location: '[pactRoot]',
+                        interactionState: null,
+                        location: null,
+                        pactFile: null,
                         value: null
                     },
                     source: 'swagger-validation',
@@ -139,6 +148,7 @@ describe('swagger-pact-validator reading files', () => {
                         location: '[swaggerRoot].info',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: null
                     },
                     type: 'error'
@@ -155,12 +165,13 @@ describe('swagger-pact-validator reading files', () => {
             mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
             return invokeValidate('swagger.json', 'pact.json').then((result) => {
-                (expect(result) as any).toContainWarnings([{
+                expect(result).toContainWarnings([{
                     message: 'Parameter is defined but is not used: #/parameters/userId',
                     pactDetails: {
                         interactionDescription: null,
-                        interactionState: '[none]',
-                        location: '[pactRoot]',
+                        interactionState: null,
+                        location: null,
+                        pactFile: null,
                         value: null
                     },
                     source: 'swagger-validation',
@@ -168,6 +179,7 @@ describe('swagger-pact-validator reading files', () => {
                         location: '[swaggerRoot].parameters.userId',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: null
                     },
                     type: 'warning'
@@ -187,12 +199,13 @@ describe('swagger-pact-validator reading files', () => {
             const result = invokeValidate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
-                (expect(error.details) as any).toContainWarnings([{
+                expect(error.details).toContainWarnings([{
                     message: 'Parameter is defined but is not used: #/parameters/userId',
                     pactDetails: {
                         interactionDescription: null,
-                        interactionState: '[none]',
-                        location: '[pactRoot]',
+                        interactionState: null,
+                        location: null,
+                        pactFile: null,
                         value: null
                     },
                     source: 'swagger-validation',
@@ -200,6 +213,7 @@ describe('swagger-pact-validator reading files', () => {
                         location: '[swaggerRoot].parameters.userId',
                         pathMethod: null,
                         pathName: null,
+                        swaggerFile: 'swagger.json',
                         value: null
                     },
                     type: 'warning'
@@ -237,6 +251,37 @@ describe('swagger-pact-validator reading files', () => {
                 expect(error.message).toEqual(jasmine.stringMatching(
                     'Unable to parse "pact.json" as json: Unexpected end'
                 ));
+            });
+        }));
+
+        it('should return the error when the pact file is not valid', willResolve(() => {
+            const pact = pactBuilder.withMissingInteractions();
+
+            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['pact.json'] = q(JSON.stringify(pact.build()));
+            const result = invokeValidate('swagger.json', 'pact.json');
+
+            return expectToReject(result).then((error) => {
+                expect(error.message).toBe('"pact.json" is not a valid pact file');
+                expect(error.details).toContainErrors([{
+                    message: 'Missing required property: interactions',
+                    pactDetails: {
+                        interactionDescription: null,
+                        interactionState: null,
+                        location: '[pactRoot]',
+                        pactFile: 'pact.json',
+                        value: pact.build()
+                    },
+                    source: 'swagger-validation',
+                    swaggerDetails: {
+                        location: null,
+                        pathMethod: null,
+                        pathName: null,
+                        swaggerFile: null,
+                        value: null
+                    },
+                    type: 'error'
+                }]);
             });
         }));
     });

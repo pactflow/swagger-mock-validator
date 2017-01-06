@@ -1,4 +1,10 @@
-import {ParsedMockValue, ParsedSpecValue, ValidationResultSource, ValidationResultType} from './types';
+import {
+    ParsedMockValue,
+    ParsedSpecValue,
+    ValidationResult,
+    ValidationResultSource,
+    ValidationResultType
+} from './types';
 
 interface ResultOptions {
     message: string;
@@ -7,7 +13,7 @@ interface ResultOptions {
     swaggerSegment: ParsedSpecValue<any>;
 }
 
-const buildResult = (type: ValidationResultType, options: ResultOptions) => {
+const buildResult = (type: ValidationResultType, options: ResultOptions): ValidationResult => {
     const interaction = options.pactSegment.parentInteraction;
     const operation = options.swaggerSegment.parentOperation;
 
@@ -17,6 +23,7 @@ const buildResult = (type: ValidationResultType, options: ResultOptions) => {
             interactionDescription: interaction.description,
             interactionState: interaction.state,
             location: options.pactSegment.location,
+            pactFile: interaction.pactFile,
             value: options.pactSegment.value
         },
         source: options.source,
@@ -24,6 +31,7 @@ const buildResult = (type: ValidationResultType, options: ResultOptions) => {
             location: options.swaggerSegment.location,
             pathMethod: operation.method,
             pathName: operation.pathName,
+            swaggerFile: operation.swaggerFile,
             value: options.swaggerSegment.value
         },
         type
