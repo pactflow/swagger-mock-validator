@@ -75,8 +75,8 @@ describe('swagger-pact-validator reading files', () => {
                     pactDetails: {
                         interactionDescription: null,
                         interactionState: null,
-                        location: null,
-                        pactFile: null,
+                        location: '[pactRoot]',
+                        pactFile: 'pact.json',
                         value: null
                     },
                     source: 'swagger-validation',
@@ -93,8 +93,8 @@ describe('swagger-pact-validator reading files', () => {
                     pactDetails: {
                         interactionDescription: null,
                         interactionState: null,
-                        location: null,
-                        pactFile: null,
+                        location: '[pactRoot]',
+                        pactFile: 'pact.json',
                         value: null
                     },
                     source: 'swagger-validation',
@@ -111,8 +111,8 @@ describe('swagger-pact-validator reading files', () => {
                     pactDetails: {
                         interactionDescription: null,
                         interactionState: null,
-                        location: null,
-                        pactFile: null,
+                        location: '[pactRoot]',
+                        pactFile: 'pact.json',
                         value: null
                     },
                     source: 'swagger-validation',
@@ -139,8 +139,8 @@ describe('swagger-pact-validator reading files', () => {
                     pactDetails: {
                         interactionDescription: null,
                         interactionState: null,
-                        location: null,
-                        pactFile: null,
+                        location: '[pactRoot]',
+                        pactFile: 'pact.json',
                         value: null
                     },
                     source: 'swagger-validation',
@@ -170,8 +170,8 @@ describe('swagger-pact-validator reading files', () => {
                     pactDetails: {
                         interactionDescription: null,
                         interactionState: null,
-                        location: null,
-                        pactFile: null,
+                        location: '[pactRoot]',
+                        pactFile: 'pact.json',
                         value: null
                     },
                     source: 'swagger-validation',
@@ -204,8 +204,8 @@ describe('swagger-pact-validator reading files', () => {
                     pactDetails: {
                         interactionDescription: null,
                         interactionState: null,
-                        location: null,
-                        pactFile: null,
+                        location: '[pactRoot]',
+                        pactFile: 'pact.json',
                         value: null
                     },
                     source: 'swagger-validation',
@@ -274,10 +274,10 @@ describe('swagger-pact-validator reading files', () => {
                     },
                     source: 'swagger-validation',
                     swaggerDetails: {
-                        location: null,
+                        location: '[swaggerRoot]',
                         pathMethod: null,
                         pathName: null,
-                        swaggerFile: null,
+                        swaggerFile: 'swagger.json',
                         value: null
                     },
                     type: 'error'

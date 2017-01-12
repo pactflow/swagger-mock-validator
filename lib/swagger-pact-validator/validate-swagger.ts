@@ -27,6 +27,7 @@ const generateLocation = (path: string[]) => {
 
 interface GenerateResultOptions {
     message: string;
+    pactPathOrUrl: string;
     swaggerPathOrUrl: string;
     swaggerLocation: string;
     type: ValidationResultType;
@@ -37,8 +38,8 @@ const generateResult = (options: GenerateResultOptions): ValidationResult => ({
     pactDetails: {
         interactionDescription: null,
         interactionState: null,
-        location: null,
-        pactFile: null,
+        location: '[pactRoot]',
+        pactFile: options.pactPathOrUrl,
         value: null
     },
     source: 'swagger-validation',
@@ -52,11 +53,16 @@ const generateResult = (options: GenerateResultOptions): ValidationResult => ({
     type: options.type
 });
 
-const parseValidationResult = (validationResult: SwaggerTools.ValidationResultCollection, swaggerPathOrUrl: string) => {
+const parseValidationResult = (
+    validationResult: SwaggerTools.ValidationResultCollection,
+    swaggerPathOrUrl: string,
+    pactPathOrUrl: string
+) => {
     const validationErrors = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'errors', [])
         .map((swaggerValidationError) =>
             generateResult({
                 message: swaggerValidationError.message,
+                pactPathOrUrl,
                 swaggerPathOrUrl,
                 swaggerLocation: generateLocation(swaggerValidationError.path),
                 type: 'error'
@@ -67,6 +73,7 @@ const parseValidationResult = (validationResult: SwaggerTools.ValidationResultCo
         .map((swaggerValidationWarning) =>
             generateResult({
                 message: swaggerValidationWarning.message,
+                pactPathOrUrl,
                 swaggerPathOrUrl,
                 swaggerLocation: generateLocation(swaggerValidationWarning.path),
                 type: 'warning'
@@ -87,5 +94,6 @@ const parseValidationResult = (validationResult: SwaggerTools.ValidationResultCo
     return q({warnings: validationWarnings});
 };
 
-export default (swaggerJson: any, swaggerPathOrUrl: string) =>
-    validate(swaggerJson).then((validationResult) => parseValidationResult(validationResult, swaggerPathOrUrl));
+export default (swaggerJson: any, swaggerPathOrUrl: string, pactPathOrUrl: string) =>
+    validate(swaggerJson)
+        .then((validationResult) => parseValidationResult(validationResult, swaggerPathOrUrl, pactPathOrUrl));

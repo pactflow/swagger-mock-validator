@@ -41,7 +41,7 @@ const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
     return schema;
 };
 
-const getCollectionSeparator = (collectionFormat: ParsedSpecItemCollectionFormat) => {
+const getCollectionSeparator = (collectionFormat?: ParsedSpecItemCollectionFormat) => {
     if (collectionFormat === 'ssv') {
         return ' ';
     } else if (collectionFormat === 'tsv') {
@@ -56,7 +56,7 @@ const getCollectionSeparator = (collectionFormat: ParsedSpecItemCollectionFormat
 const toArrayMockValue = (pactValue: string, swaggerValue: ParsedSpecItem): any => {
     if (swaggerValue.type === 'array') {
         const values = pactValue.split(getCollectionSeparator(swaggerValue.collectionFormat));
-        return _.map(values, (value) => toArrayMockValue(value, swaggerValue.items));
+        return _.map(values, (value) => toArrayMockValue(value, swaggerValue.items as ParsedSpecItem));
     } else {
         return pactValue;
     }

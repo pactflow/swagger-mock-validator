@@ -24,7 +24,7 @@ import validateSwaggerAndPact from './swagger-pact-validator/validate-swagger-an
 
 type LoadJson = <T>(pathOrUrl: string) => q.Promise<T>;
 
-const createLoadJsonFunction = (fileSystem: FileSystem, httpClient: HttpClient): LoadJson =>
+const createLoadJsonFunction = (fileSystem?: FileSystem, httpClient?: HttpClient): LoadJson =>
     (pathOrUrl: string) =>
         jsonLoader.load(pathOrUrl, fileSystem || defaultFileSystem, httpClient || defaultHttpClient);
 
@@ -36,7 +36,7 @@ const validate = (
     const whenSwaggerJson = loadJson(swaggerPathOrUrl);
 
     const whenSwaggerValidationResults = whenSwaggerJson
-        .then((swaggerJson) => validateSwagger(swaggerJson, swaggerPathOrUrl));
+        .then((swaggerJson) => validateSwagger(swaggerJson, swaggerPathOrUrl, pactPathOrUrl));
 
     const whenParsedSwagger = whenSwaggerValidationResults
         .thenResolve(whenSwaggerJson)
@@ -46,7 +46,7 @@ const validate = (
     const whenPactJson = loadJson(pactPathOrUrl);
 
     const whenPactValidationResults = whenPactJson
-        .then((pactJson) => validatePact(pactJson, pactPathOrUrl));
+        .then((pactJson) => validatePact(pactJson, pactPathOrUrl, swaggerPathOrUrl));
 
     const whenParsedPact = whenPactValidationResults
         .thenResolve(whenPactJson)
@@ -126,7 +126,7 @@ const swaggerPactValidator: SwaggerPactValidator = {
 
                 const fulfilledWarnings = _(validationResults)
                     .filter((validationResult) => validationResult.state === 'fulfilled')
-                    .map((validationResult) => validationResult.value.warnings)
+                    .map((validationResult) => _.get<ValidationResult[]>(validationResult, 'value.warnings', []))
                     .flatten<ValidationResult>()
                     .value();
 

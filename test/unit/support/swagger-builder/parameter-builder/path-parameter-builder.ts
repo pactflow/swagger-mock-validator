@@ -255,4 +255,4 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
     };
 };
 
-export const pathParameterBuilder = createPathParameterBuilder(null).withStringNamed('default-name');
+export const pathParameterBuilder = createPathParameterBuilder(undefined as any).withStringNamed('default-name');

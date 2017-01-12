@@ -19,7 +19,7 @@ const validateRequestBodyAgainstSchema = (
 };
 
 const isOptionalRequestBodyMissing = (pactInteraction: ParsedMockInteraction, swaggerOperation: ParsedSpecOperation) =>
-    !pactInteraction.requestBody.value && !swaggerOperation.requestBodyParameter.required;
+    !pactInteraction.requestBody.value && !(swaggerOperation.requestBodyParameter as ParsedSpecBody).required;
 
 export default (pactInteraction: ParsedMockInteraction, swaggerOperation: ParsedSpecOperation) => {
     const pactRequestHasBody = Boolean(pactInteraction.requestBody.value);

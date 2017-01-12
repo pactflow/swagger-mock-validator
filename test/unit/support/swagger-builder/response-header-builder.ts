@@ -64,4 +64,4 @@ const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
     })
 });
 
-export default createResponseHeader(null).withString();
+export default createResponseHeader(undefined as any).withString();

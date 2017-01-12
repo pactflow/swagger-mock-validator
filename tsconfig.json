@@ -10,6 +10,7 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "strictNullChecks": true,
         "target": "es6"
     },
     "include": [

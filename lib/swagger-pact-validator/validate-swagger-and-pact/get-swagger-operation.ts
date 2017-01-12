@@ -1,6 +1,8 @@
 import * as _ from 'lodash';
 import result from '../result';
 import {
+    GetSwaggerValueResult,
+    GetSwaggerValueSuccessResult,
     ParsedMockInteraction,
     ParsedMockValue,
     ParsedSpec,
@@ -13,7 +15,6 @@ import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
 interface MatchResult {
     match: boolean;
     results: ValidationResult[];
-    value?: ParsedSpecOperation;
 }
 
 interface TypeValidators {
@@ -69,26 +70,40 @@ const doInteractionAndOperationMatchMethods = (
 const doInteractionAndOperationMatch = (
     pactInteraction: ParsedMockInteraction,
     swaggerOperation: ParsedSpecOperation
-) => {
+): GetSwaggerValueResult<ParsedSpecOperation> => {
     const matchMethodResult = doInteractionAndOperationMatchMethods(pactInteraction, swaggerOperation);
 
     if (!matchMethodResult.match) {
-        return matchMethodResult;
+        return {
+            found: false,
+            results: matchMethodResult.results
+        };
     }
 
     const matchPathsResult = doInteractionAndOperationMatchPaths(pactInteraction, swaggerOperation);
+    const results = _.concat(matchPathsResult.results, matchMethodResult.results);
+
+    if (!matchPathsResult.match) {
+        return {
+            found: false,
+            results
+        };
+    }
 
     return {
-        match: matchPathsResult.match,
-        results: _.concat(matchPathsResult.results, matchMethodResult.results),
+        found: true,
+        results,
         value: swaggerOperation
     };
 };
 
-export default (pactInteraction: ParsedMockInteraction, swagger: ParsedSpec) => {
+export default (
+    pactInteraction: ParsedMockInteraction,
+    swagger: ParsedSpec
+): GetSwaggerValueResult<ParsedSpecOperation> => {
     const match = _(swagger.operations)
         .map((operation) => doInteractionAndOperationMatch(pactInteraction, operation))
-        .find('match');
+        .find('found');
 
     if (!match) {
         return {
@@ -102,14 +117,13 @@ export default (pactInteraction: ParsedMockInteraction, swagger: ParsedSpec) => 
                     source: 'swagger-pact-validation',
                     swaggerSegment: swagger.paths
                 })
-            ],
-            value: null
+            ]
         };
     }
 
     return {
         found: true,
         results: match.results,
-        value: match.value
+        value: (match as GetSwaggerValueSuccessResult<ParsedSpecOperation>).value
     };
 };

@@ -42,8 +42,8 @@ export interface ParsedSpec {
 }
 
 export interface ParsedSpecOperation extends ParsedSpecValue<any> {
-    method: string;
-    pathName: string;
+    method: string | null;
+    pathName: string | null;
     pathNameSegments: ParsedSpecPathNameSegment[];
     requestBodyParameter?: ParsedSpecBody;
     requestHeaderParameters: ParsedSpecHeaderCollection;
@@ -64,13 +64,13 @@ export interface ParsedSpecHeaderCollection {
 
 export interface ParsedSpecResponses extends ParsedSpecValue<any> {
     [statusCode: number]: ParsedSpecResponse;
-    default: ParsedSpecResponse;
+    default?: ParsedSpecResponse;
 }
 
 export interface ParsedSpecResponse extends ParsedSpecValue<any> {
     headers: ParsedSpecHeaderCollection;
     getFromSchema: (pathToGet: string) => ParsedSpecValue<any>;
-    schema: JsonSchema;
+    schema?: JsonSchema;
 }
 
 export interface ParsedSpecParameter extends ParsedSpecValue<any>, ParsedSpecItem {
@@ -368,8 +368,8 @@ export interface ValidationResult {
 }
 
 export interface ValidationResultPactDetails {
-    interactionDescription: string;
-    interactionState: string;
+    interactionDescription: string | null;
+    interactionState: string | null;
     location: string;
     pactFile: string;
     value: any;
@@ -377,8 +377,8 @@ export interface ValidationResultPactDetails {
 
 export interface ValidationResultSwaggerDetails {
     location: string;
-    pathMethod: string;
-    pathName: string;
+    pathMethod: string | null;
+    pathName: string | null;
     swaggerFile: string;
     value: any;
 }
@@ -386,3 +386,16 @@ export interface ValidationResultSwaggerDetails {
 export type ValidationResultSource = 'swagger-validation' | 'swagger-pact-validation';
 
 export type ValidationResultType = 'error' | 'warning';
+
+export interface GetSwaggerValueSuccessResult<T> {
+    found: true;
+    results: ValidationResult[];
+    value: T;
+}
+
+export interface GetSwaggerValueFailedResult {
+    found: false;
+    results: ValidationResult[];
+}
+
+export type GetSwaggerValueResult<T> = GetSwaggerValueSuccessResult<T> | GetSwaggerValueFailedResult;

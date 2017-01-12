@@ -1,7 +1,7 @@
 import * as q from 'q';
 import {ValidationFailureError} from './types';
 
-export default (pactJson: any, pactPathOrUrl: string) => {
+export default (pactJson: any, pactPathOrUrl: string, swaggerPathOrUrl: string) => {
     if (!pactJson.interactions) {
         const error = new Error(`"${pactPathOrUrl}" is not a valid pact file`) as ValidationFailureError;
 
@@ -17,10 +17,10 @@ export default (pactJson: any, pactPathOrUrl: string) => {
                 },
                 source: 'swagger-validation',
                 swaggerDetails: {
-                    location: null,
+                    location: '[swaggerRoot]',
                     pathMethod: null,
                     pathName: null,
-                    swaggerFile: null,
+                    swaggerFile: swaggerPathOrUrl,
                     value: null
                 },
                 type: 'error'

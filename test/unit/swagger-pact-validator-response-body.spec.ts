@@ -21,7 +21,7 @@ describe('swagger-pact-validator response body', () => {
         jasmine.addMatchers(customMatchers);
     });
 
-    const validateResponseBody = (pactResponseBody: any, swaggerBodySchema: SchemaBuilder) => {
+    const validateResponseBody = (pactResponseBody: any, swaggerBodySchema?: SchemaBuilder) => {
         const pactFile = pactBuilder
             .withInteraction(interactionBuilder
                 .withDescription('interaction description')
@@ -194,7 +194,7 @@ describe('swagger-pact-validator response body', () => {
     it('should return the error when a pact response body is passed when there is no schema', willResolve(() => {
         const pactResponseBody = {id: 1};
 
-        const result = validateResponseBody(pactResponseBody, null);
+        const result = validateResponseBody(pactResponseBody);
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);

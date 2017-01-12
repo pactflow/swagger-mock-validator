@@ -995,7 +995,7 @@ describe('swagger-pact-validator formats', () => {
         _.each(formats, (pactValue, formatName) => {
             it(`should pass when the pact path contains any value for ${formatName} parameters`, willResolve(() => {
                 const swaggerPathWithFormatParameter = defaultSwaggerPathBuilder
-                    .withParameter(pathParameterBuilder.withUnknownStringFormatNamed(formatName, 'value'));
+                    .withParameter(pathParameterBuilder.withUnknownStringFormatNamed(formatName as string, 'value'));
 
                 return invokeValidatorWithPath(swaggerPathWithFormatParameter, pactValue).then((result) => {
                     expect(result).toContainNoWarnings();

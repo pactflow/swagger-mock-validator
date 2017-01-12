@@ -26,12 +26,15 @@ describe('swagger-pact-validator request headers', () => {
     });
 
     const validateRequestHeaders = (
-        swaggerHeaderParameter: ParameterBuilder,
-        pactRequestHeaders: {[name: string]: string}
+        swaggerHeaderParameter?: ParameterBuilder,
+        pactRequestHeaders?: {[name: string]: string}
     ) => {
         let interaction = defaultInteractionBuilder;
 
-        _.each(pactRequestHeaders, (headerValue, headerName) => {
+        _.each(pactRequestHeaders as {[name: string]: string}, (headerValue, headerName) => {
+            if (!headerName) {
+                return;
+            }
             interaction = interaction.withRequestHeader(headerName, headerValue);
         });
 
@@ -159,7 +162,7 @@ describe('swagger-pact-validator request headers', () => {
     it('should return a warning when a pact request header is defined that is not in the spec', willResolve(() => {
         const requestHeaders = {'x-custom-header': 'value'};
 
-        return validateRequestHeaders(null, requestHeaders).then((result) => {
+        return validateRequestHeaders(undefined, requestHeaders).then((result) => {
             expect(result).toContainWarnings([{
                 message: 'Request header is not defined in the swagger file: x-custom-header',
                 pactDetails: {
@@ -219,7 +222,7 @@ describe('swagger-pact-validator request headers', () => {
             'Warning': '199 Miscellaneous warning'
         };
 
-        return validateRequestHeaders(null, requestHeaders).then((result) => {
+        return validateRequestHeaders(undefined, requestHeaders).then((result) => {
             expect(result).toContainNoWarnings();
         });
     }));

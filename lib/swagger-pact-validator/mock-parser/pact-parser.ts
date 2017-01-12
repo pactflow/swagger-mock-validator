@@ -19,11 +19,11 @@ const parseRequestPathSegments = (requestPath: string, parentInteraction: Parsed
         .value();
 
 const parseHeaders = (
-    headers: PactInteractionHeaders,
+    headers: PactInteractionHeaders | undefined,
     headerLocation: 'request' | 'response',
     parentInteraction: ParsedMockInteraction
 ): ParsedMockHeaderCollection => {
-    return _.reduce(headers, (result: ParsedMockHeaderCollection, headerValue: string, headerName: string) => {
+    return _.reduce(headers as PactInteractionHeaders, (result: ParsedMockHeaderCollection, headerValue: string, headerName: string) => {
         result[headerName.toLowerCase()] = {
             location: `${parentInteraction.location}.${headerLocation}.headers.${headerName}`,
             parentInteraction,

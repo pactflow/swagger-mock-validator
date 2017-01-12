@@ -27,12 +27,15 @@ describe('swagger-pact-validator response headers', () => {
     });
 
     const validateResponseHeaders = (
-        swaggerResponseBuilder: ResponseBuilder,
-        pactResponseHeaders: {[name: string]: string}
+        swaggerResponseBuilder?: ResponseBuilder,
+        pactResponseHeaders?: {[name: string]: string}
     ) => {
         let interaction = defaultInteractionBuilder;
 
-        _.each(pactResponseHeaders, (headerValue, headerName) => {
+        _.each(pactResponseHeaders as {[name: string]: string}, (headerValue, headerName) => {
+            if (!headerName) {
+                return;
+            }
             interaction = interaction.withResponseHeader(headerName, headerValue);
         });
 
@@ -122,7 +125,7 @@ describe('swagger-pact-validator response headers', () => {
     it('should pass when the pact response header is missing and the spec defines it', willResolve(() => {
         const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderBuilder.withNumber());
 
-        return validateResponseHeaders(responseSpec, null).then((result) => {
+        return validateResponseHeaders(responseSpec).then((result) => {
             (expect(result) as any).toContainNoWarnings();
         });
     }));
@@ -130,7 +133,7 @@ describe('swagger-pact-validator response headers', () => {
     it('should fail when a pact response header is defined that is not in the spec', willResolve(() => {
         const requestHeaders = {'x-custom-header': 'value'};
 
-        const result = validateResponseHeaders(null, requestHeaders);
+        const result = validateResponseHeaders(undefined, requestHeaders);
 
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
@@ -200,7 +203,7 @@ describe('swagger-pact-validator response headers', () => {
             'X-Frame-Options': 'deny'
         };
 
-        return validateResponseHeaders(null, pactResponseHeaders).then((result) => {
+        return validateResponseHeaders(undefined, pactResponseHeaders).then((result) => {
             const warnings = _.map(pactResponseHeaders, (headerValue: string, headerName: string) => ({
                 message:
                     `Standard http response header is not defined in the swagger file: ${headerName.toLowerCase()}`,
@@ -229,7 +232,7 @@ describe('swagger-pact-validator response headers', () => {
     it('should pass when pact mocks out the content type header', willResolve(() => {
         const requestHeaders = {'Content-Type': 'application/json'};
 
-        return validateResponseHeaders(null, requestHeaders).then((result) => {
+        return validateResponseHeaders(undefined, requestHeaders).then((result) => {
             (expect(result) as any).toContainNoWarnings();
         });
     }));

@@ -1,7 +1,12 @@
 import result from '../result';
-import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
+import {
+    GetSwaggerValueResult, ParsedMockInteraction, ParsedSpecOperation, ParsedSpecResponse
+} from '../types';
 
-export default (pactInteraction: ParsedMockInteraction, swaggerOperation: ParsedSpecOperation) => {
+export default (
+    pactInteraction: ParsedMockInteraction,
+    swaggerOperation: ParsedSpecOperation
+): GetSwaggerValueResult<ParsedSpecResponse> => {
     const swaggerResponse = swaggerOperation.responses[pactInteraction.responseStatus.value];
     const defaultSwaggerResponse = swaggerOperation.responses.default;
 
@@ -16,8 +21,7 @@ export default (pactInteraction: ParsedMockInteraction, swaggerOperation: Parsed
                     source: 'swagger-pact-validation',
                     swaggerSegment: swaggerOperation.responses
                 })
-            ],
-            value: null
+            ]
         };
     }
 
@@ -33,7 +37,7 @@ export default (pactInteraction: ParsedMockInteraction, swaggerOperation: Parsed
                     swaggerSegment: swaggerOperation.responses
                 })
             ],
-            value: defaultSwaggerResponse
+            value: defaultSwaggerResponse as ParsedSpecResponse
         };
     }
 

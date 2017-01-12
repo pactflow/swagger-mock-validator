@@ -149,7 +149,7 @@ describe('swagger-pact-validator request body', () => {
     it('should return a warning when a pact request body is passed when there is no schema', willResolve(() => {
         const pactRequestBody = {id: 1};
 
-        return validateRequestBody(pactRequestBody, null).then((result) => {
+        return validateRequestBody(pactRequestBody).then((result) => {
             expect(result).toContainWarnings([{
                 message: 'No schema found for request body',
                 pactDetails: {

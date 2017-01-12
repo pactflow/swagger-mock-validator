@@ -4,7 +4,7 @@ const setMutableValueOn = <T>(obj: T, path: string, mutableValue: any): T =>
     _.set<T>(_.cloneDeep(obj), path, mutableValue);
 
 export function addToArrayOn (obj: any, path: string, value: any) {
-    const copyOfArray = _.cloneDeep(_.get(obj, path, []));
+    const copyOfArray = _.cloneDeep(_.get<any[]>(obj, path, []));
     const copyOfValue = _.cloneDeep(value);
 
     copyOfArray.push(copyOfValue);
