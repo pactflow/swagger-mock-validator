@@ -160,6 +160,10 @@
                         "type": "number"
                     },
                     "uniqueItems": true
+                }, {
+                    "name": "query-value",
+                    "in": "query",
+                    "type": "number"
                 }],
                 "responses": {
                     "200": {

@@ -217,6 +217,16 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "query valid test",
+        "request": {
+            "method": "get",
+            "path": "/test",
+            "query": "query-value=1"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

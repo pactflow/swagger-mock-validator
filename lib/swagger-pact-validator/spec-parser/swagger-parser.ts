@@ -4,9 +4,9 @@ import {
     JsonSchemaProperties,
     ParsedSpec,
     ParsedSpecBody,
-    ParsedSpecHeaderCollection,
     ParsedSpecOperation,
     ParsedSpecParameter,
+    ParsedSpecParameterCollection,
     ParsedSpecPathNameSegment,
     ParsedSpecResponses,
     ParsedSpecValue,
@@ -156,8 +156,8 @@ const parseResponseHeaders = (
     headers: SwaggerResponseHeaderCollection | undefined,
     responseLocation: string,
     parentOperation: ParsedSpecOperation
-): ParsedSpecHeaderCollection =>
-    _.reduce<SwaggerResponseHeader, ParsedSpecHeaderCollection>(
+): ParsedSpecParameterCollection =>
+    _.reduce<SwaggerResponseHeader, ParsedSpecParameterCollection>(
         headers as SwaggerResponseHeaderCollection,
         (result, header, headerName) => {
             const value = {
@@ -205,9 +205,9 @@ const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpec
     return parsedResponses;
 };
 
-const toHeaderCollection = (headerParameters: ParsedSpecParameter[]) =>
-    _.reduce<ParsedSpecParameter, ParsedSpecHeaderCollection>(headerParameters, (result, headerParameter) => {
-        result[headerParameter.name.toLowerCase()] = headerParameter;
+const toSpecParameterCollection = (parameters: ParsedSpecParameter[]) =>
+    _.reduce<ParsedSpecParameter, ParsedSpecParameterCollection>(parameters, (result, parameter) => {
+        result[parameter.name.toLowerCase()] = parameter;
         return result;
     }, {});
 
@@ -250,8 +250,9 @@ const parseParameters = (path: SwaggerPath, pathLocation: string, parsedOperatio
 
     return {
         requestBody: toRequestBodyParameter(mergedParameters),
-        requestHeaders: toHeaderCollection(toParsedParametersFor('header', mergedParameters)),
-        requestPath: toParsedParametersFor('path', mergedParameters)
+        requestHeaders: toSpecParameterCollection(toParsedParametersFor('header', mergedParameters)),
+        requestPath: toParsedParametersFor('path', mergedParameters),
+        requestQuery: toSpecParameterCollection(toParsedParametersFor('query', mergedParameters))
     };
 };
 
@@ -276,6 +277,7 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPath
                 parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
             parsedOperation.requestBodyParameter = parsedParameters.requestBody;
             parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
+            parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
             parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
 
             return parsedOperation;
@@ -291,6 +293,7 @@ const createEmptyParentOperation = (swaggerPathOrUrl: string, location: string):
         pathNameSegments: [],
         requestBodyParameter: undefined,
         requestHeaderParameters: {},
+        requestQueryParameters: {},
         responses: {
             location,
             parentOperation: undefined as any,

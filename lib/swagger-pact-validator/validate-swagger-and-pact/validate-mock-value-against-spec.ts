@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import result from '../result';
 import {
     JsonSchema,
+    MultiCollectionFormatSeparator,
     ParsedMockInteraction,
     ParsedMockValue,
     ParsedSpecItem,
@@ -41,16 +42,22 @@ const toJsonSchema = (parameter: ParsedSpecParameter): JsonSchema => {
     return schema;
 };
 
+const multiCollectionFormatSeparator: MultiCollectionFormatSeparator = '[multi-array-separator]';
+
 const getCollectionSeparator = (collectionFormat?: ParsedSpecItemCollectionFormat) => {
+    // tslint:disable:cyclomatic-complexity
     if (collectionFormat === 'ssv') {
         return ' ';
     } else if (collectionFormat === 'tsv') {
         return '\t';
     } else if (collectionFormat === 'pipes') {
         return '|';
+    } else if (collectionFormat === 'multi') {
+        return multiCollectionFormatSeparator;
     }
 
     return ',';
+    // tslint:enable:cyclomatic-complexity
 };
 
 const toArrayMockValue = (pactValue: string, swaggerValue: ParsedSpecItem): any => {
@@ -62,15 +69,15 @@ const toArrayMockValue = (pactValue: string, swaggerValue: ParsedSpecItem): any 
     }
 };
 
-const toMockValue = <T>(
-    pactValue: ParsedMockValue<T>,
+const toMockValue = (
+    pactValue: ParsedMockValue<any>,
     swaggerValue: ParsedSpecItem
 ): {value: any} => {
     if (!pactValue) {
         return {value: undefined};
     }
 
-    return {value: toArrayMockValue(pactValue.value.toString(), swaggerValue)};
+    return {value: toArrayMockValue(pactValue.value, swaggerValue)};
 };
 
 export default <T>(

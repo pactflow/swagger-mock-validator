@@ -12,19 +12,20 @@ export interface ParsedMockInteraction extends ParsedMockValue<any> {
     getRequestBodyPath: (path: string) => ParsedMockValue<any>;
     getResponseBodyPath: (path: string) => ParsedMockValue<any>;
     requestBody: ParsedMockValue<any>;
-    requestHeaders: ParsedMockHeaderCollection;
+    requestHeaders: ParsedMockValueCollection;
     requestMethod: ParsedMockValue<string>;
     requestPath: ParsedMockValue<string>;
     requestPathSegments: Array<ParsedMockValue<string>>;
+    requestQuery: ParsedMockValueCollection;
     responseBody: ParsedMockValue<any>;
-    responseHeaders: ParsedMockHeaderCollection;
+    responseHeaders: ParsedMockValueCollection;
     responseStatus: ParsedMockValue<number>;
     pactFile: string;
     state: string;
 }
 
-export interface ParsedMockHeaderCollection {
-    [headerName: string]: ParsedMockValue<string>;
+export interface ParsedMockValueCollection {
+    [name: string]: ParsedMockValue<string>;
 }
 
 export interface ParsedMockValue<T> {
@@ -46,7 +47,8 @@ export interface ParsedSpecOperation extends ParsedSpecValue<any> {
     pathName: string | null;
     pathNameSegments: ParsedSpecPathNameSegment[];
     requestBodyParameter?: ParsedSpecBody;
-    requestHeaderParameters: ParsedSpecHeaderCollection;
+    requestHeaderParameters: ParsedSpecParameterCollection;
+    requestQueryParameters: ParsedSpecParameterCollection;
     responses: ParsedSpecResponses;
     swaggerFile: string;
 }
@@ -58,7 +60,7 @@ export interface ParsedSpecPathNameSegment extends ParsedSpecValue<string> {
 
 export type ParsedSpecPathNameSegmentValidatorType = 'equal' | 'jsonSchema';
 
-export interface ParsedSpecHeaderCollection {
+export interface ParsedSpecParameterCollection {
     [headerName: string]: ParsedSpecParameter;
 }
 
@@ -68,7 +70,7 @@ export interface ParsedSpecResponses extends ParsedSpecValue<any> {
 }
 
 export interface ParsedSpecResponse extends ParsedSpecValue<any> {
-    headers: ParsedSpecHeaderCollection;
+    headers: ParsedSpecParameterCollection;
     getFromSchema: (pathToGet: string) => ParsedSpecValue<any>;
     schema?: JsonSchema;
 }
@@ -104,7 +106,7 @@ export interface ParsedSpecBody {
     schema: JsonSchema;
 }
 
-export type ParsedSpecItemCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes';
+export type ParsedSpecItemCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes' | 'multi';
 
 export type ParsedSpecItemFormat =
     'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' | 'password';
@@ -164,6 +166,7 @@ export interface PactInteractionRequest {
     body?: any;
     method: string;
     path: string;
+    query?: string;
 }
 
 export interface PactInteractionResponse {
@@ -284,7 +287,7 @@ export interface SwaggerItem {
     uniqueItems?: boolean;
 }
 
-export type SwaggerItemCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes';
+export type SwaggerItemCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes' | 'multi';
 
 export type SwaggerItemFormat =
     'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' | 'password';
@@ -399,3 +402,5 @@ export interface GetSwaggerValueFailedResult {
 }
 
 export type GetSwaggerValueResult<T> = GetSwaggerValueSuccessResult<T> | GetSwaggerValueFailedResult;
+
+export type MultiCollectionFormatSeparator = '[multi-array-separator]';

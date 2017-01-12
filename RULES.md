@@ -14,7 +14,7 @@ This is a list of all the possible validation rules and if they are currently su
 | Request Headers | yes |
 | Request Path | yes |
 | Request path params | yes |
-| Request query params | no |
+| Request query params | yes |
 
 
 ## Response

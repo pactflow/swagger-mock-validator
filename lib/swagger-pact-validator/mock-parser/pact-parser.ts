@@ -1,11 +1,13 @@
 import * as _ from 'lodash';
+import * as querystring from 'querystring';
 import {
+    MultiCollectionFormatSeparator,
     Pact,
     PactInteraction,
     PactInteractionHeaders,
     ParsedMock,
-    ParsedMockHeaderCollection,
-    ParsedMockInteraction
+    ParsedMockInteraction,
+    ParsedMockValueCollection
 } from '../types';
 
 const parseRequestPathSegments = (requestPath: string, parentInteraction: ParsedMockInteraction) =>
@@ -18,19 +20,23 @@ const parseRequestPathSegments = (requestPath: string, parentInteraction: Parsed
         }))
         .value();
 
-const parseHeaders = (
-    headers: PactInteractionHeaders | undefined,
-    headerLocation: 'request' | 'response',
+const parseValues = (
+    values: {[name: string]: string} | undefined,
+    location: string,
     parentInteraction: ParsedMockInteraction
-): ParsedMockHeaderCollection => {
-    return _.reduce(headers as PactInteractionHeaders, (result: ParsedMockHeaderCollection, headerValue: string, headerName: string) => {
-        result[headerName.toLowerCase()] = {
-            location: `${parentInteraction.location}.${headerLocation}.headers.${headerName}`,
-            parentInteraction,
-            value: headerValue
-        };
-        return result;
-    }, {});
+): ParsedMockValueCollection => {
+    return _.reduce(
+        values as PactInteractionHeaders,
+        (result: ParsedMockValueCollection, value: string, name: string) => {
+            result[name.toLowerCase()] = {
+                location: `${location}.${name}`,
+                parentInteraction,
+                value
+            };
+            return result;
+        },
+        {}
+    );
 };
 
 const parseInteraction = (interaction: PactInteraction, interactionIndex: number, pactPathOrUrl: string) => {
@@ -68,7 +74,9 @@ const parseInteraction = (interaction: PactInteraction, interactionIndex: number
         parentInteraction: parsedInteraction,
         value: interaction.request.body
     };
-    parsedInteraction.requestHeaders = parseHeaders(interaction.request.headers, 'request', parsedInteraction);
+    parsedInteraction.requestHeaders = parseValues(
+        interaction.request.headers, `${parsedInteraction.location}.request.headers`, parsedInteraction
+    );
     parsedInteraction.requestMethod = {
         location: `${parsedInteraction.location}.request.method`,
         parentInteraction: parsedInteraction,
@@ -80,13 +88,24 @@ const parseInteraction = (interaction: PactInteraction, interactionIndex: number
         value: interaction.request.path
     };
     parsedInteraction.requestPathSegments = parseRequestPathSegments(interaction.request.path, parsedInteraction);
+    const query = querystring.parse(interaction.request.query || '');
+    const separator: MultiCollectionFormatSeparator = '[multi-array-separator]';
+    _.each(query, (v: any, k: string) => {
+        if (_.isArray(v)) {
+            query[k] = v.join(separator);
+        }
+    });
+    parsedInteraction.requestQuery = parseValues(
+        query, `${parsedInteraction.location}.request.query`, parsedInteraction
+    );
     parsedInteraction.responseBody = {
         location: `${parsedInteraction.location}.response.body`,
         parentInteraction: parsedInteraction,
         value: interaction.response.body
     };
-    parsedInteraction.responseHeaders =
-        parseHeaders(interaction.response.headers, 'response', parsedInteraction);
+    parsedInteraction.responseHeaders = parseValues(
+        interaction.response.headers, `${parsedInteraction.location}.response.headers`, parsedInteraction
+    );
     parsedInteraction.responseStatus = {
         location: `${parsedInteraction.location}.response.status`,
         parentInteraction: parsedInteraction,
