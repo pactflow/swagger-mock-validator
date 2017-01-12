@@ -102,5 +102,5 @@ This is a list of all the possible validation rules and if they are currently su
 
 | Feature | Supported |
 |---|---|
-| Pact broker support | no |
+| Pact broker support | yes |
 | Configurable validation behaviour control | no |
