@@ -165,7 +165,7 @@ const parseParameters = (path, pathLocation, parsedOperation) => {
         requestPath: toParsedParametersFor('path', mergedParameters)
     };
 };
-const parseOperationFromPath = (path, pathName) => _(path)
+const parseOperationFromPath = (path, pathName, swaggerPathOrUrl) => _(path)
     .omit(['parameters'])
     .map((operation, operationName) => {
     const pathLocation = `[swaggerRoot].paths.${pathName}`;
@@ -174,6 +174,7 @@ const parseOperationFromPath = (path, pathName) => _(path)
         location: operationLocation,
         method: operationName,
         pathName,
+        swaggerFile: swaggerPathOrUrl,
         value: operation
     };
     const parsedParameters = parseParameters(path, pathLocation, parsedOperation);
@@ -190,7 +191,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     parse: (swaggerJson, swaggerPathOrUrl) => ({
         operations: _(swaggerJson.paths)
-            .map(parseOperationFromPath)
+            .map((path, pathName) => parseOperationFromPath(path, pathName, swaggerPathOrUrl))
             .flatten()
             .value(),
         pathOrUrl: swaggerPathOrUrl,
@@ -205,6 +206,7 @@ exports.default = {
                 requestBodyParameter: null,
                 requestHeaderParameters: null,
                 responses: null,
+                swaggerFile: swaggerPathOrUrl,
                 value: null
             },
             value: swaggerJson.paths

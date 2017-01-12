@@ -20,28 +20,40 @@ const generateLocation = (path) => {
     }
     return '[swaggerRoot]';
 };
-const generateResult = (type, message, swaggerLocation) => ({
-    message,
+const generateResult = (options) => ({
+    message: options.message,
     pactDetails: {
         interactionDescription: null,
-        interactionState: '[none]',
-        location: '[pactRoot]',
+        interactionState: null,
+        location: null,
+        pactFile: null,
         value: null
     },
     source: 'swagger-validation',
     swaggerDetails: {
-        location: swaggerLocation,
+        location: options.swaggerLocation,
         pathMethod: null,
         pathName: null,
+        swaggerFile: options.swaggerPathOrUrl,
         value: null
     },
-    type
+    type: options.type
 });
 const parseValidationResult = (validationResult, swaggerPathOrUrl) => {
     const validationErrors = _.get(validationResult, 'errors', [])
-        .map((swaggerValidationError) => generateResult('error', swaggerValidationError.message, generateLocation(swaggerValidationError.path)));
+        .map((swaggerValidationError) => generateResult({
+        message: swaggerValidationError.message,
+        swaggerPathOrUrl,
+        swaggerLocation: generateLocation(swaggerValidationError.path),
+        type: 'error'
+    }));
     const validationWarnings = _.get(validationResult, 'warnings', [])
-        .map((swaggerValidationWarning) => generateResult('warning', swaggerValidationWarning.message, generateLocation(swaggerValidationWarning.path)));
+        .map((swaggerValidationWarning) => generateResult({
+        message: swaggerValidationWarning.message,
+        swaggerPathOrUrl,
+        swaggerLocation: generateLocation(swaggerValidationWarning.path),
+        type: 'warning'
+    }));
     if (validationErrors.length > 0) {
         const error = new Error(`"${swaggerPathOrUrl}" is not a valid swagger file`);
         error.details = {

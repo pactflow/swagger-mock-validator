@@ -9,11 +9,21 @@ const packageJson = require('../package.json');
 commander
     .version(packageJson.version)
     .arguments('<swagger> <pact>')
-    .description('Confirms the swagger spec and pact are compatible with each other. ' +
-    'The <swagger> and <pact> arguments should paths to the json files ' +
-    'or urls to the json files.')
-    .action((swagger, pact) => swagger_pact_validator_1.default.validate({
+    .option('-p, --provider [string]', 'The name of the provider in the pact broker')
+    .description(`Confirms the swagger spec and pact are compatible with each other.
+            
+Basic Usage:
+The <swagger> and <pact> arguments should paths to the json files or urls to the json files.
+
+Pact Broker:
+For providers using the pact broker the <pact> argument should be the url to the root of the 
+pact broker and the provider name should be passed using the --provider option. This will 
+automatically find the latest versions of the consumer pact file(s) uploaded to the broker for 
+the specified provider name. The <swagger> argument should be the path or url to the swagger 
+json file.`)
+    .action((swagger, pact, options) => swagger_pact_validator_1.default.validate({
     pactPathOrUrl: pact,
+    providerName: options.provider,
     swaggerPathOrUrl: swagger
 })
     .then((results) => {

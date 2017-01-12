@@ -18,10 +18,11 @@ const parseHeaders = (headers, headerLocation, parentInteraction) => {
         return result;
     }, {});
 };
-const parseInteraction = (interaction, interactionIndex) => {
+const parseInteraction = (interaction, interactionIndex, pactPathOrUrl) => {
     const parsedInteraction = {
         description: interaction.description,
         location: `[pactRoot].interactions[${interactionIndex}]`,
+        pactFile: pactPathOrUrl,
         state: interaction.state || '[none]',
         value: interaction
     };
@@ -75,7 +76,7 @@ const parseInteraction = (interaction, interactionIndex) => {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     parse: (pactJson, pactPathOrUrl) => ({
-        interactions: _.map(pactJson.interactions, parseInteraction),
+        interactions: _.map(pactJson.interactions, (interaction, interactionIndex) => parseInteraction(interaction, interactionIndex, pactPathOrUrl)),
         pathOrUrl: pactPathOrUrl
     })
 };

@@ -1,3 +1,13 @@
+<a name="0.0.22"></a>
+## [0.0.22](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.21...v0.0.22) (2017-01-12)
+
+
+### Features
+
+* add pact broker support ([b2e1deb](https://bitbucket.org/atlassian/swagger-pact-validator/commits/b2e1deb)), closes [#10](https://bitbucket.org/atlassian/swagger-pact-validator/issue/10)
+
+
+
 <a name="0.0.21"></a>
 ## [0.0.21](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.20...v0.0.21) (2017-01-06)
 

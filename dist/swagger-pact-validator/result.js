@@ -8,6 +8,7 @@ const buildResult = (type, options) => {
             interactionDescription: interaction.description,
             interactionState: interaction.state,
             location: options.pactSegment.location,
+            pactFile: interaction.pactFile,
             value: options.pactSegment.value
         },
         source: options.source,
@@ -15,6 +16,7 @@ const buildResult = (type, options) => {
             location: options.swaggerSegment.location,
             pathMethod: operation.method,
             pathName: operation.pathName,
+            swaggerFile: operation.swaggerFile,
             value: options.swaggerSegment.value
         },
         type
