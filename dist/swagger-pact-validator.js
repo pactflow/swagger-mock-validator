@@ -15,14 +15,14 @@ const createLoadJsonFunction = (fileSystem, httpClient) => (pathOrUrl) => json_l
 const validate = (swaggerPathOrUrl, pactPathOrUrl, loadJson) => {
     const whenSwaggerJson = loadJson(swaggerPathOrUrl);
     const whenSwaggerValidationResults = whenSwaggerJson
-        .then((swaggerJson) => validate_swagger_1.default(swaggerJson, swaggerPathOrUrl));
+        .then((swaggerJson) => validate_swagger_1.default(swaggerJson, swaggerPathOrUrl, pactPathOrUrl));
     const whenParsedSwagger = whenSwaggerValidationResults
         .thenResolve(whenSwaggerJson)
         .then(resolve_swagger_1.default)
         .then((swaggerJson) => spec_parser_1.default.parseSwagger(swaggerJson, swaggerPathOrUrl));
     const whenPactJson = loadJson(pactPathOrUrl);
     const whenPactValidationResults = whenPactJson
-        .then((pactJson) => validate_pact_1.default(pactJson, pactPathOrUrl));
+        .then((pactJson) => validate_pact_1.default(pactJson, pactPathOrUrl, swaggerPathOrUrl));
     const whenParsedPact = whenPactValidationResults
         .thenResolve(whenPactJson)
         .then((pactJson) => mock_parser_1.default.parsePact(pactJson, pactPathOrUrl));
@@ -74,7 +74,7 @@ const swaggerPactValidator = {
                 .join(', ');
             const fulfilledWarnings = _(validationResults)
                 .filter((validationResult) => validationResult.state === 'fulfilled')
-                .map((validationResult) => validationResult.value.warnings)
+                .map((validationResult) => _.get(validationResult, 'value.warnings', []))
                 .flatten()
                 .value();
             const combinedWarnings = _.concat(rejectedWarnings, fulfilledWarnings);

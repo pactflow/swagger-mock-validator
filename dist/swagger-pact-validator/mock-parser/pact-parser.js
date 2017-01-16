@@ -1,5 +1,6 @@
 "use strict";
 const _ = require("lodash");
+const querystring = require("querystring");
 const parseRequestPathSegments = (requestPath, parentInteraction) => _(requestPath.split('/'))
     .filter((requestPathSegment) => requestPathSegment.length > 0)
     .map((requestPathSegment) => ({
@@ -8,12 +9,12 @@ const parseRequestPathSegments = (requestPath, parentInteraction) => _(requestPa
     value: requestPathSegment
 }))
     .value();
-const parseHeaders = (headers, headerLocation, parentInteraction) => {
-    return _.reduce(headers, (result, headerValue, headerName) => {
-        result[headerName.toLowerCase()] = {
-            location: `${parentInteraction.location}.${headerLocation}.headers.${headerName}`,
+const parseValues = (values, location, parentInteraction) => {
+    return _.reduce(values, (result, value, name) => {
+        result[name.toLowerCase()] = {
+            location: `${location}.${name}`,
             parentInteraction,
-            value: headerValue
+            value
         };
         return result;
     }, {});
@@ -47,7 +48,7 @@ const parseInteraction = (interaction, interactionIndex, pactPathOrUrl) => {
         parentInteraction: parsedInteraction,
         value: interaction.request.body
     };
-    parsedInteraction.requestHeaders = parseHeaders(interaction.request.headers, 'request', parsedInteraction);
+    parsedInteraction.requestHeaders = parseValues(interaction.request.headers, `${parsedInteraction.location}.request.headers`, parsedInteraction);
     parsedInteraction.requestMethod = {
         location: `${parsedInteraction.location}.request.method`,
         parentInteraction: parsedInteraction,
@@ -59,13 +60,20 @@ const parseInteraction = (interaction, interactionIndex, pactPathOrUrl) => {
         value: interaction.request.path
     };
     parsedInteraction.requestPathSegments = parseRequestPathSegments(interaction.request.path, parsedInteraction);
+    const query = querystring.parse(interaction.request.query || '');
+    const separator = '[multi-array-separator]';
+    _.each(query, (v, k) => {
+        if (_.isArray(v)) {
+            query[k] = v.join(separator);
+        }
+    });
+    parsedInteraction.requestQuery = parseValues(query, `${parsedInteraction.location}.request.query`, parsedInteraction);
     parsedInteraction.responseBody = {
         location: `${parsedInteraction.location}.response.body`,
         parentInteraction: parsedInteraction,
         value: interaction.response.body
     };
-    parsedInteraction.responseHeaders =
-        parseHeaders(interaction.response.headers, 'response', parsedInteraction);
+    parsedInteraction.responseHeaders = parseValues(interaction.response.headers, `${parsedInteraction.location}.response.headers`, parsedInteraction);
     parsedInteraction.responseStatus = {
         location: `${parsedInteraction.location}.response.status`,
         parentInteraction: parsedInteraction,

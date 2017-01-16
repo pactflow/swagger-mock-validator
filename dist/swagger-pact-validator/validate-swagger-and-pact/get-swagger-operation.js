@@ -31,12 +31,22 @@ const doInteractionAndOperationMatchMethods = (pactInteraction, swaggerOperation
 const doInteractionAndOperationMatch = (pactInteraction, swaggerOperation) => {
     const matchMethodResult = doInteractionAndOperationMatchMethods(pactInteraction, swaggerOperation);
     if (!matchMethodResult.match) {
-        return matchMethodResult;
+        return {
+            found: false,
+            results: matchMethodResult.results
+        };
     }
     const matchPathsResult = doInteractionAndOperationMatchPaths(pactInteraction, swaggerOperation);
+    const results = _.concat(matchPathsResult.results, matchMethodResult.results);
+    if (!matchPathsResult.match) {
+        return {
+            found: false,
+            results
+        };
+    }
     return {
-        match: matchPathsResult.match,
-        results: _.concat(matchPathsResult.results, matchMethodResult.results),
+        found: true,
+        results,
         value: swaggerOperation
     };
 };
@@ -44,7 +54,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (pactInteraction, swagger) => {
     const match = _(swagger.operations)
         .map((operation) => doInteractionAndOperationMatch(pactInteraction, operation))
-        .find('match');
+        .find('found');
     if (!match) {
         return {
             found: false,
@@ -57,8 +67,7 @@ exports.default = (pactInteraction, swagger) => {
                     source: 'swagger-pact-validation',
                     swaggerSegment: swagger.paths
                 })
-            ],
-            value: null
+            ]
         };
     }
     return {

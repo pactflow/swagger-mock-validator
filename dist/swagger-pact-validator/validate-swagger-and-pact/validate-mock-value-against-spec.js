@@ -30,7 +30,9 @@ const toJsonSchema = (parameter) => {
     }
     return schema;
 };
+const multiCollectionFormatSeparator = '[multi-array-separator]';
 const getCollectionSeparator = (collectionFormat) => {
+    // tslint:disable:cyclomatic-complexity
     if (collectionFormat === 'ssv') {
         return ' ';
     }
@@ -40,7 +42,11 @@ const getCollectionSeparator = (collectionFormat) => {
     else if (collectionFormat === 'pipes') {
         return '|';
     }
+    else if (collectionFormat === 'multi') {
+        return multiCollectionFormatSeparator;
+    }
     return ',';
+    // tslint:enable:cyclomatic-complexity
 };
 const toArrayMockValue = (pactValue, swaggerValue) => {
     if (swaggerValue.type === 'array') {
@@ -55,7 +61,7 @@ const toMockValue = (pactValue, swaggerValue) => {
     if (!pactValue) {
         return { value: undefined };
     }
-    return { value: toArrayMockValue(pactValue.value.toString(), swaggerValue) };
+    return { value: toArrayMockValue(pactValue.value, swaggerValue) };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (swaggerValue, pactValue, pactInteraction) => {

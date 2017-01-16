@@ -15,8 +15,7 @@ exports.default = (pactInteraction, swaggerOperation) => {
                     source: 'swagger-pact-validation',
                     swaggerSegment: swaggerOperation.responses
                 })
-            ],
-            value: null
+            ]
         };
     }
     if (!swaggerResponse) {

@@ -1,3 +1,13 @@
+<a name="0.0.23"></a>
+## [0.0.23](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.22...v0.0.23) (2017-01-16)
+
+
+### Features
+
+* add validation for query parameters ([774cef3](https://bitbucket.org/atlassian/swagger-pact-validator/commits/774cef3)), closes [#8](https://bitbucket.org/atlassian/swagger-pact-validator/issue/8)
+
+
+
 <a name="0.0.22"></a>
 ## [0.0.22](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.21...v0.0.22) (2017-01-12)
 

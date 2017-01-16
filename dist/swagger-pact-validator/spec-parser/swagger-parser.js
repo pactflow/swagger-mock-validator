@@ -31,7 +31,8 @@ const parsePathNameSegments = (pathName, pathParameters, parsedOperation) => {
         const isParameter = pathNameSegment[0] === '{' && pathNameSegment[pathNameSegment.length - 1] === '}';
         if (isParameter) {
             const pathNameSegmentValue = pathNameSegment.substring(1, pathNameSegment.length - 1);
-            parsedPathNameSegment.parameter = _.find(pathParameters, { name: pathNameSegmentValue });
+            parsedPathNameSegment.parameter =
+                _.find(pathParameters, { name: pathNameSegmentValue });
             parsedPathNameSegment.validatorType = 'jsonSchema';
             parsedPathNameSegment.value = pathNameSegmentValue;
         }
@@ -131,8 +132,8 @@ const parseResponses = (responses, parentOperation) => {
     });
     return parsedResponses;
 };
-const toHeaderCollection = (headerParameters) => _.reduce(headerParameters, (result, headerParameter) => {
-    result[headerParameter.name.toLowerCase()] = headerParameter;
+const toSpecParameterCollection = (parameters) => _.reduce(parameters, (result, parameter) => {
+    result[parameter.name.toLowerCase()] = parameter;
     return result;
 }, {});
 const toRequestBodyParameter = (parameters) => _(parameters)
@@ -161,8 +162,9 @@ const parseParameters = (path, pathLocation, parsedOperation) => {
     const mergedParameters = mergePathAndOperationParameters(pathParameters, operationParameters);
     return {
         requestBody: toRequestBodyParameter(mergedParameters),
-        requestHeaders: toHeaderCollection(toParsedParametersFor('header', mergedParameters)),
-        requestPath: toParsedParametersFor('path', mergedParameters)
+        requestHeaders: toSpecParameterCollection(toParsedParametersFor('header', mergedParameters)),
+        requestPath: toParsedParametersFor('path', mergedParameters),
+        requestQuery: toSpecParameterCollection(toParsedParametersFor('query', mergedParameters))
     };
 };
 const parseOperationFromPath = (path, pathName, swaggerPathOrUrl) => _(path)
@@ -183,10 +185,33 @@ const parseOperationFromPath = (path, pathName, swaggerPathOrUrl) => _(path)
         parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
     parsedOperation.requestBodyParameter = parsedParameters.requestBody;
     parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
+    parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
     parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
     return parsedOperation;
 })
     .value();
+const createEmptyParentOperation = (swaggerPathOrUrl, location) => {
+    const emptyParentOperation = {
+        location,
+        method: null,
+        parentOperation: undefined,
+        pathName: null,
+        pathNameSegments: [],
+        requestBodyParameter: undefined,
+        requestHeaderParameters: {},
+        requestQueryParameters: {},
+        responses: {
+            location,
+            parentOperation: undefined,
+            value: undefined
+        },
+        swaggerFile: swaggerPathOrUrl,
+        value: undefined
+    };
+    emptyParentOperation.parentOperation = emptyParentOperation;
+    emptyParentOperation.responses.parentOperation = emptyParentOperation;
+    return emptyParentOperation;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     parse: (swaggerJson, swaggerPathOrUrl) => ({
@@ -197,18 +222,7 @@ exports.default = {
         pathOrUrl: swaggerPathOrUrl,
         paths: {
             location: '[swaggerRoot].paths',
-            parentOperation: {
-                location: null,
-                method: null,
-                parentOperation: null,
-                pathName: null,
-                pathNameSegments: [],
-                requestBodyParameter: null,
-                requestHeaderParameters: null,
-                responses: null,
-                swaggerFile: swaggerPathOrUrl,
-                value: null
-            },
+            parentOperation: createEmptyParentOperation(swaggerPathOrUrl, '[swaggerRoot].paths'),
             value: swaggerJson.paths
         }
     })

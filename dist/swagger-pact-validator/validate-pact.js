@@ -1,7 +1,7 @@
 "use strict";
 const q = require("q");
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (pactJson, pactPathOrUrl) => {
+exports.default = (pactJson, pactPathOrUrl, swaggerPathOrUrl) => {
     if (!pactJson.interactions) {
         const error = new Error(`"${pactPathOrUrl}" is not a valid pact file`);
         error.details = {
@@ -16,10 +16,10 @@ exports.default = (pactJson, pactPathOrUrl) => {
                     },
                     source: 'swagger-validation',
                     swaggerDetails: {
-                        location: null,
+                        location: '[swaggerRoot]',
                         pathMethod: null,
                         pathName: null,
-                        swaggerFile: null,
+                        swaggerFile: swaggerPathOrUrl,
                         value: null
                     },
                     type: 'error'

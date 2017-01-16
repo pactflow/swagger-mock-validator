@@ -25,8 +25,8 @@ const generateResult = (options) => ({
     pactDetails: {
         interactionDescription: null,
         interactionState: null,
-        location: null,
-        pactFile: null,
+        location: '[pactRoot]',
+        pactFile: options.pactPathOrUrl,
         value: null
     },
     source: 'swagger-validation',
@@ -39,10 +39,11 @@ const generateResult = (options) => ({
     },
     type: options.type
 });
-const parseValidationResult = (validationResult, swaggerPathOrUrl) => {
+const parseValidationResult = (validationResult, swaggerPathOrUrl, pactPathOrUrl) => {
     const validationErrors = _.get(validationResult, 'errors', [])
         .map((swaggerValidationError) => generateResult({
         message: swaggerValidationError.message,
+        pactPathOrUrl,
         swaggerPathOrUrl,
         swaggerLocation: generateLocation(swaggerValidationError.path),
         type: 'error'
@@ -50,6 +51,7 @@ const parseValidationResult = (validationResult, swaggerPathOrUrl) => {
     const validationWarnings = _.get(validationResult, 'warnings', [])
         .map((swaggerValidationWarning) => generateResult({
         message: swaggerValidationWarning.message,
+        pactPathOrUrl,
         swaggerPathOrUrl,
         swaggerLocation: generateLocation(swaggerValidationWarning.path),
         type: 'warning'
@@ -65,4 +67,5 @@ const parseValidationResult = (validationResult, swaggerPathOrUrl) => {
     return q({ warnings: validationWarnings });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (swaggerJson, swaggerPathOrUrl) => validate(swaggerJson).then((validationResult) => parseValidationResult(validationResult, swaggerPathOrUrl));
+exports.default = (swaggerJson, swaggerPathOrUrl, pactPathOrUrl) => validate(swaggerJson)
+    .then((validationResult) => parseValidationResult(validationResult, swaggerPathOrUrl, pactPathOrUrl));
