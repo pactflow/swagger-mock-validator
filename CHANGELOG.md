@@ -1,3 +1,13 @@
+<a name="0.0.24"></a>
+## [0.0.24](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.23...v0.0.24) (2017-01-17)
+
+
+### Bug Fixes
+
+* correctly extract provider state from pact interactions ([d4dd4fe](https://bitbucket.org/atlassian/swagger-pact-validator/commits/d4dd4fe))
+
+
+
 <a name="0.0.23"></a>
 ## [0.0.23](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.22...v0.0.23) (2017-01-16)
 

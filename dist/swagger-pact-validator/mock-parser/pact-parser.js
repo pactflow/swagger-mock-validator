@@ -24,7 +24,7 @@ const parseInteraction = (interaction, interactionIndex, pactPathOrUrl) => {
         description: interaction.description,
         location: `[pactRoot].interactions[${interactionIndex}]`,
         pactFile: pactPathOrUrl,
-        state: interaction.state || '[none]',
+        state: interaction.providerState || interaction.provider_state || '[none]',
         value: interaction
     };
     const getBodyPath = (bodyValue, bodyLocation, path) => {
