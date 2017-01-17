@@ -20,7 +20,10 @@ const createInteractionBuilder = (interaction: PactInteraction) => ({
     withResponseBody: (body: any) => createInteractionBuilder(setValueOn(interaction, 'response.body', body)),
     withResponseHeader: (name: string, value: string) =>
         createInteractionBuilder(setValueOn(interaction, `response.headers.${name}`, value)),
-    withResponseStatus: (status: number) => createInteractionBuilder(setValueOn(interaction, 'response.status', status))
+    withResponseStatus: (status: number) =>
+        createInteractionBuilder(setValueOn(interaction, 'response.status', status)),
+    withState: (state: string) => createInteractionBuilder(setValueOn(interaction, 'providerState', state)),
+    withStateLegacy: (state: string) => createInteractionBuilder(setValueOn(interaction, 'provider_state', state))
 });
 
 export const interactionBuilder = createInteractionBuilder({

@@ -54,6 +54,7 @@ describe('swagger-pact-validator request path', () => {
     it('should return the error when a pact calls a path that is not defined in the swagger', willResolve(() => {
         const pactFile = pactBuilder
             .withInteraction(interactionBuilder
+                .withState('a-state')
                 .withDescription('interaction description')
                 .withRequestPath('/does/not/exist')
             )
@@ -69,7 +70,44 @@ describe('swagger-pact-validator request path', () => {
                 message: 'Path or method not defined in swagger file: GET /does/not/exist',
                 pactDetails: {
                     interactionDescription: 'interaction description',
-                    interactionState: '[none]',
+                    interactionState: 'a-state',
+                    location: '[pactRoot].interactions[0].request.path',
+                    pactFile: 'pact.json',
+                    value: '/does/not/exist'
+                },
+                source: 'swagger-pact-validation',
+                swaggerDetails: {
+                    location: '[swaggerRoot].paths',
+                    pathMethod: null,
+                    pathName: null,
+                    swaggerFile: 'swagger.json',
+                    value: {}
+                },
+                type: 'error'
+            }]);
+        });
+    }));
+
+    it('should return the error with the state when a pact file is using legacy provider_state', willResolve(() => {
+        const pactFile = pactBuilder
+            .withInteraction(interactionBuilder
+                .withStateLegacy('a-state')
+                .withDescription('interaction description')
+                .withRequestPath('/does/not/exist')
+            )
+            .build();
+
+        const swaggerFile = swaggerBuilder.build();
+
+        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+
+        return expectToReject(result).then((error) => {
+            expect(error).toEqual(expectedFailedValidationError);
+            expect(error.details).toContainErrors([{
+                message: 'Path or method not defined in swagger file: GET /does/not/exist',
+                pactDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: 'a-state',
                     location: '[pactRoot].interactions[0].request.path',
                     pactFile: 'pact.json',
                     value: '/does/not/exist'

@@ -44,7 +44,7 @@ const parseInteraction = (interaction: PactInteraction, interactionIndex: number
         description: interaction.description,
         location: `[pactRoot].interactions[${interactionIndex}]`,
         pactFile: pactPathOrUrl,
-        state: interaction.state || '[none]',
+        state: interaction.providerState || interaction.provider_state || '[none]',
         value: interaction
     } as ParsedMockInteraction;
 

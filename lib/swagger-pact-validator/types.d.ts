@@ -158,7 +158,8 @@ export interface PactInteraction {
     description: string;
     request: PactInteractionRequest;
     response: PactInteractionResponse;
-    state?: string;
+    providerState?: string;
+    provider_state?: string;
 }
 
 export interface PactInteractionRequest {
