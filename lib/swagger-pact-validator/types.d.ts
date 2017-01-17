@@ -46,6 +46,7 @@ export interface ParsedSpecOperation extends ParsedSpecValue<any> {
     method: string | null;
     pathName: string | null;
     pathNameSegments: ParsedSpecPathNameSegment[];
+    produces: ParsedSpecValue<string[]>;
     requestBodyParameter?: ParsedSpecBody;
     requestHeaderParameters: ParsedSpecParameterCollection;
     requestQueryParameters: ParsedSpecParameterCollection;
@@ -185,6 +186,7 @@ export interface PactInteractionHeaders {
 export interface Swagger {
     info: SwaggerInfo;
     paths: SwaggerPaths;
+    produces?: string[];
     swagger: string;
 }
 
@@ -209,6 +211,7 @@ export interface SwaggerPath {
 }
 
 export interface SwaggerOperation {
+    produces?: string[];
     parameters?: SwaggerParameter[];
     responses: SwaggerResponses;
 }

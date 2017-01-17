@@ -63,6 +63,7 @@
     "commander": "^2.9.0",
     "decimal.js": "^7.1.0",
     "lodash": "^4.17.2",
+    "negotiator": "^0.6.1",
     "q": "^1.4.1",
     "request": "^2.78.0",
     "swagger-tools": "^0.10.1",

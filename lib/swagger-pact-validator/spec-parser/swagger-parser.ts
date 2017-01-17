@@ -256,7 +256,29 @@ const parseParameters = (path: SwaggerPath, pathLocation: string, parsedOperatio
     };
 };
 
-const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPathOrUrl: string): ParsedSpecOperation[] =>
+const parseProducesDefinition = (swaggerJson: Swagger, operation: SwaggerOperation, parsedOperation: ParsedSpecOperation): ParsedSpecValue<string[]> => {
+    if (operation.produces) {
+        return {
+            location: `${parsedOperation.location}.produces`,
+            parentOperation: parsedOperation,
+            value: operation.produces
+        };
+    } else if (swaggerJson.produces) {
+        return {
+            location: '[swaggerRoot].produces',
+            parentOperation: parsedOperation,
+            value: swaggerJson.produces
+        };
+    }
+
+    return {
+        location: '[swaggerRoot].produces',
+        parentOperation: parsedOperation,
+        value: []
+    };
+};
+
+const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPathOrUrl: string, swaggerJson: Swagger): ParsedSpecOperation[] =>
     _(path)
         .omit(['parameters'])
         .map((operation: SwaggerOperation, operationName: string) => {
@@ -275,6 +297,7 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPath
             parsedOperation.parentOperation = parsedOperation;
             parsedOperation.pathNameSegments =
                 parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
+            parsedOperation.produces = parseProducesDefinition(swaggerJson, operation, parsedOperation);
             parsedOperation.requestBodyParameter = parsedParameters.requestBody;
             parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
             parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
@@ -291,6 +314,11 @@ const createEmptyParentOperation = (swaggerPathOrUrl: string, location: string):
         parentOperation: undefined as any,
         pathName: null,
         pathNameSegments: [],
+        produces: {
+            location,
+            parentOperation: undefined as any,
+            value: []
+        },
         requestBodyParameter: undefined,
         requestHeaderParameters: {},
         requestQueryParameters: {},
@@ -311,7 +339,7 @@ const createEmptyParentOperation = (swaggerPathOrUrl: string, location: string):
 export default {
     parse: (swaggerJson: Swagger, swaggerPathOrUrl: string): ParsedSpec => ({
         operations: _(swaggerJson.paths)
-            .map((path: SwaggerPath, pathName: string) => parseOperationFromPath(path, pathName, swaggerPathOrUrl))
+            .map((path: SwaggerPath, pathName: string) => parseOperationFromPath(path, pathName, swaggerPathOrUrl, swaggerJson))
             .flatten<ParsedSpecOperation>()
             .value(),
         pathOrUrl: swaggerPathOrUrl,

@@ -8,12 +8,6 @@
         "/{accountId}/users": {
             "post": {
                 "summary": "Create a new user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
                 "parameters": [{
                     "$ref": "#/parameters/accountId"
                 }, {
@@ -46,9 +40,6 @@
         "/{accountId}/users/{userId}": {
             "get": {
                 "summary": "Get a user",
-                "produces": [
-                    "application/json"
-                ],
                 "parameters": [{
                     "$ref": "#/parameters/accountId"
                 }, {
@@ -89,9 +80,6 @@
         "/test": {
             "get": {
                 "summary": "A test endpoint",
-                "produces": [
-                    "application/json"
-                ],
                 "parameters": [{
                     "name": "x-enum-value",
                     "in": "header",
@@ -165,6 +153,16 @@
                     "in": "query",
                     "type": "number"
                 }],
+                "responses": {
+                    "200": {
+                        "description": "The result"
+                    }
+                }
+            }
+        },
+        "/accept-test": {
+            "get": {
+                "produces": ["application/json"],
                 "responses": {
                     "200": {
                         "description": "The result"

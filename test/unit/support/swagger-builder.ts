@@ -11,7 +11,8 @@ const createSwaggerBuilder = (swagger: Swagger) => ({
         setValueOn(swagger, `parameters.${name}`, parameterBuilder.build())
     ),
     withPath: (path: string, pathObjBuilder: PathBuilder) =>
-        createSwaggerBuilder(setValueOn(swagger, `paths.${path}`, pathObjBuilder.build()))
+        createSwaggerBuilder(setValueOn(swagger, `paths.${path}`, pathObjBuilder.build())),
+    withProduces: (produces: string[]) => createSwaggerBuilder(setValueOn(swagger, 'produces', produces))
 });
 
 export const swaggerBuilder = createSwaggerBuilder({

@@ -19,6 +19,7 @@ const createOperationBuilder = (operation: SwaggerOperation) => ({
     withParameter: (parameterBuilder: ParameterBuilder) => createOperationBuilder(
         addToArrayOn(operation, 'parameters', parameterBuilder.build())
     ),
+    withProduces: (produces: string[]) => createOperationBuilder(setValueOn(operation, 'produces', produces)),
     withResponse: (statusCode: number, responseBuilder: ResponseBuilder) => createOperationBuilder(
         setValueOn(operation, `responses.${statusCode}`, responseBuilder.build())
     )

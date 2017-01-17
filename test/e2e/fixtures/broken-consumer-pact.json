@@ -226,6 +226,18 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "accept header invalid test",
+        "request": {
+            "headers": {
+                "accept": "application/xml"
+            },
+            "method": "get",
+            "path": "/accept-test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

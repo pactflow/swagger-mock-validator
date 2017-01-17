@@ -21,6 +21,8 @@ describe('swagger-pact-validator request headers', () => {
         .withRequestPath('/does/exist')
         .withResponseStatus(200);
 
+    const defaultOperationBuilder = operationBuilder.withProduces(['text/plain']);
+
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
     });
@@ -41,8 +43,8 @@ describe('swagger-pact-validator request headers', () => {
         const pactFile = pactBuilder.withInteraction(interaction).build();
 
         const operation = swaggerHeaderParameter
-            ? operationBuilder.withParameter(swaggerHeaderParameter)
-            : operationBuilder;
+            ? defaultOperationBuilder.withParameter(swaggerHeaderParameter)
+            : defaultOperationBuilder;
 
         const swaggerFile = swaggerBuilder
             .withPath('/does/exist', pathBuilder.withGetOperation(operation))
@@ -178,7 +180,7 @@ describe('swagger-pact-validator request headers', () => {
                     pathMethod: 'get',
                     pathName: '/does/exist',
                     swaggerFile: 'swagger.json',
-                    value: operationBuilder.build()
+                    value: defaultOperationBuilder.build()
                 },
                 type: 'warning'
             }]);
