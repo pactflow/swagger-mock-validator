@@ -47,6 +47,7 @@ export interface ParsedSpecOperation extends ParsedSpecValue<any> {
     pathName: string | null;
     pathNameSegments: ParsedSpecPathNameSegment[];
     produces: ParsedSpecValue<string[]>;
+    consumes: ParsedSpecValue<string[]>;
     requestBodyParameter?: ParsedSpecBody;
     requestHeaderParameters: ParsedSpecParameterCollection;
     requestQueryParameters: ParsedSpecParameterCollection;
@@ -187,6 +188,7 @@ export interface Swagger {
     info: SwaggerInfo;
     paths: SwaggerPaths;
     produces?: string[];
+    consumes?: string[];
     swagger: string;
 }
 
@@ -212,6 +214,7 @@ export interface SwaggerPath {
 
 export interface SwaggerOperation {
     produces?: string[];
+    consumes?: string[];
     parameters?: SwaggerParameter[];
     responses: SwaggerResponses;
 }
@@ -297,6 +300,8 @@ export type SwaggerItemFormat =
     'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' | 'password';
 
 export type SwaggerItemType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
+
+export type MimeTypeHeaderName = 'accept' | 'content-type';
 
 // Other Interfaces
 

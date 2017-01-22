@@ -169,6 +169,24 @@
                     }
                 }
             }
+        },
+        "/content-type-test": {
+            "post": {
+                "consumes": ["application/json"],
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/newUser"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "The result"
+                    }
+                }
+            }
         }
     },
     "definitions": {

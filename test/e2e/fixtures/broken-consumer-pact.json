@@ -238,6 +238,24 @@
         "response": {
             "status": 200
         }
+    }, {
+        "description": "request content type header invalid test",
+        "request": {
+            "headers": {
+                "content-type": "plain/text"
+            },
+            "method": "post",
+            "path": "/content-type-test",
+            "body": {
+                "email": "bsmith@domain.com",
+                "firstName": "Bob",
+                "lastName": "Smith"
+            }
+        },
+        "response": {
+
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

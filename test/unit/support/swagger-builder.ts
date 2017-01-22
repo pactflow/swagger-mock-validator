@@ -6,6 +6,7 @@ import {PathBuilder} from './swagger-builder/path-builder';
 
 const createSwaggerBuilder = (swagger: Swagger) => ({
     build: () => cloneDeep(swagger),
+    withConsumes: (consumes: string[]) => createSwaggerBuilder(setValueOn(swagger, 'consumes', consumes)),
     withMissingInfoTitle: () => createSwaggerBuilder(removeValueOn(swagger, 'info.title')),
     withParameter: (name: string, parameterBuilder: ParameterBuilder) => createSwaggerBuilder(
         setValueOn(swagger, `parameters.${name}`, parameterBuilder.build())

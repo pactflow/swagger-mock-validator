@@ -8,7 +8,7 @@ interface Request {
 
 declare class NegotiatorStatic {
     constructor(request: Request);
-    mediaTypes(produces: string[]): string[];
+    public mediaTypes(produces: string[]): string[];
 }
 
 declare module 'negotiator' {

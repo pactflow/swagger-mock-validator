@@ -25,8 +25,7 @@ const createParameterBuilder = (parameter: SwaggerParameter) => {
             in: 'body',
             name: 'body',
             required: false,
-            schema: schemaBuilder.build(),
-            type: undefined
+            schema: schemaBuilder.build()
         }),
         withRequiredArrayOfNumbersInHeaderNamed: (name: string) => createParameterBuilder({
             in: 'header',

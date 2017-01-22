@@ -256,29 +256,38 @@ const parseParameters = (path: SwaggerPath, pathLocation: string, parsedOperatio
     };
 };
 
-const parseProducesDefinition = (swaggerJson: Swagger, operation: SwaggerOperation, parsedOperation: ParsedSpecOperation): ParsedSpecValue<string[]> => {
-    if (operation.produces) {
+const parseMimeType = (options: {
+    mimeTypeName: 'consumes' | 'produces',
+    operation: SwaggerOperation,
+    parsedOperation: ParsedSpecOperation,
+    swaggerJson: Swagger
+}) => {
+    const operationValue = options.operation[options.mimeTypeName];
+    const globalValue = options.swaggerJson[options.mimeTypeName];
+
+    if (operationValue) {
         return {
-            location: `${parsedOperation.location}.produces`,
-            parentOperation: parsedOperation,
-            value: operation.produces
+            location: `${options.parsedOperation.location}.${options.mimeTypeName}`,
+            parentOperation: options.parsedOperation,
+            value: operationValue
         };
-    } else if (swaggerJson.produces) {
+    } else if (globalValue) {
         return {
-            location: '[swaggerRoot].produces',
-            parentOperation: parsedOperation,
-            value: swaggerJson.produces
+            location: `[swaggerRoot].${options.mimeTypeName}`,
+            parentOperation: options.parsedOperation,
+            value: globalValue
         };
     }
 
     return {
-        location: '[swaggerRoot].produces',
-        parentOperation: parsedOperation,
+        location: `[swaggerRoot].${options.mimeTypeName}`,
+        parentOperation: options.parsedOperation,
         value: []
     };
 };
 
-const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPathOrUrl: string, swaggerJson: Swagger): ParsedSpecOperation[] =>
+const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPathOrUrl: string, swaggerJson: Swagger):
+    ParsedSpecOperation[] =>
     _(path)
         .omit(['parameters'])
         .map((operation: SwaggerOperation, operationName: string) => {
@@ -297,7 +306,18 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPath
             parsedOperation.parentOperation = parsedOperation;
             parsedOperation.pathNameSegments =
                 parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
-            parsedOperation.produces = parseProducesDefinition(swaggerJson, operation, parsedOperation);
+            parsedOperation.produces = parseMimeType({
+                mimeTypeName: 'produces',
+                operation,
+                parsedOperation,
+                swaggerJson
+            });
+            parsedOperation.consumes = parseMimeType({
+                mimeTypeName: 'consumes',
+                operation,
+                parsedOperation,
+                swaggerJson
+            });
             parsedOperation.requestBodyParameter = parsedParameters.requestBody;
             parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
             parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
@@ -309,6 +329,11 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPath
 
 const createEmptyParentOperation = (swaggerPathOrUrl: string, location: string): ParsedSpecOperation => {
     const emptyParentOperation = {
+        consumes: {
+            location,
+            parentOperation: undefined as any,
+            value: []
+        },
         location,
         method: null,
         parentOperation: undefined as any,
@@ -339,7 +364,10 @@ const createEmptyParentOperation = (swaggerPathOrUrl: string, location: string):
 export default {
     parse: (swaggerJson: Swagger, swaggerPathOrUrl: string): ParsedSpec => ({
         operations: _(swaggerJson.paths)
-            .map((path: SwaggerPath, pathName: string) => parseOperationFromPath(path, pathName, swaggerPathOrUrl, swaggerJson))
+            .map(
+                (path: SwaggerPath, pathName: string) =>
+                    parseOperationFromPath(path, pathName, swaggerPathOrUrl, swaggerJson)
+            )
             .flatten<ParsedSpecOperation>()
             .value(),
         pathOrUrl: swaggerPathOrUrl,

@@ -21,7 +21,9 @@ describe('swagger-pact-validator request headers', () => {
         .withRequestPath('/does/exist')
         .withResponseStatus(200);
 
-    const defaultOperationBuilder = operationBuilder.withProduces(['text/plain']);
+    const defaultOperationBuilder = operationBuilder
+        .withProduces(['text/plain'])
+        .withConsumes(['application/x-www-form-urlencoded']);
 
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
@@ -230,7 +232,7 @@ describe('swagger-pact-validator request headers', () => {
     }));
 
     it('should not be case sensitive when comparing mock and spec headers', willResolve(() => {
-        const requestHeaders = {'content-Type': 'application/json', 'x-Custom-header': '1'};
+        const requestHeaders = {'content-Type': 'application/x-www-form-urlencoded', 'x-Custom-header': '1'};
         const headerParameter = parameterBuilder.withRequiredNumberInHeaderNamed('X-custom-header');
 
         return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {

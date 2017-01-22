@@ -13,6 +13,7 @@ export interface OperationBuilder {
 
 const createOperationBuilder = (operation: SwaggerOperation) => ({
     build: () => cloneDeep(operation),
+    withConsumes: (consumes: string[]) => createOperationBuilder(setValueOn(operation, 'consumes', consumes)),
     withDefaultResponse: (responseBuilder: ResponseBuilder) => createOperationBuilder(
         setValueOn(operation, 'responses.default', responseBuilder.build())
     ),

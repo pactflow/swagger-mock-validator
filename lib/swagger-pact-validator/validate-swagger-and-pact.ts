@@ -10,8 +10,10 @@ import {
 } from './types';
 import getSwaggerOperation from './validate-swagger-and-pact/get-swagger-operation';
 import getSwaggerResponse from './validate-swagger-and-pact/get-swagger-response';
-import validatePactRequestBody from './validate-swagger-and-pact/validate-pact-request-body';
 import validatePactAcceptRequestHeader from './validate-swagger-and-pact/validate-pact-accept-request-header';
+import validatePactContentTypeRequestHeader from
+    './validate-swagger-and-pact/validate-pact-content-type-request-header';
+import validatePactRequestBody from './validate-swagger-and-pact/validate-pact-request-body';
 import validatePactRequestHeaders from './validate-swagger-and-pact/validate-pact-request-headers';
 import validatePactRequestQuery from './validate-swagger-and-pact/validate-pact-request-query';
 import validatePactResponseBody from './validate-swagger-and-pact/validate-pact-response-body';
@@ -22,6 +24,7 @@ const validatePactInteractionRequest = (
     swaggerOperation: ParsedSpecOperation
 ) => _.concat(
     validatePactAcceptRequestHeader(pactInteraction, swaggerOperation),
+    validatePactContentTypeRequestHeader(pactInteraction, swaggerOperation),
     validatePactRequestBody(pactInteraction, swaggerOperation),
     validatePactRequestHeaders(pactInteraction, swaggerOperation),
     validatePactRequestQuery(pactInteraction, swaggerOperation)
