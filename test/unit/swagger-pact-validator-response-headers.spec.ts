@@ -45,6 +45,7 @@ describe('swagger-pact-validator response headers', () => {
 
         const swaggerFile = swaggerBuilder
             .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder.withResponse(200, response)))
+            .withProduces(['application/json'])
             .build();
 
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);

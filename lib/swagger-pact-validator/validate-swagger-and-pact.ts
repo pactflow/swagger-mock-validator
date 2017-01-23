@@ -10,21 +10,20 @@ import {
 } from './types';
 import getSwaggerOperation from './validate-swagger-and-pact/get-swagger-operation';
 import getSwaggerResponse from './validate-swagger-and-pact/get-swagger-response';
-import validatePactAcceptRequestHeader from './validate-swagger-and-pact/validate-pact-accept-request-header';
-import validatePactContentTypeRequestHeader from
-    './validate-swagger-and-pact/validate-pact-content-type-request-header';
 import validatePactRequestBody from './validate-swagger-and-pact/validate-pact-request-body';
 import validatePactRequestHeaders from './validate-swagger-and-pact/validate-pact-request-headers';
 import validatePactRequestQuery from './validate-swagger-and-pact/validate-pact-request-query';
 import validatePactResponseBody from './validate-swagger-and-pact/validate-pact-response-body';
 import validatePactResponseHeaders from './validate-swagger-and-pact/validate-pact-response-headers';
+import validateSwaggerConsumes from './validate-swagger-and-pact/validate-swagger-consumes';
+import validateSwaggerProduces from './validate-swagger-and-pact/validate-swagger-produces';
 
 const validatePactInteractionRequest = (
     pactInteraction: ParsedMockInteraction,
     swaggerOperation: ParsedSpecOperation
 ) => _.concat(
-    validatePactAcceptRequestHeader(pactInteraction, swaggerOperation),
-    validatePactContentTypeRequestHeader(pactInteraction, swaggerOperation),
+    validateSwaggerConsumes(pactInteraction, swaggerOperation),
+    validateSwaggerProduces(pactInteraction, swaggerOperation),
     validatePactRequestBody(pactInteraction, swaggerOperation),
     validatePactRequestHeaders(pactInteraction, swaggerOperation),
     validatePactRequestQuery(pactInteraction, swaggerOperation)

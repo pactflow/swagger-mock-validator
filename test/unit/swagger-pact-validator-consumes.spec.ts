@@ -12,7 +12,7 @@ import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader'
 
 declare function expect(actual: any): CustomMatchers;
 
-describe('swagger-pact-validator request content-type header', () => {
+describe('swagger-pact-validator consumes', () => {
     const expectedFailedValidationError =
         new Error('Pact file "pact.json" is not compatible with swagger file "swagger.json"');
     const defaultInteractionBuilder = interactionBuilder
@@ -32,16 +32,17 @@ describe('swagger-pact-validator request content-type header', () => {
     const validateRequestContentTypeHeader = (
         swaggerConsumes?: string[],
         pactRequestContentTypeHeaderValue?: string,
-        body?: any
+        pactRequestBody?: any
     ) => {
+        let interaction = defaultInteractionBuilder;
 
-        let interaction = pactRequestContentTypeHeaderValue
-            ? defaultInteractionBuilder.withRequestHeader('Content-Type', pactRequestContentTypeHeaderValue)
-            : defaultInteractionBuilder;
+        if (pactRequestBody) {
+            interaction = interaction.withRequestBody(pactRequestBody);
+        }
 
-        interaction = body
-            ? interaction.withRequestBody(body)
-            : interaction;
+        if (pactRequestContentTypeHeaderValue) {
+            interaction = interaction.withRequestHeader('Content-Type', pactRequestContentTypeHeaderValue);
+        }
 
         const pactFile = pactBuilder.withInteraction(interaction).build();
 
@@ -59,6 +60,12 @@ describe('swagger-pact-validator request content-type header', () => {
 
     it('should pass when the pact request content-type header matches the spec', willResolve(() =>
         validateRequestContentTypeHeader(['application/json'], 'application/json', {id: 1}).then((result) => {
+            expect(result).toContainNoWarnings();
+        })
+    ));
+
+    it('should pass when the pact request has no body and content-type header matches the spec', willResolve(() =>
+        validateRequestContentTypeHeader(['application/json'], 'application/json').then((result) => {
             expect(result).toContainNoWarnings();
         })
     ));
@@ -135,7 +142,8 @@ describe('swagger-pact-validator request content-type header', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
-                message: 'Content-Type header is incompatible with the consumes mime type defined in the swagger file',
+                message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
+                'in the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -171,7 +179,8 @@ describe('swagger-pact-validator request content-type header', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
-                message: 'Content-Type header is incompatible with the consumes mime type defined in the swagger file',
+                message: 'Request Content-Type header is incompatible with the consumes mime type defined in the ' +
+                'swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -207,7 +216,8 @@ describe('swagger-pact-validator request content-type header', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
-                message: 'Content-Type header is incompatible with the consumes mime type defined in the swagger file',
+                message: 'Request Content-Type header is incompatible with the consumes mime ' +
+                'type defined in the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',

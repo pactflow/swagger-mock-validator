@@ -170,7 +170,7 @@
                 }
             }
         },
-        "/content-type-test": {
+        "/request-content-type-test": {
             "post": {
                 "consumes": ["application/json"],
                 "parameters": [{
@@ -184,6 +184,24 @@
                 "responses": {
                     "200": {
                         "description": "The result"
+                    }
+                }
+            }
+        },
+        "/response-content-type-test": {
+            "post": {
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "The result",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "number"
+                                }
+                            }
+                        }
                     }
                 }
             }

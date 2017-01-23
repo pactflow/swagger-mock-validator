@@ -246,7 +246,7 @@
                 "content-type": "application/json"
             },
             "method": "post",
-            "path": "/content-type-test",
+            "path": "/request-content-type-test",
             "body": {
                 "email": "bsmith@domain.com",
                 "firstName": "Bob",
@@ -255,6 +255,21 @@
         },
         "response": {
 
+            "status": 200
+        }
+    }, {
+        "description": "response content type header valid test",
+        "request": {
+            "method": "post",
+            "path": "/response-content-type-test"
+        },
+        "response": {
+            "body": {
+                "id": 1
+            },
+            "headers": {
+                "Content-Type": "application/json"
+            },
             "status": 200
         }
     }],

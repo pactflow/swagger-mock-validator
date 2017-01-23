@@ -23,7 +23,7 @@ This is a list of all the possible validation rules and if they are currently su
 |---|---|
 | Response Body Schema | yes |
 | Response Body Form | no |
-| Response Content Type | no |
+| Response Content Type | yes |
 | Response Headers | yes |
 | Response Status | yes |
 

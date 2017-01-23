@@ -68,7 +68,7 @@ describe('swagger-pact-validator', () => {
             expect(error).toEqual(jasmine.stringMatching('Pact file "test/e2e/fixtures/broken-consumer-pact.json" ' +
                 'is not compatible with swagger file "test/e2e/fixtures/provider-spec.json"'));
 
-            expect(error).toEqual(jasmine.stringMatching('21 error'));
+            expect(error).toEqual(jasmine.stringMatching('22 error'));
             expect(error).toEqual(jasmine.stringMatching('0 warning'));
 
             // request path missing
@@ -230,12 +230,20 @@ describe('swagger-pact-validator', () => {
                 'Accept header is incompatible with the produces mime type defined in the swagger file'
             ));
 
-            // content-type header invalid
+            // request content-type header invalid
             expect(error).toEqual(jasmine.stringMatching(
                 /\[pactRoot].interactions\[20]\.request\.headers\.content-type/
             ));
             expect(error).toEqual(jasmine.stringMatching(
-                'Content-Type header is incompatible with the consumes mime type defined in the swagger file'
+                'Request Content-Type header is incompatible with the consumes mime type defined in the swagger file'
+            ));
+
+            // response content-type header invalid
+            expect(error).toEqual(jasmine.stringMatching(
+                /\[pactRoot].interactions\[21]\.response\.headers\.Content-Type/
+            ));
+            expect(error).toEqual(jasmine.stringMatching(
+                'Response Content-Type header is incompatible with the produces mime type defined in the swagger file'
             ));
         })
     ));
