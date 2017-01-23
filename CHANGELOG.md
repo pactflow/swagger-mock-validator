@@ -1,3 +1,14 @@
+<a name="0.0.25"></a>
+## [0.0.25](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.24...v0.0.25) (2017-01-23)
+
+
+### Features
+
+* add validation for swagger consumes ([660c618](https://bitbucket.org/atlassian/swagger-pact-validator/commits/660c618)), closes [#34](https://bitbucket.org/atlassian/swagger-pact-validator/issue/34)
+* add validation for swagger produces ([2a341ab](https://bitbucket.org/atlassian/swagger-pact-validator/commits/2a341ab)), closes [#33](https://bitbucket.org/atlassian/swagger-pact-validator/issue/33)
+
+
+
 <a name="0.0.24"></a>
 ## [0.0.24](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.23...v0.0.24) (2017-01-17)
 

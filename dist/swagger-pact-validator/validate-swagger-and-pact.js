@@ -3,12 +3,14 @@ const _ = require("lodash");
 const q = require("q");
 const get_swagger_operation_1 = require("./validate-swagger-and-pact/get-swagger-operation");
 const get_swagger_response_1 = require("./validate-swagger-and-pact/get-swagger-response");
+const validate_pact_accept_request_header_1 = require("./validate-swagger-and-pact/validate-pact-accept-request-header");
+const validate_pact_content_type_request_header_1 = require("./validate-swagger-and-pact/validate-pact-content-type-request-header");
 const validate_pact_request_body_1 = require("./validate-swagger-and-pact/validate-pact-request-body");
 const validate_pact_request_headers_1 = require("./validate-swagger-and-pact/validate-pact-request-headers");
 const validate_pact_request_query_1 = require("./validate-swagger-and-pact/validate-pact-request-query");
 const validate_pact_response_body_1 = require("./validate-swagger-and-pact/validate-pact-response-body");
 const validate_pact_response_headers_1 = require("./validate-swagger-and-pact/validate-pact-response-headers");
-const validatePactInteractionRequest = (pactInteraction, swaggerOperation) => _.concat(validate_pact_request_body_1.default(pactInteraction, swaggerOperation), validate_pact_request_headers_1.default(pactInteraction, swaggerOperation), validate_pact_request_query_1.default(pactInteraction, swaggerOperation));
+const validatePactInteractionRequest = (pactInteraction, swaggerOperation) => _.concat(validate_pact_accept_request_header_1.default(pactInteraction, swaggerOperation), validate_pact_content_type_request_header_1.default(pactInteraction, swaggerOperation), validate_pact_request_body_1.default(pactInteraction, swaggerOperation), validate_pact_request_headers_1.default(pactInteraction, swaggerOperation), validate_pact_request_query_1.default(pactInteraction, swaggerOperation));
 const validatePactInteractionResponse = (pactInteraction, swaggerOperation) => {
     const swaggerResponseSearchResult = get_swagger_response_1.default(pactInteraction, swaggerOperation);
     if (!swaggerResponseSearchResult.found) {

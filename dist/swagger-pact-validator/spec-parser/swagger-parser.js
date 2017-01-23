@@ -167,7 +167,30 @@ const parseParameters = (path, pathLocation, parsedOperation) => {
         requestQuery: toSpecParameterCollection(toParsedParametersFor('query', mergedParameters))
     };
 };
-const parseOperationFromPath = (path, pathName, swaggerPathOrUrl) => _(path)
+const parseMimeType = (options) => {
+    const operationValue = options.operation[options.mimeTypeName];
+    const globalValue = options.swaggerJson[options.mimeTypeName];
+    if (operationValue) {
+        return {
+            location: `${options.parsedOperation.location}.${options.mimeTypeName}`,
+            parentOperation: options.parsedOperation,
+            value: operationValue
+        };
+    }
+    else if (globalValue) {
+        return {
+            location: `[swaggerRoot].${options.mimeTypeName}`,
+            parentOperation: options.parsedOperation,
+            value: globalValue
+        };
+    }
+    return {
+        location: `[swaggerRoot].${options.mimeTypeName}`,
+        parentOperation: options.parsedOperation,
+        value: []
+    };
+};
+const parseOperationFromPath = (path, pathName, swaggerPathOrUrl, swaggerJson) => _(path)
     .omit(['parameters'])
     .map((operation, operationName) => {
     const pathLocation = `[swaggerRoot].paths.${pathName}`;
@@ -183,6 +206,18 @@ const parseOperationFromPath = (path, pathName, swaggerPathOrUrl) => _(path)
     parsedOperation.parentOperation = parsedOperation;
     parsedOperation.pathNameSegments =
         parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
+    parsedOperation.produces = parseMimeType({
+        mimeTypeName: 'produces',
+        operation,
+        parsedOperation,
+        swaggerJson
+    });
+    parsedOperation.consumes = parseMimeType({
+        mimeTypeName: 'consumes',
+        operation,
+        parsedOperation,
+        swaggerJson
+    });
     parsedOperation.requestBodyParameter = parsedParameters.requestBody;
     parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
     parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
@@ -192,11 +227,21 @@ const parseOperationFromPath = (path, pathName, swaggerPathOrUrl) => _(path)
     .value();
 const createEmptyParentOperation = (swaggerPathOrUrl, location) => {
     const emptyParentOperation = {
+        consumes: {
+            location,
+            parentOperation: undefined,
+            value: []
+        },
         location,
         method: null,
         parentOperation: undefined,
         pathName: null,
         pathNameSegments: [],
+        produces: {
+            location,
+            parentOperation: undefined,
+            value: []
+        },
         requestBodyParameter: undefined,
         requestHeaderParameters: {},
         requestQueryParameters: {},
@@ -216,7 +261,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     parse: (swaggerJson, swaggerPathOrUrl) => ({
         operations: _(swaggerJson.paths)
-            .map((path, pathName) => parseOperationFromPath(path, pathName, swaggerPathOrUrl))
+            .map((path, pathName) => parseOperationFromPath(path, pathName, swaggerPathOrUrl, swaggerJson))
             .flatten()
             .value(),
         pathOrUrl: swaggerPathOrUrl,
