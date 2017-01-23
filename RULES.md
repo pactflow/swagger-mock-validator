@@ -6,11 +6,11 @@ This is a list of all the possible validation rules and if they are currently su
 
 | Feature | Supported |
 |---|---|
-| Request Accepts | no |
+| Request Accepts | yes |
 | Request Authorization | no |
 | Request Body Schema | yes |
 | Request Body Form | no |
-| Request Content Type | no |
+| Request Content Type | yes |
 | Request Headers | yes |
 | Request Path | yes |
 | Request path params | yes |
@@ -23,6 +23,7 @@ This is a list of all the possible validation rules and if they are currently su
 |---|---|
 | Response Body Schema | yes |
 | Response Body Form | no |
+| Response Content Type | no |
 | Response Headers | yes |
 | Response Status | yes |
 
