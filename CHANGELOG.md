@@ -1,3 +1,13 @@
+<a name="0.0.26"></a>
+## [0.0.26](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.25...v0.0.26) (2017-01-24)
+
+
+### Features
+
+* add validation for response content type ([1a2d1fd](https://bitbucket.org/atlassian/swagger-pact-validator/commits/1a2d1fd)), closes [#52](https://bitbucket.org/atlassian/swagger-pact-validator/issue/52)
+
+
+
 <a name="0.0.25"></a>
 ## [0.0.25](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.24...v0.0.25) (2017-01-23)
 

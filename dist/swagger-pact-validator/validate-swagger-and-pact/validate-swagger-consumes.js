@@ -34,7 +34,7 @@ const validatePactContentTypeAgainstSwaggerConsumes = (pactInteraction, swaggerO
     const foundMatches = newNegotiator(pactContentTypeHeaderValue).mediaTypes(swaggerOperation.consumes.value);
     if (foundMatches.length === 0) {
         return [result_1.default.error({
-                message: 'Content-Type header is incompatible with the consumes mime type defined in the swagger file',
+                message: 'Request Content-Type header is incompatible with the consumes mime type defined in the swagger file',
                 pactSegment: pactInteraction.requestHeaders[contentTypeHeaderName],
                 source: 'swagger-pact-validation',
                 swaggerSegment: swaggerOperation.consumes
