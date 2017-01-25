@@ -69,7 +69,7 @@ This is a list of all the possible validation rules and if they are currently su
 | Definition references | yes |
 | External references | unknown |
 | Inline schema | yes |
-| allOf | no |
+| allOf | yes |
 | discriminator | no |
 | additional properties with Swagger formats | yes |
 

@@ -319,6 +319,7 @@ export interface JsonLoaderFunction {
 
 export interface JsonSchema {
     additionalProperties?: boolean;
+    allOf?: JsonSchema[];
     enum?: any[];
     exclusiveMaximum?: boolean;
     exclusiveMinimum?: boolean;
@@ -334,7 +335,7 @@ export interface JsonSchema {
     pattern?: string;
     properties?: JsonSchemaProperties;
     required?: string[];
-    type: JsonSchemaType;
+    type?: JsonSchemaType;
     uniqueItems?: boolean;
 }
 

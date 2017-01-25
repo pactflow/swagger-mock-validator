@@ -12,6 +12,7 @@ const createSchemaBuilder = (schema: JsonSchema) => ({
         createSchemaBuilder(setValueOn(schema, 'additionalProperties', value)),
     withAdditionalPropertiesSchema: (additionalPropertiesSchemaBuilder: SchemaBuilder) =>
         createSchemaBuilder(setValueOn(schema, 'additionalProperties', additionalPropertiesSchemaBuilder.build())),
+    withAllOf: (schemas: SchemaBuilder[]) => createSchemaBuilder({allOf: schemas.map((s) => s.build())}),
     withFormatDouble: () => createSchemaBuilder(setValueOn(schema, 'format', 'double')),
     withFormatFloat: () => createSchemaBuilder(setValueOn(schema, 'format', 'float')),
     withFormatInt32: () => createSchemaBuilder(setValueOn(schema, 'format', 'int32')),

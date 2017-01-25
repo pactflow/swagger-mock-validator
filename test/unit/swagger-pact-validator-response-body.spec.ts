@@ -243,7 +243,7 @@ describe('swagger-pact-validator response body', () => {
     }));
 
     it('should pass when a pact response body is missing a nested required property on the schema', willResolve(() => {
-        const pactResposneBody = {customer: {first: 'Bob'}};
+        const pactResponseBody = {customer: {first: 'Bob'}};
         const swaggerBodySchema = schemaBuilder
             .withTypeObject()
             .withRequiredProperty('customer', schemaBuilder
@@ -252,7 +252,7 @@ describe('swagger-pact-validator response body', () => {
                 .withRequiredProperty('last', schemaBuilder.withTypeString())
             );
 
-        return validateResponseBody(pactResposneBody, swaggerBodySchema).then((result) => {
+        return validateResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
             (expect(result) as any).toContainNoWarnings();
         });
     }));
@@ -414,6 +414,50 @@ describe('swagger-pact-validator response body', () => {
                     pathName: '/does/exist',
                     swaggerFile: 'swagger.json',
                     value: undefined
+                },
+                type: 'error'
+            }]);
+        });
+    }));
+
+    it('should return error when pact response body has property matching a schema using allOf', willResolve(() => {
+        const pactResponseBody = {value: {a: 1, b: 2}};
+
+        const swaggerBodySchema = schemaBuilder
+            .withTypeObject()
+            .withRequiredProperty('value', schemaBuilder
+                .withAllOf([
+                    schemaBuilder
+                        .withTypeObject()
+                        .withRequiredProperty('a', schemaBuilder.withTypeNumber()),
+                    schemaBuilder
+                        .withTypeObject()
+                        .withRequiredProperty('b', schemaBuilder.withTypeString())
+                ])
+            );
+
+        const result = validateResponseBody(pactResponseBody, swaggerBodySchema);
+
+        return expectToReject(result).then((error) => {
+            expect(error).toEqual(expectedFailedValidationError);
+            expect(error.details).toContainErrors([{
+                message:
+                'Response body is incompatible with the response body schema in the swagger file: should be string',
+                pactDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].response.body.value.b',
+                    pactFile: 'pact.json',
+                    value: 2
+                },
+                source: 'swagger-pact-validation',
+                swaggerDetails: {
+                    location: '[swaggerRoot].paths./does/exist.get.responses.200.' +
+                    'schema.properties.value.allOf.1.properties.b.type',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    swaggerFile: 'swagger.json',
+                    value: 'string'
                 },
                 type: 'error'
             }]);
