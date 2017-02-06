@@ -272,6 +272,18 @@
             },
             "status": 200
         }
+    }, {
+        "description": "authorization valid test",
+        "request": {
+            "headers": {
+                "Authorization": "Bearer token-value-here"
+            },
+            "method": "get",
+            "path": "/authorization-test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

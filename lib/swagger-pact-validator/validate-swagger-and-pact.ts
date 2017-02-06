@@ -17,6 +17,7 @@ import validatePactResponseBody from './validate-swagger-and-pact/validate-pact-
 import validatePactResponseHeaders from './validate-swagger-and-pact/validate-pact-response-headers';
 import validateSwaggerConsumes from './validate-swagger-and-pact/validate-swagger-consumes';
 import validateSwaggerProduces from './validate-swagger-and-pact/validate-swagger-produces';
+import validateSwaggerSecurity from './validate-swagger-and-pact/validate-swagger-security';
 
 const validatePactInteractionRequest = (
     pactInteraction: ParsedMockInteraction,
@@ -24,6 +25,7 @@ const validatePactInteractionRequest = (
 ) => _.concat(
     validateSwaggerConsumes(pactInteraction, swaggerOperation),
     validateSwaggerProduces(pactInteraction, swaggerOperation),
+    validateSwaggerSecurity(pactInteraction, swaggerOperation),
     validatePactRequestBody(pactInteraction, swaggerOperation),
     validatePactRequestHeaders(pactInteraction, swaggerOperation),
     validatePactRequestQuery(pactInteraction, swaggerOperation)

@@ -52,6 +52,7 @@ export interface ParsedSpecOperation extends ParsedSpecValue<any> {
     requestHeaderParameters: ParsedSpecParameterCollection;
     requestQueryParameters: ParsedSpecParameterCollection;
     responses: ParsedSpecResponses;
+    securityRequirements: ParsedSpecSecurityRequirements[];
     swaggerFile: string;
 }
 
@@ -119,6 +120,13 @@ export interface ParsedSpecValue<T> {
     location: string;
     parentOperation: ParsedSpecOperation;
     value: T;
+}
+
+export type ParsedSpecSecurityRequirements = ParsedSpecSecurityRequirement[];
+
+export interface ParsedSpecSecurityRequirement extends ParsedSpecValue<string[]> {
+    credentialKey: string;
+    credentialLocation: 'header' | 'query';
 }
 
 // Pact Broker
@@ -189,6 +197,8 @@ export interface Swagger {
     paths: SwaggerPaths;
     produces?: string[];
     consumes?: string[];
+    security?: SwaggerSecurityRequirement[];
+    securityDefinitions?: SwaggerSecurityDefinitions;
     swagger: string;
 }
 
@@ -199,6 +209,31 @@ export interface SwaggerInfo {
 
 export interface SwaggerPaths {
     [path: string]: SwaggerPath;
+}
+
+export interface SwaggerSecurityDefinitions {
+    [name: string]: SwaggerSecurityScheme;
+}
+
+export type SwaggerSecurityScheme =
+    SwaggerSecuritySchemeBasic | SwaggerSecuritySchemeApiKey | SwaggerSecuritySchemeOAuth2;
+
+export interface SwaggerSecuritySchemeBasic {
+    type: 'basic';
+}
+
+export interface SwaggerSecuritySchemeApiKey {
+    in: 'header' | 'query';
+    name: string;
+    type: 'apiKey';
+}
+
+export interface SwaggerSecuritySchemeOAuth2 {
+    authorizationUrl?: string;
+    flow: 'accessCode' | 'application' | 'implicit' | 'password';
+    tokenUrl?: string;
+    scopes: {[scopeName: string]: string};
+    type: 'oauth2';
 }
 
 export interface SwaggerPath {
@@ -217,6 +252,11 @@ export interface SwaggerOperation {
     consumes?: string[];
     parameters?: SwaggerParameter[];
     responses: SwaggerResponses;
+    security?: SwaggerSecurityRequirement[];
+}
+
+export interface SwaggerSecurityRequirement {
+    [name: string]: string[];
 }
 
 export type SwaggerParameter = SwaggerPathParameter | SwaggerQueryParameter |

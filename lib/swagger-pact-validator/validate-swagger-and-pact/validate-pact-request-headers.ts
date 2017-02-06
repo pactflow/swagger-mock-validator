@@ -3,6 +3,13 @@ import result from '../result';
 import {ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation} from '../types';
 import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
 
+const headerUsedForSecurity = (headerName: string, swaggerOperation: ParsedSpecOperation) =>
+    _.some(swaggerOperation.securityRequirements, (securityRequirement) =>
+        _.some(securityRequirement, (requirement) =>
+            requirement.credentialLocation === 'header' && requirement.credentialKey === headerName
+        )
+    );
+
 const standardHttpRequestHeaders = [
     'accept',
     'accept-charset',
@@ -44,7 +51,7 @@ const getWarningForUndefinedHeader = (
     pactHeader: ParsedMockValue<string>,
     swaggerOperation: ParsedSpecOperation
 ) => {
-    if (standardHttpRequestHeaders.indexOf(headerName) > -1) {
+    if (standardHttpRequestHeaders.indexOf(headerName) > -1 || headerUsedForSecurity(headerName, swaggerOperation)) {
         return [];
     }
 

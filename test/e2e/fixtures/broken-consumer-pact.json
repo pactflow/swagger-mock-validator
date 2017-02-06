@@ -271,6 +271,15 @@
             },
             "status": 200
         }
+    }, {
+        "description": "authorization invalid test",
+        "request": {
+            "method": "get",
+            "path": "/authorization-test"
+        },
+        "response": {
+            "status": 200
+        }
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"

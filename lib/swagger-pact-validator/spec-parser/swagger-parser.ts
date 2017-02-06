@@ -9,6 +9,7 @@ import {
     ParsedSpecParameterCollection,
     ParsedSpecPathNameSegment,
     ParsedSpecResponses,
+    ParsedSpecSecurityRequirements,
     ParsedSpecValue,
     Swagger,
     SwaggerBodyParameter,
@@ -21,7 +22,9 @@ import {
     SwaggerRequestHeaderParameter,
     SwaggerResponseHeader,
     SwaggerResponseHeaderCollection,
-    SwaggerResponses
+    SwaggerResponses,
+    SwaggerSecurityDefinitions,
+    SwaggerSecurityRequirement
 } from '../types';
 
 const toParsedSpecValue = (
@@ -286,6 +289,64 @@ const parseMimeType = (options: {
     };
 };
 
+const getSecurityRequirementsAndBaseLocation = (
+    operationSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
+    globalSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
+    parsedOperation: ParsedSpecOperation
+) => {
+    if (operationSecurityRequirements && operationSecurityRequirements.length > 0) {
+        return {
+            baseLocation: parsedOperation.location,
+            securityRequirements: operationSecurityRequirements
+        };
+    } else {
+        return {
+            baseLocation: '[swaggerRoot]',
+            securityRequirements: globalSecurityRequirements || []
+        };
+    }
+};
+
+const parseSecurityRequirements = (
+    securityDefinitionsOrUndefined: SwaggerSecurityDefinitions | undefined,
+    operationSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
+    globalSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
+    parsedOperation: ParsedSpecOperation
+): ParsedSpecSecurityRequirements[] =>  {
+    const securityDefinitions = securityDefinitionsOrUndefined || {};
+    const securityRequirementsAndBaseLocation = getSecurityRequirementsAndBaseLocation(
+        operationSecurityRequirements,
+        globalSecurityRequirements,
+        parsedOperation
+    );
+
+    return _(securityRequirementsAndBaseLocation.securityRequirements)
+        .map((securityRequirement, index) =>
+            _.map(securityRequirement, (requirement: string[], requirementName: string) => {
+                const securityDefinition = securityDefinitions[requirementName];
+                let credentialKey = 'authorization';
+                let credentialLocation: 'header' | 'query' = 'header';
+
+                if (securityDefinition.type === 'apiKey') {
+                    credentialKey = securityDefinition.name.toLowerCase();
+                    credentialLocation = securityDefinition.in;
+                }
+
+                return {
+                    credentialLocation,
+                    credentialKey,
+                    location:
+                        `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`,
+                    parentOperation: parsedOperation,
+                    type: securityDefinition.type,
+                    value: requirement
+                };
+            })
+        )
+        .reject((requirements) => _.some(requirements, (requirement) => requirement.type === 'oauth2'))
+        .value();
+};
+
 const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPathOrUrl: string, swaggerJson: Swagger):
     ParsedSpecOperation[] =>
     _(path)
@@ -322,6 +383,12 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPath
             parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
             parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
             parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
+            parsedOperation.securityRequirements = parseSecurityRequirements(
+                swaggerJson.securityDefinitions,
+                operation.security,
+                swaggerJson.security,
+                parsedOperation
+            );
 
             return parsedOperation;
         })
@@ -352,6 +419,7 @@ const createEmptyParentOperation = (swaggerPathOrUrl: string, location: string):
             parentOperation: undefined as any,
             value: undefined
         },
+        securityRequirements: [],
         swaggerFile: swaggerPathOrUrl,
         value: undefined
     };

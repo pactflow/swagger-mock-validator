@@ -1,8 +1,9 @@
 import {cloneDeep} from 'lodash';
-import {Swagger} from '../../../lib/swagger-pact-validator/types';
-import {removeValueOn, setValueOn} from './builder-utilities';
+import {Swagger, SwaggerSecurityRequirement} from '../../../lib/swagger-pact-validator/types';
+import {addToArrayOn, removeValueOn, setValueOn} from './builder-utilities';
 import {ParameterBuilder} from './swagger-builder/parameter-builder';
 import {PathBuilder} from './swagger-builder/path-builder';
+import {SecuritySchemeBuilder} from './swagger-builder/security-scheme-builder';
 
 const createSwaggerBuilder = (swagger: Swagger) => ({
     build: () => cloneDeep(swagger),
@@ -13,7 +14,14 @@ const createSwaggerBuilder = (swagger: Swagger) => ({
     ),
     withPath: (path: string, pathObjBuilder: PathBuilder) =>
         createSwaggerBuilder(setValueOn(swagger, `paths.${path}`, pathObjBuilder.build())),
-    withProduces: (produces: string[]) => createSwaggerBuilder(setValueOn(swagger, 'produces', produces))
+    withProduces: (produces: string[]) => createSwaggerBuilder(setValueOn(swagger, 'produces', produces)),
+    withSecurityDefinitionNamed: (name: string, securitySchemeBuilder: SecuritySchemeBuilder) =>
+        createSwaggerBuilder(setValueOn(swagger, `securityDefinitions.${name}`, securitySchemeBuilder.build())),
+    withSecurityRequirementNamed: (name: string) => {
+        const securityRequirement: SwaggerSecurityRequirement = {};
+        securityRequirement[name] = [];
+        return createSwaggerBuilder(addToArrayOn(swagger, `security`, securityRequirement));
+    }
 });
 
 export const swaggerBuilder = createSwaggerBuilder({
@@ -32,3 +40,4 @@ export {default as pathBuilder, PathBuilder} from './swagger-builder/path-builde
 export {default as responseBuilder, ResponseBuilder} from './swagger-builder/response-builder';
 export {default as responseHeaderBuilder, ResponseHeaderBuilder} from './swagger-builder/response-header-builder';
 export {default as schemaBuilder, SchemaBuilder} from './swagger-builder/schema-builder';
+export {default as securitySchemeBuilder, SecuritySchemeBuilder} from './swagger-builder/security-scheme-builder';
