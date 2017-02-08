@@ -237,7 +237,7 @@ const toParsedParametersFor = (
     parameters: Array<ParsedSpecValue<SwaggerParameter>>
 ): ParsedSpecParameter[] =>
     _(parameters)
-        .filter({value: {in: inValue}})
+        .filter({value: {in: inValue}} as any)
         .map((parameter: ParsedSpecValue<SwaggerHeaderPathOrQueryParameter>) =>
             toParsedParameter(parameter, parameter.value.name))
         .value();
