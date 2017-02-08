@@ -10,7 +10,8 @@ const validate_pact_response_body_1 = require("./validate-swagger-and-pact/valid
 const validate_pact_response_headers_1 = require("./validate-swagger-and-pact/validate-pact-response-headers");
 const validate_swagger_consumes_1 = require("./validate-swagger-and-pact/validate-swagger-consumes");
 const validate_swagger_produces_1 = require("./validate-swagger-and-pact/validate-swagger-produces");
-const validatePactInteractionRequest = (pactInteraction, swaggerOperation) => _.concat(validate_swagger_consumes_1.default(pactInteraction, swaggerOperation), validate_swagger_produces_1.default(pactInteraction, swaggerOperation), validate_pact_request_body_1.default(pactInteraction, swaggerOperation), validate_pact_request_headers_1.default(pactInteraction, swaggerOperation), validate_pact_request_query_1.default(pactInteraction, swaggerOperation));
+const validate_swagger_security_1 = require("./validate-swagger-and-pact/validate-swagger-security");
+const validatePactInteractionRequest = (pactInteraction, swaggerOperation) => _.concat(validate_swagger_consumes_1.default(pactInteraction, swaggerOperation), validate_swagger_produces_1.default(pactInteraction, swaggerOperation), validate_swagger_security_1.default(pactInteraction, swaggerOperation), validate_pact_request_body_1.default(pactInteraction, swaggerOperation), validate_pact_request_headers_1.default(pactInteraction, swaggerOperation), validate_pact_request_query_1.default(pactInteraction, swaggerOperation));
 const validatePactInteractionResponse = (pactInteraction, swaggerOperation) => {
     const swaggerResponseSearchResult = get_swagger_response_1.default(pactInteraction, swaggerOperation);
     if (!swaggerResponseSearchResult.found) {

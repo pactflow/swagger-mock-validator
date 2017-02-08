@@ -190,6 +190,44 @@ const parseMimeType = (options) => {
         value: []
     };
 };
+const getSecurityRequirementsAndBaseLocation = (operationSecurityRequirements, globalSecurityRequirements, parsedOperation) => {
+    if (operationSecurityRequirements && operationSecurityRequirements.length > 0) {
+        return {
+            baseLocation: parsedOperation.location,
+            securityRequirements: operationSecurityRequirements
+        };
+    }
+    else {
+        return {
+            baseLocation: '[swaggerRoot]',
+            securityRequirements: globalSecurityRequirements || []
+        };
+    }
+};
+const parseSecurityRequirements = (securityDefinitionsOrUndefined, operationSecurityRequirements, globalSecurityRequirements, parsedOperation) => {
+    const securityDefinitions = securityDefinitionsOrUndefined || {};
+    const securityRequirementsAndBaseLocation = getSecurityRequirementsAndBaseLocation(operationSecurityRequirements, globalSecurityRequirements, parsedOperation);
+    return _(securityRequirementsAndBaseLocation.securityRequirements)
+        .map((securityRequirement, index) => _.map(securityRequirement, (requirement, requirementName) => {
+        const securityDefinition = securityDefinitions[requirementName];
+        let credentialKey = 'authorization';
+        let credentialLocation = 'header';
+        if (securityDefinition.type === 'apiKey') {
+            credentialKey = securityDefinition.name.toLowerCase();
+            credentialLocation = securityDefinition.in;
+        }
+        return {
+            credentialLocation,
+            credentialKey,
+            location: `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`,
+            parentOperation: parsedOperation,
+            type: securityDefinition.type,
+            value: requirement
+        };
+    }))
+        .reject((requirements) => _.some(requirements, (requirement) => requirement.type === 'oauth2'))
+        .value();
+};
 const parseOperationFromPath = (path, pathName, swaggerPathOrUrl, swaggerJson) => _(path)
     .omit(['parameters'])
     .map((operation, operationName) => {
@@ -222,6 +260,7 @@ const parseOperationFromPath = (path, pathName, swaggerPathOrUrl, swaggerJson) =
     parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
     parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
     parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
+    parsedOperation.securityRequirements = parseSecurityRequirements(swaggerJson.securityDefinitions, operation.security, swaggerJson.security, parsedOperation);
     return parsedOperation;
 })
     .value();
@@ -250,6 +289,7 @@ const createEmptyParentOperation = (swaggerPathOrUrl, location) => {
             parentOperation: undefined,
             value: undefined
         },
+        securityRequirements: [],
         swaggerFile: swaggerPathOrUrl,
         value: undefined
     };

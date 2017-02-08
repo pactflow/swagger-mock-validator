@@ -2,6 +2,7 @@
 const _ = require("lodash");
 const result_1 = require("../result");
 const validate_mock_value_against_spec_1 = require("./validate-mock-value-against-spec");
+const headerUsedForSecurity = (headerName, swaggerOperation) => _.some(swaggerOperation.securityRequirements, (securityRequirement) => _.some(securityRequirement, (requirement) => requirement.credentialLocation === 'header' && requirement.credentialKey === headerName));
 const standardHttpRequestHeaders = [
     'accept',
     'accept-charset',
@@ -38,7 +39,7 @@ const standardHttpRequestHeaders = [
     'warning'
 ];
 const getWarningForUndefinedHeader = (headerName, pactHeader, swaggerOperation) => {
-    if (standardHttpRequestHeaders.indexOf(headerName) > -1) {
+    if (standardHttpRequestHeaders.indexOf(headerName) > -1 || headerUsedForSecurity(headerName, swaggerOperation)) {
         return [];
     }
     return [result_1.default.warning({

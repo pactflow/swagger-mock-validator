@@ -1,3 +1,13 @@
+<a name="0.0.27"></a>
+## [0.0.27](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.26...v0.0.27) (2017-02-08)
+
+
+### Features
+
+* add validation for auth headers ([a9cd312](https://bitbucket.org/atlassian/swagger-pact-validator/commits/a9cd312)), closes [#53](https://bitbucket.org/atlassian/swagger-pact-validator/issue/53)
+
+
+
 <a name="0.0.26"></a>
 ## [0.0.26](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.25...v0.0.26) (2017-01-24)
 
