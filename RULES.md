@@ -91,7 +91,7 @@ This is a list of all the possible validation rules and if they are currently su
 | Swagger 1.0 | no |
 | Swagger 2.0 | yes |
 | JSON | yes |
-| YAML | no |
+| YAML | yes |
 | RAML | no |
 
 ## Mock Format
