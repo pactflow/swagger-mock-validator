@@ -1,3 +1,13 @@
+<a name="0.0.28"></a>
+## [0.0.28](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.27...v0.0.28) (2017-02-16)
+
+
+### Features
+
+* add support for yaml swagger files ([fabbe62](https://bitbucket.org/atlassian/swagger-pact-validator/commits/fabbe62)), closes [#20](https://bitbucket.org/atlassian/swagger-pact-validator/issue/20)
+
+
+
 <a name="0.0.27"></a>
 ## [0.0.27](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.26...v0.0.27) (2017-02-08)
 
