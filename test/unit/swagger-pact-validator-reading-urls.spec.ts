@@ -93,7 +93,7 @@ describe('swagger-pact-validator reading urls', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error.message).toEqual(jasmine.stringMatching(
-                    'Unable to parse "http://domain.com/swagger.json" as json: Unexpected end'
+                    'Unable to parse "http://domain.com/swagger.json": Unexpected end'
                 ));
             });
         }));
@@ -139,7 +139,7 @@ describe('swagger-pact-validator reading urls', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error.message).toEqual(jasmine.stringMatching(
-                    'Unable to parse "http://domain.com/pact.json" as json: Unexpected end'
+                    'Unable to parse "http://domain.com/pact.json": Unexpected end'
                 ));
             });
         }));

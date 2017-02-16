@@ -1,4 +1,5 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
+import * as yaml from 'js-yaml';
 import * as q from 'q';
 import {FileSystem, HttpClient, SwaggerPactValidator, ValidationSuccess} from '../../lib/swagger-pact-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
@@ -32,12 +33,21 @@ describe('swagger-pact-validator reading files', () => {
         }) as any;
 
     describe('reading the swagger file', () => {
-        it('should read the swagger file from the file system', willResolve(() => {
+        it('should read the json swagger file from the file system', willResolve(() => {
             mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
             mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
             return invokeValidate('swagger.json', 'pact.json').then(() => {
                 expect(mockFileSystem.readFile).toHaveBeenCalledWith('swagger.json');
+            });
+        }));
+
+        it('should read the yaml swagger file from the file system', willResolve(() => {
+            mockFiles['swagger.yaml'] = q(yaml.safeDump(swaggerBuilder.build()));
+            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
+
+            return invokeValidate('swagger.yaml', 'pact.json').then(() => {
+                expect(mockFileSystem.readFile).toHaveBeenCalledWith('swagger.yaml');
             });
         }));
 
@@ -51,14 +61,14 @@ describe('swagger-pact-validator reading files', () => {
             });
         }));
 
-        it('should return the error when the swagger file cannot be parsed as json', willResolve(() => {
+        it('should return the error when the swagger file cannot be parsed', willResolve(() => {
             mockFiles['swagger.json'] = q('');
             mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
             const result = invokeValidate('swagger.json', 'pact.json');
 
             return expectToReject(result).then((error) => {
                 expect(error.message).toEqual(jasmine.stringMatching(
-                    'Unable to parse "swagger.json" as json: Unexpected end'
+                    'Unable to parse "swagger.json": Unexpected end'
                 ));
             });
         }));
@@ -249,7 +259,7 @@ describe('swagger-pact-validator reading files', () => {
 
             return expectToReject(result).then((error) => {
                 expect(error.message).toEqual(jasmine.stringMatching(
-                    'Unable to parse "pact.json" as json: Unexpected end'
+                    'Unable to parse "pact.json": Unexpected end'
                 ));
             });
         }));
