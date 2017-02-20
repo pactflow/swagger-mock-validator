@@ -14,7 +14,8 @@ export default (
         return {
             found: false,
             results: [
-                result.error({
+                result.build({
+                    code: 'spv.response.status.unknown',
                     message: 'Response status code not defined in swagger file: ' +
                         `${pactInteraction.responseStatus.value}`,
                     pactSegment: pactInteraction.responseStatus,
@@ -29,7 +30,8 @@ export default (
         return {
             found: true,
             results: [
-                result.warning({
+                result.build({
+                    code: 'spv.response.status.default',
                     message: 'Response status code matched default response in swagger file: ' +
                         `${pactInteraction.responseStatus.value}`,
                     pactSegment: pactInteraction.responseStatus,

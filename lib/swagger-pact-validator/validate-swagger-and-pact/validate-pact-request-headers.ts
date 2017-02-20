@@ -55,7 +55,8 @@ const getWarningForUndefinedHeader = (
         return [];
     }
 
-    return [result.warning({
+    return [result.build({
+        code: 'spv.request.header.unknown',
         message: `Request header is not defined in the swagger file: ${headerName}`,
         pactSegment: pactHeader,
         source: 'swagger-pact-validation',
@@ -74,7 +75,14 @@ export default (pactInteraction: ParsedMockInteraction, swaggerOperation: Parsed
                 return getWarningForUndefinedHeader(headerName, pactHeader, swaggerOperation);
             }
 
-            return validateMockValueAgainstSpec(swaggerHeader, pactHeader, pactInteraction).results;
+            const validationResult = validateMockValueAgainstSpec(
+                swaggerHeader,
+                pactHeader,
+                pactInteraction,
+                'spv.request.header.incompatible'
+            );
+
+            return validationResult.results;
         })
         .flatten()
         .value();

@@ -20,7 +20,8 @@ const validatePactRequestAcceptsHeader = (
     }
 
     if (swaggerOperation.produces.value.length === 0) {
-        return [result.warning({
+        return [result.build({
+            code: 'spv.request.accept.unknown',
             message: 'Request Accept header is defined but there is no produces definition in the spec',
             pactSegment: pactInteraction.requestHeaders[acceptHeaderName],
             source: 'swagger-pact-validation',
@@ -31,7 +32,8 @@ const validatePactRequestAcceptsHeader = (
     const matchingMediaTypes = negotiateMediaType(acceptHeaderValue, swaggerOperation.produces.value);
 
     if (matchingMediaTypes.length === 0) {
-        return [result.error({
+        return [result.build({
+            code: 'spv.request.accept.incompatible',
             message: 'Request Accept header is incompatible with the produces mime type defined in the swagger file',
             pactSegment: pactInteraction.requestHeaders[acceptHeaderName],
             source: 'swagger-pact-validation',
@@ -53,7 +55,8 @@ const validatePactResponseContentTypeAndBody = (
     }
 
     if (swaggerOperation.produces.value.length === 0) {
-        return [result.warning({
+        return [result.build({
+            code: 'spv.response.content-type.unknown',
             message: 'Response Content-Type header is defined but there is no produces definition in the spec',
             pactSegment: pactInteraction.responseHeaders[contentTypeHeaderName],
             source: 'swagger-pact-validation',
@@ -64,7 +67,8 @@ const validatePactResponseContentTypeAndBody = (
     const matchingMediaTypes = negotiateMediaType(contentType, swaggerOperation.produces.value);
 
     if (matchingMediaTypes.length === 0) {
-        return [result.error({
+        return [result.build({
+            code: 'spv.response.content-type.incompatible',
             message: 'Response Content-Type header is incompatible with the produces mime ' +
             'type defined in the swagger file',
             pactSegment: pactInteraction.responseHeaders[contentTypeHeaderName],

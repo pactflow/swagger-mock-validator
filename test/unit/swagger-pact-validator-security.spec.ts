@@ -57,6 +57,7 @@ describe('swagger-pact-validator security', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.authorization.missing',
                 message: 'Request Authorization header is missing but is required by the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -112,6 +113,7 @@ describe('swagger-pact-validator security', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.authorization.missing',
                 message: 'Request Authorization header is missing but is required by the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -167,6 +169,7 @@ describe('swagger-pact-validator security', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.authorization.missing',
                 message: 'Request Authorization query is missing but is required by the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -229,6 +232,7 @@ describe('swagger-pact-validator security', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.authorization.missing',
                 message: 'Request Authorization header is missing but is required by the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -247,6 +251,7 @@ describe('swagger-pact-validator security', () => {
                 },
                 type: 'error'
             }, {
+                code: 'spv.request.authorization.missing',
                 message: 'Request Authorization query is missing but is required by the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -297,6 +302,7 @@ describe('swagger-pact-validator security', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.authorization.missing',
                 message: 'Request Authorization query is missing but is required by the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -335,6 +341,7 @@ describe('swagger-pact-validator security', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.authorization.missing',
                 message: 'Request Authorization header is missing but is required by the swagger file',
                 pactDetails: {
                     interactionDescription: 'interaction description',

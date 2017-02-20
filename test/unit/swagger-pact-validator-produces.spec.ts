@@ -62,6 +62,7 @@ describe('swagger-pact-validator produces', () => {
         it('should return a warning when request accept header is defined and spec produces is not', willResolve(() =>
             validateRequestAcceptHeader(undefined, 'application/json').then((result) => {
                 expect(result).toContainWarnings([{
+                    code: 'spv.request.accept.unknown',
                     message: 'Request Accept header is defined but there is no produces definition in the spec',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -89,6 +90,7 @@ describe('swagger-pact-validator produces', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.accept.incompatible',
                     message:
                         'Request Accept header is incompatible with the produces mime type defined in the swagger file',
                     pactDetails: {
@@ -126,6 +128,7 @@ describe('swagger-pact-validator produces', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.accept.incompatible',
                     message:
                         'Request Accept header is incompatible with the produces mime type defined in the swagger file',
                     pactDetails: {
@@ -165,6 +168,7 @@ describe('swagger-pact-validator produces', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.accept.incompatible',
                     message:
                         'Request Accept header is incompatible with the produces mime type defined in the swagger file',
                     pactDetails: {
@@ -236,6 +240,7 @@ describe('swagger-pact-validator produces', () => {
         it('should return a warning when there is no produces and a content type', willResolve(() =>
             validateResponseContentType(undefined, 'application/json').then((result) => {
                 expect(result).toContainWarnings([{
+                    code: 'spv.response.content-type.unknown',
                     message: 'Response Content-Type header is defined but there is no produces definition in the spec',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -263,6 +268,7 @@ describe('swagger-pact-validator produces', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.content-type.incompatible',
                     message: 'Response Content-Type header is incompatible with the produces mime type defined ' +
                     'in the swagger file',
                     pactDetails: {
@@ -291,6 +297,7 @@ describe('swagger-pact-validator produces', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.content-type.incompatible',
                     message: 'Response Content-Type header is incompatible with the produces mime type defined ' +
                     'in the swagger file',
                     pactDetails: {

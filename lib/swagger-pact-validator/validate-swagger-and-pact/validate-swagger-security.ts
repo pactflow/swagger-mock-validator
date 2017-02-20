@@ -13,7 +13,8 @@ const validateQueryRequirement = (
     pactInteraction: ParsedMockInteraction
 ) => {
     if (!pactInteraction.requestQuery[securityRequirement.credentialKey]) {
-        return result.error({
+        return result.build({
+            code: 'spv.request.authorization.missing',
             message: 'Request Authorization query is missing but is required by the swagger file',
             pactSegment: pactInteraction,
             source: 'swagger-pact-validation',
@@ -29,7 +30,8 @@ const validateHeaderRequirement = (
     pactInteraction: ParsedMockInteraction
 ) => {
     if (!pactInteraction.requestHeaders[securityRequirement.credentialKey]) {
-        return result.error({
+        return result.build({
+            code: 'spv.request.authorization.missing',
             message: 'Request Authorization header is missing but is required by the swagger file',
             pactSegment: pactInteraction,
             source: 'swagger-pact-validation',

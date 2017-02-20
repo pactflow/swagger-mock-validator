@@ -315,6 +315,7 @@ describe('swagger-pact-validator reading urls', () => {
                     'is not compatible with swagger file "http://domain.com/swagger.json"'
                 ));
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /does/not/exist',
                     pactDetails: {
                         interactionDescription: 'default-description',
@@ -333,6 +334,7 @@ describe('swagger-pact-validator reading urls', () => {
                     },
                     type: 'error'
                 }, {
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /doesnt/exist',
                     pactDetails: {
                         interactionDescription: 'default-description',

@@ -67,6 +67,7 @@ describe('swagger-pact-validator request path', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /does/not/exist',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -104,6 +105,7 @@ describe('swagger-pact-validator request path', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /does/not/exist',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -143,6 +145,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /almost/matches',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -181,6 +184,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /almost',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -222,6 +226,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /almost',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -355,6 +360,7 @@ describe('swagger-pact-validator request path', () => {
                 return expectToReject(result).then((error) => {
                     expect(error).toEqual(expectedFailedValidationError);
                     expect(error.details).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
                         message: 'Path or method not defined in swagger file: GET /foo',
                         pactDetails: {
                             interactionDescription: 'interaction description',
@@ -382,6 +388,7 @@ describe('swagger-pact-validator request path', () => {
                 return expectToReject(result).then((error) => {
                     expect(error).toEqual(expectedFailedValidationError);
                     expect(error.details).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
                         message: 'Path or method not defined in swagger file: GET /',
                         pactDetails: {
                             interactionDescription: 'interaction description',
@@ -420,6 +427,7 @@ describe('swagger-pact-validator request path', () => {
                 return expectToReject(result).then((error) => {
                     expect(error).toEqual(expectedFailedValidationError);
                     expect(error.details).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
                         message: 'Path or method not defined in swagger file: GET /on',
                         pactDetails: {
                             interactionDescription: 'interaction description',
@@ -458,6 +466,7 @@ describe('swagger-pact-validator request path', () => {
                 return expectToReject(result).then((error) => {
                     expect(error).toEqual(expectedFailedValidationError);
                     expect(error.details).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
                         message: 'Path or method not defined in swagger file: GET /',
                         pactDetails: {
                             interactionDescription: 'interaction description',
@@ -496,6 +505,7 @@ describe('swagger-pact-validator request path', () => {
                 return expectToReject(result).then((error) => {
                     expect(error).toEqual(expectedFailedValidationError);
                     expect(error.details).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
                         message: 'Path or method not defined in swagger file: GET /1.1',
                         pactDetails: {
                             interactionDescription: 'interaction description',
@@ -523,6 +533,7 @@ describe('swagger-pact-validator request path', () => {
                 return expectToReject(result).then((error) => {
                     expect(error).toEqual(expectedFailedValidationError);
                     expect(error.details).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
                         message: 'Path or method not defined in swagger file: GET /',
                         pactDetails: {
                             interactionDescription: 'interaction description',
@@ -610,6 +621,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /a,b,c',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -644,6 +656,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /${pactValue}`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -688,6 +701,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /1/users/a',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -736,6 +750,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /1/users/a',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -754,6 +769,7 @@ describe('swagger-pact-validator request path', () => {
                     },
                     type: 'error'
                 }, {
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /a/users/1',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -796,6 +812,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /users/1',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -836,6 +853,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /users/1',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -893,6 +911,7 @@ describe('swagger-pact-validator request path', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /wrong/base/does/exist',
                     pactDetails: {
                         interactionDescription: 'interaction description',

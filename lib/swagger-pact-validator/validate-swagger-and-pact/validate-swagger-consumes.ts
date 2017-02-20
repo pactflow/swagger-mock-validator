@@ -9,7 +9,8 @@ const validateSwaggerHasNoConsumesValue = (
     pactInteraction: ParsedMockInteraction, swaggerOperation: ParsedSpecOperation, pactContentTypeHeaderValue: string
 ) => {
     return pactContentTypeHeaderValue
-        ? [result.warning({
+        ? [result.build({
+            code: 'spv.request.content-type.unknown',
             message: 'Request content-type header is defined but there is no consumes definition in the spec',
             pactSegment: pactInteraction.requestHeaders[contentTypeHeaderName],
             source: 'swagger-pact-validation',
@@ -22,7 +23,8 @@ const validatePactHasNoContentTypeHeader = (
     pactInteraction: ParsedMockInteraction, swaggerOperation: ParsedSpecOperation
 ) => {
     return pactInteraction.requestBody.value
-        ? [result.warning({
+        ? [result.build({
+            code: 'spv.request.content-type.missing',
             message: 'Request content type header is not defined but there is consumes definition in the spec',
             pactSegment: pactInteraction,
             source: 'swagger-pact-validation',
@@ -45,7 +47,8 @@ const validatePactContentTypeAgainstSwaggerConsumes = (
     const foundMatches = newNegotiator(pactContentTypeHeaderValue).mediaTypes(swaggerOperation.consumes.value);
 
     if (foundMatches.length === 0) {
-        return [result.error({
+        return [result.build({
+            code: 'spv.request.content-type.incompatible',
             message:
                 'Request Content-Type header is incompatible with the consumes mime type defined in the swagger file',
             pactSegment: pactInteraction.requestHeaders[contentTypeHeaderName],

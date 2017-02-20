@@ -67,6 +67,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.incompatible',
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: should be number',
                 pactDetails: {
@@ -112,6 +113,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.incompatible',
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: should be string',
                 pactDetails: {
@@ -150,6 +152,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.incompatible',
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: should be number',
                 pactDetails: {
@@ -169,6 +172,7 @@ describe('swagger-pact-validator response body', () => {
                 },
                 type: 'error'
             }, {
+                code: 'spv.response.body.incompatible',
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: should be number',
                 pactDetails: {
@@ -199,6 +203,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.unknown',
                 message: 'No schema found for response body',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -287,6 +292,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.incompatible',
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should NOT have additional properties - firstName',
@@ -322,6 +328,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.incompatible',
                 message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
                 pactDetails: {
@@ -356,6 +363,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.incompatible',
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should NOT have additional properties - a',
@@ -396,6 +404,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.incompatible',
                 message:
                     'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should NOT have additional properties - firstName',
@@ -441,6 +450,7 @@ describe('swagger-pact-validator response body', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.body.incompatible',
                 message:
                 'Response body is incompatible with the response body schema in the swagger file: should be string',
                 pactDetails: {
@@ -488,6 +498,7 @@ describe('swagger-pact-validator response body', () => {
 
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
             (expect(result) as any).toContainWarnings([{
+                code: 'spv.response.status.default',
                 message: 'Response status code matched default response in swagger file: 202',
                 pactDetails: {
                     interactionDescription: 'interaction description',

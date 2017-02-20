@@ -80,6 +80,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /2016',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -120,6 +121,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /2016-12-01T',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -169,6 +171,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /${minimumInt32AllowedMinusOne}`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -196,6 +199,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /${maximumInt32AllowedPlusOne}`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -223,6 +227,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /1.1`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -274,6 +279,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should be integer',
                     pactDetails: {
@@ -309,6 +315,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should pass "formatInt32" keyword validation',
                     pactDetails: {
@@ -362,6 +369,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /${minimumInt64AllowedMinusOneThousand}`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -389,6 +397,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /${maximumInt64AllowedPlusOneThousand}`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -416,6 +425,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /1.1`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -467,6 +477,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should be integer',
                     pactDetails: {
@@ -501,6 +512,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                         'should pass "formatInt64" keyword validation',
                     pactDetails: {
@@ -552,6 +564,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /1234567',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -579,6 +592,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /a`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -630,6 +644,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should be number',
                     pactDetails: {
@@ -664,6 +679,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should pass "formatFloat" keyword validation',
                     pactDetails: {
@@ -715,6 +731,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /1234567890123456',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -742,6 +759,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /a`,
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -793,6 +811,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should be number',
                     pactDetails: {
@@ -827,6 +846,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should pass "formatDouble" keyword validation',
                     pactDetails: {
@@ -868,6 +888,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /not-base-64-encoded',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -912,6 +933,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -956,6 +978,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -1032,6 +1055,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should pass "formatInt32" keyword validation',
                     pactDetails: {
@@ -1083,6 +1107,7 @@ describe('swagger-pact-validator formats', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should pass "formatInt32" keyword validation',
                     pactDetails: {

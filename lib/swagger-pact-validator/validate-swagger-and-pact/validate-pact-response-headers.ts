@@ -61,7 +61,8 @@ export default (pactInteraction: ParsedMockInteraction, swaggerResponse: ParsedS
                 }
 
                 if (standardHttpHeaders.indexOf(headerName) > -1) {
-                    return [result.warning({
+                    return [result.build({
+                        code: 'spv.response.header.undefined',
                         message: `Standard http response header is not defined in the swagger file: ${headerName}`,
                         pactSegment: headerValue,
                         source: 'swagger-pact-validation',
@@ -69,7 +70,8 @@ export default (pactInteraction: ParsedMockInteraction, swaggerResponse: ParsedS
                     })];
                 }
 
-                return [result.error({
+                return [result.build({
+                    code: 'spv.response.header.unknown',
                     message: `Response header is not defined in the swagger file: ${headerName}`,
                     pactSegment: headerValue,
                     source: 'swagger-pact-validation',
@@ -77,7 +79,14 @@ export default (pactInteraction: ParsedMockInteraction, swaggerResponse: ParsedS
                 })];
             }
 
-            return validateMockValueAgainstSpec(swaggerHeader, headerValue, pactInteraction).results;
+            const validationResult = validateMockValueAgainstSpec(
+                swaggerHeader,
+                headerValue,
+                pactInteraction,
+                'spv.response.header.incompatible'
+            );
+
+            return validationResult.results;
         })
         .flatten()
         .value();

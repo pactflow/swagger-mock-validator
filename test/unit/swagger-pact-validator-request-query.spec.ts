@@ -73,6 +73,7 @@ describe('swagger-pact-validator request query', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.query.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -101,6 +102,7 @@ describe('swagger-pact-validator request query', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.query.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should have required property \'value\'',
                 pactDetails: {
@@ -127,6 +129,7 @@ describe('swagger-pact-validator request query', () => {
         const requestQuery = 'value=a';
         return validateRequestQuery(undefined, requestQuery).then((result) => {
             expect(result).toContainWarnings([{
+                code: 'spv.request.query.unknown',
                 message: 'Query parameter is not defined in the swagger file: value',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -157,6 +160,7 @@ describe('swagger-pact-validator request query', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.query.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as q from 'q';
 import * as SwaggerTools from 'swagger-tools';
-import {ValidationFailureError, ValidationResult, ValidationResultType} from './types';
+import {ValidationFailureError, ValidationResult, ValidationResultCode, ValidationResultType} from './types';
 
 const validate = (document: any): q.Promise<SwaggerTools.ValidationResultCollection> => {
     const deferred = q.defer<SwaggerTools.ValidationResultCollection>();
@@ -26,6 +26,7 @@ const generateLocation = (path: string[]) => {
 };
 
 interface GenerateResultOptions {
+    code: ValidationResultCode;
     message: string;
     pactPathOrUrl: string;
     swaggerPathOrUrl: string;
@@ -34,6 +35,7 @@ interface GenerateResultOptions {
 }
 
 const generateResult = (options: GenerateResultOptions): ValidationResult => ({
+    code: options.code,
     message: options.message,
     pactDetails: {
         interactionDescription: null,
@@ -61,6 +63,7 @@ const parseValidationResult = (
     const validationErrors = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'errors', [])
         .map((swaggerValidationError) =>
             generateResult({
+                code: 'sv.error',
                 message: swaggerValidationError.message,
                 pactPathOrUrl,
                 swaggerPathOrUrl,
@@ -72,6 +75,7 @@ const parseValidationResult = (
     const validationWarnings = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'warnings', [])
         .map((swaggerValidationWarning) =>
             generateResult({
+                code: 'sv.warning',
                 message: swaggerValidationWarning.message,
                 pactPathOrUrl,
                 swaggerPathOrUrl,

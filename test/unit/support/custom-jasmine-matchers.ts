@@ -38,6 +38,7 @@ interface ComparePropertyOptions<T> {
 const valueToString = (value: any) => util.inspect(value, {breakLength: Infinity});
 
 const propertiesToCompare = [
+    'code',
     'message',
     'pactDetails.interactionDescription',
     'pactDetails.interactionState',

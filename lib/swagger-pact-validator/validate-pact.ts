@@ -7,6 +7,7 @@ export default (pactJson: any, pactPathOrUrl: string, swaggerPathOrUrl: string) 
 
         error.details = {
             errors: [{
+                code: 'pv.error',
                 message: 'Missing required property: interactions',
                 pactDetails: {
                     interactionDescription: null,
@@ -15,7 +16,7 @@ export default (pactJson: any, pactPathOrUrl: string, swaggerPathOrUrl: string) 
                     pactFile: pactPathOrUrl,
                     value: pactJson
                 },
-                source: 'swagger-validation',
+                source: 'pact-validation',
                 swaggerDetails: {
                     location: '[swaggerRoot]',
                     pathMethod: null,

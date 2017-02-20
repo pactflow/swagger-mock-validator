@@ -52,6 +52,7 @@ describe('swagger-pact-validator response status', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.status.unknown',
                 message: 'Response status code not defined in swagger file: 202',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -80,6 +81,7 @@ describe('swagger-pact-validator response status', () => {
 
         return validateResponseStatus(202, operation).then((result) => {
             (expect(result) as any).toContainWarnings([{
+                code: 'spv.response.status.default',
                 message: 'Response status code matched default response in swagger file: 202',
                 pactDetails: {
                     interactionDescription: 'interaction description',

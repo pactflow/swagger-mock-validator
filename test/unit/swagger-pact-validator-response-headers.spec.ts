@@ -70,6 +70,7 @@ describe('swagger-pact-validator response headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -101,6 +102,7 @@ describe('swagger-pact-validator response headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.header.incompatible',
                 message:
                     'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
@@ -139,6 +141,7 @@ describe('swagger-pact-validator response headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.header.unknown',
                 message: 'Response header is not defined in the swagger file: x-custom-header',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -206,6 +209,7 @@ describe('swagger-pact-validator response headers', () => {
 
         return validateResponseHeaders(undefined, pactResponseHeaders).then((result) => {
             const warnings = _.map(pactResponseHeaders, (headerValue: string, headerName: string) => ({
+                code: 'spv.response.header.undefined',
                 message:
                     `Standard http response header is not defined in the swagger file: ${headerName.toLowerCase()}`,
                 pactDetails: {
@@ -269,6 +273,7 @@ describe('swagger-pact-validator response headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',

@@ -73,6 +73,7 @@ describe('swagger-pact-validator request headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -103,6 +104,7 @@ describe('swagger-pact-validator request headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.header.incompatible',
                 message:
                     'Value is incompatible with the parameter defined in the swagger file: should be number',
                 pactDetails: {
@@ -141,6 +143,7 @@ describe('swagger-pact-validator request headers', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should have required property \'value\'',
                 pactDetails: {
@@ -168,6 +171,7 @@ describe('swagger-pact-validator request headers', () => {
 
         return validateRequestHeaders(undefined, requestHeaders).then((result) => {
             expect(result).toContainWarnings([{
+                code: 'spv.request.header.unknown',
                 message: 'Request header is not defined in the swagger file: x-custom-header',
                 pactDetails: {
                     interactionDescription: 'interaction description',

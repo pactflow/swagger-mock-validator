@@ -7,7 +7,7 @@ import {
     ParsedMockValue,
     ParsedSpecItem,
     ParsedSpecItemCollectionFormat,
-    ParsedSpecParameter
+    ParsedSpecParameter, ValidationResultCode
 } from '../types';
 import validateJson from './validate-json';
 
@@ -83,7 +83,8 @@ const toMockValue = (
 export default <T>(
     swaggerValue: ParsedSpecParameter,
     pactValue: ParsedMockValue<T>,
-    pactInteraction: ParsedMockInteraction
+    pactInteraction: ParsedMockInteraction,
+    errorCode: ValidationResultCode
 ) => {
     const schema = toJsonSchema(swaggerValue);
     const mockValue = toMockValue(pactValue, swaggerValue);
@@ -91,7 +92,8 @@ export default <T>(
 
     return {
         match: errors.length === 0,
-        results: _.map(errors, (error) => result.error({
+        results: _.map(errors, (error) => result.build({
+            code: errorCode,
             message: 'Value is incompatible with the parameter defined in the swagger file: ' +
             error.message,
             pactSegment: pactValue || pactInteraction,

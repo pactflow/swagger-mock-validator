@@ -91,6 +91,7 @@ describe('swagger-pact-validator consumes', () => {
     it('should return warning when request content-type header is not defined and spec consumes is', willResolve(() =>
         validateRequestContentTypeHeader(['application/json'], undefined, {id: 1}).then((result) => {
             expect(result).toContainWarnings([{
+                code: 'spv.request.content-type.missing',
                 message: 'Request content type header is not defined but there is consumes definition in the spec',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -115,6 +116,7 @@ describe('swagger-pact-validator consumes', () => {
     it('should return warning when request content-type header is defined and spec consumes is not', willResolve(() =>
         validateRequestContentTypeHeader(undefined, 'application/json', {id: 1}).then((result) => {
             expect(result).toContainWarnings([{
+                code: 'spv.request.content-type.unknown',
                 message: 'Request content-type header is defined but there is no consumes definition in the spec',
                 pactDetails: {
                     interactionDescription: 'interaction description',
@@ -142,6 +144,7 @@ describe('swagger-pact-validator consumes', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.content-type.incompatible',
                 message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
                 'in the swagger file',
                 pactDetails: {
@@ -179,6 +182,7 @@ describe('swagger-pact-validator consumes', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.content-type.incompatible',
                 message: 'Request Content-Type header is incompatible with the consumes mime type defined in the ' +
                 'swagger file',
                 pactDetails: {
@@ -216,6 +220,7 @@ describe('swagger-pact-validator consumes', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.content-type.incompatible',
                 message: 'Request Content-Type header is incompatible with the consumes mime ' +
                 'type defined in the swagger file',
                 pactDetails: {

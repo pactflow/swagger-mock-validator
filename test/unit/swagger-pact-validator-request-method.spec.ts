@@ -54,6 +54,7 @@ describe('swagger-pact-validator request method', () => {
         return expectToReject(result).then((error) => {
             expect(error).toEqual(expectedFailedValidationError);
             expect(error.details).toContainErrors([{
+                code: 'spv.request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: POST /does/exist',
                 pactDetails: {
                     interactionDescription: 'interaction description',

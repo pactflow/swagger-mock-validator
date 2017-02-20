@@ -11,7 +11,8 @@ export default (pactInteraction: ParsedMockInteraction, swaggerResponse: ParsedS
 
     if (!swaggerResponse.schema) {
         return [
-            result.error({
+            result.build({
+                code: 'spv.response.body.unknown',
                 message: 'No schema found for response body',
                 pactSegment: pactInteraction.responseBody,
                 source: 'swagger-pact-validation',
@@ -27,7 +28,8 @@ export default (pactInteraction: ParsedMockInteraction, swaggerResponse: ParsedS
             ? `${error.message} - ${(error.params as Ajv.AdditionalPropertiesParams).additionalProperty}`
             : error.message;
 
-        return result.error({
+        return result.build({
+            code: 'spv.response.body.incompatible',
             message: `Response body is incompatible with the response body schema in the swagger file: ${message}`,
             pactSegment: pactInteraction.getResponseBodyPath(error.dataPath),
             source: 'swagger-pact-validation',

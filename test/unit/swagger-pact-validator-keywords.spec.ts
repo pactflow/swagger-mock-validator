@@ -82,6 +82,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /b',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -110,6 +111,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                         'should be equal to one of the allowed values',
                     pactDetails: {
@@ -149,6 +151,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /101',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -178,6 +181,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -206,6 +210,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: should be < 100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -244,6 +249,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /99',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -273,6 +279,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -301,6 +308,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: should be > 100',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -339,6 +347,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /abcd',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -367,6 +376,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                         'should NOT be longer than 3 characters',
                     pactDetails: {
@@ -406,6 +416,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /ab',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -434,6 +445,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should NOT be shorter than 3 characters',
                     pactDetails: {
@@ -473,6 +485,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /abcdefg',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -501,6 +514,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should match pattern "^[a-f]+$"',
                     pactDetails: {
@@ -540,6 +554,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /7',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -568,6 +583,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should be multiple of 3',
                     pactDetails: {
@@ -607,6 +623,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /1,2,3,4',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -635,6 +652,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should NOT have more than 3 items',
                     pactDetails: {
@@ -674,6 +692,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /1,2',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -702,6 +721,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should NOT have less than 3 items',
                     pactDetails: {
@@ -741,6 +761,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /1,1',
                     pactDetails: {
                         interactionDescription: 'interaction description',
@@ -769,6 +790,7 @@ describe('swagger-pact-validator keywords', () => {
             return expectToReject(result).then((error) => {
                 expect(error).toEqual(expectedFailedValidationError);
                 expect(error.details).toContainErrors([{
+                    code: 'spv.response.header.incompatible',
                     message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                     'should NOT have duplicate items (items ## 0 and 1 are identical)',
                     pactDetails: {

@@ -32,7 +32,8 @@ const typeValidators: TypeValidators = {
         validateMockValueAgainstSpec(
             swaggerPathSegment.parameter,
             pactPathSegment,
-            pactPathSegment.parentInteraction
+            pactPathSegment.parentInteraction,
+            'spv.request.path-or-method.unknown'
         )
 };
 
@@ -109,7 +110,8 @@ export default (
         return {
             found: false,
             results: [
-                result.error({
+                result.build({
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: ' +
                         `${pactInteraction.requestMethod.value.toUpperCase()} ` +
                         `${pactInteraction.requestPath.value}`,

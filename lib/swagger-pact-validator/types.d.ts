@@ -414,6 +414,7 @@ export interface ValidationFailureErrorDetails {
 }
 
 export interface ValidationResult {
+    code: ValidationResultCode;
     message: string;
     pactDetails: ValidationResultPactDetails;
     source: ValidationResultSource;
@@ -437,9 +438,36 @@ export interface ValidationResultSwaggerDetails {
     value: any;
 }
 
-export type ValidationResultSource = 'swagger-validation' | 'swagger-pact-validation';
+export type ValidationResultSource = 'pact-validation' | 'swagger-validation' | 'swagger-pact-validation';
 
 export type ValidationResultType = 'error' | 'warning';
+
+export type ValidationResultCode =
+    'pv.error' |
+    'spv.request.accept.incompatible' |
+    'spv.request.accept.unknown' |
+    'spv.request.authorization.missing' |
+    'spv.request.body.incompatible' |
+    'spv.request.body.unknown' |
+    'spv.request.content-type.incompatible' |
+    'spv.request.content-type.missing' |
+    'spv.request.content-type.unknown' |
+    'spv.request.header.incompatible' |
+    'spv.request.header.unknown' |
+    'spv.request.path-or-method.unknown' |
+    'spv.request.query.incompatible' |
+    'spv.request.query.unknown' |
+    'spv.response.body.incompatible' |
+    'spv.response.body.unknown' |
+    'spv.response.content-type.incompatible' |
+    'spv.response.content-type.unknown' |
+    'spv.response.header.incompatible' |
+    'spv.response.header.undefined' |
+    'spv.response.header.unknown' |
+    'spv.response.status.default' |
+    'spv.response.status.unknown' |
+    'sv.error' |
+    'sv.warning';
 
 export interface GetSwaggerValueSuccessResult<T> {
     found: true;

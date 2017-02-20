@@ -9,7 +9,8 @@ const validateRequestBodyAgainstSchema = (
 ) => {
     const validationErrors = validateJson(requestBodyParameter.schema, pactRequestBody.value);
 
-    return _.map(validationErrors, (error) => result.error({
+    return _.map(validationErrors, (error) => result.build({
+        code: 'spv.request.body.incompatible',
         message:
             `Request body is incompatible with the request body schema in the swagger file: ${error.message}`,
         pactSegment: pactRequestBody.parentInteraction.getRequestBodyPath(error.dataPath),
@@ -27,7 +28,8 @@ export default (pactInteraction: ParsedMockInteraction, swaggerOperation: Parsed
     if (!swaggerOperation.requestBodyParameter) {
         if (pactRequestHasBody) {
             return [
-                result.warning({
+                result.build({
+                    code: 'spv.request.body.unknown',
                     message: 'No schema found for request body',
                     pactSegment: pactInteraction.requestBody,
                     source: 'swagger-pact-validation',
