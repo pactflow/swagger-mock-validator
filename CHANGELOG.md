@@ -1,3 +1,13 @@
+<a name="0.0.30"></a>
+## [0.0.30](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.28...v0.0.30) (2017-02-20)
+
+
+### Features
+
+* add support for swagger base path ([1f9828c](https://bitbucket.org/atlassian/swagger-pact-validator/commits/1f9828c)), closes [#24](https://bitbucket.org/atlassian/swagger-pact-validator/issue/24)
+
+
+
 <a name="0.0.28"></a>
 ## [0.0.28](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.27...v0.0.28) (2017-02-16)
 

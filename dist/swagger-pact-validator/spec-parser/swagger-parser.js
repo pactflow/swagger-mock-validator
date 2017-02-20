@@ -23,8 +23,9 @@ const mergePathAndOperationParameters = (pathParameters, operationParameters) =>
     });
     return mergedParameters;
 };
-const parsePathNameSegments = (pathName, pathParameters, parsedOperation) => {
-    return _(pathName.split('/'))
+const parsePathNameSegments = (pathName, pathParameters, parsedOperation, basePath) => {
+    const path = (basePath) ? basePath + pathName : pathName;
+    return _(path.split('/'))
         .filter((pathNameSegment) => pathNameSegment.length > 0)
         .map((pathNameSegment) => {
         const parsedPathNameSegment = { parentOperation: parsedOperation };
@@ -243,7 +244,7 @@ const parseOperationFromPath = (path, pathName, swaggerPathOrUrl, swaggerJson) =
     const parsedParameters = parseParameters(path, pathLocation, parsedOperation);
     parsedOperation.parentOperation = parsedOperation;
     parsedOperation.pathNameSegments =
-        parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
+        parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, swaggerJson.basePath);
     parsedOperation.produces = parseMimeType({
         mimeTypeName: 'produces',
         operation,
