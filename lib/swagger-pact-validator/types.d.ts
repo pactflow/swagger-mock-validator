@@ -193,6 +193,7 @@ export interface PactInteractionHeaders {
 // Spec Interfaces - Swagger
 
 export interface Swagger {
+    basePath?: string;
     info: SwaggerInfo;
     paths: SwaggerPaths;
     produces?: string[];

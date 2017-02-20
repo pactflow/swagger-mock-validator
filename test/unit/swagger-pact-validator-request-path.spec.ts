@@ -857,4 +857,63 @@ describe('swagger-pact-validator request path', () => {
             });
         }));
     });
+
+    describe('basePath', () => {
+        it('should pass when the pact request path matches the swagger base path and path', willResolve(() => {
+            const pactFile = pactBuilder
+                .withInteraction(interactionBuilder.withRequestPath('/base/path/does/exist'))
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
+                .withBasePath('/base/path')
+                .build();
+
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+                (expect(result) as any).toContainNoWarnings();
+            });
+        }));
+
+        it('should return error when pact request path does not match swagger basePath and path', willResolve(() => {
+            const pactFile = pactBuilder
+                .withInteraction(interactionBuilder
+                    .withState('a-state')
+                    .withDescription('interaction description')
+                    .withRequestPath('/wrong/base/does/exist')
+                )
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
+                .withBasePath('/base/path')
+                .build();
+
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                expect(error.details).toContainErrors([{
+                    message: 'Path or method not defined in swagger file: GET /wrong/base/does/exist',
+                    pactDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: 'a-state',
+                        location: '[pactRoot].interactions[0].request.path',
+                        pactFile: 'pact.json',
+                        value: '/wrong/base/does/exist'
+                    },
+                    source: 'swagger-pact-validation',
+                    swaggerDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        swaggerFile: 'swagger.json',
+                        value: {
+                            '/does/exist': pathBuilder.withGetOperation(operationBuilder).build()
+                        }
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
+    });
 });

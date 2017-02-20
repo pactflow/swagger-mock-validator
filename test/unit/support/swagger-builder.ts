@@ -7,6 +7,7 @@ import {SecuritySchemeBuilder} from './swagger-builder/security-scheme-builder';
 
 const createSwaggerBuilder = (swagger: Swagger) => ({
     build: () => cloneDeep(swagger),
+    withBasePath: (basePath: string) => createSwaggerBuilder(setValueOn(swagger, 'basePath', basePath)),
     withConsumes: (consumes: string[]) => createSwaggerBuilder(setValueOn(swagger, 'consumes', consumes)),
     withMissingInfoTitle: () => createSwaggerBuilder(removeValueOn(swagger, 'info.title')),
     withParameter: (name: string, parameterBuilder: ParameterBuilder) => createSwaggerBuilder(

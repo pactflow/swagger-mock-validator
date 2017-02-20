@@ -64,9 +64,12 @@ const mergePathAndOperationParameters = (
 const parsePathNameSegments = (
     pathName: string,
     pathParameters: ParsedSpecParameter[],
-    parsedOperation: ParsedSpecOperation
+    parsedOperation: ParsedSpecOperation,
+    basePath?: string
 ) => {
-    return _(pathName.split('/'))
+    const path = (basePath) ? basePath + pathName : pathName;
+
+    return _(path.split('/'))
         .filter((pathNameSegment) => pathNameSegment.length > 0)
         .map((pathNameSegment) => {
             const parsedPathNameSegment = {parentOperation: parsedOperation} as ParsedSpecPathNameSegment;
@@ -366,7 +369,7 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, swaggerPath
 
             parsedOperation.parentOperation = parsedOperation;
             parsedOperation.pathNameSegments =
-                parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation);
+                parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, swaggerJson.basePath);
             parsedOperation.produces = parseMimeType({
                 mimeTypeName: 'produces',
                 operation,
