@@ -15,6 +15,7 @@ This is a list of all the possible validation rules and if they are currently su
 | Request Content Type | yes |
 | Request Headers | yes |
 | Request Path | yes |
+| Request Base Path| yes |
 | Request path params | yes |
 | Request query params | yes |
 | Deprecated | no |
