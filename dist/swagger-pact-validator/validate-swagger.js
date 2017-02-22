@@ -21,6 +21,7 @@ const generateLocation = (path) => {
     return '[swaggerRoot]';
 };
 const generateResult = (options) => ({
+    code: options.code,
     message: options.message,
     pactDetails: {
         interactionDescription: null,
@@ -42,6 +43,7 @@ const generateResult = (options) => ({
 const parseValidationResult = (validationResult, swaggerPathOrUrl, pactPathOrUrl) => {
     const validationErrors = _.get(validationResult, 'errors', [])
         .map((swaggerValidationError) => generateResult({
+        code: 'sv.error',
         message: swaggerValidationError.message,
         pactPathOrUrl,
         swaggerPathOrUrl,
@@ -50,6 +52,7 @@ const parseValidationResult = (validationResult, swaggerPathOrUrl, pactPathOrUrl
     }));
     const validationWarnings = _.get(validationResult, 'warnings', [])
         .map((swaggerValidationWarning) => generateResult({
+        code: 'sv.warning',
         message: swaggerValidationWarning.message,
         pactPathOrUrl,
         swaggerPathOrUrl,

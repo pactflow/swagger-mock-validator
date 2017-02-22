@@ -3,7 +3,8 @@ const _ = require("lodash");
 const result_1 = require("../result");
 const validateQueryRequirement = (securityRequirement, pactInteraction) => {
     if (!pactInteraction.requestQuery[securityRequirement.credentialKey]) {
-        return result_1.default.error({
+        return result_1.default.build({
+            code: 'spv.request.authorization.missing',
             message: 'Request Authorization query is missing but is required by the swagger file',
             pactSegment: pactInteraction,
             source: 'swagger-pact-validation',
@@ -14,7 +15,8 @@ const validateQueryRequirement = (securityRequirement, pactInteraction) => {
 };
 const validateHeaderRequirement = (securityRequirement, pactInteraction) => {
     if (!pactInteraction.requestHeaders[securityRequirement.credentialKey]) {
-        return result_1.default.error({
+        return result_1.default.build({
+            code: 'spv.request.authorization.missing',
             message: 'Request Authorization header is missing but is required by the swagger file',
             pactSegment: pactInteraction,
             source: 'swagger-pact-validation',

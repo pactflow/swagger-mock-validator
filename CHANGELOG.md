@@ -1,3 +1,13 @@
+<a name="0.0.31"></a>
+## [0.0.31](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.30...v0.0.31) (2017-02-22)
+
+
+### Features
+
+* add breakdown of issues detected ([5c5075c](https://bitbucket.org/atlassian/swagger-pact-validator/commits/5c5075c)), closes [#39](https://bitbucket.org/atlassian/swagger-pact-validator/issue/39)
+
+
+
 <a name="0.0.30"></a>
 ## [0.0.30](https://bitbucket.org/atlassian/swagger-pact-validator/compare/0.0.28...v0.0.30) (2017-02-20)
 

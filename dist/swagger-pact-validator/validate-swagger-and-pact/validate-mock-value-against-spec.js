@@ -64,13 +64,14 @@ const toMockValue = (pactValue, swaggerValue) => {
     return { value: toArrayMockValue(pactValue.value, swaggerValue) };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (swaggerValue, pactValue, pactInteraction) => {
+exports.default = (swaggerValue, pactValue, pactInteraction, errorCode) => {
     const schema = toJsonSchema(swaggerValue);
     const mockValue = toMockValue(pactValue, swaggerValue);
     const errors = validate_json_1.default(schema, mockValue, true);
     return {
         match: errors.length === 0,
-        results: _.map(errors, (error) => result_1.default.error({
+        results: _.map(errors, (error) => result_1.default.build({
+            code: errorCode,
             message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 error.message,
             pactSegment: pactValue || pactInteraction,

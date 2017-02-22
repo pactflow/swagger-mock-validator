@@ -7,7 +7,8 @@ const getWarningForUndefinedQueryParameter = (queryParameterName, queryParameter
     if (queryUsedForSecurity(queryParameterName, swaggerOperation)) {
         return [];
     }
-    return [result_1.default.warning({
+    return [result_1.default.build({
+            code: 'spv.request.query.unknown',
             message: `Query parameter is not defined in the swagger file: ${queryParameterName}`,
             pactSegment: queryParameter,
             source: 'swagger-pact-validation',
@@ -24,7 +25,8 @@ exports.default = (pactInteraction, swaggerOperation) => {
         if (!queryParameterDefinition && queryParameter) {
             return getWarningForUndefinedQueryParameter(name, queryParameter, swaggerOperation);
         }
-        return validate_mock_value_against_spec_1.default(queryParameterDefinition, queryParameter, pactInteraction).results;
+        const validationResult = validate_mock_value_against_spec_1.default(queryParameterDefinition, queryParameter, pactInteraction, 'spv.request.query.incompatible');
+        return validationResult.results;
     })
         .flatten()
         .value();

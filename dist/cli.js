@@ -6,6 +6,22 @@ const util = require("util");
 const swagger_pact_validator_1 = require("./swagger-pact-validator");
 // tslint:disable:no-var-requires
 const packageJson = require('../package.json');
+const displaySummaryForValidationResults = (name, resultsOrNone) => {
+    const results = resultsOrNone || [];
+    const summary = results.reduce((partialSummary, result) => {
+        if (!partialSummary[result.code]) {
+            partialSummary[result.code] = 0;
+        }
+        partialSummary[result.code] += 1;
+        return partialSummary;
+    }, {});
+    console.log(`${results.length} ${name}(s)`);
+    _.each(summary, (count, resultCode) => console.log(`\t${resultCode}: ${count}`));
+};
+const displaySummary = (warningsOrUndefined, errorsOrUndefined) => {
+    displaySummaryForValidationResults('error', errorsOrUndefined);
+    displaySummaryForValidationResults('warning', warningsOrUndefined);
+};
 commander
     .version(packageJson.version)
     .arguments('<swagger> <pact>')
@@ -27,19 +43,15 @@ json file.`)
     swaggerPathOrUrl: swagger
 })
     .then((results) => {
-    const errors = _.get(results, 'errors', []);
-    const warnings = _.get(results, 'warnings', []);
-    console.log(`${errors.length} error(s)`);
-    console.log(`${warnings.length} warning(s)\n`);
-    if (warnings.length > 0) {
+    displaySummary(results.warnings);
+    if (results.warnings.length > 0) {
         console.log(`${util.inspect(results, { depth: 4 })}\n`);
     }
 })
     .catch((error) => {
     console.log(`${error.message}\n`);
     if (error.details) {
-        console.log(`${error.details.errors.length} error(s)`);
-        console.log(`${error.details.warnings.length} warning(s)\n`);
+        displaySummary(error.details.warnings, error.details.errors);
         console.log(`${util.inspect(error.details, { depth: 4 })}\n`);
     }
     console.log(error.stack);

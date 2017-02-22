@@ -7,7 +7,7 @@ const typeValidators = {
         const match = swaggerPathNameSegment.value === pactPathSegment.value;
         return { match, results: [] };
     },
-    jsonSchema: (pactPathSegment, swaggerPathSegment) => validate_mock_value_against_spec_1.default(swaggerPathSegment.parameter, pactPathSegment, pactPathSegment.parentInteraction)
+    jsonSchema: (pactPathSegment, swaggerPathSegment) => validate_mock_value_against_spec_1.default(swaggerPathSegment.parameter, pactPathSegment, pactPathSegment.parentInteraction, 'spv.request.path-or-method.unknown')
 };
 const doInteractionAndOperationMatchPaths = (pactInteraction, swaggerOperation) => {
     const swaggerPathSegments = swaggerOperation.pathNameSegments;
@@ -59,7 +59,8 @@ exports.default = (pactInteraction, swagger) => {
         return {
             found: false,
             results: [
-                result_1.default.error({
+                result_1.default.build({
+                    code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: ' +
                         `${pactInteraction.requestMethod.value.toUpperCase()} ` +
                         `${pactInteraction.requestPath.value}`,

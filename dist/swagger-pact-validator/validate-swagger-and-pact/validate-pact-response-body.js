@@ -9,7 +9,8 @@ exports.default = (pactInteraction, swaggerResponse) => {
     }
     if (!swaggerResponse.schema) {
         return [
-            result_1.default.error({
+            result_1.default.build({
+                code: 'spv.response.body.unknown',
                 message: 'No schema found for response body',
                 pactSegment: pactInteraction.responseBody,
                 source: 'swagger-pact-validation',
@@ -22,7 +23,8 @@ exports.default = (pactInteraction, swaggerResponse) => {
         const message = error.keyword === 'additionalProperties'
             ? `${error.message} - ${error.params.additionalProperty}`
             : error.message;
-        return result_1.default.error({
+        return result_1.default.build({
+            code: 'spv.response.body.incompatible',
             message: `Response body is incompatible with the response body schema in the swagger file: ${message}`,
             pactSegment: pactInteraction.getResponseBodyPath(error.dataPath),
             source: 'swagger-pact-validation',

@@ -6,6 +6,7 @@ exports.default = (pactJson, pactPathOrUrl, swaggerPathOrUrl) => {
         const error = new Error(`"${pactPathOrUrl}" is not a valid pact file`);
         error.details = {
             errors: [{
+                    code: 'pv.error',
                     message: 'Missing required property: interactions',
                     pactDetails: {
                         interactionDescription: null,
@@ -14,7 +15,7 @@ exports.default = (pactJson, pactPathOrUrl, swaggerPathOrUrl) => {
                         pactFile: pactPathOrUrl,
                         value: pactJson
                     },
-                    source: 'swagger-validation',
+                    source: 'pact-validation',
                     swaggerDetails: {
                         location: '[swaggerRoot]',
                         pathMethod: null,
