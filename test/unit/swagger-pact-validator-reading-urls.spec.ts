@@ -3,8 +3,7 @@ import * as q from 'q';
 import {FileSystem, HttpClient, SwaggerPactValidator, ValidationSuccess} from '../../lib/swagger-pact-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder, providerPactsBuilder} from './support/pact-broker-builder';
-import {pactBuilder} from './support/pact-builder';
-import {interactionBuilder} from './support/pact-builder/interaction-builder';
+import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {operationBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
 

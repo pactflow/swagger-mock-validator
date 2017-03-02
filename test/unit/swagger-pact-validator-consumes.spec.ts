@@ -2,8 +2,8 @@ import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
+    bodyParameterBuilder,
     operationBuilder,
-    parameterBuilder,
     pathBuilder,
     schemaBuilder,
     swaggerBuilder
@@ -20,7 +20,7 @@ describe('swagger-pact-validator consumes', () => {
         .withRequestPath('/does/exist')
         .withRequestMethodPost()
         .withResponseStatus(200);
-    const defaultSwaggerBodyParameter = parameterBuilder.withOptionalSchemaInBody(schemaBuilder
+    const defaultSwaggerBodyParameter = bodyParameterBuilder.withOptionalSchema(schemaBuilder
         .withTypeObject()
         .withRequiredProperty('id', schemaBuilder.withTypeNumber())
     );

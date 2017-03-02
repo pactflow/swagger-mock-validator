@@ -4,7 +4,7 @@ import * as q from 'q';
 import {FileSystem, HttpClient, SwaggerPactValidator, ValidationSuccess} from '../../lib/swagger-pact-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBuilder} from './support/pact-builder';
-import {operationBuilder, parameterBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder, pathBuilder, pathParameterBuilder, swaggerBuilder} from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
 
 declare function expect(actual: any): CustomMatchers;
@@ -173,7 +173,7 @@ describe('swagger-pact-validator reading files', () => {
         it('should return the warning when the swagger file contains warnings', willResolve(() => {
             mockFiles['swagger.json'] = q(JSON.stringify(
                 swaggerBuilder
-                    .withParameter('userId', parameterBuilder.withNumberInPathNamed('userId'))
+                    .withParameter('userId', pathParameterBuilder.withNumberNamed('userId'))
                     .build()
             ));
             mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
@@ -206,7 +206,7 @@ describe('swagger-pact-validator reading files', () => {
             mockFiles['swagger.json'] = q(JSON.stringify(
                 swaggerBuilder
                     .withPath('/account/{accountId}', pathBuilder.withGetOperation(operationBuilder))
-                    .withParameter('userId', parameterBuilder.withNumberInPathNamed('userId'))
+                    .withParameter('userId', pathParameterBuilder.withNumberNamed('userId'))
                     .build()
             ));
             mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));

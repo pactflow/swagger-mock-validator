@@ -4,9 +4,9 @@ import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers'
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     operationBuilder,
-    parameterBuilder,
     ParameterBuilder,
     pathBuilder,
+    requestHeaderParameterBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
@@ -57,7 +57,7 @@ describe('swagger-pact-validator request headers', () => {
 
     it('should pass when the pact request header matches the spec', willResolve(() => {
         const requestHeaders = {'x-custom-header': '1'};
-        const headerParameter = parameterBuilder.withRequiredNumberInHeaderNamed('x-custom-header');
+        const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
         return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {
             expect(result).toContainNoWarnings();
@@ -66,7 +66,7 @@ describe('swagger-pact-validator request headers', () => {
 
     it('should return the error when the pact request header does not match the spec', willResolve(() => {
         const requestHeaders = {'x-custom-header': 'not-a-number'};
-        const headerParameter = parameterBuilder.withRequiredNumberInHeaderNamed('x-custom-header');
+        const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
         const result = validateRequestHeaders(headerParameter, requestHeaders);
 
@@ -97,7 +97,7 @@ describe('swagger-pact-validator request headers', () => {
 
     it('should return the error when a pact request header does not match an array type', willResolve(() => {
         const requestHeaders = {'x-custom-header': '1,2,a'};
-        const headerParameter = parameterBuilder.withRequiredArrayOfNumbersInHeaderNamed('x-custom-header');
+        const headerParameter = requestHeaderParameterBuilder.withRequiredArrayOfNumbersNamed('x-custom-header');
 
         const result = validateRequestHeaders(headerParameter, requestHeaders);
 
@@ -128,7 +128,7 @@ describe('swagger-pact-validator request headers', () => {
     }));
 
     it('should pass when the pact request header is missing and the spec defines it as optional', willResolve(() => {
-        const headerParameter = parameterBuilder.withOptionalNumberInHeaderNamed('x-custom-header');
+        const headerParameter = requestHeaderParameterBuilder.withOptionalNumberNamed('x-custom-header');
 
         return validateRequestHeaders(headerParameter, {}).then((result) => {
             expect(result).toContainNoWarnings();
@@ -136,7 +136,7 @@ describe('swagger-pact-validator request headers', () => {
     }));
 
     it('should fail when the pact request header is missing and the spec defines it as required', willResolve(() => {
-        const headerParameter = parameterBuilder.withRequiredNumberInHeaderNamed('x-custom-header');
+        const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
         const result = validateRequestHeaders(headerParameter, {});
 
@@ -237,7 +237,7 @@ describe('swagger-pact-validator request headers', () => {
 
     it('should not be case sensitive when comparing mock and spec headers', willResolve(() => {
         const requestHeaders = {'content-Type': 'application/x-www-form-urlencoded', 'x-Custom-header': '1'};
-        const headerParameter = parameterBuilder.withRequiredNumberInHeaderNamed('X-custom-header');
+        const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('X-custom-header');
 
         return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {
             expect(result).toContainNoWarnings();

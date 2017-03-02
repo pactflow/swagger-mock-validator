@@ -3,9 +3,9 @@ import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers'
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     operationBuilder,
-    parameterBuilder,
     ParameterBuilder,
     pathBuilder,
+    queryParameterBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
 import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
@@ -48,7 +48,7 @@ describe('swagger-pact-validator request query', () => {
 
     it('should pass when the pact request query matches the spec', willResolve(() => {
         const requestQuery = 'value=1';
-        const queryParameter = parameterBuilder.withRequiredNumberInQueryNamed('value');
+        const queryParameter = queryParameterBuilder.withRequiredNumberNamed('value');
 
         return validateRequestQuery(queryParameter, requestQuery).then((result) => {
             expect(result).toContainNoWarnings();
@@ -57,7 +57,7 @@ describe('swagger-pact-validator request query', () => {
 
     it('should pass when the pact request query matches the spec', willResolve(() => {
         const requestQuery = 'value=1&value=2';
-        const queryParameter = parameterBuilder.withRequiredArrayOfNumbersInQueryNamed('value', 'multi');
+        const queryParameter = queryParameterBuilder.withRequiredArrayOfNumbersNamed('value', 'multi');
 
         return validateRequestQuery(queryParameter, requestQuery).then((result) => {
             expect(result).toContainNoWarnings();
@@ -66,7 +66,7 @@ describe('swagger-pact-validator request query', () => {
 
     it('should return the error when the pact request query does not match the spec', willResolve(() => {
         const requestQuery = 'value=a';
-        const queryParameter = parameterBuilder.withRequiredNumberInQueryNamed('value');
+        const queryParameter = queryParameterBuilder.withRequiredNumberNamed('value');
 
         const result = validateRequestQuery(queryParameter, requestQuery);
 
@@ -96,7 +96,7 @@ describe('swagger-pact-validator request query', () => {
     }));
 
     it('should return the error when the pact request query is missing a required parameter', willResolve(() => {
-        const queryParameter = parameterBuilder.withRequiredNumberInQueryNamed('value');
+        const queryParameter = queryParameterBuilder.withRequiredNumberNamed('value');
         const result = validateRequestQuery(queryParameter);
 
         return expectToReject(result).then((error) => {
@@ -153,7 +153,7 @@ describe('swagger-pact-validator request query', () => {
 
     it('should return the error when the pact request query does not match the collection format', willResolve(() => {
         const requestQuery = 'value=1&value=2';
-        const queryParameter = parameterBuilder.withRequiredArrayOfNumbersInQueryNamed('value', 'csv');
+        const queryParameter = queryParameterBuilder.withRequiredArrayOfNumbersNamed('value', 'csv');
 
         const result = validateRequestQuery(queryParameter, requestQuery);
 

@@ -2,8 +2,8 @@ import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
+    bodyParameterBuilder,
     operationBuilder,
-    parameterBuilder,
     ParameterBuilder,
     pathBuilder,
     schemaBuilder,
@@ -45,7 +45,7 @@ describe('swagger-pact-validator request body', () => {
 
     it('should pass when a pact request body is compatible with the swagger schema', willResolve(() => {
         const pactRequestBody = {id: 1};
-        const swaggerBodyParameter = parameterBuilder.withRequiredSchemaInBody(schemaBuilder
+        const swaggerBodyParameter = bodyParameterBuilder.withRequiredSchema(schemaBuilder
             .withTypeObject()
             .withRequiredProperty('id', schemaBuilder.withTypeNumber())
         );
@@ -57,7 +57,7 @@ describe('swagger-pact-validator request body', () => {
 
     it('should return the error when a pact request body is not compatible with the swagger schema', willResolve(() => {
         const pactRequestBody = {id: 'not-a-number'};
-        const swaggerBodyParameter = parameterBuilder.withRequiredSchemaInBody(schemaBuilder
+        const swaggerBodyParameter = bodyParameterBuilder.withRequiredSchema(schemaBuilder
             .withTypeObject()
             .withRequiredProperty('id', schemaBuilder.withTypeNumber())
         );
@@ -95,7 +95,7 @@ describe('swagger-pact-validator request body', () => {
             value1: '1',
             value2: '2'
         };
-        const swaggerBodyParameter = parameterBuilder.withRequiredSchemaInBody(schemaBuilder
+        const swaggerBodyParameter = bodyParameterBuilder.withRequiredSchema(schemaBuilder
             .withTypeObject()
             .withRequiredProperty('value1', schemaBuilder.withTypeNumber())
             .withRequiredProperty('value2', schemaBuilder.withTypeNumber())
@@ -177,7 +177,7 @@ describe('swagger-pact-validator request body', () => {
     }));
 
     it('should return the error when no pact request body and a schema with required fields', willResolve(() => {
-        const swaggerBodyParameter = parameterBuilder.withRequiredSchemaInBody(schemaBuilder
+        const swaggerBodyParameter = bodyParameterBuilder.withRequiredSchema(schemaBuilder
             .withTypeObject()
             .withRequiredProperty('id', schemaBuilder.withTypeNumber())
         );
@@ -211,7 +211,7 @@ describe('swagger-pact-validator request body', () => {
     }));
 
     it('should pass when there is no pact request body and an optional schema', willResolve(() => {
-        const swaggerBodyParameter = parameterBuilder.withOptionalSchemaInBody(schemaBuilder
+        const swaggerBodyParameter = bodyParameterBuilder.withOptionalSchema(schemaBuilder
             .withTypeObject()
             .withOptionalProperty('id', schemaBuilder.withTypeNumber())
         );
@@ -224,7 +224,7 @@ describe('swagger-pact-validator request body', () => {
     it('should return the error when the pact request body is a string when an object is expected', willResolve(() => {
         const pactRequestBody = 'a-string';
 
-        const swaggerBodyParameter = parameterBuilder.withOptionalSchemaInBody(
+        const swaggerBodyParameter = bodyParameterBuilder.withOptionalSchema(
             schemaBuilder.withTypeObject()
         );
 
@@ -259,7 +259,7 @@ describe('swagger-pact-validator request body', () => {
     it('should return error when pact request body has additional properties when none are allowed', willResolve(() => {
         const pactRequestBody = {a: 1};
 
-        const swaggerBodyParameter = parameterBuilder.withRequiredSchemaInBody(schemaBuilder
+        const swaggerBodyParameter = bodyParameterBuilder.withRequiredSchema(schemaBuilder
             .withTypeObject()
             .withAdditionalPropertiesBoolean(false)
         );
@@ -296,7 +296,7 @@ describe('swagger-pact-validator request body', () => {
     it('should return error when pact request body has additional properties not matching schema', willResolve(() => {
         const pactRequestBody = {a: '1'};
 
-        const swaggerBodyParameter = parameterBuilder.withRequiredSchemaInBody(schemaBuilder
+        const swaggerBodyParameter = bodyParameterBuilder.withRequiredSchema(schemaBuilder
             .withTypeObject()
             .withAdditionalPropertiesSchema(schemaBuilder.withTypeNumber())
         );
