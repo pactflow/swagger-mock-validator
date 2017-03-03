@@ -342,8 +342,6 @@ export type SwaggerItemFormat =
 
 export type SwaggerItemType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
-export type MimeTypeHeaderName = 'accept' | 'content-type';
-
 // Other Interfaces
 
 export interface FileSystem {
@@ -354,9 +352,7 @@ export interface HttpClient {
     get: JsonLoaderFunction;
 }
 
-export interface JsonLoaderFunction {
-    (location: string): q.Promise<string>;
-}
+export type JsonLoaderFunction = (location: string) => q.Promise<string>;
 
 export interface JsonSchema {
     additionalProperties?: boolean;

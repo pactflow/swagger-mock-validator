@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 const setMutableValueOn = <T>(obj: T, path: string, mutableValue: any): T =>
     _.set<T>(_.cloneDeep(obj), path, mutableValue);
 
-export function addToArrayOn (obj: any, path: string, value: any) {
+export function addToArrayOn(obj: any, path: string, value: any) {
     const copyOfArray = _.cloneDeep(_.get<any[]>(obj, path, []));
     const copyOfValue = _.cloneDeep(value);
 
@@ -12,7 +12,7 @@ export function addToArrayOn (obj: any, path: string, value: any) {
     return setMutableValueOn(obj, path, copyOfArray);
 }
 
-export function removeValueOn (obj: any, path: string) {
+export function removeValueOn(obj: any, path: string) {
     const copyOfObj = _.cloneDeep(obj);
 
     _.unset(copyOfObj, path);
@@ -24,7 +24,7 @@ export function setValueOn<T>(obj: T, path: string, value: any): T {
     return setMutableValueOn(obj, path, _.cloneDeep(value));
 }
 
-export function setValuesOn (obj: any, values: {[name: string]: any}) {
+export function setValuesOn(obj: any, values: {[name: string]: any}) {
     const copyOfObj = _.cloneDeep(obj);
     const copyOfValues = _.cloneDeep(values);
 
