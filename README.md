@@ -31,7 +31,7 @@ Invoke the tool with a path or url to a swagger file and a path or url to a pact
 ```
 swagger-pact-validator /path/to/swagger.json /path/to/pact.json
 
-swagger-pact-validator http://api.com/swagger.json https://pact-broker.com/pact.json
+swagger-pact-validator https://api.com/swagger.json https://pact-broker.com/pact.json
 
 swagger-pact-validator /path/to/swagger.json https://pact-broker.com/pact.json
 ```
@@ -51,9 +51,20 @@ swagger-pact-validator --help
 
 Provider services can easily verify all the consumer pact files uploaded to a Pact Broker using this tool. Invoke the tool with a url to the Pact Broker along with the name of the provider service and the tool will automatically discover and validate the latest versions of the consumer pact files for the provider service.
 ```
-swagger-pact-validator /path/to/swagger.json http://pact-broker.com --providerName my-provider-name
+swagger-pact-validator /path/to/swagger.json https://pact-broker.com --providerName my-provider-name
 ```
 
+### Analytics (Opt-In)
+
+The tool can be configured to send analytics events to a server of your choosing. Use the `--analyticsUrl` flag to pass a url that the tool should post the event to. The tool will send this event via a http post request and will timeout after 5 seconds. See [analytics.ts](lib/swagger-pact-validator/analytics.ts) for the post body schema.
+
+```
+swagger-pact-validator /path/to/swagger.json /path/to/pact.json --analyticsUrl https://analytics-server.com/event
+```
+
+Any errors sending the analytic events are ignored and do not impact the validation results, a successful validation that had an error while trying to send the analytic event is still a successful validation.
+
+By default analytics are disabled. To protect your privacy this is an opt-in feature.
 
 ## Changelog
 See [CHANGELOG.md](CHANGELOG.md)

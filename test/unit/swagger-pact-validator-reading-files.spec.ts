@@ -1,33 +1,28 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import * as yaml from 'js-yaml';
 import * as q from 'q';
-import {FileSystem, HttpClient, SwaggerPactValidator, ValidationSuccess} from '../../lib/swagger-pact-validator/types';
+import {FileSystem, ValidationSuccess} from '../../lib/swagger-pact-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBuilder} from './support/pact-builder';
 import {operationBuilder, pathBuilder, pathParameterBuilder, swaggerBuilder} from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
+import {default as swaggerPactValidatorLoader, MockFileSystemResponses} from './support/swagger-pact-validator-loader';
 
 declare function expect(actual: any): CustomMatchers;
 
 describe('swagger-pact-validator reading files', () => {
-    let mockFiles: {[fileName: string]: q.Promise<string>};
+    let mockFiles: MockFileSystemResponses;
     let mockFileSystem: FileSystem;
-    let mockHttpClient: HttpClient;
-    let swaggerPactValidator: SwaggerPactValidator;
 
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
 
         mockFiles = {};
         mockFileSystem = swaggerPactValidatorLoader.createMockFileSystem(mockFiles);
-        mockHttpClient = swaggerPactValidatorLoader.createMockHttpClient({});
-        swaggerPactValidator = swaggerPactValidatorLoader.createInstance();
     });
 
     const invokeValidate = (swaggerPathOrUrl: string, pactPathOrUrl: string): Promise<ValidationSuccess> =>
-        swaggerPactValidator.validate({
+        swaggerPactValidatorLoader.invokeWithMocks({
             fileSystem: mockFileSystem,
-            httpClient: mockHttpClient,
             pactPathOrUrl,
             swaggerPathOrUrl
         }) as any;

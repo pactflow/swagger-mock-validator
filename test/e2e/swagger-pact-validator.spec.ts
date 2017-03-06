@@ -1,3 +1,4 @@
+import * as bodyParser from 'body-parser';
 import {exec} from 'child_process';
 import * as express from 'express';
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
@@ -6,6 +7,7 @@ import VError = require('verror');
 import {Server} from 'http';
 
 interface InvokeCommandOptions {
+    analyticsUrl?: string;
     pact: string;
     pactProviderName?: string;
     swagger: string;
@@ -18,6 +20,10 @@ const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
 
     if (options.pactProviderName) {
         command += ` --provider ${options.pactProviderName}`;
+    }
+
+    if (options.analyticsUrl) {
+        command += ` --analyticsUrl ${options.analyticsUrl}`;
     }
 
     exec(command, (error, stdout) => {
@@ -37,10 +43,17 @@ const urlTo = (path: string) => `http://localhost:${serverPort}/${path}`;
 
 describe('swagger-pact-validator', () => {
     let mockServer: Server;
+    let mockAnalytics: {post: (body: string) => void};
 
     beforeAll((done) => {
+        mockAnalytics = jasmine.createSpyObj('mockAnalytics', ['post']);
+
         const expressApp = express();
 
+        expressApp.post('/analytics', bodyParser.json(), (request, response) => {
+            mockAnalytics.post(request.body);
+            response.status(201).end();
+        });
         expressApp.use(express.static('.'));
         mockServer = expressApp.listen(serverPort, done);
     });
@@ -287,6 +300,46 @@ describe('swagger-pact-validator', () => {
             pact: urlTo('test/e2e/fixtures/pact-broker.json'),
             pactProviderName: 'provider-1',
             swagger: urlTo('test/e2e/fixtures/provider-spec.json')
+        })
+    ));
+
+    it('should log analytic events to the analytics url', willResolve(() =>
+        invokeCommand({
+            analyticsUrl: urlTo('analytics'),
+            pact: 'test/e2e/fixtures/working-consumer-pact.json',
+            swagger: 'test/e2e/fixtures/provider-spec.json'
+        }).then(() => {
+            expect(mockAnalytics.post).toHaveBeenCalledWith({
+                execution: {
+                    consumer: 'Billing Service',
+                    mockFormat: 'pact',
+                    mockPathOrUrl: 'test/e2e/fixtures/working-consumer-pact.json',
+                    mockSource: 'path',
+                    provider: 'User Service',
+                    specFormat: 'swagger',
+                    specPathOrUrl: 'test/e2e/fixtures/provider-spec.json',
+                    specSource: 'path'
+                },
+                id: jasmine.any(String),
+                metadata: {
+                    hostname: jasmine.any(String),
+                    osVersion: jasmine.any(String),
+                    toolVersion: jasmine.any(String)
+                },
+                parentId: jasmine.any(String),
+                result: {
+                    duration: jasmine.any(Number),
+                    errors: {
+                        count: 0
+                    },
+                    success: true,
+                    warnings: {
+                        'count': 1,
+                        'sv.warning': 1
+                    }
+                },
+                source: 'swagger-pact-validator'
+            });
         })
     ));
 });

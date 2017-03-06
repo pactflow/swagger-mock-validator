@@ -3,8 +3,10 @@ import * as q from 'q';
 // Parsed Mock
 
 export interface ParsedMock {
+    consumer: string;
     interactions: ParsedMockInteraction[];
     pathOrUrl: string;
+    provider: string;
 }
 
 export interface ParsedMockInteraction extends ParsedMockValue<any> {
@@ -350,6 +352,18 @@ export interface FileSystem {
 
 export interface HttpClient {
     get: JsonLoaderFunction;
+    post: (url: string, body: any) => q.Promise<void>;
+}
+
+export interface Metadata {
+    getHostname: () => string;
+    getOsVersion: () => string;
+    getToolVersion: () => string;
+    getUptime: () => number;
+}
+
+export interface UuidGenerator {
+    generate: () => string;
 }
 
 export type JsonLoaderFunction = (location: string) => q.Promise<string>;
@@ -389,19 +403,39 @@ export interface SwaggerPactValidator {
 }
 
 export interface SwaggerPactValidatorOptions {
+    analyticsUrl?: string;
     fileSystem?: FileSystem;
     httpClient?: HttpClient;
+    metadata?: Metadata;
     pactPathOrUrl: string;
     providerName?: string;
     swaggerPathOrUrl: string;
+    uuidGenerator?: UuidGenerator;
 }
+
+interface ParsedSwaggerPactValidatorOptions {
+    analyticsUrl?: string;
+    fileSystem: FileSystem;
+    httpClient: HttpClient;
+    metadata: Metadata;
+    pactPathOrUrl: string;
+    pactSource: PactSource;
+    providerName?: string;
+    swaggerPathOrUrl: string;
+    swaggerSource: SwaggerSource;
+    uuidGenerator: UuidGenerator;
+}
+
+export type PactSource = 'pactBroker' | 'path' | 'url';
+
+export type SwaggerSource = 'path' | 'url';
 
 export interface ValidationSuccess {
     warnings: ValidationResult[];
 }
 
 export interface ValidationFailureError extends Error {
-    details: ValidationFailureErrorDetails;
+    details?: ValidationFailureErrorDetails;
 }
 
 export interface ValidationFailureErrorDetails {

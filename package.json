@@ -29,6 +29,7 @@
     "node": ">=4.4.7"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.16.0",
     "@types/commander": "^2.3.31",
     "@types/decimal.js": "0.0.29",
     "@types/express": "^4.0.34",
@@ -38,8 +39,10 @@
     "@types/node": "^6.0.52",
     "@types/q": "0.0.32",
     "@types/request": "0.0.40",
+    "@types/uuid": "^2.0.29",
     "@types/validator": "^6.2.0",
     "@types/verror": "^1.9.0",
+    "body-parser": "^1.17.1",
     "conventional-changelog": "^1.1.0",
     "conventional-changelog-lint": "^1.1.0",
     "express": "^4.14.0",
@@ -69,6 +72,7 @@
     "q": "^1.4.1",
     "request": "^2.78.0",
     "swagger-tools": "^0.10.1",
+    "uuid": "^3.0.1",
     "validator": "^7.0.0",
     "verror": "^1.8.1"
   }

@@ -1,28 +1,23 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import * as q from 'q';
-import {FileSystem, HttpClient, SwaggerPactValidator, ValidationSuccess} from '../../lib/swagger-pact-validator/types';
+import {HttpClient, ValidationSuccess} from '../../lib/swagger-pact-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder, providerPactsBuilder} from './support/pact-broker-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {operationBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-pact-validator-loader';
+import {default as swaggerPactValidatorLoader, MockHttpClientResponses} from './support/swagger-pact-validator-loader';
 
 declare function expect(actual: any): CustomMatchers;
 
 describe('swagger-pact-validator reading urls', () => {
-    let mockFileSystem: FileSystem;
     let mockHttpClient: HttpClient;
-    let mockUrls: {[url: string]: q.Promise<string>};
-    let swaggerPactValidator: SwaggerPactValidator;
+    let mockUrls: MockHttpClientResponses;
 
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
 
         mockUrls = {};
         mockHttpClient = swaggerPactValidatorLoader.createMockHttpClient(mockUrls);
-        mockFileSystem = swaggerPactValidatorLoader.createMockFileSystem({});
-
-        swaggerPactValidator = swaggerPactValidatorLoader.createInstance();
     });
 
     const invokeValidate = (
@@ -30,13 +25,12 @@ describe('swagger-pact-validator reading urls', () => {
         pactPathOrUrl: string,
         providerName?: string
     ): Promise<ValidationSuccess> =>
-        swaggerPactValidator.validate({
-            fileSystem: mockFileSystem,
+        swaggerPactValidatorLoader.invokeWithMocks({
             httpClient: mockHttpClient,
             pactPathOrUrl,
             providerName,
             swaggerPathOrUrl
-        }) as any;
+        });
 
     describe('reading the swagger file', () => {
         it('should make a request for a http swagger url', willResolve(() => {

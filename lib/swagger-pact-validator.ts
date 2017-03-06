@@ -1,6 +1,8 @@
 import * as _ from 'lodash';
 import * as q from 'q';
 import * as VError from 'verror';
+import analytics from './swagger-pact-validator/analytics';
+import defaultMetadata from './swagger-pact-validator/analytics/metadata';
 import jsonLoader from './swagger-pact-validator/json-loader';
 import defaultFileSystem from './swagger-pact-validator/json-loader/file-system';
 import defaultHttpClient from './swagger-pact-validator/json-loader/http-client';
@@ -10,55 +12,141 @@ import specParser from './swagger-pact-validator/spec-parser';
 import {
     FileSystem,
     HttpClient,
+    Pact,
     PactBroker,
     PactBrokerProviderPacts,
     PactBrokerProviderPactsLinksPact,
+    PactSource,
+    ParsedMock,
+    ParsedSpec,
+    ParsedSwaggerPactValidatorOptions,
     SwaggerPactValidator,
+    SwaggerPactValidatorOptions,
+    SwaggerSource,
     ValidationFailureError,
     ValidationResult,
     ValidationSuccess
 } from './swagger-pact-validator/types';
+import defaultUuidGenerator from './swagger-pact-validator/uuid-generator';
 import validatePact from './swagger-pact-validator/validate-pact';
 import validateSwagger from './swagger-pact-validator/validate-swagger';
 import validateSwaggerAndPact from './swagger-pact-validator/validate-swagger-and-pact';
 
 type LoadJson = <T>(pathOrUrl: string) => q.Promise<T>;
+type PostAnalyticEvent = (
+    parsedMock: ParsedMock,
+    parsedSpec: ParsedSpec,
+    errors: ValidationResult[],
+    warnings: ValidationResult[],
+    success: boolean
+) => q.Promise<void>;
 
-const createLoadJsonFunction = (fileSystem?: FileSystem, httpClient?: HttpClient): LoadJson =>
-    (pathOrUrl: string) =>
-        jsonLoader.load(pathOrUrl, fileSystem || defaultFileSystem, httpClient || defaultHttpClient);
+const getPactSource = (pactPathOrUrl: string, providerName?: string): PactSource => {
+    if (providerName) {
+        return 'pactBroker';
+    } else if (pactPathOrUrl.indexOf('http') === 0) {
+        return 'url';
+    }
+
+    return 'path';
+};
+
+const getSwaggerSource = (swaggerPathOrUrl: string): SwaggerSource =>
+    swaggerPathOrUrl.indexOf('http') === 0 ? 'url' : 'path';
+
+// tslint:disable:cyclomatic-complexity
+const parseUserOptions = (userOptions: SwaggerPactValidatorOptions): ParsedSwaggerPactValidatorOptions => ({
+    analyticsUrl: userOptions.analyticsUrl,
+    fileSystem: userOptions.fileSystem || defaultFileSystem,
+    httpClient: userOptions.httpClient || defaultHttpClient,
+    metadata: userOptions.metadata || defaultMetadata,
+    pactPathOrUrl: userOptions.pactPathOrUrl,
+    pactSource: getPactSource(userOptions.pactPathOrUrl, userOptions.providerName),
+    providerName: userOptions.providerName,
+    swaggerPathOrUrl: userOptions.swaggerPathOrUrl,
+    swaggerSource: getSwaggerSource(userOptions.swaggerPathOrUrl),
+    uuidGenerator: userOptions.uuidGenerator || defaultUuidGenerator
+});
+
+const createLoadJsonFunction = (fileSystem: FileSystem, httpClient: HttpClient): LoadJson =>
+    (pathOrUrl: string) => jsonLoader.load(pathOrUrl, fileSystem, httpClient);
+
+const createPostAnalyticEventFunction = (options: ParsedSwaggerPactValidatorOptions): PostAnalyticEvent => {
+    const analyticsUrl = options.analyticsUrl;
+
+    if (!analyticsUrl) {
+        return () => q.resolve(undefined);
+    }
+
+    const parentId = options.uuidGenerator.generate();
+
+    return (parsedMock, parsedSpec, errors, warnings, success) => analytics.postEvent({
+        analyticsUrl,
+        errors,
+        httpClient: options.httpClient,
+        metadata: options.metadata,
+        mockSource: options.pactSource,
+        parentId,
+        parsedMock,
+        parsedSpec,
+        specSource: options.swaggerSource,
+        success,
+        uuidGenerator: options.uuidGenerator,
+        warnings
+    });
+};
 
 const validate = (
     swaggerPathOrUrl: string,
     pactPathOrUrl: string,
-    loadJson: LoadJson
+    loadJson: LoadJson,
+    postAnalyticEvent: PostAnalyticEvent
 ): q.Promise<ValidationSuccess> => {
-    const whenSwaggerJson = loadJson(swaggerPathOrUrl);
+    const whenSwaggerJson = loadJson<any>(swaggerPathOrUrl);
 
     const whenSwaggerValidationResults = whenSwaggerJson
         .then((swaggerJson) => validateSwagger(swaggerJson, swaggerPathOrUrl, pactPathOrUrl));
 
     const whenParsedSwagger = whenSwaggerValidationResults
-        .thenResolve(whenSwaggerJson)
+        .then(() => whenSwaggerJson)
         .then(resolveSwagger)
         .then((swaggerJson) => specParser.parseSwagger(swaggerJson, swaggerPathOrUrl));
 
-    const whenPactJson = loadJson(pactPathOrUrl);
+    const whenPactJson = loadJson<Pact>(pactPathOrUrl);
 
     const whenPactValidationResults = whenPactJson
         .then((pactJson) => validatePact(pactJson, pactPathOrUrl, swaggerPathOrUrl));
 
     const whenParsedPact = whenPactValidationResults
-        .thenResolve(whenPactJson)
-        .then((pactJson: any) => mockParser.parsePact(pactJson, pactPathOrUrl));
+        .then(() => whenPactJson)
+        .then((pactJson: Pact) => mockParser.parsePact(pactJson, pactPathOrUrl));
 
     const whenSwaggerPactValidationResults =
         q.all([whenParsedPact, whenParsedSwagger]).spread(validateSwaggerAndPact);
 
-    return q.all([whenSwaggerValidationResults, whenSwaggerPactValidationResults])
+    const whenAllValidationResults = q.all([whenSwaggerValidationResults, whenSwaggerPactValidationResults])
         .spread((swaggerValidationResults, swaggerPactValidationResults) => ({
             warnings: _.concat([], swaggerValidationResults.warnings, swaggerPactValidationResults.warnings)
         }));
+
+    return whenAllValidationResults
+        .then(
+            (results: ValidationSuccess) =>
+                q.all([whenParsedPact, whenParsedSwagger, q([]), q(results.warnings), q(true)]),
+            (error: ValidationFailureError) => {
+                let errors: ValidationResult[] = [];
+                let warnings: ValidationResult[] = [];
+
+                if (error.details) {
+                    errors = error.details.errors;
+                    warnings = error.details.warnings;
+                }
+
+                return q.all([whenParsedPact, whenParsedSwagger, q(errors), q(warnings), q(false)]);
+            }
+        )
+        .spread(postAnalyticEvent)
+        .then(() => whenAllValidationResults, () => whenAllValidationResults);
 };
 
 const getPactFilesFromBroker = (
@@ -92,8 +180,10 @@ const getPactFilesFromBroker = (
 };
 
 const swaggerPactValidator: SwaggerPactValidator = {
-    validate: (options) => {
+    validate: (userOptions) => {
+        const options = parseUserOptions(userOptions);
         const loadJson = createLoadJsonFunction(options.fileSystem, options.httpClient);
+        const postAnalyticEvent = createPostAnalyticEventFunction(options);
         const whenPactFiles = options.providerName
             ? getPactFilesFromBroker(options.pactPathOrUrl, options.providerName, loadJson)
             : q([options.pactPathOrUrl]);
@@ -102,7 +192,7 @@ const swaggerPactValidator: SwaggerPactValidator = {
             .then((pactPathsOrUrls) =>
                 q.allSettled(
                     _.map(pactPathsOrUrls, (pactPathOrUrl) =>
-                        validate(options.swaggerPathOrUrl, pactPathOrUrl, loadJson)
+                        validate(options.swaggerPathOrUrl, pactPathOrUrl, loadJson, postAnalyticEvent)
                     )
                 )
             )
