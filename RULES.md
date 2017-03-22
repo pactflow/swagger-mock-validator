@@ -1,4 +1,4 @@
-# Swagger Pact Validator Rules
+# Swagger Mock Validator Rules
 
 This is a list of all the possible validation rules and if they are currently supported or not.
 

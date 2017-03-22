@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {Swagger, SwaggerSecurityRequirement} from '../../../lib/swagger-pact-validator/types';
+import {Swagger, SwaggerSecurityRequirement} from '../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, removeValueOn, setValueOn} from './builder-utilities';
 import {ParameterBuilder} from './swagger-builder/parameter-builder';
 import {PathBuilder} from './swagger-builder/path-builder';

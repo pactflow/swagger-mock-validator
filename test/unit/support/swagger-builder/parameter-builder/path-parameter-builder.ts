@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerPathParameter} from '../../../../../lib/swagger-pact-validator/types';
+import {SwaggerPathParameter} from '../../../../../lib/swagger-mock-validator/types';
 
 const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
     return {

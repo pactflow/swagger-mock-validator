@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {PactInteraction} from '../../../../lib/swagger-pact-validator/types';
+import {PactInteraction} from '../../../../lib/swagger-mock-validator/types';
 import {setValueOn} from '../builder-utilities';
 
 export interface InteractionBuilder {

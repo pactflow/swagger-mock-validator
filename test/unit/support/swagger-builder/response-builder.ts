@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerResponse} from '../../../../lib/swagger-pact-validator/types';
+import {SwaggerResponse} from '../../../../lib/swagger-mock-validator/types';
 import {setValueOn} from '../builder-utilities';
 import {ResponseHeaderBuilder} from './response-header-builder';
 import {SchemaBuilder} from './schema-builder';

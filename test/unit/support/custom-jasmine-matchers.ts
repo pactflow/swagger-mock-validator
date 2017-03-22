@@ -6,7 +6,7 @@ import MatchersUtil = jasmine.MatchersUtil;
 import {
     ValidationFailureErrorDetails,
     ValidationResult
-} from '../../../lib/swagger-pact-validator/types';
+} from '../../../lib/swagger-mock-validator/types';
 
 interface CompareResultCollectionOptions<T> {
     actualResults: T[];
@@ -40,17 +40,17 @@ const valueToString = (value: any) => util.inspect(value, {breakLength: Infinity
 const propertiesToCompare = [
     'code',
     'message',
-    'pactDetails.interactionDescription',
-    'pactDetails.interactionState',
-    'pactDetails.location',
-    'pactDetails.pactFile',
-    'pactDetails.value',
+    'mockDetails.interactionDescription',
+    'mockDetails.interactionState',
+    'mockDetails.location',
+    'mockDetails.pactFile',
+    'mockDetails.value',
     'source',
-    'swaggerDetails.pathName',
-    'swaggerDetails.pathMethod',
-    'swaggerDetails.location',
-    'swaggerDetails.swaggerFile',
-    'swaggerDetails.value',
+    'specDetails.pathName',
+    'specDetails.pathMethod',
+    'specDetails.location',
+    'specDetails.swaggerFile',
+    'specDetails.value',
     'type'
 ];
 
@@ -153,7 +153,7 @@ export const customMatchers: CustomMatcherFactories = {
     })
 };
 
-export interface CustomMatchers extends jasmine.Matchers {
+export interface CustomMatchers<T> extends jasmine.Matchers<T> {
     toContainErrors(expected: ValidationResult[]): boolean;
     toContainNoWarnings(): boolean;
     toContainWarnings(expected: ValidationResult[]): boolean;

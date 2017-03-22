@@ -1,9 +1,9 @@
 {
-  "name": "@atlassian/swagger-pact-validator",
+  "name": "swagger-mock-validator",
   "version": "0.0.31",
-  "description": "A CLI tool to validate pact files against swagger specs.",
+  "description": "A CLI tool to validate mocks against swagger specs.",
   "bin": {
-    "swagger-pact-validator": "./bin/swagger-pact-validator"
+    "swagger-mock-validator": "./bin/swagger-mock-validator"
   },
   "scripts": {
     "release-major": "./node_modules/.bin/gulp release --type major",
@@ -15,16 +15,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:atlassian/swagger-pact-validator.git"
+    "url": "git@bitbucket.org:atlassian/swagger-mock-validator.git"
   },
   "author": {
     "name": "Ben Sayers (Atlassian)",
     "email": "bsayers@atlassian.com"
   },
   "license": "Apache-2.0",
-  "publishConfig": {
-    "registry": "https://npm-private.atlassian.io/"
-  },
   "engines": {
     "node": ">=4.4.7"
   },

@@ -1,4 +1,4 @@
-import {SwaggerParameter} from '../../../../lib/swagger-pact-validator/types';
+import {SwaggerParameter} from '../../../../lib/swagger-mock-validator/types';
 
 export interface ParameterBuilder {
     build: () => SwaggerParameter;

@@ -3,8 +3,8 @@
 import * as commander from 'commander';
 import * as _ from 'lodash';
 import * as util from 'util';
-import swaggerPactValidator from './swagger-pact-validator';
-import {ValidationResult} from './swagger-pact-validator/types';
+import swaggerMockValidator from './swagger-mock-validator';
+import {ValidationResult} from './swagger-mock-validator/types';
 
 // tslint:disable:no-var-requires
 const packageJson = require('../package.json');
@@ -33,28 +33,31 @@ const displaySummary = (warningsOrUndefined?: ValidationResult[], errorsOrUndefi
 
 commander
     .version(packageJson.version)
-    .arguments('<swagger> <pact>')
+    .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
     .description(
-`Confirms the swagger spec and pact are compatible with each other.
+`Confirms the swagger spec and mock are compatible with each other.
 
 Basic Usage:
-The <swagger> and <pact> arguments should paths to the json files or urls to the json files.
+The <swagger> and <mock> arguments should paths to the json files or urls to the json files.
+
+Supported Mock Formats:
+Pact
 
 Pact Broker:
-For providers using the pact broker the <pact> argument should be the url to the root of the
+For providers using the pact broker the <mock> argument should be the url to the root of the
 pact broker and the provider name should be passed using the --provider option. This will
 automatically find the latest versions of the consumer pact file(s) uploaded to the broker for
 the specified provider name. The <swagger> argument should be the path or url to the swagger
 json file.`
     )
-    .action((swagger, pact, options) =>
-        swaggerPactValidator.validate({
+    .action((swagger, mock, options) =>
+        swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,
-            pactPathOrUrl: pact,
+            mockPathOrUrl: mock,
             providerName: options.provider,
-            swaggerPathOrUrl: swagger
+            specPathOrUrl: swagger
         })
         .then((results) => {
             displaySummary(results.warnings);

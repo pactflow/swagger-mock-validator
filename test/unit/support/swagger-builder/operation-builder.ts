@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {SwaggerOperation, SwaggerSecurityRequirement} from '../../../../lib/swagger-pact-validator/types';
+import {SwaggerOperation, SwaggerSecurityRequirement} from '../../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, setValueOn} from '../builder-utilities';
 import {ParameterBuilder} from './parameter-builder';
 import * as responseBuilder from './response-builder';

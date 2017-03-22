@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerSecurityScheme} from '../../../../lib/swagger-pact-validator/types';
+import {SwaggerSecurityScheme} from '../../../../lib/swagger-mock-validator/types';
 
 export interface SecuritySchemeBuilder {
     build: () => SwaggerSecurityScheme;

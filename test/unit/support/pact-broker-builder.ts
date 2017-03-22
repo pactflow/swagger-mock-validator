@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {PactBroker} from '../../../lib/swagger-pact-validator/types';
+import {PactBroker} from '../../../lib/swagger-mock-validator/types';
 import {removeValueOn, setValueOn} from './builder-utilities';
 
 const createPactBrokerBuilder = (pactBroker: PactBroker) => ({

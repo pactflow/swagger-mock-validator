@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerResponseHeader} from '../../../../lib/swagger-pact-validator/types';
+import {SwaggerResponseHeader} from '../../../../lib/swagger-mock-validator/types';
 
 export interface ResponseHeaderBuilder {
     build: () => SwaggerResponseHeader;

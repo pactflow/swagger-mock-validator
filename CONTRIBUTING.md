@@ -23,22 +23,17 @@ Prior to accepting your contributions we ask that you please follow the appropri
 
 ## Setting up a development machine
 
-1. Install nodejs
+Install nodejs
 ```
 nvm install
 ```
 
-2. Login to Atlassian's private npm repository using your Staff ID credentials.
-```
-npm login --registry=https://npm-private.atlassian.io --scope=atlassian
-```
-
-3. Install project dependencies
+Install project dependencies
 ```
 npm install
 ```
 
-4. Ensure your environment is working by running the pre-commit check
+Ensure your environment is working by running the pre-commit check
 ```
 npm test
 ```
@@ -49,9 +44,9 @@ Commits to this codebase should follow the [conventional changelog conventions](
 
 To get fast test feedback run `npm run watch` in one terminal window and `npm run watch-e2e` in another.
 
-- `npm test` - A pre-commit check to be run before pushing any changes
-- `npm run watch` - Automatically runs the unit tests whenever you edit a relevant file
-- `npm run watch-e2e` - Automatically runs the e2e tests whenever you edit a relevant file
+- `npm test` - A pre-commit check to be run before pushing any changes.
+- `npm run watch` - Automatically compiles the code and runs the unit tests whenever you edit a relevant file.
+- `npm run watch-e2e` - Automatically runs the e2e tests whenever you edit a relevant file. This command does not compile the code and must be run in combination with the watch command.
 
 ## Releasing a new version
 

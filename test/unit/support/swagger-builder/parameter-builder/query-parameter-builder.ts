@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerItemCollectionFormat, SwaggerQueryParameter} from '../../../../../lib/swagger-pact-validator/types';
+import {SwaggerItemCollectionFormat, SwaggerQueryParameter} from '../../../../../lib/swagger-mock-validator/types';
 
 const createQueryParameterBuilder = (parameter: SwaggerQueryParameter) => {
     return {

@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerPath} from '../../../../lib/swagger-pact-validator/types';
+import {SwaggerPath} from '../../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, setValueOn} from '../builder-utilities';
 import {OperationBuilder} from './operation-builder';
 import {ParameterBuilder} from './parameter-builder';

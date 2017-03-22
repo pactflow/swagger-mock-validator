@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {JsonSchema} from '../../../../lib/swagger-pact-validator/types';
+import {JsonSchema} from '../../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, setValueOn, setValuesOn} from '../builder-utilities';
 
 export interface SchemaBuilder {
