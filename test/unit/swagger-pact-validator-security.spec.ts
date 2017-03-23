@@ -199,8 +199,8 @@ describe('swagger-pact-validator security', () => {
         const swaggerFile = swaggerBuilder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder
-                    .withSecurityRequirementNamed('apiKeyHeader')
                     .withSecurityRequirementNamed('apiKeyQuery')
+                    .withSecurityRequirementNamed('apiKeyHeader')
                 )
             )
             .withSecurityDefinitionNamed('apiKeyHeader', securitySchemeBuilder

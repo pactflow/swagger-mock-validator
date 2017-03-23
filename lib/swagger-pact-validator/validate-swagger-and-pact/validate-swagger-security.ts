@@ -63,7 +63,11 @@ export default (pactInteraction: ParsedMockInteraction, swaggerOperation: Parsed
         .map((requirements) => {
             return validateRequirement(pactInteraction, requirements);
         })
-        .first();
+        .value();
 
-    return validationResults || [];
+    if (_.some(validationResults, (results) => results.length === 0)) {
+        return [];
+    }
+
+    return _.first(validationResults) || [];
 };
