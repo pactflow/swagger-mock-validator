@@ -1,3 +1,26 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/0.0.31...v1.0.0) (2017-03-24)
+
+
+### Bug Fixes
+
+* the order of security requirements impacts validation results ([07a7122](https://bitbucket.org/atlassian/swagger-mock-validator/commits/07a7122))
+
+
+### Features
+
+* add opt-in analytics ([6439444](https://bitbucket.org/atlassian/swagger-mock-validator/commits/6439444)), closes [#54](https://bitbucket.org/atlassian/swagger-mock-validator/issue/54)
+* rename project to swagger-mock-validator ([2594491](https://bitbucket.org/atlassian/swagger-mock-validator/commits/2594491)), closes [#16](https://bitbucket.org/atlassian/swagger-mock-validator/issue/16)
+
+
+### BREAKING CHANGES
+
+* The name of the module has changed from “@atlassian/swagger-pact-validator” to “swagger-mock-validator”.
+
+To migrate you need to rename the dependency in your package.json and update any code that invokes this cli took from “swagger-pact-validator” to “swagger-mock-validator”.
+
+
+
 <a name="0.0.31"></a>
 ## [0.0.31](https://bitbucket.org/atlassian/swagger-mock-validator/compare/0.0.30...v0.0.31) (2017-02-22)
 
