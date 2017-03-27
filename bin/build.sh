@@ -13,6 +13,7 @@ nvm install 6.10.1
 rm -rf node_modules
 npm install
 npm test
+curl -sSL https://download.sourceclear.com/ci.sh | bash
 
 echo ==== Test using node 7.x ====
 nvm install 7.7.4
