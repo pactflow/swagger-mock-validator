@@ -446,9 +446,9 @@ export interface ValidationFailureErrorDetails {
 export interface ValidationResult {
     code: ValidationResultCode;
     message: string;
-    mockDetails: ValidationResultMockDetails;
+    mockDetails?: ValidationResultMockDetails;
     source: ValidationResultSource;
-    specDetails: ValidationResultSpecDetails;
+    specDetails?: ValidationResultSpecDetails;
     type: ValidationResultType;
 }
 

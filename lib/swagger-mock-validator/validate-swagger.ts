@@ -28,7 +28,6 @@ const generateLocation = (path: string[]) => {
 interface GenerateResultOptions {
     code: ValidationResultCode;
     message: string;
-    mockPathOrUrl: string;
     specPathOrUrl: string;
     specLocation: string;
     type: ValidationResultType;
@@ -37,13 +36,6 @@ interface GenerateResultOptions {
 const generateResult = (options: GenerateResultOptions): ValidationResult => ({
     code: options.code,
     message: options.message,
-    mockDetails: {
-        interactionDescription: null,
-        interactionState: null,
-        location: '[pactRoot]',
-        mockFile: options.mockPathOrUrl,
-        value: null
-    },
     source: 'swagger-validation',
     specDetails: {
         location: options.specLocation,
@@ -57,15 +49,13 @@ const generateResult = (options: GenerateResultOptions): ValidationResult => ({
 
 const parseValidationResult = (
     validationResult: SwaggerTools.ValidationResultCollection,
-    specPathOrUrl: string,
-    mockPathOrUrl: string
+    specPathOrUrl: string
 ) => {
     const validationErrors = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'errors', [])
         .map((swaggerValidationError) =>
             generateResult({
                 code: 'sv.error',
                 message: swaggerValidationError.message,
-                mockPathOrUrl,
                 specPathOrUrl,
                 specLocation: generateLocation(swaggerValidationError.path),
                 type: 'error'
@@ -77,7 +67,6 @@ const parseValidationResult = (
             generateResult({
                 code: 'sv.warning',
                 message: swaggerValidationWarning.message,
-                mockPathOrUrl,
                 specPathOrUrl,
                 specLocation: generateLocation(swaggerValidationWarning.path),
                 type: 'warning'
@@ -98,6 +87,6 @@ const parseValidationResult = (
     return q({warnings: validationWarnings});
 };
 
-export default (specJson: any, specPathOrUrl: string, mockPathOrUrl: string) =>
+export default (specJson: any, specPathOrUrl: string) =>
     validate(specJson)
-        .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl, mockPathOrUrl));
+        .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl));

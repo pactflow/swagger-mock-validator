@@ -78,13 +78,6 @@ describe('reading files', () => {
                 expect(error.details).toContainErrors([{
                     code: 'sv.error',
                     message: 'Missing required property: paths',
-                    mockDetails: {
-                        interactionDescription: null,
-                        interactionState: null,
-                        location: '[pactRoot]',
-                        mockFile: 'pact.json',
-                        value: null
-                    },
                     source: 'swagger-validation',
                     specDetails: {
                         location: '[swaggerRoot]',
@@ -97,13 +90,6 @@ describe('reading files', () => {
                 }, {
                     code: 'sv.error',
                     message: 'Missing required property: info',
-                    mockDetails: {
-                        interactionDescription: null,
-                        interactionState: null,
-                        location: '[pactRoot]',
-                        mockFile: 'pact.json',
-                        value: null
-                    },
                     source: 'swagger-validation',
                     specDetails: {
                         location: '[swaggerRoot]',
@@ -116,13 +102,6 @@ describe('reading files', () => {
                 }, {
                     code: 'sv.error',
                     message: 'Missing required property: swagger',
-                    mockDetails: {
-                        interactionDescription: null,
-                        interactionState: null,
-                        location: '[pactRoot]',
-                        mockFile: 'pact.json',
-                        value: null
-                    },
                     source: 'swagger-validation',
                     specDetails: {
                         location: '[swaggerRoot]',
@@ -145,13 +124,6 @@ describe('reading files', () => {
                 expect(error.details).toContainErrors([{
                     code: 'sv.error',
                     message: 'Missing required property: title',
-                    mockDetails: {
-                        interactionDescription: null,
-                        interactionState: null,
-                        location: '[pactRoot]',
-                        mockFile: 'pact.json',
-                        value: null
-                    },
                     source: 'swagger-validation',
                     specDetails: {
                         location: '[swaggerRoot].info',
@@ -177,13 +149,6 @@ describe('reading files', () => {
                 expect(result).toContainWarnings([{
                     code: 'sv.warning',
                     message: 'Parameter is defined but is not used: #/parameters/userId',
-                    mockDetails: {
-                        interactionDescription: null,
-                        interactionState: null,
-                        location: '[pactRoot]',
-                        mockFile: 'pact.json',
-                        value: null
-                    },
                     source: 'swagger-validation',
                     specDetails: {
                         location: '[swaggerRoot].parameters.userId',
@@ -212,13 +177,6 @@ describe('reading files', () => {
                 expect(error.details).toContainWarnings([{
                     code: 'sv.warning',
                     message: 'Parameter is defined but is not used: #/parameters/userId',
-                    mockDetails: {
-                        interactionDescription: null,
-                        interactionState: null,
-                        location: '[pactRoot]',
-                        mockFile: 'pact.json',
-                        value: null
-                    },
                     source: 'swagger-validation',
                     specDetails: {
                         location: '[swaggerRoot].parameters.userId',
@@ -285,13 +243,6 @@ describe('reading files', () => {
                         value: pact.build()
                     },
                     source: 'pact-validation',
-                    specDetails: {
-                        location: '[swaggerRoot]',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: null
-                    },
                     type: 'error'
                 }]);
             });

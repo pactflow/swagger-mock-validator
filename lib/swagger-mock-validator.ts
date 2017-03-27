@@ -105,7 +105,7 @@ const validate = (
     const whenSpecJson = loadJson<any>(specPathOrUrl);
 
     const whenSpecValidationResults = whenSpecJson
-        .then((specJson) => validateSwagger(specJson, specPathOrUrl, mockPathOrUrl));
+        .then((specJson) => validateSwagger(specJson, specPathOrUrl));
 
     const whenParsedSpec = whenSpecValidationResults
         .then(() => whenSpecJson)
@@ -115,7 +115,7 @@ const validate = (
     const whenMockJson = loadJson<Pact>(mockPathOrUrl);
 
     const whenMockValidationResults = whenMockJson
-        .then((mockJson) => validatePact(mockJson, mockPathOrUrl, specPathOrUrl));
+        .then((mockJson) => validatePact(mockJson, mockPathOrUrl));
 
     const whenParsedMock = whenMockValidationResults
         .then(() => whenMockJson)
