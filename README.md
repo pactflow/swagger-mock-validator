@@ -46,7 +46,7 @@ swagger-mock-validator --help
 
 Provider services can easily verify all the consumer pact files uploaded to a Pact Broker using this tool. Invoke the tool with a url to the Pact Broker along with the name of the provider service and the tool will automatically discover and validate the latest versions of the consumer pact files for the provider service.
 ```
-swagger-mock-validator /path/to/swagger.json https://pact-broker.com --providerName my-provider-name
+swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name
 ```
 
 ### Analytics (Opt-In)
