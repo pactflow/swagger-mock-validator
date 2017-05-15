@@ -71,7 +71,7 @@ describe('swagger-mock-validator', () => {
                 jasmine.stringMatching('Definition is defined but is not used: #/definitions/unused')
             );
         })
-    ));
+    ), 30000);
 
     it('should fail when a pact file and a swagger file are not compatible', willResolve(() =>
         invokeCommandAndExpectToReject({
@@ -267,7 +267,7 @@ describe('swagger-mock-validator', () => {
                 'Request Authorization header is missing but is required by the swagger file'
             ));
         })
-    ));
+    ), 30000);
 
     it('should fail when the swagger file is not valid', willResolve(() =>
         invokeCommandAndExpectToReject({
@@ -277,14 +277,14 @@ describe('swagger-mock-validator', () => {
             expect(error).toEqual(jasmine.stringMatching('Missing required property: version'));
             expect(error).toEqual(jasmine.stringMatching('Additional properties not allowed: wrongVersion'));
         })
-    ));
+    ), 30000);
 
     it('should succeed when a pact url and a swagger url are compatible', willResolve(() =>
         invokeCommand({
             mock: urlTo('test/e2e/fixtures/pact-working-consumer.json'),
             swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
         })
-    ));
+    ), 30000);
 
     it('should fail when the pact url cannot be retrieved', willResolve(() =>
         invokeCommandAndExpectToReject({
@@ -293,7 +293,7 @@ describe('swagger-mock-validator', () => {
         }).then((error) => {
             expect(error).toEqual(jasmine.stringMatching('Expected 200 but received 404'));
         })
-    ));
+    ), 30000);
 
     it('should succeed when a pact broker url and a swagger url are compatible', willResolve(() =>
         invokeCommand({
@@ -301,7 +301,7 @@ describe('swagger-mock-validator', () => {
             providerName: 'provider-1',
             swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
         })
-    ));
+    ), 30000);
 
     it('should log analytic events to the analytics url', willResolve(() =>
         invokeCommand({
@@ -341,5 +341,5 @@ describe('swagger-mock-validator', () => {
                 source: 'swagger-mock-validator'
             });
         })
-    ));
+    ), 30000);
 });
