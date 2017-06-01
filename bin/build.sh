@@ -3,20 +3,20 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
 
 echo ==== Test using node 4.x ====
-nvm install 4.8.1
+nvm install 4.8.3
 rm -rf node_modules
 npm install
 npm test
 
 echo ==== Test using node 6.x ====
-nvm install 6.10.1
+nvm install 6.10.3
 rm -rf node_modules
 npm install
 npm test
 curl -sSL https://download.sourceclear.com/ci.sh | bash
 
-echo ==== Test using node 7.x ====
-nvm install 7.7.4
+echo ==== Test using node 8.x ====
+nvm install 8.0.0
 rm -rf node_modules
-npm install
+npm install --no-shrinkwrap
 npm test
