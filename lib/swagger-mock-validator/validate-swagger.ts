@@ -1,7 +1,9 @@
 import * as _ from 'lodash';
 import * as q from 'q';
 import * as SwaggerTools from 'swagger-tools';
-import {ValidationFailureError, ValidationResult, ValidationResultCode, ValidationResultType} from './types';
+import {
+    ValidationFailureError, ValidationResult, ValidationResultCode, ValidationResultType
+} from './types';
 
 const validate = (document: any): q.Promise<SwaggerTools.ValidationResultCollection> => {
     const deferred = q.defer<SwaggerTools.ValidationResultCollection>();
@@ -56,8 +58,8 @@ const parseValidationResult = (
             generateResult({
                 code: 'sv.error',
                 message: swaggerValidationError.message,
-                specPathOrUrl,
                 specLocation: generateLocation(swaggerValidationError.path),
+                specPathOrUrl,
                 type: 'error'
             })
     );
@@ -67,8 +69,8 @@ const parseValidationResult = (
             generateResult({
                 code: 'sv.warning',
                 message: swaggerValidationWarning.message,
-                specPathOrUrl,
                 specLocation: generateLocation(swaggerValidationWarning.path),
+                specPathOrUrl,
                 type: 'warning'
             })
         );

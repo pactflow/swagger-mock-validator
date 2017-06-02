@@ -39,7 +39,10 @@ const parseValues = (
     );
 };
 
-const parseInteraction = (interaction: PactInteraction, interactionIndex: number, mockPathOrUrl: string) => {
+const parseInteraction = (
+    interaction: PactInteraction, interactionIndex: number, mockPathOrUrl: string
+) => {
+    // tslint:disable:no-object-literal-type-assertion
     const parsedInteraction = {
         description: interaction.description,
         location: `[pactRoot].interactions[${interactionIndex}]`,

@@ -58,12 +58,16 @@ export interface ParsedSpecOperation extends ParsedSpecValue<any> {
     specFile: string;
 }
 
-export interface ParsedSpecPathNameSegment extends ParsedSpecValue<string> {
+export type ParsedSpecPathNameSegment = ParsedSpecPathNameSegmentJsonSchema | ParsedSpecPathNameSegmentEqual;
+
+export interface ParsedSpecPathNameSegmentJsonSchema extends  ParsedSpecValue<string> {
     parameter: ParsedSpecParameter;
-    validatorType: ParsedSpecPathNameSegmentValidatorType;
+    validatorType: 'jsonSchema';
 }
 
-export type ParsedSpecPathNameSegmentValidatorType = 'equal' | 'jsonSchema';
+export interface ParsedSpecPathNameSegmentEqual extends ParsedSpecValue<string> {
+    validatorType: 'equal';
+}
 
 export interface ParsedSpecParameterCollection {
     [headerName: string]: ParsedSpecParameter;

@@ -72,19 +72,26 @@ const parsePathNameSegments = (
     return _(path.split('/'))
         .filter((pathNameSegment) => pathNameSegment.length > 0)
         .map((pathNameSegment) => {
-            const parsedPathNameSegment = {parentOperation: parsedOperation} as ParsedSpecPathNameSegment;
+            let parsedPathNameSegment: ParsedSpecPathNameSegment;
             const isParameter = pathNameSegment[0] === '{' && pathNameSegment[pathNameSegment.length - 1] === '}';
 
             if (isParameter) {
                 const pathNameSegmentValue = pathNameSegment.substring(1, pathNameSegment.length - 1);
 
-                parsedPathNameSegment.parameter =
-                    _.find(pathParameters, {name: pathNameSegmentValue}) as ParsedSpecParameter;
-                parsedPathNameSegment.validatorType = 'jsonSchema';
-                parsedPathNameSegment.value = pathNameSegmentValue;
+                parsedPathNameSegment = {
+                    location: parsedOperation.location,
+                    parameter: _.find(pathParameters, {name: pathNameSegmentValue}) as ParsedSpecParameter,
+                    parentOperation: parsedOperation,
+                    validatorType: 'jsonSchema',
+                    value: pathNameSegmentValue
+                };
             } else {
-                parsedPathNameSegment.validatorType = 'equal';
-                parsedPathNameSegment.value = pathNameSegment;
+                parsedPathNameSegment = {
+                    location: parsedOperation.location,
+                    parentOperation: parsedOperation,
+                    validatorType: 'equal',
+                    value: pathNameSegment
+                };
             }
 
             return parsedPathNameSegment;
@@ -180,6 +187,7 @@ const parseResponseHeaders = (
     );
 
 const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpecOperation) => {
+    // tslint:disable:no-object-literal-type-assertion
     const parsedResponses = {
         location: `${parentOperation.location}.responses`,
         parentOperation,
@@ -336,8 +344,8 @@ const parseSecurityRequirements = (
                 }
 
                 return {
-                    credentialLocation,
                     credentialKey,
+                    credentialLocation,
                     location:
                         `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`,
                     parentOperation: parsedOperation,

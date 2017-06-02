@@ -7,7 +7,8 @@ import {
     ParsedMockValue,
     ParsedSpec,
     ParsedSpecOperation,
-    ParsedSpecPathNameSegment,
+    ParsedSpecPathNameSegmentEqual,
+    ParsedSpecPathNameSegmentJsonSchema,
     ValidationResult
 } from '../types';
 import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
@@ -17,33 +18,25 @@ interface MatchResult {
     results: ValidationResult[];
 }
 
-interface TypeValidators {
-    [name: string]: (
-        parsedMockPathNameSegment: ParsedMockValue<string>,
-        parsedSpecPathNameSegment: ParsedSpecPathNameSegment
-    ) => MatchResult;
-}
+const equalsTypeValidator = (
+    parsedMockPathNameSegment: ParsedMockValue<string>,
+    parsedSpecPathNameSegment: ParsedSpecPathNameSegmentEqual
+) => {
+    const match = parsedSpecPathNameSegment.value === parsedMockPathNameSegment.value;
 
-const typeValidators: TypeValidators = {
-    equal: (
-        parsedMockPathNameSegment: ParsedMockValue<string>,
-        parsedSpecPathNameSegment: ParsedSpecPathNameSegment
-    ) => {
-        const match = parsedSpecPathNameSegment.value === parsedMockPathNameSegment.value;
-
-        return {match, results: []};
-    },
-    jsonSchema: (
-        parsedMockPathNameSegment: ParsedMockValue<string>,
-        parsedSpecPathNameSegment: ParsedSpecPathNameSegment
-    ) =>
-        validateMockValueAgainstSpec(
-            parsedSpecPathNameSegment.parameter,
-            parsedMockPathNameSegment,
-            parsedMockPathNameSegment.parentInteraction,
-            'spv.request.path-or-method.unknown'
-        )
+    return {match, results: []};
 };
+
+const jsonSchemaTypeValidator = (
+    parsedMockPathNameSegment: ParsedMockValue<string>,
+    parsedSpecPathNameSegment: ParsedSpecPathNameSegmentJsonSchema
+) =>
+    validateMockValueAgainstSpec(
+        parsedSpecPathNameSegment.parameter,
+        parsedMockPathNameSegment,
+        parsedMockPathNameSegment.parentInteraction,
+        'spv.request.path-or-method.unknown'
+    );
 
 const doInteractionAndOperationMatchPaths = (
     parsedMockInteraction: ParsedMockInteraction,
@@ -57,9 +50,10 @@ const doInteractionAndOperationMatchPaths = (
 
     const results = parsedSpecPathNameSegments.map((parsedSpecPathNameSegment, index) => {
         const parsedMockPathNameSegment = parsedMockInteraction.requestPathSegments[index];
-        const validator = typeValidators[parsedSpecPathNameSegment.validatorType];
-
-        return validator(parsedMockPathNameSegment, parsedSpecPathNameSegment);
+        switch (parsedSpecPathNameSegment.validatorType) {
+            case 'jsonSchema': return jsonSchemaTypeValidator(parsedMockPathNameSegment, parsedSpecPathNameSegment);
+            case 'equal': return equalsTypeValidator(parsedMockPathNameSegment, parsedSpecPathNameSegment);
+        }
     });
 
     return {

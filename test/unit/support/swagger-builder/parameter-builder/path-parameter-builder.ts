@@ -37,16 +37,16 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
         withArrayOfNumberMaxItemsNamed: (name: string, maxItems: number) => createPathParameterBuilder({
             in: 'path',
             items: {type: 'number'},
-            name,
             maxItems,
+            name,
             required: true,
             type: 'array'
         }),
         withArrayOfNumberMinItemsNamed: (name: string, minItems: number) => createPathParameterBuilder({
             in: 'path',
             items: {type: 'number'},
-            name,
             minItems,
+            name,
             required: true,
             type: 'array'
         }),
