@@ -225,7 +225,7 @@ const toSpecParameterCollection = (parameters: ParsedSpecParameter[]) =>
         return result;
     }, {});
 
-const toRequestBodyParameter = (parameters: Array<ParsedSpecValue<SwaggerParameter>>): ParsedSpecBody =>
+const toRequestBodyParameter = (parameters: Array<ParsedSpecValue<SwaggerParameter>>): ParsedSpecBody | undefined =>
     _(parameters)
         .filter((parameter) => parameter.value.in === 'body')
         .map((parameter: ParsedSpecValue<SwaggerBodyParameter>) => ({

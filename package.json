@@ -56,8 +56,8 @@
     "jasmine-promise-tools": "^1.0.5",
     "minimist": "^1.2.0",
     "run-sequence": "^1.2.2",
-    "tslint": "^5.4.2",
-    "typescript": "^2.3.4"
+    "tslint": "5.4.3",
+    "typescript": "2.3.4"
   },
   "dependencies": {
     "ajv": "^4.9.0",
