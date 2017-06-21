@@ -1,11 +1,11 @@
 import * as Decimal from 'decimal.js';
-import {JsonSchema} from '../../types';
+import {JsonSchemaValue} from '../../types';
 
 const maximumFloatPrecision = 6;
 
 export const floatAjvKeyword = 'formatFloat';
 
-export const formatForFloatNumbers = (schema: JsonSchema) => {
+export const formatForFloatNumbers = (schema: JsonSchemaValue) => {
     if (schema.type === 'number' && schema.format as any === 'float') {
         delete schema.format;
         (schema as any)[floatAjvKeyword] = true;

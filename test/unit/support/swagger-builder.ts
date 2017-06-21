@@ -1,6 +1,7 @@
 import {cloneDeep} from 'lodash';
 import {Swagger, SwaggerSecurityRequirement} from '../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, removeValueOn, setValueOn} from './builder-utilities';
+import {DefinitionsBuilder} from './swagger-builder/definitions-builder';
 import {ParameterBuilder} from './swagger-builder/parameter-builder';
 import {PathBuilder} from './swagger-builder/path-builder';
 import {SecuritySchemeBuilder} from './swagger-builder/security-scheme-builder';
@@ -9,6 +10,8 @@ const createSwaggerBuilder = (swagger: Swagger) => ({
     build: () => cloneDeep(swagger),
     withBasePath: (basePath: string) => createSwaggerBuilder(setValueOn(swagger, 'basePath', basePath)),
     withConsumes: (consumes: string[]) => createSwaggerBuilder(setValueOn(swagger, 'consumes', consumes)),
+    withDefinitions: (definitionsBuilder: DefinitionsBuilder) =>
+        createSwaggerBuilder(setValueOn(swagger, 'definitions', definitionsBuilder.build())),
     withMissingInfoTitle: () => createSwaggerBuilder(removeValueOn(swagger, 'info.title')),
     withParameter: (name: string, parameterBuilder: ParameterBuilder) => createSwaggerBuilder(
         setValueOn(swagger, `parameters.${name}`, parameterBuilder.build())
@@ -34,6 +37,7 @@ export const swaggerBuilder = createSwaggerBuilder({
     swagger: '2.0'
 });
 
+export {default as definitionsBuilder, DefinitionsBuilder} from './swagger-builder/definitions-builder';
 export {default as operationBuilder, OperationBuilder} from './swagger-builder/operation-builder';
 export {ParameterBuilder} from './swagger-builder/parameter-builder';
 export {bodyParameterBuilder} from './swagger-builder/parameter-builder/body-parameter-builder';

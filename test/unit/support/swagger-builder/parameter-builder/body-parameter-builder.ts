@@ -16,6 +16,14 @@ const createBodyParameterBuilder = (parameter: SwaggerBodyParameter) => {
             name: 'body',
             required: true,
             schema: schema.build()
+        }),
+        withRequiredSchemaReference: (referenceName: string) => createBodyParameterBuilder({
+            in: 'body',
+            name: 'body',
+            required: true,
+            schema: {
+                $ref: referenceName
+            }
         })
     };
 };

@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 import {
-    JsonSchema,
+    JsonSchemaDefinitions,
     JsonSchemaProperties,
+    JsonSchemaValue,
     ParsedSpec,
     ParsedSpecBody,
     ParsedSpecOperation,
@@ -26,6 +27,54 @@ import {
     SwaggerSecurityDefinitions,
     SwaggerSecurityRequirement
 } from '../types';
+
+const removeRequiredPropertiesFromSchema = (schema?: JsonSchemaValue) => {
+    if (!schema) {
+        return schema;
+    }
+
+    if (schema.required) {
+        delete schema.required;
+    }
+
+    removeRequiredPropertiesFromSchema(schema.items);
+    _.each(schema.properties as JsonSchemaProperties, removeRequiredPropertiesFromSchema);
+
+    return undefined;
+};
+
+const addAdditionalPropertiesFalseToObjectSchema = (objectSchema: JsonSchemaValue) => {
+    if (typeof objectSchema.additionalProperties !== 'object') {
+        objectSchema.additionalProperties = false;
+    }
+
+    _.each(objectSchema.properties as JsonSchemaProperties, addAdditionalPropertiesFalseToSchema);
+};
+
+const addAdditionalPropertiesFalseToSchema = (schema?: JsonSchemaValue) => {
+    if (!schema) {
+        return schema;
+    }
+
+    if (schema.type === 'object') {
+        addAdditionalPropertiesFalseToObjectSchema(schema);
+    } else if (schema.type === 'array') {
+        addAdditionalPropertiesFalseToSchema(schema.items);
+    }
+
+    return undefined;
+};
+
+const parseDefinitionsForResponses = (definitions?: JsonSchemaDefinitions) => {
+    const modifiedDefinitions = _.cloneDeep(definitions);
+
+    _.each(modifiedDefinitions, (schema) => {
+        addAdditionalPropertiesFalseToSchema(schema);
+        removeRequiredPropertiesFromSchema(schema);
+    });
+
+    return modifiedDefinitions;
+};
 
 const toParsedSpecValue = (
     parameters: SwaggerParameter[] | undefined,
@@ -99,43 +148,6 @@ const parsePathNameSegments = (
         .value();
 };
 
-const removeRequiredPropertiesFromSchema = (schema?: JsonSchema) => {
-    if (!schema) {
-        return schema;
-    }
-
-    if (schema.required) {
-        delete schema.required;
-    }
-
-    removeRequiredPropertiesFromSchema(schema.items);
-    _.each(schema.properties as JsonSchemaProperties, removeRequiredPropertiesFromSchema);
-
-    return undefined;
-};
-
-const addAdditionalPropertiesFalseToObjectSchema = (objectSchema: JsonSchema) => {
-    if (typeof objectSchema.additionalProperties !== 'object') {
-        objectSchema.additionalProperties = false;
-    }
-
-    _.each(objectSchema.properties as JsonSchemaProperties, addAdditionalPropertiesFalseToSchema);
-};
-
-const addAdditionalPropertiesFalseToSchema = (schema?: JsonSchema) => {
-    if (!schema) {
-        return schema;
-    }
-
-    if (schema.type === 'object') {
-        addAdditionalPropertiesFalseToObjectSchema(schema);
-    } else if (schema.type === 'array') {
-        addAdditionalPropertiesFalseToSchema(schema.items);
-    }
-
-    return undefined;
-};
-
 type SwaggerHeaderPathOrQueryParameter = SwaggerRequestHeaderParameter | SwaggerPathParameter | SwaggerQueryParameter;
 
 const toParsedParameter = (
@@ -186,7 +198,11 @@ const parseResponseHeaders = (
         {}
     );
 
-const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpecOperation) => {
+const parseResponses = (
+    responses: SwaggerResponses,
+    parentOperation: ParsedSpecOperation,
+    definitions?: JsonSchemaDefinitions
+) => {
     // tslint:disable:no-object-literal-type-assertion
     const parsedResponses = {
         location: `${parentOperation.location}.responses`,
@@ -194,11 +210,16 @@ const parseResponses = (responses: SwaggerResponses, parentOperation: ParsedSpec
         value: responses
     } as ParsedSpecResponses;
 
+    const parsedDefinitions = parseDefinitionsForResponses(definitions);
+
     _.each(responses, (response, responseStatus) => {
         const responseLocation = `${parsedResponses.location}.${responseStatus}`;
         const originalSchema = response.schema;
         const modifiedSchema = _.cloneDeep(originalSchema);
 
+        if (modifiedSchema) {
+            modifiedSchema.definitions = parsedDefinitions;
+        }
         removeRequiredPropertiesFromSchema(modifiedSchema);
         addAdditionalPropertiesFalseToSchema(modifiedSchema);
 
@@ -225,22 +246,30 @@ const toSpecParameterCollection = (parameters: ParsedSpecParameter[]) =>
         return result;
     }, {});
 
-const toRequestBodyParameter = (parameters: Array<ParsedSpecValue<SwaggerParameter>>): ParsedSpecBody | undefined =>
+const toRequestBodyParameter = (
+    parameters: Array<ParsedSpecValue<SwaggerParameter>>,
+    definitions?: JsonSchemaDefinitions
+): ParsedSpecBody | undefined =>
     _(parameters)
         .filter((parameter) => parameter.value.in === 'body')
-        .map((parameter: ParsedSpecValue<SwaggerBodyParameter>) => ({
-            getFromSchema: (pathToGet: string): ParsedSpecValue<any> => ({
-                location: `${parameter.location}.schema.${pathToGet}`,
+        .map((parameter: ParsedSpecValue<SwaggerBodyParameter>) => {
+            const modifiedSchema = _.cloneDeep(parameter.value.schema);
+            modifiedSchema.definitions = definitions;
+
+            return {
+                getFromSchema: (pathToGet: string): ParsedSpecValue<any> => ({
+                    location: `${parameter.location}.schema.${pathToGet}`,
+                    parentOperation: parameter.parentOperation,
+                    value: _.get(parameter.value.schema, pathToGet)
+                }),
+                location: parameter.location,
+                name: parameter.value.name,
                 parentOperation: parameter.parentOperation,
-                value: _.get(parameter.value.schema, pathToGet)
-            }),
-            location: parameter.location,
-            name: parameter.value.name,
-            parentOperation: parameter.parentOperation,
-            required: parameter.value.required,
-            schema: parameter.value.schema,
-            value: parameter.value
-        }))
+                required: parameter.value.required,
+                schema: modifiedSchema,
+                value: parameter.value
+            };
+        })
         .first();
 
 const toParsedParametersFor = (
@@ -253,7 +282,12 @@ const toParsedParametersFor = (
             toParsedParameter(parameter, parameter.value.name))
         .value();
 
-const parseParameters = (path: SwaggerPath, pathLocation: string, parsedOperation: ParsedSpecOperation) => {
+const parseParameters = (
+    path: SwaggerPath,
+    pathLocation: string,
+    parsedOperation: ParsedSpecOperation,
+    definitions?: JsonSchemaDefinitions
+) => {
     const pathParameters = toParsedSpecValue(path.parameters, pathLocation, parsedOperation);
     const operationParameters = toParsedSpecValue(
         parsedOperation.value.parameters,
@@ -263,7 +297,7 @@ const parseParameters = (path: SwaggerPath, pathLocation: string, parsedOperatio
     const mergedParameters = mergePathAndOperationParameters(pathParameters, operationParameters);
 
     return {
-        requestBody: toRequestBodyParameter(mergedParameters),
+        requestBody: toRequestBodyParameter(mergedParameters, definitions),
         requestHeaders: toSpecParameterCollection(toParsedParametersFor('header', mergedParameters)),
         requestPath: toParsedParametersFor('path', mergedParameters),
         requestQuery: toSpecParameterCollection(toParsedParametersFor('query', mergedParameters))
@@ -373,7 +407,7 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, specPathOrU
                 value: operation
             } as ParsedSpecOperation;
 
-            const parsedParameters = parseParameters(path, pathLocation, parsedOperation);
+            const parsedParameters = parseParameters(path, pathLocation, parsedOperation, specJson.definitions);
 
             parsedOperation.parentOperation = parsedOperation;
             parsedOperation.pathNameSegments =
@@ -393,7 +427,7 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, specPathOrU
             parsedOperation.requestBodyParameter = parsedParameters.requestBody;
             parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
             parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
-            parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
+            parsedOperation.responses = parseResponses(operation.responses, parsedOperation, specJson.definitions);
             parsedOperation.securityRequirements = parseSecurityRequirements(
                 specJson.securityDefinitions,
                 operation.security,

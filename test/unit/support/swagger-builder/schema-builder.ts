@@ -1,28 +1,37 @@
 import {cloneDeep} from 'lodash';
-import {JsonSchema} from '../../../../lib/swagger-mock-validator/types';
+import {JsonSchema, JsonSchemaReference, JsonSchemaValue} from '../../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, setValueOn, setValuesOn} from '../builder-utilities';
 
 export interface SchemaBuilder {
     build: () => JsonSchema;
 }
 
-const createSchemaBuilder = (schema: JsonSchema) => ({
+const createSchemaReferenceBuilder = (schema: JsonSchemaReference) => ({
+    build: () => cloneDeep(schema)
+});
+
+const createSchemaAllOfBuilder = (schema: JsonSchemaValue) => ({
+    build: () => cloneDeep(schema)
+});
+
+const createSchemaValueBuilder = (schema: JsonSchemaValue) => ({
     build: () => cloneDeep(schema),
     withAdditionalPropertiesBoolean: (value: boolean) =>
-        createSchemaBuilder(setValueOn(schema, 'additionalProperties', value)),
+        createSchemaValueBuilder(setValueOn(schema, 'additionalProperties', value)),
     withAdditionalPropertiesSchema: (additionalPropertiesSchemaBuilder: SchemaBuilder) =>
-        createSchemaBuilder(setValueOn(schema, 'additionalProperties', additionalPropertiesSchemaBuilder.build())),
-    withAllOf: (schemas: SchemaBuilder[]) => createSchemaBuilder({allOf: schemas.map((s) => s.build())}),
-    withFormatDouble: () => createSchemaBuilder(setValueOn(schema, 'format', 'double')),
-    withFormatFloat: () => createSchemaBuilder(setValueOn(schema, 'format', 'float')),
-    withFormatInt32: () => createSchemaBuilder(setValueOn(schema, 'format', 'int32')),
-    withFormatInt64: () => createSchemaBuilder(setValueOn(schema, 'format', 'int64')),
+        createSchemaValueBuilder(setValueOn(schema, 'additionalProperties', additionalPropertiesSchemaBuilder.build())),
+    withAllOf: (schemas: SchemaBuilder[]) => createSchemaAllOfBuilder({allOf: schemas.map((s) => s.build())}),
+    withFormatDouble: () => createSchemaValueBuilder(setValueOn(schema, 'format', 'double')),
+    withFormatFloat: () => createSchemaValueBuilder(setValueOn(schema, 'format', 'float')),
+    withFormatInt32: () => createSchemaValueBuilder(setValueOn(schema, 'format', 'int32')),
+    withFormatInt64: () => createSchemaValueBuilder(setValueOn(schema, 'format', 'int64')),
     withOptionalProperty: (name: string, propertySchemaBuilder: SchemaBuilder) =>
-        createSchemaBuilder(setValueOn(schema, `properties.${name}`, propertySchemaBuilder.build())),
+        createSchemaValueBuilder(setValueOn(schema, `properties.${name}`, propertySchemaBuilder.build())),
+    withReference: (referenceName: string) => createSchemaReferenceBuilder({$ref: referenceName}),
     withRequiredProperty: (name: string, propertySchemaBuilder: SchemaBuilder) =>
-        createSchemaBuilder(addToArrayOn(schema, 'required', name))
+        createSchemaValueBuilder(addToArrayOn(schema, 'required', name))
             .withOptionalProperty(name, propertySchemaBuilder),
-    withTypeArray: (itemsSchemaBuilder: SchemaBuilder) => createSchemaBuilder(
+    withTypeArray: (itemsSchemaBuilder: SchemaBuilder) => createSchemaValueBuilder(
         setValuesOn(schema, {
             items: itemsSchemaBuilder.build(),
             properties: undefined,
@@ -30,10 +39,10 @@ const createSchemaBuilder = (schema: JsonSchema) => ({
             type: 'array'
         })
     ),
-    withTypeInteger: () => createSchemaBuilder(setValueOn(schema, 'type', 'integer')),
-    withTypeNumber: () => createSchemaBuilder(setValueOn(schema, 'type', 'number')),
-    withTypeObject: () => createSchemaBuilder(setValueOn(schema, 'type', 'object')),
-    withTypeString: () => createSchemaBuilder(setValueOn(schema, 'type', 'string'))
+    withTypeInteger: () => createSchemaValueBuilder(setValueOn(schema, 'type', 'integer')),
+    withTypeNumber: () => createSchemaValueBuilder(setValueOn(schema, 'type', 'number')),
+    withTypeObject: () => createSchemaValueBuilder(setValueOn(schema, 'type', 'object')),
+    withTypeString: () => createSchemaValueBuilder(setValueOn(schema, 'type', 'string'))
 });
 
-export default createSchemaBuilder({type: 'string'});
+export default createSchemaValueBuilder({type: 'string'});

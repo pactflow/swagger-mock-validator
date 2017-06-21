@@ -72,6 +72,7 @@ This is a list of all the possible validation rules and if they are currently su
 |---|---|
 | Definition references | yes |
 | External references | unknown |
+| Circular references | yes |
 | Inline schema | yes |
 | allOf | yes |
 | discriminator | no |

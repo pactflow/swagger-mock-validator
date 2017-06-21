@@ -1,6 +1,6 @@
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
-import {JsonSchema, JsonSchemaProperties} from '../types';
+import {JsonSchema, JsonSchemaProperties, JsonSchemaReference, JsonSchemaValue} from '../types';
 import {isBinary} from './validate-json/binary';
 import {isByte} from './validate-json/byte';
 import {doubleAjvKeyword, formatForDoubleNumbers, isDouble} from './validate-json/double';
@@ -42,18 +42,26 @@ const removeNonSwaggerAjvFormats = (ajv: Ajv.Ajv) => {
 };
 
 const changeTypeToKeywordForCustomFormats = (schema: JsonSchema) => {
-    formatForDoubleNumbers(schema);
-    formatForFloatNumbers(schema);
-    formatForInt32Numbers(schema);
-    formatForInt64Numbers(schema);
-    _.each(schema.properties as JsonSchemaProperties, changeTypeToKeywordForCustomFormats);
+    _.each(schema.definitions, changeTypeToKeywordForCustomFormats);
 
-    if (schema.items) {
-        changeTypeToKeywordForCustomFormats(schema.items);
+    if ((schema as JsonSchemaReference).$ref) {
+        return;
     }
 
-    if (typeof schema.additionalProperties === 'object') {
-        changeTypeToKeywordForCustomFormats(schema.additionalProperties);
+    const schemaValue = schema as JsonSchemaValue;
+
+    formatForDoubleNumbers(schemaValue);
+    formatForFloatNumbers(schemaValue);
+    formatForInt32Numbers(schemaValue);
+    formatForInt64Numbers(schemaValue);
+    _.each(schemaValue.properties as JsonSchemaProperties, changeTypeToKeywordForCustomFormats);
+
+    if (schemaValue.items) {
+        changeTypeToKeywordForCustomFormats(schemaValue.items);
+    }
+
+    if (typeof schemaValue.additionalProperties === 'object') {
+        changeTypeToKeywordForCustomFormats(schemaValue.additionalProperties);
     }
 };
 

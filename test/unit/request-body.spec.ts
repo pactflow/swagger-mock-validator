@@ -3,6 +3,8 @@ import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers'
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     bodyParameterBuilder,
+    definitionsBuilder,
+    DefinitionsBuilder,
     operationBuilder,
     ParameterBuilder,
     pathBuilder,
@@ -25,7 +27,11 @@ describe('request body', () => {
         .withDescription('interaction description')
         .withRequestPath('/does/exist');
 
-    const validateRequestBody = (pactRequestBody?: any, swaggerBodyParameter?: ParameterBuilder) => {
+    const validateRequestBody = (
+        pactRequestBody?: any,
+        swaggerBodyParameter?: ParameterBuilder,
+        swaggerDefinitions?: DefinitionsBuilder
+    ) => {
         const interactionBuilder = pactRequestBody
             ? defaultInteractionBuilder.withRequestBody(pactRequestBody)
             : defaultInteractionBuilder;
@@ -36,11 +42,14 @@ describe('request body', () => {
             ? operationBuilder.withParameter(swaggerBodyParameter)
             : operationBuilder;
 
-        const swaggerFile = swaggerBuilder
-            .withPath('/does/exist', pathBuilder.withGetOperation(operation))
-            .build();
+        let swaggerWithOperationBuilder = swaggerBuilder
+            .withPath('/does/exist', pathBuilder.withGetOperation(operation));
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        if (swaggerDefinitions) {
+            swaggerWithOperationBuilder = swaggerWithOperationBuilder.withDefinitions(swaggerDefinitions);
+        }
+
+        return swaggerPactValidatorLoader.invoke(swaggerWithOperationBuilder.build(), pactFile);
     };
 
     it('should pass when a pact request body is compatible with the swagger schema', willResolve(() => {
@@ -84,6 +93,82 @@ describe('request body', () => {
                     pathName: '/does/exist',
                     specFile: 'swagger.json',
                     value: 'number'
+                },
+                type: 'error'
+            }]);
+        });
+    }));
+
+    it('should return the error when pact request body is not compatible with the schema reference', willResolve(() => {
+        const pactRequestBody = {id: 'not-a-number'};
+        const swaggerBodyParameter = bodyParameterBuilder.withRequiredSchemaReference('#/definitions/Request');
+        const definitions = definitionsBuilder.withDefinition('Request', schemaBuilder
+            .withTypeObject()
+            .withRequiredProperty('id', schemaBuilder.withTypeNumber())
+        );
+
+        const result = validateRequestBody(pactRequestBody, swaggerBodyParameter, definitions);
+
+        return expectToReject(result).then((error) => {
+            expect(error).toEqual(expectedFailedValidationError);
+            expect(error.details).toContainErrors([{
+                code: 'spv.request.body.incompatible',
+                message:
+                    'Request body is incompatible with the request body schema in the swagger file: should be number',
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.body.id',
+                    mockFile: 'pact.json',
+                    value: 'not-a-number'
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.properties.id.type',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    specFile: 'swagger.json',
+                    value: 'number'
+                },
+                type: 'error'
+            }]);
+        });
+    }));
+
+    it('should return the error when request body not compatible with circular schema reference', willResolve(() => {
+        const pactRequestBody = {
+            child: {id: 'not-a-number'},
+            id: 1
+        };
+        const swaggerBodyParameter = bodyParameterBuilder.withRequiredSchemaReference('#/definitions/Request');
+        const definitions = definitionsBuilder.withDefinition('Request', schemaBuilder
+            .withTypeObject()
+            .withRequiredProperty('id', schemaBuilder.withTypeNumber())
+            .withOptionalProperty('child', schemaBuilder.withReference('#/definitions/Request'))
+        );
+
+        const result = validateRequestBody(pactRequestBody, swaggerBodyParameter, definitions);
+
+        return expectToReject(result).then((error) => {
+            expect(error).toEqual(expectedFailedValidationError);
+            expect(error.details).toContainErrors([{
+                code: 'spv.request.body.incompatible',
+                message:
+                    'Request body is incompatible with the request body schema in the swagger file: should be number',
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.body.child.id',
+                    mockFile: 'pact.json',
+                    value: 'not-a-number'
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.properties.id.type',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    specFile: 'swagger.json',
+                    value: undefined
                 },
                 type: 'error'
             }]);

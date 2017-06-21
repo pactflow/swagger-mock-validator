@@ -200,13 +200,18 @@ export interface PactInteractionHeaders {
 
 export interface Swagger {
     basePath?: string;
+    consumes?: string[];
+    definitions?: JsonSchemaDefinitions;
     info: SwaggerInfo;
     paths: SwaggerPaths;
     produces?: string[];
-    consumes?: string[];
     security?: SwaggerSecurityRequirement[];
     securityDefinitions?: SwaggerSecurityDefinitions;
     swagger: string;
+}
+
+export interface JsonSchemaDefinitions {
+    [name: string]: JsonSchema;
 }
 
 export interface SwaggerInfo {
@@ -372,9 +377,17 @@ export interface UuidGenerator {
 
 export type JsonLoaderFunction = (location: string) => q.Promise<string>;
 
-export interface JsonSchema {
+export type JsonSchema = JsonSchemaValue | JsonSchemaReference;
+
+export interface JsonSchemaReference {
+    definitions?: JsonSchemaDefinitions;
+    $ref: string;
+}
+
+export interface JsonSchemaValue {
     additionalProperties?: boolean;
     allOf?: JsonSchema[];
+    definitions?: JsonSchemaDefinitions;
     enum?: any[];
     exclusiveMaximum?: boolean;
     exclusiveMinimum?: boolean;
