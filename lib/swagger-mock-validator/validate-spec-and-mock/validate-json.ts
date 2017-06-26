@@ -1,6 +1,6 @@
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
-import {JsonSchema, JsonSchemaProperties, JsonSchemaReference, JsonSchemaValue} from '../types';
+import {JsonSchema, JsonSchemaAllOf, JsonSchemaValue} from '../types';
 import {isBinary} from './validate-json/binary';
 import {isByte} from './validate-json/byte';
 import {doubleAjvKeyword, formatForDoubleNumbers, isDouble} from './validate-json/double';
@@ -41,27 +41,24 @@ const removeNonSwaggerAjvFormats = (ajv: Ajv.Ajv) => {
     });
 };
 
-const changeTypeToKeywordForCustomFormats = (schema: JsonSchema) => {
-    _.each(schema.definitions, changeTypeToKeywordForCustomFormats);
-
-    if ((schema as JsonSchemaReference).$ref) {
+const changeTypeToKeywordForCustomFormats = (schema?: JsonSchema) => {
+    if (!schema) {
         return;
     }
 
-    const schemaValue = schema as JsonSchemaValue;
+    _.each(schema.definitions, changeTypeToKeywordForCustomFormats);
+    _.each((schema as JsonSchemaAllOf).allOf, changeTypeToKeywordForCustomFormats);
 
-    formatForDoubleNumbers(schemaValue);
-    formatForFloatNumbers(schemaValue);
-    formatForInt32Numbers(schemaValue);
-    formatForInt64Numbers(schemaValue);
-    _.each(schemaValue.properties as JsonSchemaProperties, changeTypeToKeywordForCustomFormats);
+    formatForDoubleNumbers(schema);
+    formatForFloatNumbers(schema);
+    formatForInt32Numbers(schema);
+    formatForInt64Numbers(schema);
 
-    if (schemaValue.items) {
-        changeTypeToKeywordForCustomFormats(schemaValue.items);
-    }
+    _.each((schema as JsonSchemaValue).properties, changeTypeToKeywordForCustomFormats);
+    changeTypeToKeywordForCustomFormats((schema as JsonSchemaValue).items);
 
-    if (typeof schemaValue.additionalProperties === 'object') {
-        changeTypeToKeywordForCustomFormats(schemaValue.additionalProperties);
+    if (typeof (schema as JsonSchemaValue).additionalProperties === 'object') {
+        changeTypeToKeywordForCustomFormats((schema as JsonSchemaValue).additionalProperties);
     }
 };
 

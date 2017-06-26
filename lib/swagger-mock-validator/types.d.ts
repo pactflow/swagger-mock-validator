@@ -377,16 +377,20 @@ export interface UuidGenerator {
 
 export type JsonLoaderFunction = (location: string) => q.Promise<string>;
 
-export type JsonSchema = JsonSchemaValue | JsonSchemaReference;
+export type JsonSchema = JsonSchemaValue | JsonSchemaReference | JsonSchemaAllOf;
 
 export interface JsonSchemaReference {
     definitions?: JsonSchemaDefinitions;
     $ref: string;
 }
 
+export interface JsonSchemaAllOf {
+    allOf: JsonSchema[];
+    definitions?: JsonSchemaDefinitions;
+}
+
 export interface JsonSchemaValue {
-    additionalProperties?: boolean;
-    allOf?: JsonSchema[];
+    additionalProperties?: boolean | JsonSchema;
     definitions?: JsonSchemaDefinitions;
     enum?: any[];
     exclusiveMaximum?: boolean;

@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import {
+    JsonSchema, JsonSchemaAllOf,
     JsonSchemaDefinitions,
     JsonSchemaProperties,
     JsonSchemaValue,
@@ -28,22 +29,16 @@ import {
     SwaggerSecurityRequirement
 } from '../types';
 
-const removeRequiredPropertiesFromSchema = (schema?: JsonSchemaValue) => {
-    if (!schema) {
-        return schema;
+const removeRequiredPropertiesFromSchema = (schema?: JsonSchema) => {
+    if (schema) {
+        _.each((schema as JsonSchemaAllOf).allOf, removeRequiredPropertiesFromSchema);
+        delete (schema as JsonSchemaValue).required;
+        removeRequiredPropertiesFromSchema((schema as JsonSchemaValue).items);
+        _.each((schema as JsonSchemaValue).properties, removeRequiredPropertiesFromSchema);
     }
-
-    if (schema.required) {
-        delete schema.required;
-    }
-
-    removeRequiredPropertiesFromSchema(schema.items);
-    _.each(schema.properties as JsonSchemaProperties, removeRequiredPropertiesFromSchema);
-
-    return undefined;
 };
 
-const addAdditionalPropertiesFalseToObjectSchema = (objectSchema: JsonSchemaValue) => {
+const addAdditionalPropertiesFalseToObjectSchema = (objectSchema: JsonSchemaValue): void => {
     if (typeof objectSchema.additionalProperties !== 'object') {
         objectSchema.additionalProperties = false;
     }
@@ -51,29 +46,37 @@ const addAdditionalPropertiesFalseToObjectSchema = (objectSchema: JsonSchemaValu
     _.each(objectSchema.properties as JsonSchemaProperties, addAdditionalPropertiesFalseToSchema);
 };
 
-const addAdditionalPropertiesFalseToSchema = (schema?: JsonSchemaValue) => {
+const addAdditionalPropertiesFalseToSchema = (schema?: JsonSchema): void => {
     if (!schema) {
-        return schema;
+        return;
     }
 
-    if (schema.type === 'object') {
+    if ((schema as JsonSchemaValue).type === 'object') {
         addAdditionalPropertiesFalseToObjectSchema(schema);
-    } else if (schema.type === 'array') {
-        addAdditionalPropertiesFalseToSchema(schema.items);
+    } else if ((schema as JsonSchemaValue).type === 'array') {
+        addAdditionalPropertiesFalseToSchema((schema as JsonSchemaValue).items);
     }
 
-    return undefined;
+    return;
+};
+
+const modifySchemaForResponses = (schema: JsonSchema): JsonSchema => {
+    const modifiedSchema = _.cloneDeep(schema);
+
+    removeRequiredPropertiesFromSchema(modifiedSchema);
+
+    return modifiedSchema;
 };
 
 const parseDefinitionsForResponses = (definitions?: JsonSchemaDefinitions) => {
-    const modifiedDefinitions = _.cloneDeep(definitions);
-
-    _.each(modifiedDefinitions, (schema) => {
-        addAdditionalPropertiesFalseToSchema(schema);
-        removeRequiredPropertiesFromSchema(schema);
-    });
-
-    return modifiedDefinitions;
+    return _.reduce<JsonSchema, JsonSchemaDefinitions>(
+        definitions,
+        (parsedDefinitions, definitionSchema, definitionName) => {
+            parsedDefinitions[definitionName] = modifySchemaForResponses(definitionSchema);
+            return parsedDefinitions;
+        },
+        {}
+    );
 };
 
 const toParsedSpecValue = (
@@ -215,13 +218,12 @@ const parseResponses = (
     _.each(responses, (response, responseStatus) => {
         const responseLocation = `${parsedResponses.location}.${responseStatus}`;
         const originalSchema = response.schema;
-        const modifiedSchema = _.cloneDeep(originalSchema);
+        let modifiedSchema: JsonSchema | undefined;
 
-        if (modifiedSchema) {
+        if (response.schema) {
+            modifiedSchema = modifySchemaForResponses(response.schema);
             modifiedSchema.definitions = parsedDefinitions;
         }
-        removeRequiredPropertiesFromSchema(modifiedSchema);
-        addAdditionalPropertiesFalseToSchema(modifiedSchema);
 
         parsedResponses[responseStatus as any] = {
             getFromSchema: (pathToGet) => ({

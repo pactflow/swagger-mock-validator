@@ -1,5 +1,8 @@
 import {cloneDeep} from 'lodash';
-import {JsonSchema, JsonSchemaReference, JsonSchemaValue} from '../../../../lib/swagger-mock-validator/types';
+import {
+    JsonSchema, JsonSchemaAllOf, JsonSchemaReference,
+    JsonSchemaValue
+} from '../../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, setValueOn, setValuesOn} from '../builder-utilities';
 
 export interface SchemaBuilder {
@@ -10,7 +13,7 @@ const createSchemaReferenceBuilder = (schema: JsonSchemaReference) => ({
     build: () => cloneDeep(schema)
 });
 
-const createSchemaAllOfBuilder = (schema: JsonSchemaValue) => ({
+const createSchemaAllOfBuilder = (schema: JsonSchemaAllOf) => ({
     build: () => cloneDeep(schema)
 });
 

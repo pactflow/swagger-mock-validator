@@ -1189,5 +1189,61 @@ describe('formats', () => {
                 }]);
             });
         }));
+
+        it('should validate allOf schemas with formats', willResolve(() => {
+            const tooBigInteger = Math.pow(2, 31) + 1;
+
+            const pactFile = pactBuilder
+                .withInteraction(interactionBuilder
+                    .withDescription('interaction description')
+                    .withRequestPath('/does/exist')
+                    .withResponseStatus(200)
+                    .withResponseBody({id: tooBigInteger})
+                )
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/does/exist', pathBuilder
+                    .withGetOperation(operationBuilder.withResponse(200, responseBuilder.withSchema(schemaBuilder
+                        .withAllOf([
+                            schemaBuilder
+                                .withTypeObject()
+                                .withOptionalProperty('id', schemaBuilder
+                                    .withTypeInteger()
+                                    .withFormatInt32()
+                                )
+                        ])
+                    )))
+                )
+                .build();
+
+            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+
+            return expectToReject(result).then((error) => {
+                expect(error).toEqual(expectedFailedValidationError);
+                expect(error.details).toContainErrors([{
+                    code: 'spv.response.body.incompatible',
+                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                    'should pass "formatInt32" keyword validation',
+                    mockDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].response.body.id',
+                        mockFile: 'pact.json',
+                        value: tooBigInteger
+                    },
+                    source: 'spec-mock-validation',
+                    specDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.responses.200.' +
+                            'schema.allOf.0.properties.id.formatInt32',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        specFile: 'swagger.json',
+                        value: undefined
+                    },
+                    type: 'error'
+                }]);
+            });
+        }));
     });
 });

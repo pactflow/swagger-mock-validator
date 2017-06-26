@@ -137,7 +137,7 @@ describe('response body', () => {
         });
     }));
 
-    it('should return error when response body is not compatible with a self referencing schema', willResolve(() => {
+    it('should return error when response body is not compatible with a circular schema', willResolve(() => {
         const pactResponseBody = {
             child: {id: 'not-a-number'},
             id: 1
@@ -397,6 +397,26 @@ describe('response body', () => {
         });
     }));
 
+    it('should pass when response body is missing a nested required property on an allOf schema', willResolve(() => {
+        const pactResponseBody = {customer: {first: 'Bob'}};
+        const swaggerBodySchema = schemaBuilder
+            .withTypeObject()
+            .withRequiredProperty('customer', schemaBuilder
+                .withAllOf([
+                    schemaBuilder
+                        .withTypeObject()
+                        .withRequiredProperty('first', schemaBuilder.withTypeString()),
+                    schemaBuilder
+                        .withTypeObject()
+                        .withRequiredProperty('last', schemaBuilder.withTypeString())
+                ])
+            );
+
+        return validateResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
+            expect(result).toContainNoWarnings();
+        });
+    }));
+
     it('should pass when a pact response body is missing a required property on a circular schema', willResolve(() => {
         const pactResponseBody = {child: {id: 1}};
         const swaggerBodySchema = schemaBuilder.withReference('#/definitions/Response');
@@ -448,7 +468,7 @@ describe('response body', () => {
         });
     }));
 
-    it('should return the error when a pact response body has a property not defined in the schema', willResolve(() => {
+    it('should pass when a pact response body has a property not defined in the schema', willResolve(() => {
         const pactResponseBody = {firstName: 'Bob'};
 
         const swaggerBodySchema = schemaBuilder
@@ -456,32 +476,26 @@ describe('response body', () => {
             .withOptionalProperty('first', schemaBuilder.withTypeString())
             .withOptionalProperty('last', schemaBuilder.withTypeString());
 
-        const result = validateResponseBody(pactResponseBody, swaggerBodySchema);
+        return validateResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
+            expect(result).toContainNoWarnings();
+        });
+    }));
 
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                code: 'spv.response.body.incompatible',
-                message:
-                    'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should NOT have additional properties - firstName',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.body',
-                    mockFile: 'pact.json',
-                    value: {firstName: 'Bob'}
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.additionalProperties',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: undefined
-                },
-                type: 'error'
-            }]);
+    it('should pass when pact response body has a property not defined in the allOf schema', willResolve(() => {
+        const pactResponseBody = {a: 1};
+
+        const swaggerBodySchema = schemaBuilder
+            .withAllOf([
+                schemaBuilder
+                    .withTypeObject()
+                    .withOptionalProperty('first', schemaBuilder.withTypeString()),
+                schemaBuilder
+                    .withTypeObject()
+                    .withOptionalProperty('last', schemaBuilder.withTypeString())
+            ]);
+
+        return validateResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
+            expect(result).toContainNoWarnings();
         });
     }));
 
@@ -520,43 +534,19 @@ describe('response body', () => {
         });
     }));
 
-    it('should return the error when a pact response body has an additional property', willResolve(() => {
+    it('should pass when a pact response body has an additional property', willResolve(() => {
         const pactResponseBody = {a: 1};
 
         const swaggerBodySchema = schemaBuilder
             .withTypeObject()
             .withAdditionalPropertiesBoolean(true);
 
-        const result = validateResponseBody(pactResponseBody, swaggerBodySchema);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                code: 'spv.response.body.incompatible',
-                message:
-                'Response body is incompatible with the response body schema in the swagger file: ' +
-                'should NOT have additional properties - a',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.body',
-                    mockFile: 'pact.json',
-                    value: {a: 1}
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.additionalProperties',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: true
-                },
-                type: 'error'
-            }]);
+        return validateResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
+            expect(result).toContainNoWarnings();
         });
     }));
 
-    it('should error when response body has additional property in circular schema reference', willResolve(() => {
+    it('should pass when response body has additional property in circular schema reference', willResolve(() => {
         const pactResponseBody = {
             a: 1,
             id: 1
@@ -570,39 +560,12 @@ describe('response body', () => {
             .withOptionalProperty('child', schemaBuilder.withReference('#/definitions/Response'))
         );
 
-        const result = validateResponseBody(pactResponseBody, swaggerBodySchema, definitions);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                code: 'spv.response.body.incompatible',
-                message:
-                'Response body is incompatible with the response body schema in the swagger file: ' +
-                'should NOT have additional properties - a',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.body',
-                    mockFile: 'pact.json',
-                    value: {
-                        a: 1,
-                        id: 1
-                    }
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.additionalProperties',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: undefined
-                },
-                type: 'error'
-            }]);
+        return validateResponseBody(pactResponseBody, swaggerBodySchema, definitions).then((result) => {
+            expect(result).toContainNoWarnings();
         });
     }));
 
-    it('should return error when pact response body has property not defined in schema of array', willResolve(() => {
+    it('should pass when pact response body has property not defined in schema of array', willResolve(() => {
         const pactResponseBody = [{customer: {firstName: 'Bob'}}];
 
         const swaggerBodySchema = schemaBuilder
@@ -614,37 +577,12 @@ describe('response body', () => {
                 )
             );
 
-        const result = validateResponseBody(pactResponseBody, swaggerBodySchema);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                code: 'spv.response.body.incompatible',
-                message:
-                    'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should NOT have additional properties - firstName',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.body[0].customer',
-                    mockFile: 'pact.json',
-                    value: {firstName: 'Bob'}
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200' +
-                        '.schema.items.properties.customer.additionalProperties',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: undefined
-                },
-                type: 'error'
-            }]);
+        return validateResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
+            expect(result).toContainNoWarnings();
         });
     }));
 
-    it('should return error when response body has property not defined in circular schema array', willResolve(() => {
+    it('should pass when response body has property not defined in circular schema array', willResolve(() => {
         const pactResponseBody = [{
             item: {
                 child: [
@@ -665,33 +603,8 @@ describe('response body', () => {
             )
         );
 
-        const result = validateResponseBody(pactResponseBody, swaggerBodySchema, definitions);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                code: 'spv.response.body.incompatible',
-                message:
-                'Response body is incompatible with the response body schema in the swagger file: ' +
-                'should NOT have additional properties - items',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.body[0].item.child[0]',
-                    mockFile: 'pact.json',
-                    value: {items: {id: 2}}
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200' +
-                    '.schema.items.additionalProperties',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: undefined
-                },
-                type: 'error'
-            }]);
+        return validateResponseBody(pactResponseBody, swaggerBodySchema, definitions).then((result) => {
+            expect(result).toContainNoWarnings();
         });
     }));
 
