@@ -408,6 +408,8 @@ export interface SwaggerMockValidator {
 
 export interface SwaggerMockValidatorOptions {
     analyticsUrl?: string;
+    coverage?: boolean;
+    coverageReporter?: CoverageReporter;
     fileSystem?: FileSystem;
     httpClient?: HttpClient;
     metadata?: Metadata;
@@ -419,6 +421,8 @@ export interface SwaggerMockValidatorOptions {
 
 interface ParsedSwaggerMockValidatorOptions {
     analyticsUrl?: string;
+    coverage: boolean;
+    coverageReporter: CoverageReporter;
     fileSystem: FileSystem;
     httpClient: HttpClient;
     metadata: Metadata;
@@ -517,3 +521,19 @@ export interface GetSwaggerValueFailedResult {
 export type GetSwaggerValueResult<T> = GetSwaggerValueSuccessResult<T> | GetSwaggerValueFailedResult;
 
 export type MultiCollectionFormatSeparator = '[multi-array-separator]';
+
+interface SpecResponseCoverage {
+    response: ParsedSpecResponse;
+    interactions: ParsedMockInteraction[];
+}
+
+interface SpecOperationCoverage {
+    operation: ParsedSpecOperation;
+    responses: SpecResponseCoverage[];
+}
+
+export type CoverageReportGeneratorFunction = (specCoverage: SpecOperationCoverage[]) => q.Promise<void>;
+
+interface CoverageReporter {
+    generate: CoverageReportGeneratorFunction;
+}

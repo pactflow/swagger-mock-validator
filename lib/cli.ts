@@ -36,6 +36,7 @@ commander
     .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
+    .option('--coverage', 'Show provider coverage report')
     .description(
 `Confirms the swagger spec and mock are compatible with each other.
 
@@ -55,6 +56,7 @@ json file.`
     .action((swagger, mock, options) =>
         swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,
+            coverage: options.coverage,
             mockPathOrUrl: mock,
             providerName: options.provider,
             specPathOrUrl: swagger

@@ -8,6 +8,7 @@ import {Server} from 'http';
 
 interface InvokeCommandOptions {
     analyticsUrl?: string;
+    coverage?: boolean;
     mock: string;
     providerName?: string;
     swagger: string;
@@ -24,6 +25,10 @@ const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
 
     if (options.analyticsUrl) {
         command += ` --analyticsUrl ${options.analyticsUrl}`;
+    }
+
+    if (options.coverage) {
+        command += ' --coverage';
     }
 
     exec(command, (error, stdout) => {
