@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const q = require("q");
-exports.default = (pactJson, mockPathOrUrl, specPathOrUrl) => {
+exports.default = (pactJson, mockPathOrUrl) => {
     if (!pactJson.interactions) {
         const error = new Error(`"${mockPathOrUrl}" is not a valid pact file`);
         error.details = {
@@ -16,13 +16,6 @@ exports.default = (pactJson, mockPathOrUrl, specPathOrUrl) => {
                         value: pactJson
                     },
                     source: 'pact-validation',
-                    specDetails: {
-                        location: '[swaggerRoot]',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: specPathOrUrl,
-                        value: null
-                    },
                     type: 'error'
                 }],
             warnings: []

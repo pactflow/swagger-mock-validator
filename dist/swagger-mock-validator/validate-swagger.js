@@ -24,13 +24,6 @@ const generateLocation = (path) => {
 const generateResult = (options) => ({
     code: options.code,
     message: options.message,
-    mockDetails: {
-        interactionDescription: null,
-        interactionState: null,
-        location: '[pactRoot]',
-        mockFile: options.mockPathOrUrl,
-        value: null
-    },
     source: 'swagger-validation',
     specDetails: {
         location: options.specLocation,
@@ -41,23 +34,21 @@ const generateResult = (options) => ({
     },
     type: options.type
 });
-const parseValidationResult = (validationResult, specPathOrUrl, mockPathOrUrl) => {
+const parseValidationResult = (validationResult, specPathOrUrl) => {
     const validationErrors = _.get(validationResult, 'errors', [])
         .map((swaggerValidationError) => generateResult({
         code: 'sv.error',
         message: swaggerValidationError.message,
-        mockPathOrUrl,
-        specPathOrUrl,
         specLocation: generateLocation(swaggerValidationError.path),
+        specPathOrUrl,
         type: 'error'
     }));
     const validationWarnings = _.get(validationResult, 'warnings', [])
         .map((swaggerValidationWarning) => generateResult({
         code: 'sv.warning',
         message: swaggerValidationWarning.message,
-        mockPathOrUrl,
-        specPathOrUrl,
         specLocation: generateLocation(swaggerValidationWarning.path),
+        specPathOrUrl,
         type: 'warning'
     }));
     if (validationErrors.length > 0) {
@@ -70,5 +61,5 @@ const parseValidationResult = (validationResult, specPathOrUrl, mockPathOrUrl) =
     }
     return q({ warnings: validationWarnings });
 };
-exports.default = (specJson, specPathOrUrl, mockPathOrUrl) => validate(specJson)
-    .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl, mockPathOrUrl));
+exports.default = (specJson, specPathOrUrl) => validate(specJson)
+    .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl));

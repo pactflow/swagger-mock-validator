@@ -1,6 +1,43 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
+const removeRequiredPropertiesFromSchema = (schema) => {
+    if (schema) {
+        _.each(schema.allOf, removeRequiredPropertiesFromSchema);
+        delete schema.required;
+        removeRequiredPropertiesFromSchema(schema.items);
+        _.each(schema.properties, removeRequiredPropertiesFromSchema);
+    }
+};
+const addAdditionalPropertiesFalseToObjectSchema = (objectSchema) => {
+    if (typeof objectSchema.additionalProperties !== 'object') {
+        objectSchema.additionalProperties = false;
+    }
+    _.each(objectSchema.properties, addAdditionalPropertiesFalseToSchema);
+};
+const addAdditionalPropertiesFalseToSchema = (schema) => {
+    if (!schema) {
+        return;
+    }
+    if (schema.type === 'object') {
+        addAdditionalPropertiesFalseToObjectSchema(schema);
+    }
+    else if (schema.type === 'array') {
+        addAdditionalPropertiesFalseToSchema(schema.items);
+    }
+    return;
+};
+const modifySchemaForResponses = (schema) => {
+    const modifiedSchema = _.cloneDeep(schema);
+    removeRequiredPropertiesFromSchema(modifiedSchema);
+    return modifiedSchema;
+};
+const parseDefinitionsForResponses = (definitions) => {
+    return _.reduce(definitions, (parsedDefinitions, definitionSchema, definitionName) => {
+        parsedDefinitions[definitionName] = modifySchemaForResponses(definitionSchema);
+        return parsedDefinitions;
+    }, {});
+};
 const toParsedSpecValue = (parameters, parentLocation, parentOperation) => _.map(parameters, (parameter, index) => ({
     location: `${parentLocation}.parameters[${index}]`,
     parentOperation,
@@ -29,51 +66,29 @@ const parsePathNameSegments = (pathName, pathParameters, parsedOperation, basePa
     return _(path.split('/'))
         .filter((pathNameSegment) => pathNameSegment.length > 0)
         .map((pathNameSegment) => {
-        const parsedPathNameSegment = { parentOperation: parsedOperation };
+        let parsedPathNameSegment;
         const isParameter = pathNameSegment[0] === '{' && pathNameSegment[pathNameSegment.length - 1] === '}';
         if (isParameter) {
             const pathNameSegmentValue = pathNameSegment.substring(1, pathNameSegment.length - 1);
-            parsedPathNameSegment.parameter =
-                _.find(pathParameters, { name: pathNameSegmentValue });
-            parsedPathNameSegment.validatorType = 'jsonSchema';
-            parsedPathNameSegment.value = pathNameSegmentValue;
+            parsedPathNameSegment = {
+                location: parsedOperation.location,
+                parameter: _.find(pathParameters, { name: pathNameSegmentValue }),
+                parentOperation: parsedOperation,
+                validatorType: 'jsonSchema',
+                value: pathNameSegmentValue
+            };
         }
         else {
-            parsedPathNameSegment.validatorType = 'equal';
-            parsedPathNameSegment.value = pathNameSegment;
+            parsedPathNameSegment = {
+                location: parsedOperation.location,
+                parentOperation: parsedOperation,
+                validatorType: 'equal',
+                value: pathNameSegment
+            };
         }
         return parsedPathNameSegment;
     })
         .value();
-};
-const removeRequiredPropertiesFromSchema = (schema) => {
-    if (!schema) {
-        return schema;
-    }
-    if (schema.required) {
-        delete schema.required;
-    }
-    removeRequiredPropertiesFromSchema(schema.items);
-    _.each(schema.properties, removeRequiredPropertiesFromSchema);
-    return undefined;
-};
-const addAdditionalPropertiesFalseToObjectSchema = (objectSchema) => {
-    if (typeof objectSchema.additionalProperties !== 'object') {
-        objectSchema.additionalProperties = false;
-    }
-    _.each(objectSchema.properties, addAdditionalPropertiesFalseToSchema);
-};
-const addAdditionalPropertiesFalseToSchema = (schema) => {
-    if (!schema) {
-        return schema;
-    }
-    if (schema.type === 'object') {
-        addAdditionalPropertiesFalseToObjectSchema(schema);
-    }
-    else if (schema.type === 'array') {
-        addAdditionalPropertiesFalseToSchema(schema.items);
-    }
-    return undefined;
 };
 const toParsedParameter = (parameter, name) => ({
     collectionFormat: parameter.value.collectionFormat,
@@ -107,18 +122,22 @@ const parseResponseHeaders = (headers, responseLocation, parentOperation) => _.r
     result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
     return result;
 }, {});
-const parseResponses = (responses, parentOperation) => {
+const parseResponses = (responses, parentOperation, definitions) => {
+    // tslint:disable:no-object-literal-type-assertion
     const parsedResponses = {
         location: `${parentOperation.location}.responses`,
         parentOperation,
         value: responses
     };
+    const parsedDefinitions = parseDefinitionsForResponses(definitions);
     _.each(responses, (response, responseStatus) => {
         const responseLocation = `${parsedResponses.location}.${responseStatus}`;
         const originalSchema = response.schema;
-        const modifiedSchema = _.cloneDeep(originalSchema);
-        removeRequiredPropertiesFromSchema(modifiedSchema);
-        addAdditionalPropertiesFalseToSchema(modifiedSchema);
+        let modifiedSchema;
+        if (response.schema) {
+            modifiedSchema = modifySchemaForResponses(response.schema);
+            modifiedSchema.definitions = parsedDefinitions;
+        }
         parsedResponses[responseStatus] = {
             getFromSchema: (pathToGet) => ({
                 location: `${responseLocation}.schema.${pathToGet}`,
@@ -138,32 +157,36 @@ const toSpecParameterCollection = (parameters) => _.reduce(parameters, (result, 
     result[parameter.name.toLowerCase()] = parameter;
     return result;
 }, {});
-const toRequestBodyParameter = (parameters) => _(parameters)
+const toRequestBodyParameter = (parameters, definitions) => _(parameters)
     .filter((parameter) => parameter.value.in === 'body')
-    .map((parameter) => ({
-    getFromSchema: (pathToGet) => ({
-        location: `${parameter.location}.schema.${pathToGet}`,
+    .map((parameter) => {
+    const modifiedSchema = _.cloneDeep(parameter.value.schema);
+    modifiedSchema.definitions = definitions;
+    return {
+        getFromSchema: (pathToGet) => ({
+            location: `${parameter.location}.schema.${pathToGet}`,
+            parentOperation: parameter.parentOperation,
+            value: _.get(parameter.value.schema, pathToGet)
+        }),
+        location: parameter.location,
+        name: parameter.value.name,
         parentOperation: parameter.parentOperation,
-        value: _.get(parameter.value.schema, pathToGet)
-    }),
-    location: parameter.location,
-    name: parameter.value.name,
-    parentOperation: parameter.parentOperation,
-    required: parameter.value.required,
-    schema: parameter.value.schema,
-    value: parameter.value
-}))
+        required: parameter.value.required,
+        schema: modifiedSchema,
+        value: parameter.value
+    };
+})
     .first();
 const toParsedParametersFor = (inValue, parameters) => _(parameters)
     .filter({ value: { in: inValue } })
     .map((parameter) => toParsedParameter(parameter, parameter.value.name))
     .value();
-const parseParameters = (path, pathLocation, parsedOperation) => {
+const parseParameters = (path, pathLocation, parsedOperation, definitions) => {
     const pathParameters = toParsedSpecValue(path.parameters, pathLocation, parsedOperation);
     const operationParameters = toParsedSpecValue(parsedOperation.value.parameters, parsedOperation.location, parsedOperation);
     const mergedParameters = mergePathAndOperationParameters(pathParameters, operationParameters);
     return {
-        requestBody: toRequestBodyParameter(mergedParameters),
+        requestBody: toRequestBodyParameter(mergedParameters, definitions),
         requestHeaders: toSpecParameterCollection(toParsedParametersFor('header', mergedParameters)),
         requestPath: toParsedParametersFor('path', mergedParameters),
         requestQuery: toSpecParameterCollection(toParsedParametersFor('query', mergedParameters))
@@ -219,8 +242,8 @@ const parseSecurityRequirements = (securityDefinitionsOrUndefined, operationSecu
             credentialLocation = securityDefinition.in;
         }
         return {
-            credentialLocation,
             credentialKey,
+            credentialLocation,
             location: `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`,
             parentOperation: parsedOperation,
             type: securityDefinition.type,
@@ -242,7 +265,7 @@ const parseOperationFromPath = (path, pathName, specPathOrUrl, specJson) => _(pa
         specFile: specPathOrUrl,
         value: operation
     };
-    const parsedParameters = parseParameters(path, pathLocation, parsedOperation);
+    const parsedParameters = parseParameters(path, pathLocation, parsedOperation, specJson.definitions);
     parsedOperation.parentOperation = parsedOperation;
     parsedOperation.pathNameSegments =
         parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, specJson.basePath);
@@ -261,7 +284,7 @@ const parseOperationFromPath = (path, pathName, specPathOrUrl, specJson) => _(pa
     parsedOperation.requestBodyParameter = parsedParameters.requestBody;
     parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
     parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
-    parsedOperation.responses = parseResponses(operation.responses, parsedOperation);
+    parsedOperation.responses = parseResponses(operation.responses, parsedOperation, specJson.definitions);
     parsedOperation.securityRequirements = parseSecurityRequirements(specJson.securityDefinitions, operation.security, specJson.security, parsedOperation);
     return parsedOperation;
 })

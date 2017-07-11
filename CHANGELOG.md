@@ -1,3 +1,29 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/1.0.0...v2.0.0) (2017-07-11)
+
+
+### Bug Fixes
+
+* allOf validation ignoring required properties and formats ([bae1bb7](https://bitbucket.org/atlassian/swagger-mock-validator/commits/bae1bb7)), closes [#32](https://bitbucket.org/atlassian/swagger-mock-validator/issue/32)
+
+
+### Features
+
+* add support for circular references in the swagger file ([dd61f7b](https://bitbucket.org/atlassian/swagger-mock-validator/commits/dd61f7b)), closes [#60](https://bitbucket.org/atlassian/swagger-mock-validator/issue/60)
+* only output mockDetails and specDetails when they relevant ([8486bf8](https://bitbucket.org/atlassian/swagger-mock-validator/commits/8486bf8)), closes [#56](https://bitbucket.org/atlassian/swagger-mock-validator/issue/56)
+
+
+### BREAKING CHANGES
+
+* Prior to this change the tool used to disallow additional properties in response mocks unless the schema explicitly allowed additional properties. To support the allOf keyword correctly this behavior has been changed. Now additional properties are allowed in response mocks unless a schema explicitly disallows them. This means some mock responses that were previously considered invalid will now be considered valid.
+
+It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
+* swagger-mock-validator now supports validating schemas containing circular references. Prior to this change schemas containing circular references were ignored. If you have a schema that contains circular references and a mock that is not compatible with that schema the swagger-mock-validator will now fail.
+
+It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/0.0.31...v1.0.0) (2017-03-24)
 

@@ -38,14 +38,17 @@ const removeNonSwaggerAjvFormats = (ajv) => {
     });
 };
 const changeTypeToKeywordForCustomFormats = (schema) => {
+    if (!schema) {
+        return;
+    }
+    _.each(schema.definitions, changeTypeToKeywordForCustomFormats);
+    _.each(schema.allOf, changeTypeToKeywordForCustomFormats);
     double_1.formatForDoubleNumbers(schema);
     float_1.formatForFloatNumbers(schema);
     int32_1.formatForInt32Numbers(schema);
     int64_1.formatForInt64Numbers(schema);
     _.each(schema.properties, changeTypeToKeywordForCustomFormats);
-    if (schema.items) {
-        changeTypeToKeywordForCustomFormats(schema.items);
-    }
+    changeTypeToKeywordForCustomFormats(schema.items);
     if (typeof schema.additionalProperties === 'object') {
         changeTypeToKeywordForCustomFormats(schema.additionalProperties);
     }

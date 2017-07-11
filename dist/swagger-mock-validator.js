@@ -63,14 +63,14 @@ const createPostAnalyticEventFunction = (options) => {
 const validate = (specPathOrUrl, mockPathOrUrl, loadJson, postAnalyticEvent) => {
     const whenSpecJson = loadJson(specPathOrUrl);
     const whenSpecValidationResults = whenSpecJson
-        .then((specJson) => validate_swagger_1.default(specJson, specPathOrUrl, mockPathOrUrl));
+        .then((specJson) => validate_swagger_1.default(specJson, specPathOrUrl));
     const whenParsedSpec = whenSpecValidationResults
         .then(() => whenSpecJson)
         .then(resolve_swagger_1.default)
         .then((specJson) => spec_parser_1.default.parseSwagger(specJson, specPathOrUrl));
     const whenMockJson = loadJson(mockPathOrUrl);
     const whenMockValidationResults = whenMockJson
-        .then((mockJson) => validate_pact_1.default(mockJson, mockPathOrUrl, specPathOrUrl));
+        .then((mockJson) => validate_pact_1.default(mockJson, mockPathOrUrl));
     const whenParsedMock = whenMockValidationResults
         .then(() => whenMockJson)
         .then((mockJson) => mock_parser_1.default.parsePact(mockJson, mockPathOrUrl));
