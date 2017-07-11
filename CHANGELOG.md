@@ -15,12 +15,8 @@
 
 ### BREAKING CHANGES
 
-* Prior to this change the tool used to disallow additional properties in response mocks unless the schema explicitly allowed additional properties. To support the allOf keyword correctly this behavior has been changed. Now additional properties are allowed in response mocks unless a schema explicitly disallows them. This means some mock responses that were previously considered invalid will now be considered valid.
-
-It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
-* swagger-mock-validator now supports validating schemas containing circular references. Prior to this change schemas containing circular references were ignored. If you have a schema that contains circular references and a mock that is not compatible with that schema the swagger-mock-validator will now fail.
-
-It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
+* Prior to this change the tool used to disallow additional properties in response mocks unless the schema explicitly allowed additional properties. To support the allOf keyword correctly this behavior has been changed. Now additional properties are allowed in response mocks unless a schema explicitly disallows them. This means some mock responses that were previously considered invalid will now be considered valid. It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
+* swagger-mock-validator now supports validating schemas containing circular references. Prior to this change schemas containing circular references were ignored. If you have a schema that contains circular references and a mock that is not compatible with that schema the swagger-mock-validator will now fail. It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
 
 
 
@@ -41,9 +37,7 @@ It is recommended that consumers and providers coordinate upgrading to this rele
 
 ### BREAKING CHANGES
 
-* The name of the module has changed from “@atlassian/swagger-pact-validator” to “swagger-mock-validator”.
-
-To migrate you need to rename the dependency in your package.json and update any code that invokes this cli took from “swagger-pact-validator” to “swagger-mock-validator”.
+* The name of the module has changed from “@atlassian/swagger-pact-validator” to “swagger-mock-validator”. To migrate you need to rename the dependency in your package.json and update any code that invokes this cli took from “swagger-pact-validator” to “swagger-mock-validator”.
 
 
 
