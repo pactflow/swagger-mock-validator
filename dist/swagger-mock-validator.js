@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
 const q = require("q");
-const VError = require("verror");
 const analytics_1 = require("./swagger-mock-validator/analytics");
 const metadata_1 = require("./swagger-mock-validator/analytics/metadata");
 const json_loader_1 = require("./swagger-mock-validator/json-loader");
@@ -38,59 +37,79 @@ const parseUserOptions = (userOptions) => ({
     specSource: getSpecSource(userOptions.specPathOrUrl),
     uuidGenerator: userOptions.uuidGenerator || uuid_generator_1.default
 });
+const combineValidationOutcomes = (validationOutcomes) => {
+    return {
+        errors: _(validationOutcomes)
+            .map((outcome) => outcome.errors)
+            .flatten()
+            .value(),
+        reason: _(validationOutcomes)
+            .map((outcome) => outcome.reason)
+            .filter((reason) => reason !== undefined)
+            .join(', ') || undefined,
+        success: _(validationOutcomes).every((outcome) => outcome.success),
+        warnings: _(validationOutcomes)
+            .map((outcome) => outcome.warnings)
+            .flatten()
+            .value()
+    };
+};
 const createLoadJsonFunction = (fileSystem, httpClient) => (pathOrUrl) => json_loader_1.default.load(pathOrUrl, fileSystem, httpClient);
-const createPostAnalyticEventFunction = (options) => {
+const createPostAnalyticEventFunction = (options, specValidationOutcome) => {
     const analyticsUrl = options.analyticsUrl;
     if (!analyticsUrl) {
         return () => q.resolve(undefined);
     }
     const parentId = options.uuidGenerator.generate();
-    return (parsedMock, parsedSpec, errors, warnings, success) => analytics_1.default.postEvent({
+    return (parsedMock, outcome) => analytics_1.default.postEvent({
         analyticsUrl,
-        errors,
+        consumer: parsedMock.consumer,
         httpClient: options.httpClient,
         metadata: options.metadata,
+        mockPathOrUrl: parsedMock.pathOrUrl,
         mockSource: options.mockSource,
         parentId,
-        parsedMock,
-        parsedSpec,
+        provider: parsedMock.provider,
+        specPathOrUrl: options.specPathOrUrl,
         specSource: options.specSource,
-        success,
         uuidGenerator: options.uuidGenerator,
-        warnings
+        validationOutcome: combineValidationOutcomes([specValidationOutcome, outcome])
+    }).catch(() => {
+        return;
     });
 };
-const validate = (specPathOrUrl, mockPathOrUrl, loadJson, postAnalyticEvent) => {
-    const whenSpecJson = loadJson(specPathOrUrl);
-    const whenSpecValidationResults = whenSpecJson
-        .then((specJson) => validate_swagger_1.default(specJson, specPathOrUrl));
-    const whenParsedSpec = whenSpecValidationResults
-        .then(() => whenSpecJson)
-        .then(resolve_swagger_1.default)
-        .then((specJson) => spec_parser_1.default.parseSwagger(specJson, specPathOrUrl));
+const loadMock = (mockPathOrUrl, loadJson) => {
     const whenMockJson = loadJson(mockPathOrUrl);
-    const whenMockValidationResults = whenMockJson
+    const whenMockValidationOutcome = whenMockJson
         .then((mockJson) => validate_pact_1.default(mockJson, mockPathOrUrl));
-    const whenParsedMock = whenMockValidationResults
-        .then(() => whenMockJson)
-        .then((mockJson) => mock_parser_1.default.parsePact(mockJson, mockPathOrUrl));
-    const whenSpecMockValidationResults = q.all([whenParsedMock, whenParsedSpec]).spread(validate_spec_and_mock_1.default);
-    const whenAllValidationResults = q.all([whenSpecValidationResults, whenSpecMockValidationResults])
-        .spread((specValidationResults, specMockValidationResults) => ({
-        warnings: _.concat([], specValidationResults.warnings, specMockValidationResults.warnings)
-    }));
-    return whenAllValidationResults
-        .then((results) => q.all([whenParsedMock, whenParsedSpec, q([]), q(results.warnings), q(true)]), (error) => {
-        let errors = [];
-        let warnings = [];
-        if (error.details) {
-            errors = error.details.errors;
-            warnings = error.details.warnings;
+    return whenMockValidationOutcome
+        .then((mockValidationOutcome) => {
+        if (!mockValidationOutcome.success) {
+            return q({ outcome: mockValidationOutcome });
         }
-        return q.all([whenParsedMock, whenParsedSpec, q(errors), q(warnings), q(false)]);
-    })
-        .spread(postAnalyticEvent)
-        .then(() => whenAllValidationResults, () => whenAllValidationResults);
+        return whenMockJson
+            .then((mockJson) => mock_parser_1.default.parsePact(mockJson, mockPathOrUrl))
+            .then((parsedMock) => ({ outcome: mockValidationOutcome, mock: parsedMock }));
+    });
+};
+const validateMock = (mockPathOrUrl, loadJson, parsedSpec, postAnalyticEvent) => {
+    return loadMock(mockPathOrUrl, loadJson)
+        .then((loadMockResult) => {
+        if (!loadMockResult.mock) {
+            return loadMockResult.outcome;
+        }
+        return validate_spec_and_mock_1.default(loadMockResult.mock, parsedSpec)
+            .then((specAndMockOutcome) => {
+            return [
+                loadMockResult.mock,
+                combineValidationOutcomes([loadMockResult.outcome, specAndMockOutcome])
+            ];
+        })
+            .spread((parsedMock, combinedOutcome) => {
+            postAnalyticEvent(parsedMock, combinedOutcome);
+            return combinedOutcome;
+        });
+    });
 };
 const getPactFilesFromBroker = (mockPathOrUrl, providerName, loadJson) => {
     const whenPactBrokerResponse = loadJson(mockPathOrUrl);
@@ -111,46 +130,37 @@ const getPactFilesFromBroker = (mockPathOrUrl, providerName, loadJson) => {
         return _.map(providerPacts, (providerPact) => providerPact.href);
     });
 };
+const validateMocks = (mockPathOrUrl, providerName, parsedSpec, loadJson, postAnalyticEvent) => {
+    const whenMockFiles = providerName
+        ? getPactFilesFromBroker(mockPathOrUrl, providerName, loadJson)
+        : q([mockPathOrUrl]);
+    return whenMockFiles
+        .then((mockFiles) => q.all(_.map(mockFiles, (mockFile) => validateMock(mockFile, loadJson, parsedSpec, postAnalyticEvent))))
+        .then((validationOutcomes) => combineValidationOutcomes(validationOutcomes));
+};
 const swaggerMockValidator = {
     validate: (userOptions) => {
         const options = parseUserOptions(userOptions);
         const loadJson = createLoadJsonFunction(options.fileSystem, options.httpClient);
-        const postAnalyticEvent = createPostAnalyticEventFunction(options);
-        const whenMockFiles = options.providerName
-            ? getPactFilesFromBroker(options.mockPathOrUrl, options.providerName, loadJson)
-            : q([options.mockPathOrUrl]);
-        return whenMockFiles
-            .then((mockPathsOrUrls) => q.allSettled(_.map(mockPathsOrUrls, (mockPathOrUrl) => validate(options.specPathOrUrl, mockPathOrUrl, loadJson, postAnalyticEvent))))
-            .then((validationResults) => {
-            const rejectedResults = _.filter(validationResults, (validationResult) => validationResult.state === 'rejected');
-            const rejectedErrors = _(rejectedResults)
-                .map((validationResult) => _.get(validationResult, 'reason.details.errors', []))
-                .flatten()
-                .value();
-            const rejectedWarnings = _(rejectedResults)
-                .map((validationResult) => _.get(validationResult, 'reason.details.warnings', []))
-                .flatten()
-                .value();
-            const rejectedErrorMessages = _(rejectedResults)
-                .map((validationResult) => validationResult.reason.message)
-                .join(', ');
-            const fulfilledWarnings = _(validationResults)
-                .filter((validationResult) => validationResult.state === 'fulfilled')
-                .map((validationResult) => _.get(validationResult, 'value.warnings', []))
-                .flatten()
-                .value();
-            const combinedWarnings = _.concat(rejectedWarnings, fulfilledWarnings);
-            if (rejectedResults.length > 0) {
-                const error = (rejectedResults.length === 1)
-                    ? rejectedResults[0].reason
-                    : new VError(rejectedErrorMessages);
-                error.details = {
-                    errors: rejectedErrors,
-                    warnings: combinedWarnings
-                };
-                return q.reject(error);
+        const whenSpecJson = loadJson(options.specPathOrUrl);
+        const whenSpecValidationOutcome = whenSpecJson
+            .then((specJson) => validate_swagger_1.default(specJson, options.specPathOrUrl));
+        return whenSpecValidationOutcome.then((specValidationOutcome) => {
+            if (!specValidationOutcome.success) {
+                return specValidationOutcome;
             }
-            return q.resolve({ warnings: combinedWarnings });
+            const postAnalyticEvent = createPostAnalyticEventFunction(options, specValidationOutcome);
+            const whenParsedSpec = whenSpecValidationOutcome
+                .then(() => whenSpecJson)
+                .then(resolve_swagger_1.default)
+                .then((specJson) => spec_parser_1.default.parseSwagger(specJson, options.specPathOrUrl));
+            return whenParsedSpec
+                .then((parsedSpec) => {
+                return validateMocks(options.mockPathOrUrl, options.providerName, parsedSpec, loadJson, postAnalyticEvent);
+            })
+                .then((mocksValidationOutcome) => {
+                return combineValidationOutcomes([specValidationOutcome, mocksValidationOutcome]);
+            });
         });
     }
 };

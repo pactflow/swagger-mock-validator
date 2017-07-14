@@ -2,25 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const q = require("q");
 exports.default = (pactJson, mockPathOrUrl) => {
+    let errors = [];
+    const warnings = [];
     if (!pactJson.interactions) {
-        const error = new Error(`"${mockPathOrUrl}" is not a valid pact file`);
-        error.details = {
-            errors: [{
-                    code: 'pv.error',
-                    message: 'Missing required property: interactions',
-                    mockDetails: {
-                        interactionDescription: null,
-                        interactionState: null,
-                        location: '[pactRoot]',
-                        mockFile: mockPathOrUrl,
-                        value: pactJson
-                    },
-                    source: 'pact-validation',
-                    type: 'error'
-                }],
-            warnings: []
-        };
-        return q.reject(error);
+        errors = [{
+                code: 'pv.error',
+                message: 'Missing required property: interactions',
+                mockDetails: {
+                    interactionDescription: null,
+                    interactionState: null,
+                    location: '[pactRoot]',
+                    mockFile: mockPathOrUrl,
+                    value: pactJson
+                },
+                source: 'pact-validation',
+                type: 'error'
+            }];
     }
-    return q({ warnings: [] });
+    const success = errors.length === 0;
+    const reason = success ? undefined : `"${mockPathOrUrl}" is not a valid pact file`;
+    return q({ warnings, errors, reason, success });
 };

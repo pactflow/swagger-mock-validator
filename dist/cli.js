@@ -19,9 +19,15 @@ const displaySummaryForValidationResults = (name, resultsOrNone) => {
     console.log(`${results.length} ${name}(s)`);
     _.each(summary, (count, resultCode) => console.log(`\t${resultCode}: ${count}`));
 };
-const displaySummary = (warningsOrUndefined, errorsOrUndefined) => {
-    displaySummaryForValidationResults('error', errorsOrUndefined);
-    displaySummaryForValidationResults('warning', warningsOrUndefined);
+const displaySummary = (result) => {
+    if (result.reason) {
+        console.log(result.reason);
+    }
+    displaySummaryForValidationResults('error', result.errors);
+    displaySummaryForValidationResults('warning', result.warnings);
+    if (result.warnings.length > 0 || result.errors.length > 0) {
+        console.log(`${util.inspect({ warnings: result.warnings, errors: result.errors }, { depth: 4 })}\n`);
+    }
 };
 commander
     .version(packageJson.version)
@@ -48,18 +54,13 @@ json file.`)
     providerName: options.provider,
     specPathOrUrl: swagger
 })
-    .then((results) => {
-    displaySummary(results.warnings);
-    if (results.warnings.length > 0) {
-        console.log(`${util.inspect(results, { depth: 4 })}\n`);
+    .then((result) => {
+    displaySummary(result);
+    if (!result.success) {
+        throw new Error(result.reason);
     }
 })
     .catch((error) => {
-    console.log(`${error.message}\n`);
-    if (error.details) {
-        displaySummary(error.details.warnings, error.details.errors);
-        console.log(`${util.inspect(error.details, { depth: 4 })}\n`);
-    }
     console.log(error.stack);
     process.exitCode = 1;
 }))

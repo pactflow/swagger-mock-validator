@@ -35,7 +35,7 @@ const generateResult = (options) => ({
     type: options.type
 });
 const parseValidationResult = (validationResult, specPathOrUrl) => {
-    const validationErrors = _.get(validationResult, 'errors', [])
+    const errors = _.get(validationResult, 'errors', [])
         .map((swaggerValidationError) => generateResult({
         code: 'sv.error',
         message: swaggerValidationError.message,
@@ -43,7 +43,7 @@ const parseValidationResult = (validationResult, specPathOrUrl) => {
         specPathOrUrl,
         type: 'error'
     }));
-    const validationWarnings = _.get(validationResult, 'warnings', [])
+    const warnings = _.get(validationResult, 'warnings', [])
         .map((swaggerValidationWarning) => generateResult({
         code: 'sv.warning',
         message: swaggerValidationWarning.message,
@@ -51,15 +51,9 @@ const parseValidationResult = (validationResult, specPathOrUrl) => {
         specPathOrUrl,
         type: 'warning'
     }));
-    if (validationErrors.length > 0) {
-        const error = new Error(`"${specPathOrUrl}" is not a valid swagger file`);
-        error.details = {
-            errors: validationErrors,
-            warnings: validationWarnings
-        };
-        return q.reject(error);
-    }
-    return q({ warnings: validationWarnings });
+    const success = errors.length === 0;
+    const reason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;
+    return q({ errors, warnings, reason, success });
 };
 exports.default = (specJson, specPathOrUrl) => validate(specJson)
     .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl));
