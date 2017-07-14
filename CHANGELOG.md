@@ -2,11 +2,6 @@
 ## [2.0.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.0.1...v2.0.2) (2017-07-14)
 
 
-
-<a name="2.0.1"></a>
-## [2.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.0.0...v2.0.1) (2017-07-14)
-
-
 ### Bug Fixes
 
 * spec warnings were not shown if mock validation returns errors ([c1328a8](https://bitbucket.org/atlassian/swagger-mock-validator/commits/c1328a8))
