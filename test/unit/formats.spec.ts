@@ -1,4 +1,4 @@
-import {expectToReject, willResolve} from 'jasmine-promise-tools';
+import {willResolve} from 'jasmine-promise-tools';
 import * as _ from 'lodash';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
@@ -19,8 +19,7 @@ import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader'
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('formats', () => {
-    const expectedFailedValidationError =
-        new Error('Mock file "pact.json" is not compatible with swagger file "swagger.json"');
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
 
     const defaultSwaggerPathBuilder = pathBuilder.withGetOperation(operationBuilder);
 
@@ -71,35 +70,34 @@ describe('formats', () => {
 
         it('should pass when the pact path matches a date param defined in the swagger', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithDateBuilder, '2016-12-01').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should return the error when a pact has an incorrect type as a date param', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithDateBuilder, '2016');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /2016',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: '/2016'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithDateBuilder.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithDateBuilder, '2016')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: GET /2016',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: '/2016'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithDateBuilder.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -112,35 +110,34 @@ describe('formats', () => {
             const whenResult = invokeValidatorWithPath(swaggerPathWithDateTimeBuilder, '2016-12-01T01:30:00Z');
 
             return whenResult.then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             });
         }));
 
         it('should return the error when a pact has an incorrect type as a datetime param', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithDateTimeBuilder, '2016-12-01T');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /2016-12-01T',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: '/2016-12-01T'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithDateTimeBuilder.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithDateTimeBuilder, '2016-12-01T')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: GET /2016-12-01T',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: '/2016-12-01T'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithDateTimeBuilder.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -156,103 +153,100 @@ describe('formats', () => {
 
         it('should pass when the pact path contains the minimum int32 value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithInt32Builder, minimumInt32Allowed).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should pass when the pact path contains the maximum int32 value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithInt32Builder, maximumInt32Allowed).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should return the error when a pact path contains smaller then the min int32 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt32Builder, minimumInt32AllowedMinusOne);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /${minimumInt32AllowedMinusOne}`,
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: `/${minimumInt32AllowedMinusOne}`
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithInt32Builder.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithInt32Builder, minimumInt32AllowedMinusOne)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: `Path or method not defined in swagger file: GET /${minimumInt32AllowedMinusOne}`,
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: `/${minimumInt32AllowedMinusOne}`
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithInt32Builder.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should return the error when a pact path contains bigger then the max int32 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt32Builder, maximumInt32AllowedPlusOne);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /${maximumInt32AllowedPlusOne}`,
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: `/${maximumInt32AllowedPlusOne}`
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithInt32Builder.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithInt32Builder, maximumInt32AllowedPlusOne)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: `Path or method not defined in swagger file: GET /${maximumInt32AllowedPlusOne}`,
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: `/${maximumInt32AllowedPlusOne}`
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithInt32Builder.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should return the error when a pact path contains non-integer int32 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt32Builder, '1.1');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /1.1`,
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: `/1.1`
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithInt32Builder.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithInt32Builder, '1.1')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: `Path or method not defined in swagger file: GET /1.1`,
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: `/1.1`
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithInt32Builder.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should return the error when a pact path contains blank int32 value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithInt32Builder, ' ').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
@@ -264,7 +258,7 @@ describe('formats', () => {
                 .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt32());
 
             return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             });
         }));
 
@@ -275,31 +269,30 @@ describe('formats', () => {
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt32());
 
-            const result = invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.body.incompatible',
-                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should be integer',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.body.id',
-                        mockFile: 'pact.json',
-                        value: 1.1
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: 'integer'
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.body.incompatible',
+                        message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                        'should be integer',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.body.id',
+                            mockFile: 'pact.json',
+                            value: 1.1
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: 'integer'
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
@@ -311,31 +304,31 @@ describe('formats', () => {
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt32());
 
-            const result = invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.body.incompatible',
-                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should pass "formatInt32" keyword validation',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.body.id',
-                        mockFile: 'pact.json',
-                        value: numberThatIsTooLarge
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatInt32',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: undefined
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.body.incompatible',
+                        message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                        'should pass "formatInt32" keyword validation',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.body.id',
+                            mockFile: 'pact.json',
+                            value: numberThatIsTooLarge
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '' +
+                                '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatInt32',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: undefined
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -354,103 +347,102 @@ describe('formats', () => {
 
         it('should pass when the pact path contains the minimum int64 value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithInt64Parameter, minimumInt64Allowed).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should pass when the pact path contains the maximum int64 value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithInt64Parameter, maximumInt64Allowed).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should return the error when a pact path contains smaller then the min int64 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt64Parameter, minimumInt64AllowedMinusOneThousand);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /${minimumInt64AllowedMinusOneThousand}`,
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: `/${minimumInt64AllowedMinusOneThousand}`
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithInt64Parameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithInt64Parameter, minimumInt64AllowedMinusOneThousand)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: ' +
+                            `GET /${minimumInt64AllowedMinusOneThousand}`,
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: `/${minimumInt64AllowedMinusOneThousand}`
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithInt64Parameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should return the error when a pact path contains bigger then the max int64 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt64Parameter, maximumInt64AllowedPlusOneThousand);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /${maximumInt64AllowedPlusOneThousand}`,
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: `/${maximumInt64AllowedPlusOneThousand}`
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithInt64Parameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithInt64Parameter, maximumInt64AllowedPlusOneThousand)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: ' +
+                            `GET /${maximumInt64AllowedPlusOneThousand}`,
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: `/${maximumInt64AllowedPlusOneThousand}`
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithInt64Parameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should return the error when a pact path contains non-integer int64 value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithInt64Parameter, '1.1');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /1.1`,
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: `/1.1`
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithInt64Parameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithInt64Parameter, '1.1')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: `Path or method not defined in swagger file: GET /1.1`,
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: `/1.1`
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithInt64Parameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should pass when a pact path contains blank int64 value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithInt64Parameter, ' ').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
@@ -462,7 +454,7 @@ describe('formats', () => {
                 .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt64());
 
             return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             });
         }));
 
@@ -473,31 +465,30 @@ describe('formats', () => {
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt64());
 
-            const result = invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.body.incompatible',
-                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should be integer',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.body.id',
-                        mockFile: 'pact.json',
-                        value: 1.1
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: 'integer'
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.body.incompatible',
+                        message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                        'should be integer',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.body.id',
+                            mockFile: 'pact.json',
+                            value: 1.1
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: 'integer'
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
@@ -508,31 +499,31 @@ describe('formats', () => {
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt64());
 
-            const result = invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.body.incompatible',
-                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                        'should pass "formatInt64" keyword validation',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.body.id',
-                        mockFile: 'pact.json',
-                        value: 12345678901234567000
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatInt64',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: undefined
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.body.incompatible',
+                        message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                            'should pass "formatInt64" keyword validation',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.body.id',
+                            mockFile: 'pact.json',
+                            value: 12345678901234567000
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '' +
+                                '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatInt64',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: undefined
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -543,81 +534,79 @@ describe('formats', () => {
 
         it('should pass when the pact path contains a value with 5 significant digits', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithFloatParameter, '12345').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should pass when the pact path contains a value with 6 significant digits', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithFloatParameter, '123456').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should pass when pact path contains a value with 6 sig digits involving decimals', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithFloatParameter, '00123.45600').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should return the error when pact path contains a value with 7 significant digits', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithFloatParameter, '1234567');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /1234567',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: '/1234567'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithFloatParameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithFloatParameter, '1234567')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: GET /1234567',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: '/1234567'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithFloatParameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should return the error when a pact path contains non-numeric float value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithFloatParameter, 'a');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /a`,
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: `/a`
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithFloatParameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithFloatParameter, 'a')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: `Path or method not defined in swagger file: GET /a`,
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: `/a`
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithFloatParameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should pass when a pact path contains blank float value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithFloatParameter, ' ').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
@@ -629,7 +618,7 @@ describe('formats', () => {
                 .withRequiredProperty('id', schemaBuilder.withTypeNumber().withFormatFloat());
 
             return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             });
         }));
 
@@ -640,31 +629,30 @@ describe('formats', () => {
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeNumber().withFormatFloat());
 
-            const result = invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.body.incompatible',
-                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should be number',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.body.id',
-                        mockFile: 'pact.json',
-                        value: 'abc'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: 'number'
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.body.incompatible',
+                        message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                        'should be number',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.body.id',
+                            mockFile: 'pact.json',
+                            value: 'abc'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: 'number'
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
@@ -675,31 +663,31 @@ describe('formats', () => {
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeNumber().withFormatFloat());
 
-            const result = invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.body.incompatible',
-                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should pass "formatFloat" keyword validation',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.body.id',
-                        mockFile: 'pact.json',
-                        value: 123.4567
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatFloat',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: undefined
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.body.incompatible',
+                        message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                        'should pass "formatFloat" keyword validation',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.body.id',
+                            mockFile: 'pact.json',
+                            value: 123.4567
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '' +
+                                '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatFloat',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: undefined
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -710,81 +698,79 @@ describe('formats', () => {
 
         it('should pass when the pact path contains a value with 14 significant digits', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithDoubleParameter, '12345678901234').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should pass when the pact path contains a value with 15 significant digits', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithDoubleParameter, '123456789012345').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should pass when pact path contains a value with 15 sig digits involving decimals', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithDoubleParameter, '001234567.8901234500').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should return the error when pact path contains a value with 16 significant digits', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithDoubleParameter, '1234567890123456');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /1234567890123456',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: '/1234567890123456'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithDoubleParameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithDoubleParameter, '1234567890123456')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: GET /1234567890123456',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: '/1234567890123456'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithDoubleParameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should return the error when a pact path contains non-numeric double value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithDoubleParameter, 'a');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /a`,
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: `/a`
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithDoubleParameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithDoubleParameter, 'a')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: `Path or method not defined in swagger file: GET /a`,
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: `/a`
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithDoubleParameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
         it('should pass when a pact path contains blank double value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithDoubleParameter, ' ').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
@@ -796,7 +782,7 @@ describe('formats', () => {
                 .withRequiredProperty('id', schemaBuilder.withTypeNumber().withFormatDouble());
 
             return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             });
         }));
 
@@ -807,31 +793,30 @@ describe('formats', () => {
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeNumber().withFormatDouble());
 
-            const result = invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.body.incompatible',
-                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should be number',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.body.id',
-                        mockFile: 'pact.json',
-                        value: 'abc'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: 'number'
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.body.incompatible',
+                        message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                        'should be number',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.body.id',
+                            mockFile: 'pact.json',
+                            value: 'abc'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: 'number'
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
@@ -842,31 +827,31 @@ describe('formats', () => {
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeNumber().withFormatDouble());
 
-            const result = invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.body.incompatible',
-                    message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                    'should pass "formatDouble" keyword validation',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.body.id',
-                        mockFile: 'pact.json',
-                        value: 123456789.01234567
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatDouble',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: undefined
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.body.incompatible',
+                        message: 'Response body is incompatible with the response body schema in the swagger file: ' +
+                        'should pass "formatDouble" keyword validation',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.body.id',
+                            mockFile: 'pact.json',
+                            value: 123456789.01234567
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '' +
+                                '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatDouble',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: undefined
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -879,35 +864,34 @@ describe('formats', () => {
             const value = new Buffer('base-64-encoded').toString('base64');
 
             return invokeValidatorWithPath(swaggerPathWithByteParameter, value).then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             });
         }));
 
         it('should return the error when pact path contains a value with 16 significant digits', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithByteParameter, 'not-base-64-encoded');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /not-base-64-encoded',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: '/not-base-64-encoded'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithByteParameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithByteParameter, 'not-base-64-encoded')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: GET /not-base-64-encoded',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: '/not-base-64-encoded'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithByteParameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -918,41 +902,40 @@ describe('formats', () => {
 
         it('should pass when the pact path contains a value with any sequence of octets', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithBinaryParameter, '123').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should pass when the pact path contains a value with only spaces', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithBinaryParameter, ' ').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should return the error when pact path contains a blank value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithBinaryParameter, '');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: '/'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithBinaryParameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithBinaryParameter, '')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: GET /',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: '/'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithBinaryParameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -963,41 +946,40 @@ describe('formats', () => {
 
         it('should pass when the pact path contains any value', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithPasswordParameter, '123').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should pass when the pact path contains a value with only spaces', willResolve(() =>
             invokeValidatorWithPath(swaggerPathWithPasswordParameter, ' ').then((result) => {
-                expect(result).toContainNoWarnings();
+                expect(result).toContainNoWarningsOrErrors();
             })
         ));
 
         it('should return the error when pact path contains a blank value', willResolve(() => {
-            const result = invokeValidatorWithPath(swaggerPathWithPasswordParameter, '');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: '/'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {'/{value}': swaggerPathWithPasswordParameter.build()}
-                    },
-                    type: 'error'
-                }]);
+            return invokeValidatorWithPath(swaggerPathWithPasswordParameter, '')
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.request.path-or-method.unknown',
+                        message: 'Path or method not defined in swagger file: GET /',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].request.path',
+                            mockFile: 'pact.json',
+                            value: '/'
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths',
+                            pathMethod: null,
+                            pathName: null,
+                            specFile: 'swagger.json',
+                            value: {'/{value}': swaggerPathWithPasswordParameter.build()}
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
     });
@@ -1022,7 +1004,7 @@ describe('formats', () => {
                     .withParameter(pathParameterBuilder.withUnknownStringFormatNamed(formatName as string, 'value'));
 
                 return invokeValidatorWithPath(swaggerPathWithFormatParameter, pactValue).then((result) => {
-                    expect(result).toContainNoWarnings();
+                    expect(result).toContainNoWarningsOrErrors();
                 });
             }));
         });
@@ -1051,31 +1033,30 @@ describe('formats', () => {
                 )
                 .build();
 
-            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
-                    code: 'spv.response.header.incompatible',
-                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
-                    'should pass "formatInt32" keyword validation',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].response.headers.x-custom-header',
-                        mockFile: 'pact.json',
-                        value: tooBigInteger
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-custom-header',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: responseHeaderSpec.build()
-                    },
-                    type: 'error'
-                }]);
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile)
+                .then((result) => {
+                    expect(result.reason).toEqual(expectedFailedValidationError);
+                    expect(result).toContainErrors([{
+                        code: 'spv.response.header.incompatible',
+                        message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                        'should pass "formatInt32" keyword validation',
+                        mockDetails: {
+                            interactionDescription: 'interaction description',
+                            interactionState: '[none]',
+                            location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                            mockFile: 'pact.json',
+                            value: tooBigInteger
+                        },
+                        source: 'spec-mock-validation',
+                        specDetails: {
+                            location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-custom-header',
+                            pathMethod: 'get',
+                            pathName: '/does/exist',
+                            specFile: 'swagger.json',
+                            value: responseHeaderSpec.build()
+                        },
+                        type: 'error'
+                    }]);
             });
         }));
 
@@ -1103,11 +1084,9 @@ describe('formats', () => {
                 )
                 .build();
 
-            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+                expect(result.reason).toEqual(expectedFailedValidationError);
+                expect(result).toContainErrors([{
                     code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should pass "formatInt32" keyword validation',
@@ -1161,11 +1140,9 @@ describe('formats', () => {
                 )
                 .build();
 
-            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+                expect(result.reason).toEqual(expectedFailedValidationError);
+                expect(result).toContainErrors([{
                     code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should pass "formatInt32" keyword validation',
@@ -1217,11 +1194,9 @@ describe('formats', () => {
                 )
                 .build();
 
-            const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(expectedFailedValidationError);
-                expect(error.details).toContainErrors([{
+            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+                expect(result.reason).toEqual(expectedFailedValidationError);
+                expect(result).toContainErrors([{
                     code: 'spv.response.body.incompatible',
                     message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                     'should pass "formatInt32" keyword validation',

@@ -1,4 +1,4 @@
-import {expectToReject, willResolve} from 'jasmine-promise-tools';
+import {willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
@@ -13,8 +13,7 @@ import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader'
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('response status', () => {
-    const expectedFailedValidationError =
-        new Error('Mock file "pact.json" is not compatible with swagger file "swagger.json"');
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
 
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
@@ -40,18 +39,16 @@ describe('response status', () => {
         const operation = operationBuilder.withResponse(200, responseBuilder);
 
         return validateResponseStatus(200, operation).then((result) => {
-            (expect(result) as any).toContainNoWarnings();
+            (expect(result) as any).toContainNoWarningsOrErrors();
         });
     }));
 
     it('should return the error when pact mocks response status not defined in the swagger', willResolve(() => {
         const operation = operationBuilder.withResponse(200, responseBuilder);
 
-        const result = validateResponseStatus(202, operation);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return validateResponseStatus(202, operation).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.response.status.unknown',
                 message: 'Response status code not defined in swagger file: 202',
                 mockDetails: {
@@ -80,6 +77,7 @@ describe('response status', () => {
             .withDefaultResponse(responseBuilder);
 
         return validateResponseStatus(202, operation).then((result) => {
+            (expect(result) as any).toContainNoErrors();
             (expect(result) as any).toContainWarnings([{
                 code: 'spv.response.status.default',
                 message: 'Response status code matched default response in swagger file: 202',

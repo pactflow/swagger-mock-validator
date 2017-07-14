@@ -420,7 +420,7 @@ export interface JsonSchemaProperties {
 }
 
 export interface SwaggerMockValidator {
-    validate: (options: SwaggerMockValidatorOptions) => q.Promise<ValidationSuccess>;
+    validate: (options: SwaggerMockValidatorOptions) => q.Promise<ValidationOutcome>;
 }
 
 export interface SwaggerMockValidatorOptions {
@@ -451,17 +451,11 @@ export type MockSource = 'pactBroker' | 'path' | 'url';
 
 export type SpecSource = 'path' | 'url';
 
-export interface ValidationSuccess {
+export interface ValidationOutcome {
     warnings: ValidationResult[];
-}
-
-export interface ValidationFailureError extends Error {
-    details?: ValidationFailureErrorDetails;
-}
-
-export interface ValidationFailureErrorDetails {
     errors: ValidationResult[];
-    warnings: ValidationResult[];
+    reason?: string;
+    success: boolean;
 }
 
 export interface ValidationResult {

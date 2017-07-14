@@ -1,6 +1,6 @@
 import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import * as q from 'q';
-import {HttpClient, ValidationSuccess} from '../../lib/swagger-mock-validator/types';
+import {HttpClient, ValidationOutcome} from '../../lib/swagger-mock-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder, providerPactsBuilder} from './support/pact-broker-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
@@ -24,7 +24,7 @@ describe('reading urls', () => {
         specPathOrUrl: string,
         mockPathOrUrl: string,
         providerName?: string
-    ): Promise<ValidationSuccess> =>
+    ): Promise<ValidationOutcome> =>
         swaggerPactValidatorLoader.invokeWithMocks({
             httpClient: mockHttpClient,
             mockPathOrUrl,
@@ -61,7 +61,7 @@ describe('reading urls', () => {
             });
         }));
 
-        it('should return the error when making the request fails', willResolve(() => {
+        it('should fail when making the request fails', willResolve(() => {
             mockUrls['http://domain.com/swagger.json'] = q.reject<string>(new Error('error-message'));
             mockUrls['http://domain.com/pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
@@ -75,7 +75,7 @@ describe('reading urls', () => {
             );
         }));
 
-        it('should return the error when the swagger file cannot be parsed as json', willResolve(() => {
+        it('should fail when the swagger file cannot be parsed as json', willResolve(() => {
             mockUrls['http://domain.com/swagger.json'] = q('');
             mockUrls['http://domain.com/pact.json'] = q(JSON.stringify(pactBuilder.build()));
 
@@ -107,7 +107,7 @@ describe('reading urls', () => {
             });
         }));
 
-        it('should return the error when reading the pact file fails', willResolve(() => {
+        it('should fail when reading the pact file fails', willResolve(() => {
             mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
             mockUrls['http://domain.com/pact.json'] = q.reject<string>(new Error('error-message'));
 
@@ -121,7 +121,7 @@ describe('reading urls', () => {
             );
         }));
 
-        it('should return the error when the pact file cannot be parsed as json', willResolve(() => {
+        it('should fail when the pact file cannot be parsed as json', willResolve(() => {
             mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
             mockUrls['http://domain.com/pact.json'] = q('');
 
@@ -161,7 +161,7 @@ describe('reading urls', () => {
             })
         ));
 
-        it('should return the error when the request to the root of the pact broker fails', willResolve(() => {
+        it('should fail when the request to the root of the pact broker fails', willResolve(() => {
             mockUrls['http://pact-broker.com'] = q.reject<string>(new Error('error-message'));
 
             const result = invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name');
@@ -171,7 +171,7 @@ describe('reading urls', () => {
             });
         }));
 
-        it('should return the error when no url for latest pact files is in the pact root response', willResolve(() => {
+        it('should fail when no url for latest pact files is in the pact root response', willResolve(() => {
             mockUrls['http://pact-broker.com'] = q(JSON.stringify(pactBrokerBuilder
                 .withNoLatestProviderPactsLink()
                 .build()
@@ -196,7 +196,7 @@ describe('reading urls', () => {
             });
         });
 
-        it('should return the error when the request for the latest pact files fails', () => {
+        it('should fail when the request for the latest pact files fails', () => {
             mockUrls['http://pact-broker.com'] = q(JSON.stringify(pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/{provider}/pacts')
                 .build()
@@ -212,7 +212,7 @@ describe('reading urls', () => {
             });
         });
 
-        it('should return the error when there are no provider pact files', willResolve(() => {
+        it('should fail when there are no provider pact files', willResolve(() => {
             mockUrls['http://pact-broker.com'] = q(JSON.stringify(pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/{provider}/pacts')
                 .build()
@@ -247,7 +247,7 @@ describe('reading urls', () => {
             });
         }));
 
-        it('should return the error when the request for one of the provider pact files fails', willResolve(() => {
+        it('should fail when the request for one of the provider pact files fails', willResolve(() => {
             mockUrls['http://pact-broker.com'] = q(JSON.stringify(pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/{provider}/pacts')
                 .build()
@@ -270,7 +270,7 @@ describe('reading urls', () => {
             });
         }));
 
-        it('should return all errors when the pact files is not compatible with the swagger spec', willResolve(() => {
+        it('should return all errors when the pact files are not compatible with the swagger spec', willResolve(() => {
             mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerBuilder
                 .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
                 .build()
@@ -298,16 +298,15 @@ describe('reading urls', () => {
                 .build()
             ));
 
-            const result = invokeValidate('http://domain.com/swagger.json', 'http://pact-broker.com', 'provider-name');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error(
+            return invokeValidate('http://domain.com/swagger.json', 'http://pact-broker.com', 'provider-name')
+                .then((result) => {
+                expect(result.reason).toEqual(
                     'Mock file "http://pact-broker.com/provider-name/consumer-2/pact" ' +
                     'is not compatible with swagger file "http://domain.com/swagger.json", ' +
                     'Mock file "http://pact-broker.com/provider-name/consumer-3/pact" ' +
                     'is not compatible with swagger file "http://domain.com/swagger.json"'
-                ));
-                expect(error.details).toContainErrors([{
+                );
+                expect(result).toContainErrors([{
                     code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /does/not/exist',
                     mockDetails: {

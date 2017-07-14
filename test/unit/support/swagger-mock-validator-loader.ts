@@ -9,7 +9,7 @@ import {
     Swagger,
     SwaggerMockValidatorOptions,
     UuidGenerator,
-    ValidationSuccess
+    ValidationOutcome
 } from '../../../lib/swagger-mock-validator/types';
 
 export interface MockFileSystemResponses {
@@ -81,7 +81,7 @@ const swaggerMockValidatorLoader = {
 
         return mockUuidGenerator;
     },
-    invoke: (swaggerFile: Swagger, pactFile: Pact): Promise<ValidationSuccess> =>
+    invoke: (swaggerFile: Swagger, pactFile: Pact): Promise<ValidationOutcome> =>
         swaggerMockValidatorLoader.invokeWithMocks({
             fileSystem: swaggerMockValidatorLoader.createMockFileSystem({
                 'pact.json': q(JSON.stringify(pactFile)),
@@ -91,7 +91,7 @@ const swaggerMockValidatorLoader = {
             specPathOrUrl: 'swagger.json'
         }),
     // tslint:disable:cyclomatic-complexity
-    invokeWithMocks: (options: SwaggerMockValidatorOptions): Promise<ValidationSuccess> =>
+    invokeWithMocks: (options: SwaggerMockValidatorOptions): Promise<ValidationOutcome> =>
         swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,
             fileSystem: options.fileSystem || swaggerMockValidatorLoader.createMockFileSystem({}),

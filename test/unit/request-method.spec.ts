@@ -1,4 +1,4 @@
-import {expectToReject, willResolve} from 'jasmine-promise-tools';
+import {willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {operationBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
@@ -7,8 +7,7 @@ import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader'
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('request method', () => {
-    const expectedFailedValidationError =
-        new Error('Mock file "pact.json" is not compatible with swagger file "swagger.json"');
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
 
     const invokeSwaggerPactValidator = swaggerPactValidatorLoader.invoke;
 
@@ -30,7 +29,7 @@ describe('request method', () => {
             .build();
 
         return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
-            (expect(result) as any).toContainNoWarnings();
+            (expect(result) as any).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -49,11 +48,10 @@ describe('request method', () => {
             .withPath('/does/exist', pathWithGetOperationBuilder)
             .build();
 
-        const result = invokeSwaggerPactValidator(swaggerFile, pactFile);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return invokeSwaggerPactValidator(swaggerFile, pactFile)
+            .then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: POST /does/exist',
                 mockDetails: {

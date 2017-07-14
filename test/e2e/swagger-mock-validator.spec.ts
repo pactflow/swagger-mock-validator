@@ -82,7 +82,13 @@ describe('swagger-mock-validator', () => {
                 'is not compatible with swagger file "test/e2e/fixtures/swagger-provider.json"'));
 
             expect(error).toEqual(jasmine.stringMatching('23 error'));
-            expect(error).toEqual(jasmine.stringMatching('0 warning'));
+            expect(error).toEqual(jasmine.stringMatching('1 warning'));
+
+            // swagger warning
+            expect(error).toEqual(jasmine.stringMatching(/\[swaggerRoot\]\.definitions\.unused/));
+            expect(error).toEqual(
+                jasmine.stringMatching('Definition is defined but is not used: #/definitions/unused')
+            );
 
             // request path missing
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[0]\.request\.path/));

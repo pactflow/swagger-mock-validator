@@ -4,7 +4,7 @@ import CustomMatcherFactories = jasmine.CustomMatcherFactories;
 import CustomEqualityTester = jasmine.CustomEqualityTester;
 import MatchersUtil = jasmine.MatchersUtil;
 import {
-    ValidationFailureErrorDetails,
+    ValidationOutcome,
     ValidationResult
 } from '../../../lib/swagger-mock-validator/types';
 
@@ -128,7 +128,7 @@ const compareResults = <T>(options: CompareResultCollectionOptions<T>) => {
 
 export const customMatchers: CustomMatcherFactories = {
     toContainErrors: (utilities, customEqualityTesters) => ({
-        compare: (actual: ValidationFailureErrorDetails, expected: ValidationResult[]) => compareResults({
+        compare: (actual: ValidationOutcome, expected: ValidationResult[]) => compareResults({
             actualResults: _.get(actual, 'errors', []),
             customEqualityTesters,
             expectedResults: expected,
@@ -136,10 +136,21 @@ export const customMatchers: CustomMatcherFactories = {
             utilities
         })
     }),
-    toContainNoWarnings: (utilities, customEqualityTesters) => ({
+    toContainNoErrors: (utilities, customEqualityTesters) => ({
         compare: <T>(actual: T) => {
-            const expected: {warnings: T[]} = {warnings: []};
-            return {pass: utilities.equals(actual, expected, customEqualityTesters)};
+            const expected: T[] = [];
+            const actualResults = _.get(actual, 'errors', []);
+            return {pass: utilities.equals(actualResults, expected, customEqualityTesters)};
+        }
+    }),
+    toContainNoWarningsOrErrors: (utilities, customEqualityTesters) => ({
+        compare: <T>(actual: T) => {
+            const expected: {warnings: T[], errors: T[]} = {warnings: [], errors: []};
+            const actualResults = {
+                errors: _.get(actual, 'errors', []),
+                warnings: _.get(actual, 'warnings', [])
+            };
+            return {pass: utilities.equals(actualResults, expected, customEqualityTesters)};
         }
     }),
     toContainWarnings: (utilities, customEqualityTesters) => ({
@@ -155,6 +166,7 @@ export const customMatchers: CustomMatcherFactories = {
 
 export interface CustomMatchers<T> extends jasmine.Matchers<T> {
     toContainErrors(expected: ValidationResult[]): boolean;
-    toContainNoWarnings(): boolean;
+    toContainNoErrors(): boolean;
+    toContainNoWarningsOrErrors(): boolean;
     toContainWarnings(expected: ValidationResult[]): boolean;
 }

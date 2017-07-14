@@ -1,4 +1,4 @@
-import {expectToReject, willResolve} from 'jasmine-promise-tools';
+import {willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
@@ -12,8 +12,7 @@ import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader'
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('security', () => {
-    const expectedFailedValidationError =
-        new Error('Mock file "pact.json" is not compatible with swagger file "swagger.json"');
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
     const defaultInteractionBuilder = interactionBuilder
         .withDescription('interaction description')
         .withRequestPath('/does/exist')
@@ -38,7 +37,7 @@ describe('security', () => {
             .build();
 
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -52,11 +51,9 @@ describe('security', () => {
             .withSecurityDefinitionNamed('basic', securitySchemeBuilder.withTypeBasic())
             .build();
 
-        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.request.authorization.missing',
                 message: 'Request Authorization header is missing but is required by the swagger file',
                 mockDetails: {
@@ -94,7 +91,7 @@ describe('security', () => {
             .build();
 
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -108,11 +105,9 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInHeader('x-api-token'))
             .build();
 
-        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.request.authorization.missing',
                 message: 'Request Authorization header is missing but is required by the swagger file',
                 mockDetails: {
@@ -150,7 +145,7 @@ describe('security', () => {
             .build();
 
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -164,11 +159,9 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInQuery('apiToken'))
             .build();
 
-        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.request.authorization.missing',
                 message: 'Request Authorization query is missing but is required by the swagger file',
                 mockDetails: {
@@ -210,7 +203,7 @@ describe('security', () => {
             .build();
 
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -227,11 +220,9 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKeyQuery', securitySchemeBuilder.withTypeApiKeyInQuery('apiKey'))
             .build();
 
-        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.request.authorization.missing',
                 message: 'Request Authorization header is missing but is required by the swagger file',
                 mockDetails: {
@@ -284,7 +275,7 @@ describe('security', () => {
             .build();
 
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -297,11 +288,9 @@ describe('security', () => {
             .withSecurityRequirementNamed('apiKey')
             .build();
 
-        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.request.authorization.missing',
                 message: 'Request Authorization query is missing but is required by the swagger file',
                 mockDetails: {
@@ -336,11 +325,9 @@ describe('security', () => {
             .withSecurityRequirementNamed('query')
             .build();
 
-        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.request.authorization.missing',
                 message: 'Request Authorization header is missing but is required by the swagger file',
                 mockDetails: {

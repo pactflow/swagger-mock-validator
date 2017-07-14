@@ -1,4 +1,4 @@
-import {expectToReject, willResolve} from 'jasmine-promise-tools';
+import {willResolve} from 'jasmine-promise-tools';
 import * as _ from 'lodash';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
@@ -14,8 +14,7 @@ import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader'
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('request headers', () => {
-    const expectedFailedValidationError =
-        new Error('Mock file "pact.json" is not compatible with swagger file "swagger.json"');
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
     const defaultInteractionBuilder = interactionBuilder
         .withDescription('interaction description')
         .withRequestPath('/does/exist')
@@ -60,7 +59,7 @@ describe('request headers', () => {
         const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
         return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -68,30 +67,29 @@ describe('request headers', () => {
         const requestHeaders = {'x-custom-header': 'not-a-number'};
         const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
-        const result = validateRequestHeaders(headerParameter, requestHeaders);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                code: 'spv.request.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.x-custom-header',
-                    mockFile: 'pact.json',
-                    value: 'not-a-number'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: headerParameter.build()
-                },
-                type: 'error'
-            }]);
+        return validateRequestHeaders(headerParameter, requestHeaders)
+            .then((result) => {
+                expect(result.reason).toEqual(expectedFailedValidationError);
+                expect(result).toContainErrors([{
+                    code: 'spv.request.header.incompatible',
+                    message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
+                    mockDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.headers.x-custom-header',
+                        mockFile: 'pact.json',
+                        value: 'not-a-number'
+                    },
+                    source: 'spec-mock-validation',
+                    specDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        specFile: 'swagger.json',
+                        value: headerParameter.build()
+                    },
+                    type: 'error'
+                }]);
         });
     }));
 
@@ -99,31 +97,30 @@ describe('request headers', () => {
         const requestHeaders = {'x-custom-header': '1,2,a'};
         const headerParameter = requestHeaderParameterBuilder.withRequiredArrayOfNumbersNamed('x-custom-header');
 
-        const result = validateRequestHeaders(headerParameter, requestHeaders);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                code: 'spv.request.header.incompatible',
-                message:
-                    'Value is incompatible with the parameter defined in the swagger file: should be number',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.x-custom-header',
-                    mockFile: 'pact.json',
-                    value: '1,2,a'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: headerParameter.build()
-                },
-                type: 'error'
-            }]);
+        return validateRequestHeaders(headerParameter, requestHeaders)
+            .then((result) => {
+                expect(result.reason).toEqual(expectedFailedValidationError);
+                expect(result).toContainErrors([{
+                    code: 'spv.request.header.incompatible',
+                    message:
+                        'Value is incompatible with the parameter defined in the swagger file: should be number',
+                    mockDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.headers.x-custom-header',
+                        mockFile: 'pact.json',
+                        value: '1,2,a'
+                    },
+                    source: 'spec-mock-validation',
+                    specDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        specFile: 'swagger.json',
+                        value: headerParameter.build()
+                    },
+                    type: 'error'
+                }]);
         });
     }));
 
@@ -131,38 +128,37 @@ describe('request headers', () => {
         const headerParameter = requestHeaderParameterBuilder.withOptionalNumberNamed('x-custom-header');
 
         return validateRequestHeaders(headerParameter, {}).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 
     it('should fail when the pact request header is missing and the spec defines it as required', willResolve(() => {
         const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
-        const result = validateRequestHeaders(headerParameter, {});
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
-                code: 'spv.request.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
-                    'should have required property \'value\'',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: headerParameter.build()
-                },
-                type: 'error'
-            }]);
+        return validateRequestHeaders(headerParameter, {})
+            .then((result) => {
+                expect(result.reason).toEqual(expectedFailedValidationError);
+                expect(result).toContainErrors([{
+                    code: 'spv.request.header.incompatible',
+                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                        'should have required property \'value\'',
+                    mockDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0]',
+                        mockFile: 'pact.json',
+                        value: defaultInteractionBuilder.build()
+                    },
+                    source: 'spec-mock-validation',
+                    specDetails: {
+                        location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        specFile: 'swagger.json',
+                        value: headerParameter.build()
+                    },
+                    type: 'error'
+                }]);
         });
     }));
 
@@ -170,6 +166,7 @@ describe('request headers', () => {
         const requestHeaders = {'x-custom-header': 'value'};
 
         return validateRequestHeaders(undefined, requestHeaders).then((result) => {
+            expect(result).toContainNoErrors();
             expect(result).toContainWarnings([{
                 code: 'spv.request.header.unknown',
                 message: 'Request header is not defined in the swagger file: x-custom-header',
@@ -231,7 +228,7 @@ describe('request headers', () => {
         };
 
         return validateRequestHeaders(undefined, requestHeaders).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -240,7 +237,7 @@ describe('request headers', () => {
         const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('X-custom-header');
 
         return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {
-            expect(result).toContainNoWarnings();
+            expect(result).toContainNoWarningsOrErrors();
         });
     }));
 });

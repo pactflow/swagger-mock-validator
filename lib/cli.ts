@@ -4,7 +4,7 @@ import * as commander from 'commander';
 import * as _ from 'lodash';
 import * as util from 'util';
 import swaggerMockValidator from './swagger-mock-validator';
-import {ValidationResult} from './swagger-mock-validator/types';
+import {ValidationOutcome, ValidationResult} from './swagger-mock-validator/types';
 
 // tslint:disable:no-var-requires
 const packageJson = require('../package.json');
@@ -26,9 +26,16 @@ const displaySummaryForValidationResults = (name: string, resultsOrNone?: Valida
     _.each(summary, (count, resultCode) => console.log(`\t${resultCode}: ${count}`));
 };
 
-const displaySummary = (warningsOrUndefined?: ValidationResult[], errorsOrUndefined?: ValidationResult[]) => {
-    displaySummaryForValidationResults('error', errorsOrUndefined);
-    displaySummaryForValidationResults('warning', warningsOrUndefined);
+const displaySummary = (result: ValidationOutcome) => {
+    if (result.reason) {
+        console.log(result.reason);
+    }
+    displaySummaryForValidationResults('error', result.errors);
+    displaySummaryForValidationResults('warning', result.warnings);
+
+    if (result.warnings.length > 0 || result.errors.length > 0) {
+        console.log(`${util.inspect({warnings: result.warnings, errors: result.errors}, {depth: 4})}\n`);
+    }
 };
 
 commander
@@ -59,19 +66,13 @@ json file.`
             providerName: options.provider,
             specPathOrUrl: swagger
         })
-        .then((results) => {
-            displaySummary(results.warnings);
-
-            if (results.warnings.length > 0) {
-                console.log(`${util.inspect(results, {depth: 4})}\n`);
+        .then((result) => {
+            displaySummary(result);
+            if (!result.success) {
+                throw new Error(result.reason);
             }
         })
         .catch((error) => {
-            console.log(`${error.message}\n`);
-            if (error.details) {
-                displaySummary(error.details.warnings, error.details.errors);
-                console.log(`${util.inspect(error.details, {depth: 4})}\n`);
-            }
             console.log(error.stack);
             process.exitCode = 1;
         })
