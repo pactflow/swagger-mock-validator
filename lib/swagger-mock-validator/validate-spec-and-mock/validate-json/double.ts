@@ -1,11 +1,11 @@
 import * as Decimal from 'decimal.js';
-import {JsonSchema} from '../../types';
+import {JsonSchemaValue} from '../../types';
 
 const maximumDoublePrecision = 15;
 
 export const doubleAjvKeyword = 'formatDouble';
 
-export const formatForDoubleNumbers = (schema: JsonSchema) => {
+export const formatForDoubleNumbers = (schema: JsonSchemaValue) => {
     if (schema.type === 'number' && schema.format as any === 'double') {
         delete schema.format;
         (schema as any)[doubleAjvKeyword] = true;

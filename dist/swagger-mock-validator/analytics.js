@@ -15,13 +15,13 @@ const generateResultSummary = (results) => {
 exports.default = {
     postEvent: (options) => options.httpClient.post(options.analyticsUrl, {
         execution: {
-            consumer: options.parsedMock.consumer,
+            consumer: options.consumer,
             mockFormat: 'pact',
-            mockPathOrUrl: options.parsedMock.pathOrUrl,
+            mockPathOrUrl: options.mockPathOrUrl,
             mockSource: options.mockSource,
-            provider: options.parsedMock.provider,
+            provider: options.provider,
             specFormat: 'swagger',
-            specPathOrUrl: options.parsedSpec.pathOrUrl,
+            specPathOrUrl: options.specPathOrUrl,
             specSource: options.specSource
         },
         id: options.uuidGenerator.generate(),
@@ -33,9 +33,9 @@ exports.default = {
         parentId: options.parentId,
         result: {
             duration: options.metadata.getUptime(),
-            errors: generateResultSummary(options.errors),
-            success: options.success,
-            warnings: generateResultSummary(options.warnings)
+            errors: generateResultSummary(options.validationOutcome.errors),
+            success: options.validationOutcome.success,
+            warnings: generateResultSummary(options.validationOutcome.warnings)
         },
         source: 'swagger-mock-validator'
     })

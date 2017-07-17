@@ -32,18 +32,10 @@ exports.default = (parsedMock, parsedSpec) => {
         .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpec))
         .flatten()
         .value();
-    const results = {
-        errors: _.filter(validationResults, (res) => res.type === 'error'),
-        warnings: _.filter(validationResults, (res) => res.type === 'warning')
-    };
-    if (results.errors.length > 0) {
-        const error = new Error(`Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
-            `with swagger file "${parsedSpec.pathOrUrl}"`);
-        error.details = {
-            errors: results.errors,
-            warnings: results.warnings
-        };
-        return q.reject(error);
-    }
-    return q({ warnings: results.warnings });
+    const errors = _.filter(validationResults, (res) => res.type === 'error');
+    const warnings = _.filter(validationResults, (res) => res.type === 'warning');
+    const success = errors.length === 0;
+    const reason = success ? undefined : `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
+        `with swagger file "${parsedSpec.pathOrUrl}"`;
+    return q({ errors, warnings, reason, success });
 };

@@ -200,13 +200,18 @@ export interface PactInteractionHeaders {
 
 export interface Swagger {
     basePath?: string;
+    consumes?: string[];
+    definitions?: JsonSchemaDefinitions;
     info: SwaggerInfo;
     paths: SwaggerPaths;
     produces?: string[];
-    consumes?: string[];
     security?: SwaggerSecurityRequirement[];
     securityDefinitions?: SwaggerSecurityDefinitions;
     swagger: string;
+}
+
+export interface JsonSchemaDefinitions {
+    [name: string]: JsonSchema;
 }
 
 export interface SwaggerInfo {
@@ -372,9 +377,21 @@ export interface UuidGenerator {
 
 export type JsonLoaderFunction = (location: string) => q.Promise<string>;
 
-export interface JsonSchema {
-    additionalProperties?: boolean;
-    allOf?: JsonSchema[];
+export type JsonSchema = JsonSchemaValue | JsonSchemaReference | JsonSchemaAllOf;
+
+export interface JsonSchemaReference {
+    definitions?: JsonSchemaDefinitions;
+    $ref: string;
+}
+
+export interface JsonSchemaAllOf {
+    allOf: JsonSchema[];
+    definitions?: JsonSchemaDefinitions;
+}
+
+export interface JsonSchemaValue {
+    additionalProperties?: boolean | JsonSchema;
+    definitions?: JsonSchemaDefinitions;
     enum?: any[];
     exclusiveMaximum?: boolean;
     exclusiveMinimum?: boolean;
@@ -403,13 +420,12 @@ export interface JsonSchemaProperties {
 }
 
 export interface SwaggerMockValidator {
-    validate: (options: SwaggerMockValidatorOptions) => q.Promise<ValidationSuccess>;
+    validate: (options: SwaggerMockValidatorOptions) => q.Promise<ValidationOutcome>;
 }
 
 export interface SwaggerMockValidatorOptions {
     analyticsUrl?: string;
     coverage?: boolean;
-    coverageReporter?: CoverageReporter;
     fileSystem?: FileSystem;
     httpClient?: HttpClient;
     metadata?: Metadata;
@@ -422,7 +438,6 @@ export interface SwaggerMockValidatorOptions {
 interface ParsedSwaggerMockValidatorOptions {
     analyticsUrl?: string;
     coverage: boolean;
-    coverageReporter: CoverageReporter;
     fileSystem: FileSystem;
     httpClient: HttpClient;
     metadata: Metadata;
@@ -438,17 +453,11 @@ export type MockSource = 'pactBroker' | 'path' | 'url';
 
 export type SpecSource = 'path' | 'url';
 
-export interface ValidationSuccess {
+export interface ValidationOutcome {
     warnings: ValidationResult[];
-}
-
-export interface ValidationFailureError extends Error {
-    details?: ValidationFailureErrorDetails;
-}
-
-export interface ValidationFailureErrorDetails {
     errors: ValidationResult[];
-    warnings: ValidationResult[];
+    reason?: string;
+    success: boolean;
 }
 
 export interface ValidationResult {
@@ -530,10 +539,4 @@ interface SpecResponseCoverage {
 interface SpecOperationCoverage {
     operation: ParsedSpecOperation;
     responses: SpecResponseCoverage[];
-}
-
-export type CoverageReportGeneratorFunction = (specCoverage: SpecOperationCoverage[]) => q.Promise<void>;
-
-interface CoverageReporter {
-    generate: CoverageReportGeneratorFunction;
 }

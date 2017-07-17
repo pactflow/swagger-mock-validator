@@ -21,6 +21,7 @@ const parseValues = (values, location, parentInteraction) => {
     }, {});
 };
 const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
+    // tslint:disable:no-object-literal-type-assertion
     const parsedInteraction = {
         description: interaction.description,
         location: `[pactRoot].interactions[${interactionIndex}]`,

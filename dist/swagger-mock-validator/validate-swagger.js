@@ -24,13 +24,6 @@ const generateLocation = (path) => {
 const generateResult = (options) => ({
     code: options.code,
     message: options.message,
-    mockDetails: {
-        interactionDescription: null,
-        interactionState: null,
-        location: '[pactRoot]',
-        mockFile: options.mockPathOrUrl,
-        value: null
-    },
     source: 'swagger-validation',
     specDetails: {
         location: options.specLocation,
@@ -41,34 +34,26 @@ const generateResult = (options) => ({
     },
     type: options.type
 });
-const parseValidationResult = (validationResult, specPathOrUrl, mockPathOrUrl) => {
-    const validationErrors = _.get(validationResult, 'errors', [])
+const parseValidationResult = (validationResult, specPathOrUrl) => {
+    const errors = _.get(validationResult, 'errors', [])
         .map((swaggerValidationError) => generateResult({
         code: 'sv.error',
         message: swaggerValidationError.message,
-        mockPathOrUrl,
-        specPathOrUrl,
         specLocation: generateLocation(swaggerValidationError.path),
+        specPathOrUrl,
         type: 'error'
     }));
-    const validationWarnings = _.get(validationResult, 'warnings', [])
+    const warnings = _.get(validationResult, 'warnings', [])
         .map((swaggerValidationWarning) => generateResult({
         code: 'sv.warning',
         message: swaggerValidationWarning.message,
-        mockPathOrUrl,
-        specPathOrUrl,
         specLocation: generateLocation(swaggerValidationWarning.path),
+        specPathOrUrl,
         type: 'warning'
     }));
-    if (validationErrors.length > 0) {
-        const error = new Error(`"${specPathOrUrl}" is not a valid swagger file`);
-        error.details = {
-            errors: validationErrors,
-            warnings: validationWarnings
-        };
-        return q.reject(error);
-    }
-    return q({ warnings: validationWarnings });
+    const success = errors.length === 0;
+    const reason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;
+    return q({ errors, warnings, reason, success });
 };
-exports.default = (specJson, specPathOrUrl, mockPathOrUrl) => validate(specJson)
-    .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl, mockPathOrUrl));
+exports.default = (specJson, specPathOrUrl) => validate(specJson)
+    .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl));

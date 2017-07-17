@@ -3,13 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
 const result_1 = require("../result");
 const validate_mock_value_against_spec_1 = require("./validate-mock-value-against-spec");
-const typeValidators = {
-    equal: (parsedMockPathNameSegment, parsedSpecPathNameSegment) => {
-        const match = parsedSpecPathNameSegment.value === parsedMockPathNameSegment.value;
-        return { match, results: [] };
-    },
-    jsonSchema: (parsedMockPathNameSegment, parsedSpecPathNameSegment) => validate_mock_value_against_spec_1.default(parsedSpecPathNameSegment.parameter, parsedMockPathNameSegment, parsedMockPathNameSegment.parentInteraction, 'spv.request.path-or-method.unknown')
+const equalsTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegment) => {
+    const match = parsedSpecPathNameSegment.value === parsedMockPathNameSegment.value;
+    return { match, results: [] };
 };
+const jsonSchemaTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegment) => validate_mock_value_against_spec_1.default(parsedSpecPathNameSegment.parameter, parsedMockPathNameSegment, parsedMockPathNameSegment.parentInteraction, 'spv.request.path-or-method.unknown');
 const doInteractionAndOperationMatchPaths = (parsedMockInteraction, parsedSpecOperation) => {
     const parsedSpecPathNameSegments = parsedSpecOperation.pathNameSegments;
     if (parsedMockInteraction.requestPathSegments.length !== parsedSpecPathNameSegments.length) {
@@ -17,8 +15,10 @@ const doInteractionAndOperationMatchPaths = (parsedMockInteraction, parsedSpecOp
     }
     const results = parsedSpecPathNameSegments.map((parsedSpecPathNameSegment, index) => {
         const parsedMockPathNameSegment = parsedMockInteraction.requestPathSegments[index];
-        const validator = typeValidators[parsedSpecPathNameSegment.validatorType];
-        return validator(parsedMockPathNameSegment, parsedSpecPathNameSegment);
+        switch (parsedSpecPathNameSegment.validatorType) {
+            case 'jsonSchema': return jsonSchemaTypeValidator(parsedMockPathNameSegment, parsedSpecPathNameSegment);
+            case 'equal': return equalsTypeValidator(parsedMockPathNameSegment, parsedSpecPathNameSegment);
+        }
     });
     return {
         match: _.every(results, 'match'),

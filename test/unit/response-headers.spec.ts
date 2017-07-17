@@ -1,4 +1,4 @@
-import {expectToReject, willResolve} from 'jasmine-promise-tools';
+import {willResolve} from 'jasmine-promise-tools';
 import * as _ from 'lodash';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
@@ -15,8 +15,7 @@ import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader'
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('response headers', () => {
-    const expectedFailedValidationError =
-        new Error('Mock file "pact.json" is not compatible with swagger file "swagger.json"');
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
     const defaultInteractionBuilder = interactionBuilder
         .withDescription('interaction description')
         .withRequestPath('/does/exist')
@@ -56,7 +55,7 @@ describe('response headers', () => {
         const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderBuilder.withNumber());
 
         return validateResponseHeaders(responseSpec, pactResponseHeaders).then((result) => {
-            (expect(result) as any).toContainNoWarnings();
+            (expect(result) as any).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -65,11 +64,9 @@ describe('response headers', () => {
         const responseHeaderSpec = responseHeaderBuilder.withNumber();
         const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderSpec);
 
-        const result = validateResponseHeaders(responseSpec, pactResponseHeaders);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return validateResponseHeaders(responseSpec, pactResponseHeaders).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 mockDetails: {
@@ -97,11 +94,9 @@ describe('response headers', () => {
         const responseHeaderSpec = responseHeaderBuilder.withArrayOfNumber();
         const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderSpec);
 
-        const result = validateResponseHeaders(responseSpec, pactResponseHeaders);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return validateResponseHeaders(responseSpec, pactResponseHeaders).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.response.header.incompatible',
                 message:
                     'Value is incompatible with the parameter defined in the swagger file: should be number',
@@ -129,18 +124,16 @@ describe('response headers', () => {
         const responseSpec = responseBuilder.withHeader('x-custom-header', responseHeaderBuilder.withNumber());
 
         return validateResponseHeaders(responseSpec).then((result) => {
-            (expect(result) as any).toContainNoWarnings();
+            (expect(result) as any).toContainNoWarningsOrErrors();
         });
     }));
 
     it('should fail when a pact response header is defined that is not in the spec', willResolve(() => {
         const requestHeaders = {'x-custom-header': 'value'};
 
-        const result = validateResponseHeaders(undefined, requestHeaders);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return validateResponseHeaders(undefined, requestHeaders).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.response.header.unknown',
                 message: 'Response header is not defined in the swagger file: x-custom-header',
                 mockDetails: {
@@ -229,7 +222,7 @@ describe('response headers', () => {
                 },
                 type: 'warning'
             }));
-
+            (expect(result) as any).toContainNoErrors();
             (expect(result) as any).toContainWarnings(warnings);
         });
     }));
@@ -238,7 +231,7 @@ describe('response headers', () => {
         const requestHeaders = {'Content-Type': 'application/json'};
 
         return validateResponseHeaders(undefined, requestHeaders).then((result) => {
-            (expect(result) as any).toContainNoWarnings();
+            (expect(result) as any).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -247,7 +240,7 @@ describe('response headers', () => {
         const responseSpec = responseBuilder.withHeader('X-custom-header', responseHeaderBuilder.withNumber());
 
         return validateResponseHeaders(responseSpec, pactResponseHeaders).then((result) => {
-            (expect(result) as any).toContainNoWarnings();
+            (expect(result) as any).toContainNoWarningsOrErrors();
         });
     }));
 
@@ -268,11 +261,9 @@ describe('response headers', () => {
             )
             .build();
 
-        const result = swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
-
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(expectedFailedValidationError);
-            expect(error.details).toContainErrors([{
+        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
+            expect(result.reason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
                 code: 'spv.response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
                 mockDetails: {

@@ -2,12 +2,11 @@ import * as _ from 'lodash';
 import * as q from 'q';
 import * as SwaggerTools from 'swagger-tools';
 import {
-    ValidationFailureError, ValidationResult, ValidationResultCode, ValidationResultType
+    ValidationOutcome, ValidationResult, ValidationResultCode, ValidationResultType
 } from './types';
 
 const validate = (document: any): q.Promise<SwaggerTools.ValidationResultCollection> => {
     const deferred = q.defer<SwaggerTools.ValidationResultCollection>();
-
     SwaggerTools.specs.v2.validate(document, (error, result) => {
         if (error) {
             deferred.reject(error);
@@ -53,7 +52,7 @@ const parseValidationResult = (
     validationResult: SwaggerTools.ValidationResultCollection,
     specPathOrUrl: string
 ) => {
-    const validationErrors = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'errors', [])
+    const errors: ValidationResult[] = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'errors', [])
         .map((swaggerValidationError) =>
             generateResult({
                 code: 'sv.error',
@@ -62,9 +61,8 @@ const parseValidationResult = (
                 specPathOrUrl,
                 type: 'error'
             })
-    );
-
-    const validationWarnings = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'warnings', [])
+        );
+    const warnings: ValidationResult[] = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'warnings', [])
         .map((swaggerValidationWarning) =>
             generateResult({
                 code: 'sv.warning',
@@ -72,23 +70,14 @@ const parseValidationResult = (
                 specLocation: generateLocation(swaggerValidationWarning.path),
                 specPathOrUrl,
                 type: 'warning'
-            })
-        );
+            }));
 
-    if (validationErrors.length > 0) {
-        const error = new Error(`"${specPathOrUrl}" is not a valid swagger file`) as ValidationFailureError;
+    const success = errors.length === 0;
+    const reason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;
 
-        error.details = {
-            errors: validationErrors,
-            warnings: validationWarnings
-        };
-
-        return q.reject(error);
-    }
-
-    return q({warnings: validationWarnings});
+    return q({errors, warnings, reason, success});
 };
 
-export default (specJson: any, specPathOrUrl: string) =>
+export default (specJson: any, specPathOrUrl: string): q.Promise<ValidationOutcome> =>
     validate(specJson)
         .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl));

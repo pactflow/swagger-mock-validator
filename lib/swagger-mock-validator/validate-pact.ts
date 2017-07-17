@@ -1,12 +1,11 @@
 import * as q from 'q';
-import {ValidationFailureError} from './types';
+import {ValidationOutcome, ValidationResult} from './types';
 
-export default (pactJson: any, mockPathOrUrl: string) => {
+export default (pactJson: any, mockPathOrUrl: string): q.Promise<ValidationOutcome> => {
+    let errors: ValidationResult[] = [];
+    const warnings: ValidationResult[] = [];
     if (!pactJson.interactions) {
-        const error = new Error(`"${mockPathOrUrl}" is not a valid pact file`) as ValidationFailureError;
-
-        error.details = {
-            errors: [{
+        errors = [{
                 code: 'pv.error',
                 message: 'Missing required property: interactions',
                 mockDetails: {
@@ -18,12 +17,9 @@ export default (pactJson: any, mockPathOrUrl: string) => {
                 },
                 source: 'pact-validation',
                 type: 'error'
-            }],
-            warnings: []
-        };
-
-        return q.reject(error);
+            }];
     }
-
-    return q({warnings: []});
+    const success = errors.length === 0;
+    const reason = success ? undefined : `"${mockPathOrUrl}" is not a valid pact file`;
+    return q({warnings, errors, reason, success});
 };

@@ -5,6 +5,7 @@
     "body-tense": [0],
     "footer-leading-blank": [0],
     "footer-tense": [0],
+    "header-max-length": [1, "always", 120],
     "lang": [0],
     "subject-tense": [0]
   }

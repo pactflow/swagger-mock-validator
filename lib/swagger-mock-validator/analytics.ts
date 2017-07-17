@@ -1,18 +1,18 @@
-import {HttpClient, Metadata, ParsedMock, ParsedSpec, UuidGenerator, ValidationResult} from './types';
+import {HttpClient, Metadata, UuidGenerator, ValidationOutcome, ValidationResult} from './types';
 
 interface PostEventOptions {
     analyticsUrl: string;
-    errors: ValidationResult[];
+    consumer: string;
     httpClient: HttpClient;
     mockSource: 'pactBroker' | 'path' | 'url';
+    mockPathOrUrl: string;
     metadata: Metadata;
     parentId: string;
-    parsedMock: ParsedMock;
-    parsedSpec: ParsedSpec;
+    provider: string;
     specSource: 'path' | 'url';
-    success: boolean;
+    specPathOrUrl: string;
     uuidGenerator: UuidGenerator;
-    warnings: ValidationResult[];
+    validationOutcome: ValidationOutcome;
 }
 
 const generateResultSummary = (results: ValidationResult[]) => {
@@ -35,13 +35,13 @@ const generateResultSummary = (results: ValidationResult[]) => {
 export default {
     postEvent: (options: PostEventOptions) => options.httpClient.post(options.analyticsUrl, {
         execution: {
-            consumer: options.parsedMock.consumer,
+            consumer: options.consumer,
             mockFormat: 'pact',
-            mockPathOrUrl: options.parsedMock.pathOrUrl,
+            mockPathOrUrl: options.mockPathOrUrl,
             mockSource: options.mockSource,
-            provider: options.parsedMock.provider,
+            provider: options.provider,
             specFormat: 'swagger',
-            specPathOrUrl: options.parsedSpec.pathOrUrl,
+            specPathOrUrl: options.specPathOrUrl,
             specSource: options.specSource
         },
         id: options.uuidGenerator.generate(),
@@ -53,9 +53,9 @@ export default {
         parentId: options.parentId,
         result: {
             duration: options.metadata.getUptime(),
-            errors: generateResultSummary(options.errors),
-            success: options.success,
-            warnings: generateResultSummary(options.warnings)
+            errors: generateResultSummary(options.validationOutcome.errors),
+            success: options.validationOutcome.success,
+            warnings: generateResultSummary(options.validationOutcome.warnings)
         },
         source: 'swagger-mock-validator'
     })

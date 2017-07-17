@@ -1,17 +1,11 @@
 import * as q from 'q';
-import * as swaggerTools from 'swagger-tools';
+import * as SwaggerParser from 'swagger-parser';
 import {Swagger} from './types';
 
 export default (document: any): q.Promise<Swagger> => {
-    const deferred = q.defer<Swagger>();
-
-    swaggerTools.specs.v2.resolve(document, (error, parsedDocument) => {
-        if (error) {
-            deferred.reject(error);
-        } else {
-            deferred.resolve(parsedDocument);
+    return q(SwaggerParser.validate(document, {
+        $refs: {
+            circular: 'ignore'
         }
-    });
-
-    return deferred.promise;
+    }));
 };

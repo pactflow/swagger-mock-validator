@@ -4,8 +4,7 @@ import {
     ParsedMock,
     ParsedMockInteraction,
     ParsedSpec,
-    ParsedSpecOperation,
-    ValidationFailureError,
+    ParsedSpecOperation, ValidationOutcome,
     ValidationResult
 } from './types';
 import getParsedSpecOperation from './validate-spec-and-mock/get-parsed-spec-operation';
@@ -62,30 +61,17 @@ const validateMockInteraction = (parsedMockInteraction: ParsedMockInteraction, p
     );
 };
 
-export default (parsedMock: ParsedMock, parsedSpec: ParsedSpec) => {
+export default (parsedMock: ParsedMock, parsedSpec: ParsedSpec): q.Promise<ValidationOutcome> => {
     const validationResults = _(parsedMock.interactions)
         .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpec))
         .flatten<ValidationResult>()
         .value();
 
-    const results = {
-        errors: _.filter(validationResults, (res) => res.type === 'error'),
-        warnings: _.filter(validationResults, (res) => res.type === 'warning')
-    };
+    const errors = _.filter(validationResults, (res) => res.type === 'error');
+    const warnings = _.filter(validationResults, (res) => res.type === 'warning');
+    const success = errors.length === 0;
+    const reason = success ? undefined : `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
+        `with swagger file "${parsedSpec.pathOrUrl}"`;
 
-    if (results.errors.length > 0) {
-        const error = new Error(
-            `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
-            `with swagger file "${parsedSpec.pathOrUrl}"`
-        ) as ValidationFailureError;
-
-        error.details = {
-            errors: results.errors,
-            warnings: results.warnings
-        };
-
-        return q.reject(error);
-    }
-
-    return q({warnings: results.warnings});
+    return q({errors, warnings, reason, success});
 };

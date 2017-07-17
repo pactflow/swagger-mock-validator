@@ -1,11 +1,11 @@
-import {expectToReject, willResolve} from 'jasmine-promise-tools';
+import {willResolve} from 'jasmine-promise-tools';
 import * as q from 'q';
 import {
     HttpClient,
     Pact,
     Swagger,
     SwaggerMockValidatorOptions,
-    ValidationSuccess
+    ValidationOutcome
 } from '../../lib/swagger-mock-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder} from './support/pact-broker-builder';
@@ -65,7 +65,7 @@ describe('analytics', () => {
         });
     };
 
-    const invokeValidationWithUrls = (pactFile?: Pact, swaggerFile?: Swagger): Promise<ValidationSuccess> => {
+    const invokeValidationWithUrls = (pactFile?: Pact, swaggerFile?: Swagger): Promise<ValidationOutcome> => {
         mockUrls['http://domain.com/pact.json'] = q(JSON.stringify(pactFile || defaultPactBuilder.build()));
         mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerFile || defaultSwaggerBuilder.build()));
 
@@ -75,7 +75,7 @@ describe('analytics', () => {
         });
     };
 
-    const invokeValidationWithPaths = (pactFile?: Pact, swaggerFile?: Swagger): Promise<ValidationSuccess> => {
+    const invokeValidationWithPaths = (pactFile?: Pact, swaggerFile?: Swagger): Promise<ValidationOutcome> => {
         mockFiles['pact.json'] = q(JSON.stringify(pactFile || defaultPactBuilder.build()));
         mockFiles['swagger.json'] = q(JSON.stringify(swaggerFile || defaultSwaggerBuilder.build()));
 
@@ -89,7 +89,7 @@ describe('analytics', () => {
         consumer1PactFile?: Pact,
         consumer2PactFile?: Pact,
         swaggerFile?: Swagger
-    ): Promise<ValidationSuccess> => {
+    ): Promise<ValidationOutcome> => {
         mockUrls['http://pact-broker.com'] = q(JSON.stringify(
             pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/a-provider/pacts')
@@ -129,20 +129,41 @@ describe('analytics', () => {
         return invokeValidationWithUrls();
     }));
 
-    it('should fail with the original error when validation fails and analytics has an error', willResolve(() => {
+    it('should return the original error when validation fails and analytics has an error', willResolve(() => {
         (mockHttpClient.post as jasmine.Spy).and.returnValue(q.reject(new Error('an-error')));
 
         const pactFile = defaultPactBuilder
             .withInteraction(interactionBuilder.withRequestPath('/does/not/exist'))
             .build();
 
-        const result = invokeValidationWithUrls(pactFile);
+        return invokeValidationWithUrls(pactFile)
+            .then((result) => {
+                expect(result.errors.length).toBe(1);
+                expect(result.reason).toEqual(
+                    'Mock file "http://domain.com/pact.json" is not compatible ' +
+                    'with swagger file "http://domain.com/swagger.json"'
+                );
+            });
+    }));
 
-        return expectToReject(result).then((error) => {
-            expect(error).toEqual(new Error(
-                'Mock file "http://domain.com/pact.json" is not compatible ' +
-                'with swagger file "http://domain.com/swagger.json"'
-            ));
+    it('should keep validating all mocks when analytics has an error', willResolve(() => {
+        (mockHttpClient.post as jasmine.Spy).and.returnValue(q.reject(new Error('an-error')));
+        const pactFile1 = defaultPactBuilder
+            .withConsumer('consumer-1')
+            .withInteraction(interactionBuilder.withRequestPath('/does/not/exist'))
+            .build();
+        const pactFile2 = defaultPactBuilder
+            .withConsumer('consumer-2')
+            .withInteraction(interactionBuilder.withRequestPath('/does/not/exist/either'))
+            .build();
+        return invokeValidationWithPactBroker(pactFile1, pactFile2).then((result) => {
+            expect(result.errors.length).toBe(2);
+            expect(result.reason).toEqual(
+                'Mock file "http://pact-broker.com/a-provider/consumer-1/pact" ' +
+                'is not compatible with swagger file "http://domain.com/swagger.json", ' +
+                'Mock file "http://pact-broker.com/a-provider/consumer-2/pact" ' +
+                'is not compatible with swagger file "http://domain.com/swagger.json"'
+            );
         });
     }));
 
@@ -301,11 +322,8 @@ describe('analytics', () => {
             .withInteraction(interactionBuilder.withRequestPath('/does/not/exist'))
             .build();
 
-        const result = invokeValidationWithUrls(pactFile);
-
-        return expectToReject(result).then(() => {
-            expect(getPostBody().result.errors.count).toBe(1);
-        });
+        return invokeValidationWithUrls(pactFile)
+            .then(() => expect(getPostBody().result.errors.count).toBe(1));
     }));
 
     it('should send the count of each error type when there are errors', willResolve(() => {
@@ -315,12 +333,11 @@ describe('analytics', () => {
             .withInteraction(interactionBuilder.withRequestPath('/does/exist').withResponseStatus(201))
             .build();
 
-        const result = invokeValidationWithUrls(pactFile);
-
-        return expectToReject(result).then(() => {
-            expect(getPostBody().result.errors['spv.request.path-or-method.unknown']).toBe(2);
-            expect(getPostBody().result.errors['spv.response.status.unknown']).toBe(1);
-        });
+        return invokeValidationWithUrls(pactFile)
+            .then(() => {
+                expect(getPostBody().result.errors['spv.request.path-or-method.unknown']).toBe(2);
+                expect(getPostBody().result.errors['spv.response.status.unknown']).toBe(1);
+            });
     }));
 
     it('should send the success of the validation when it is successful', willResolve(() =>
@@ -334,11 +351,10 @@ describe('analytics', () => {
             .withInteraction(interactionBuilder.withRequestPath('/does/not/exist'))
             .build();
 
-        const result = invokeValidationWithUrls(pactFile);
-
-        return expectToReject(result).then(() => {
-            expect(getPostBody().result.success).toBe(false);
-        });
+        return invokeValidationWithUrls(pactFile)
+            .then(() => {
+                expect(getPostBody().result.success).toBe(false);
+            });
     }));
 
     it('should send the warning count when there are no warnings', willResolve(() =>
