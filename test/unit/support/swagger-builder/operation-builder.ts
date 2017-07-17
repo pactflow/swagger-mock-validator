@@ -14,15 +14,15 @@ export interface OperationBuilder {
 const createOperationBuilder = (operation: SwaggerOperation) => ({
     build: () => _.cloneDeep(operation),
     withConsumes: (consumes: string[]) => createOperationBuilder(setValueOn(operation, 'consumes', consumes)),
-    withDefaultResponse: (responseBuilder: ResponseBuilder) => createOperationBuilder(
-        setValueOn(operation, 'responses.default', responseBuilder.build())
+    withDefaultResponse: (builder: ResponseBuilder) => createOperationBuilder(
+        setValueOn(operation, 'responses.default', builder.build())
     ),
     withParameter: (parameterBuilder: ParameterBuilder) => createOperationBuilder(
         addToArrayOn(operation, 'parameters', parameterBuilder.build())
     ),
     withProduces: (produces: string[]) => createOperationBuilder(setValueOn(operation, 'produces', produces)),
-    withResponse: (statusCode: number, responseBuilder: ResponseBuilder) => createOperationBuilder(
-        setValueOn(operation, `responses.${statusCode}`, responseBuilder.build())
+    withResponse: (statusCode: number, builder: ResponseBuilder) => createOperationBuilder(
+        setValueOn(operation, `responses.${statusCode}`, builder.build())
     ),
     withSecurityRequirementNamed: (name: string, scopes?: string[]) => {
         const securityRequirement: SwaggerSecurityRequirement = {};

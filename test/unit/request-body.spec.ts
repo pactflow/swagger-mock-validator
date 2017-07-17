@@ -31,11 +31,11 @@ describe('request body', () => {
         swaggerBodyParameter?: ParameterBuilder,
         swaggerDefinitions?: DefinitionsBuilder
     ) => {
-        const interactionBuilder = pactRequestBody
+        const interactionWithRequestBodyBuilder = pactRequestBody
             ? defaultInteractionBuilder.withRequestBody(pactRequestBody)
             : defaultInteractionBuilder;
 
-        const pactFile = pactBuilder.withInteraction(interactionBuilder).build();
+        const pactFile = pactBuilder.withInteraction(interactionWithRequestBodyBuilder).build();
 
         const operation = swaggerBodyParameter
             ? operationBuilder.withParameter(swaggerBodyParameter)
