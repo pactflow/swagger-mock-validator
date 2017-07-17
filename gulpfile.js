@@ -90,7 +90,7 @@ gulp.task('create-new-tag', (callback) => {
 gulp.task('lint', ['lint-typescript', 'lint-commits']);
 
 gulp.task('lint-commits', () =>
-    exec('./node_modules/.bin/commitlint --from=HEAD~40')
+    exec('./node_modules/.bin/conventional-changelog-lint --from=HEAD~40 --preset angular')
 );
 
 gulp.task('lint-typescript', () => tsProjectBuildOutput.src()

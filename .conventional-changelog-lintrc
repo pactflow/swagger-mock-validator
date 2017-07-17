@@ -1,5 +1,5 @@
 {
-  "extends": ["@commitlint/config-angular"],
+  "extends": ["angular"],
   "preset": "angular",
   "rules": {
     "body-tense": [0],
