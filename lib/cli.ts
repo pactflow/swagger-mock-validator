@@ -70,7 +70,6 @@ json file.`
             specPathOrUrl: swagger
         })
         .then((result) => {
-            displaySummary(result);
             if (options.coverage && result.coverage) {
                 displayCoverage(result.coverage);
             }
