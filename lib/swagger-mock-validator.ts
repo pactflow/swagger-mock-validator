@@ -228,7 +228,8 @@ const validateMocks = (
     return whenMockFiles
         .then((mockFiles) => q.all(
             _.map(mockFiles, (mockFile) => validateMock(
-                mockFile, loadJson, parsedSpec, postAnalyticEvent, collectCoverage))
+                mockFile, loadJson, parsedSpec, postAnalyticEvent, collectCoverage)
+            )
         ))
         .then((validationOutcomes: ValidationOutcome[]) => combineValidationOutcomes(validationOutcomes));
 };

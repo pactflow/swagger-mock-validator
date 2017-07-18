@@ -341,7 +341,7 @@ describe('swagger-mock-validator', () => {
             swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
         }).then((result) => {
             expect(result).toEqual(jasmine.stringMatching('Spec Coverage:'));
-            expect(extractCoverageReport(result)).toEqual([
+            expect(extractCoverageReport(result).sort()).toEqual([
                 ['Spec', 'Operation', 'Response', 'Hits', 'Interactions'],
                 ['http://localhost:8000/test/e2e/fixtures/swagger-provider.json', '2', ''],
                 [ '', 'POST /{accountId}/users', '0', ''],
@@ -365,7 +365,7 @@ describe('swagger-mock-validator', () => {
                 [ '', '', '200', '0', ''],
                 [ '', 'GET /authorization-test', '0', ''],
                 [ '', '', '200', '0', '']
-            ]);
+            ].sort());
         })
     ), 30000);
 
