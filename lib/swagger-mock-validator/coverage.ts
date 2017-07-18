@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import q = require('q');
 import {
-    ParsedMock, ParsedMockInteraction, ParsedSpec, ParsedSpecOperation, ParsedSpecResponse, SpecOperationCoverage
+    ParsedMock, ParsedMockInteraction, ParsedSpec, ParsedSpecOperation, ParsedSpecResponse, SpecCoverage,
+    SpecOperationCoverage
 } from './types';
 import getParsedSpecOperation from './validate-spec-and-mock/get-parsed-spec-operation';
 import getParsedSpecResponse from './validate-spec-and-mock/get-parsed-spec-response';
@@ -14,6 +14,7 @@ function getOperationResponses(operation: ParsedSpecOperation): ParsedSpecRespon
 
 function matchSpecOperationResponseForInteraction(
     matchedOperationCoverage: SpecOperationCoverage,
+    mock: ParsedMock,
     interaction: ParsedMockInteraction
 ) {
     const responseResult = getParsedSpecResponse(interaction, matchedOperationCoverage.operation);
@@ -22,41 +23,45 @@ function matchSpecOperationResponseForInteraction(
             return responseCoverage.response === responseResult.value;
         });
         if (matchedResponse) {
-            matchedResponse.interactions.push(interaction);
+            matchedResponse.hits.push({interaction, mock});
         }
     }
 }
 
 function matchSpecOperationForInteraction(
-    parsedSpec: ParsedSpec,
-    operationsCoverage: SpecOperationCoverage[],
+    specCoverage: SpecCoverage,
+    mock: ParsedMock,
     interaction: ParsedMockInteraction
 ) {
-    const operationResult = getParsedSpecOperation(interaction, parsedSpec);
+    const operationResult = getParsedSpecOperation(interaction, specCoverage.spec);
     if (operationResult.found) {
-        const matchedOperationCoverage = _.find(operationsCoverage, (responseCoverage) => {
+        const matchedOperationCoverage = _.find(specCoverage.operations, (responseCoverage) => {
             return responseCoverage.operation === operationResult.value;
         });
         if (matchedOperationCoverage) {
-            matchSpecOperationResponseForInteraction(matchedOperationCoverage, interaction);
+            matchSpecOperationResponseForInteraction(matchedOperationCoverage, mock, interaction);
         }
     }
 }
 
-function collectCoverage(parsedMock: ParsedMock, parsedSpec: ParsedSpec): SpecOperationCoverage[] {
-    const operationsCoverage: SpecOperationCoverage[] = _.map(parsedSpec.operations, (operation) => {
+function init(spec: ParsedSpec): SpecCoverage {
+    const operations: SpecOperationCoverage[] = _.map(spec.operations, (operation) => {
         return {
             operation, responses: getOperationResponses(operation).map((response) => {
-                return {response, interactions: []};
+                return {response, hits: []};
             })
         };
     });
-    _.forEach(parsedMock.interactions, (interaction) => matchSpecOperationForInteraction(
-        parsedSpec, operationsCoverage, interaction
-    ));
-    return operationsCoverage;
+    return {spec, operations};
 }
 
-export default (parsedMock: ParsedMock, parsedSpec: ParsedSpec) => {
-    return q.fcall(collectCoverage, parsedMock, parsedSpec);
+function collectForMock(specCoverage: SpecCoverage, mock: ParsedMock): void {
+    _.forEach(mock.interactions, (interaction) => matchSpecOperationForInteraction(
+        specCoverage, mock, interaction
+    ));
+}
+
+export default {
+    collectForMock,
+    init
 };

@@ -420,7 +420,7 @@ export interface JsonSchemaProperties {
 }
 
 export interface SwaggerMockValidator {
-    validate: (options: SwaggerMockValidatorOptions) => q.Promise<ValidationOutcome>;
+    validate: (options: SwaggerMockValidatorOptions) => q.Promise<SwaggerMockValidatorOutcome>;
 }
 
 export interface SwaggerMockValidatorOptions {
@@ -458,6 +458,10 @@ export interface ValidationOutcome {
     errors: ValidationResult[];
     reason?: string;
     success: boolean;
+}
+
+export interface SwaggerMockValidatorOutcome extends ValidationOutcome {
+    coverage?: SpecCoverage;
 }
 
 export interface ValidationResult {
@@ -531,12 +535,22 @@ export type GetSwaggerValueResult<T> = GetSwaggerValueSuccessResult<T> | GetSwag
 
 export type MultiCollectionFormatSeparator = '[multi-array-separator]';
 
-interface SpecResponseCoverage {
-    response: ParsedSpecResponse;
-    interactions: ParsedMockInteraction[];
+interface SpecCoverage {
+    spec: ParsedSpec;
+    operations: SpecOperationCoverage[];
 }
 
 interface SpecOperationCoverage {
     operation: ParsedSpecOperation;
     responses: SpecResponseCoverage[];
+}
+
+interface SpecResponseCoverage {
+    response: ParsedSpecResponse;
+    hits: CoverageHit[];
+}
+
+interface CoverageHit {
+    interaction: ParsedMockInteraction;
+    mock: ParsedMock;
 }

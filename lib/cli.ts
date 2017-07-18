@@ -4,6 +4,7 @@ import * as commander from 'commander';
 import * as _ from 'lodash';
 import * as util from 'util';
 import swaggerMockValidator from './swagger-mock-validator';
+import displayCoverage from './swagger-mock-validator/coverage/console-coverage-reporter';
 import {ValidationOutcome, ValidationResult} from './swagger-mock-validator/types';
 
 // tslint:disable:no-var-requires
@@ -43,7 +44,7 @@ commander
     .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
-    .option('--coverage', 'Show provider coverage report')
+    .option('--coverage', 'Show spec coverage report')
     .description(
 `Confirms the swagger spec and mock are compatible with each other.
 
@@ -69,6 +70,10 @@ json file.`
             specPathOrUrl: swagger
         })
         .then((result) => {
+            displaySummary(result);
+            if (options.coverage && result.coverage) {
+                displayCoverage(result.coverage);
+            }
             displaySummary(result);
             if (!result.success) {
                 throw new Error(result.reason);

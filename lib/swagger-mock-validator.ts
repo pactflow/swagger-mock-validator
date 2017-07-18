@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import * as q from 'q';
 import analytics from './swagger-mock-validator/analytics';
 import defaultMetadata from './swagger-mock-validator/analytics/metadata';
+import coverage from './swagger-mock-validator/coverage';
 import jsonLoader from './swagger-mock-validator/json-loader';
 import defaultFileSystem from './swagger-mock-validator/json-loader/file-system';
 import defaultHttpClient from './swagger-mock-validator/json-loader/http-client';
@@ -18,7 +19,7 @@ import {
     PactBrokerProviderPactsLinksPact,
     ParsedMock,
     ParsedSpec,
-    ParsedSwaggerMockValidatorOptions,
+    ParsedSwaggerMockValidatorOptions, SpecCoverage,
     SpecSource,
     SwaggerMockValidator,
     SwaggerMockValidatorOptions,
@@ -35,6 +36,10 @@ type PostAnalyticEvent = (
     parsedMock: ParsedMock,
     outcome: ValidationOutcome
 ) => q.Promise<void>;
+
+type CollectCoverage = (
+    mock: ParsedMock
+) => void;
 
 const getMockSource = (mockPathOrUrl: string, providerName?: string): MockSource => {
     if (providerName) {
@@ -90,6 +95,16 @@ const combineValidationOutcomes = (validationOutcomes: ValidationOutcome[]): Val
 const createLoadJsonFunction = (fileSystem: FileSystem, httpClient: HttpClient): LoadJson =>
     (pathOrUrl: string) => jsonLoader.load(pathOrUrl, fileSystem, httpClient);
 
+const createCollectCoverageFunction = (specCoverage: SpecCoverage, coverageEnabled: boolean): CollectCoverage => {
+    if (coverageEnabled) {
+        return (mock: ParsedMock) => {
+            coverage.collectForMock(specCoverage, mock);
+        };
+    } else {
+        return () => { return; };
+    }
+};
+
 const createPostAnalyticEventFunction = (
     options: ParsedSwaggerMockValidatorOptions,
     specValidationOutcome: ValidationOutcome
@@ -144,7 +159,8 @@ const validateMock = (
     mockPathOrUrl: string,
     loadJson: LoadJson,
     parsedSpec: ParsedSpec,
-    postAnalyticEvent: PostAnalyticEvent
+    postAnalyticEvent: PostAnalyticEvent,
+    collectCoverage: CollectCoverage
 ): q.Promise<ValidationOutcome> => {
     return loadMock(mockPathOrUrl, loadJson)
         .then((loadMockResult: LoadMockResult) => {
@@ -160,6 +176,7 @@ const validateMock = (
                     ];
                 })
                 .spread((parsedMock, combinedOutcome) => {
+                    collectCoverage(parsedMock);
                     postAnalyticEvent(parsedMock, combinedOutcome);
                     return combinedOutcome;
                 });
@@ -201,7 +218,8 @@ const validateMocks = (
     providerName: string | undefined,
     parsedSpec: ParsedSpec,
     loadJson: LoadJson,
-    postAnalyticEvent: PostAnalyticEvent
+    postAnalyticEvent: PostAnalyticEvent,
+    collectCoverage: CollectCoverage
 ): q.Promise<ValidationOutcome> => {
     const whenMockFiles = providerName
         ? getPactFilesFromBroker(mockPathOrUrl, providerName, loadJson)
@@ -209,7 +227,8 @@ const validateMocks = (
 
     return whenMockFiles
         .then((mockFiles) => q.all(
-            _.map(mockFiles, (mockFile) => validateMock(mockFile, loadJson, parsedSpec, postAnalyticEvent))
+            _.map(mockFiles, (mockFile) => validateMock(
+                mockFile, loadJson, parsedSpec, postAnalyticEvent, collectCoverage))
         ))
         .then((validationOutcomes: ValidationOutcome[]) => combineValidationOutcomes(validationOutcomes));
 };
@@ -223,9 +242,10 @@ const swaggerMockValidator: SwaggerMockValidator = {
         const whenSpecValidationOutcome = whenSpecJson
             .then((specJson) => validateSwagger(specJson, options.specPathOrUrl));
 
+        let specCoverage: SpecCoverage;
         return whenSpecValidationOutcome.then((specValidationOutcome) => {
             if (!specValidationOutcome.success) {
-                return specValidationOutcome;
+                return {coverage: specCoverage, ...specValidationOutcome};
             }
 
             const postAnalyticEvent = createPostAnalyticEventFunction(options, specValidationOutcome);
@@ -236,12 +256,22 @@ const swaggerMockValidator: SwaggerMockValidator = {
 
             return whenParsedSpec
                 .then((parsedSpec) => {
+                    if (options.coverage) {
+                        specCoverage = coverage.init(parsedSpec);
+                    }
+                    const collectCoverage = createCollectCoverageFunction(specCoverage, options.coverage);
                     return validateMocks(
-                        options.mockPathOrUrl, options.providerName, parsedSpec, loadJson, postAnalyticEvent
+                        options.mockPathOrUrl,
+                        options.providerName,
+                        parsedSpec,
+                        loadJson,
+                        postAnalyticEvent,
+                        collectCoverage
                     );
                 })
                 .then((mocksValidationOutcome: ValidationOutcome) => {
-                    return combineValidationOutcomes([specValidationOutcome, mocksValidationOutcome]);
+                    const outcome = combineValidationOutcomes([specValidationOutcome, mocksValidationOutcome]);
+                    return {coverage: specCoverage, ...outcome};
                 });
         });
     }

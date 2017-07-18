@@ -1,12 +1,15 @@
 import {willResolve} from 'jasmine-promise-tools';
 import * as q from 'q';
 import {
-    Pact, ParsedMockInteraction, ParsedSpecOperation, ParsedSpecResponse, SpecOperationCoverage, SpecResponseCoverage,
+    CoverageHit,
+    HttpClient,
+    Pact, ParsedSpecOperation, ParsedSpecResponse, SpecCoverage, SpecOperationCoverage, SpecResponseCoverage,
     Swagger,
-    SwaggerMockValidatorOptions,
-    ValidationSuccess
+    SwaggerMockValidatorOptions, SwaggerMockValidatorOutcome
 } from '../../lib/swagger-mock-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
+import {pactBrokerBuilder} from './support/pact-broker-builder';
+import {providerPactsBuilder} from './support/pact-broker-builder/provider-pacts-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     operationBuilder,
@@ -15,16 +18,24 @@ import {
     swaggerBuilder
 } from './support/swagger-builder';
 import {
-    CoverageAnalyzer,
     default as swaggerPactValidatorLoader,
-    MockFileSystemResponses
+    MockFileSystemResponses, MockHttpClientResponses
 } from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
+interface CoverageAnalyzer {
+    results: SpecCoverage | undefined;
+    countTotalHits: () => number;
+    countOperationHits: (operation: string) => number;
+    countResponseHits: (response: string) => number;
+    getResponseHits: (response: string) => CoverageHit[];
+}
+
 describe('coverage', () => {
     let mockFiles: MockFileSystemResponses;
-    let coverage: CoverageAnalyzer;
+    let mockUrls: MockHttpClientResponses;
+    let mockHttpClient: HttpClient;
     const defaultPactBuilder = pactBuilder
         .withConsumer('a-default-consumer')
         .withProvider('a-default-provider');
@@ -43,35 +54,40 @@ describe('coverage', () => {
                         .withResponse(500, responseBuilder))
         );
 
-    const newCoverageAnalyzer = ((): CoverageAnalyzer => {
+    const newCoverageAnalyzer = ((results: SpecCoverage | undefined): CoverageAnalyzer => {
         const analyzer = {
-            getOperationHits: (operation: string): number => {
+            countOperationHits: (operation: string): number => {
                 return analyzer.traverse(
-                    (parsedOperation: ParsedSpecOperation) => parsedOperation.location === operation).length;
+                    (parsedOperation: ParsedSpecOperation) => parsedOperation.location === operation,
+                    () => true
+                ).length;
             },
-            getResponseHits: (response: string): number => {
-                return analyzer.getResponseInteractions(response).length;
+            countResponseHits: (response: string): number => {
+                return analyzer.getResponseHits(response).length;
             },
-            getResponseInteractions: (response: string): ParsedMockInteraction[] => {
+            countTotalHits: (): number => {
+                return analyzer.traverse(() => true, () => true).length;
+            },
+            getResponseHits: (response: string): CoverageHit[] => {
                 return analyzer.traverse(
                     () => true,
                     (parsedResponse: ParsedSpecResponse) => parsedResponse.location === response
                 );
             },
-            getTotalHits: (): number => {
-                return analyzer.traverse(() => true, () => true).length;
-            },
-            results: [],
+            results,
             traverse: (
-                operationFilter: (operation: ParsedSpecOperation) => boolean = (() => true),
-                responseFilter: (response: ParsedSpecResponse) => boolean = (() => true)
-            ): ParsedMockInteraction[] => {
-                const found: ParsedMockInteraction[] = [];
-                analyzer.results.forEach((operationCoverage: SpecOperationCoverage) => {
+                operationFilter: (operation: ParsedSpecOperation) => boolean,
+                responseFilter: (response: ParsedSpecResponse) => boolean
+            ): CoverageHit[] => {
+                const found: CoverageHit[] = [];
+                if (!analyzer.results) {
+                    return found;
+                }
+                analyzer.results.operations.forEach((operationCoverage: SpecOperationCoverage) => {
                     if (operationFilter(operationCoverage.operation)) {
                         operationCoverage.responses.forEach((responseCoverage: SpecResponseCoverage) => {
                             if (responseFilter(responseCoverage.response)) {
-                                found.push.apply(found, responseCoverage.interactions);
+                                found.push.apply(found, responseCoverage.hits);
                             }
                         });
                     }
@@ -85,38 +101,69 @@ describe('coverage', () => {
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
         mockFiles = {};
-        coverage = newCoverageAnalyzer();
+        mockUrls = {};
+        mockHttpClient = swaggerPactValidatorLoader.createMockHttpClient(mockUrls);
     });
 
     const invokeValidation = (options: SwaggerMockValidatorOptions) => {
         return swaggerPactValidatorLoader.invokeWithMocks({
             coverage: options.coverage,
-            coverageReporter: swaggerPactValidatorLoader.createMockCoverageReporter(coverage),
             fileSystem: swaggerPactValidatorLoader.createMockFileSystem(mockFiles),
+            httpClient: mockHttpClient,
             mockPathOrUrl: options.mockPathOrUrl,
             providerName: options.providerName,
             specPathOrUrl: options.specPathOrUrl
-        });
+        }).then((results: SwaggerMockValidatorOutcome) => newCoverageAnalyzer(results.coverage));
     };
 
     const invokeValidationWithPaths = (
         pactFile?: Pact,
         swaggerFile?: Swagger,
-        coverageEnabled: boolean = true
-    ): Promise<ValidationSuccess> => {
+        disableCoverage?: boolean
+    ): Promise<CoverageAnalyzer> => {
         mockFiles['pact.json'] = q(JSON.stringify(pactFile || defaultPactBuilder.build()));
         mockFiles['swagger.json'] = q(JSON.stringify(swaggerFile || defaultSwaggerBuilder.build()));
 
         return invokeValidation({
-            coverage: coverageEnabled,
+            coverage: !disableCoverage,
             mockPathOrUrl: 'pact.json',
             specPathOrUrl: 'swagger.json'
         });
     };
 
+    const invokeValidationWithPactBroker = (
+        consumer1PactFile?: Pact,
+        consumer2PactFile?: Pact,
+        swaggerFile?: Swagger
+    ): Promise<CoverageAnalyzer> => {
+        mockUrls['http://pact-broker.com'] = q(JSON.stringify(
+            pactBrokerBuilder
+                .withLatestProviderPactsLink('http://pact-broker.com/a-provider/pacts')
+                .build()
+        ));
+        mockUrls['http://pact-broker.com/a-provider/pacts'] = q(JSON.stringify(
+            providerPactsBuilder
+                .withPact('http://pact-broker.com/a-provider/consumer-1/pact')
+                .withPact('http://pact-broker.com/a-provider/consumer-2/pact')
+                .build()
+        ));
+        mockUrls['http://pact-broker.com/a-provider/consumer-1/pact'] =
+            q(JSON.stringify(consumer1PactFile || defaultPactBuilder.build()));
+        mockUrls['http://pact-broker.com/a-provider/consumer-2/pact'] =
+            q(JSON.stringify(consumer2PactFile || defaultPactBuilder.build()));
+        mockUrls['http://domain.com/swagger.json'] = q(JSON.stringify(swaggerFile || defaultSwaggerBuilder.build()));
+
+        return invokeValidation({
+            coverage: true,
+            mockPathOrUrl: 'http://pact-broker.com',
+            providerName: 'a-provider',
+            specPathOrUrl: 'http://domain.com/swagger.json'
+        });
+    };
+
     it('should report no coverage when no interactions are defined', willResolve(() =>
-        invokeValidationWithPaths().then(() => {
-            expect(coverage.getTotalHits()).toBe(0);
+        invokeValidationWithPaths().then((coverage: CoverageAnalyzer) => {
+            expect(coverage.countTotalHits()).toBe(0);
         })
     ));
 
@@ -129,10 +176,10 @@ describe('coverage', () => {
                     .withRequestPath('/exist/resource')
             )
             .build();
-        return invokeValidationWithPaths(pactFile).then(() => {
-            expect(coverage.getTotalHits()).toBe(1);
-            expect(coverage.getOperationHits('[swaggerRoot].paths./exist/resource.get')).toBe(1);
-            expect(coverage.getResponseHits('[swaggerRoot].paths./exist/resource.get.responses.401')).toBe(1);
+        return invokeValidationWithPaths(pactFile).then((coverage) => {
+            expect(coverage.countTotalHits()).toBe(1);
+            expect(coverage.countOperationHits('[swaggerRoot].paths./exist/resource.get')).toBe(1);
+            expect(coverage.countResponseHits('[swaggerRoot].paths./exist/resource.get.responses.401')).toBe(1);
         });
     }));
 
@@ -157,14 +204,14 @@ describe('coverage', () => {
                     .withResponseStatus(500)
             )
             .build();
-        return invokeValidationWithPaths(pactFile).then(() => {
-            expect(coverage.getTotalHits()).toBe(3);
-            expect(coverage.getOperationHits('[swaggerRoot].paths./exist/resource.get')).toBe(2);
-            expect(coverage.getOperationHits('[swaggerRoot].paths./exist/resource.post')).toBe(1);
-            expect(coverage.getResponseHits('[swaggerRoot].paths./exist/resource.get.responses.401')).toBe(1);
-            expect(coverage.getResponseHits('[swaggerRoot].paths./exist/resource.get.responses.200')).toBe(1);
-            expect(coverage.getResponseHits('[swaggerRoot].paths./exist/resource.post.responses.500')).toBe(1);
-            expect(coverage.getResponseHits('[swaggerRoot].paths./exist/resource.post.responses.201')).toBe(0);
+        return invokeValidationWithPaths(pactFile).then((coverage) => {
+            expect(coverage.countTotalHits()).toBe(3);
+            expect(coverage.countOperationHits('[swaggerRoot].paths./exist/resource.get')).toBe(2);
+            expect(coverage.countOperationHits('[swaggerRoot].paths./exist/resource.post')).toBe(1);
+            expect(coverage.countResponseHits('[swaggerRoot].paths./exist/resource.get.responses.401')).toBe(1);
+            expect(coverage.countResponseHits('[swaggerRoot].paths./exist/resource.get.responses.200')).toBe(1);
+            expect(coverage.countResponseHits('[swaggerRoot].paths./exist/resource.post.responses.500')).toBe(1);
+            expect(coverage.countResponseHits('[swaggerRoot].paths./exist/resource.post.responses.201')).toBe(0);
         });
     }));
 
@@ -185,18 +232,18 @@ describe('coverage', () => {
                     .withResponseStatus(200)
             )
             .build();
-        return invokeValidationWithPaths(pactFile).then(() => {
-            const r401interactions = coverage.getResponseInteractions(
+        return invokeValidationWithPaths(pactFile).then((coverage) => {
+            const r401hits = coverage.getResponseHits(
                 '[swaggerRoot].paths./exist/resource.get.responses.401'
             );
-            const r200interactions = coverage.getResponseInteractions(
+            const r200hits = coverage.getResponseHits(
                 '[swaggerRoot].paths./exist/resource.get.responses.200'
             );
-            expect(coverage.getTotalHits()).toBe(2);
-            expect(r401interactions.length).toBe(1);
-            expect(r401interactions[0].description).toEqual('interaction 1');
-            expect(r200interactions.length).toBe(1);
-            expect(r200interactions[0].description).toEqual('interaction 2');
+            expect(coverage.countTotalHits()).toBe(2);
+            expect(r401hits.length).toBe(1);
+            expect(r401hits[0].interaction.description).toEqual('interaction 1');
+            expect(r200hits.length).toBe(1);
+            expect(r200hits[0].interaction.description).toEqual('interaction 2');
         });
     }));
 
@@ -217,14 +264,33 @@ describe('coverage', () => {
                     .withResponseStatus(200)
             )
             .build();
-        return invokeValidationWithPaths(pactFile).then(() => {
-            const r200interactions = coverage.getResponseInteractions(
+        return invokeValidationWithPaths(pactFile).then((coverage) => {
+            const r200hits = coverage.getResponseHits(
                 '[swaggerRoot].paths./exist/resource.get.responses.200'
             );
-            expect(coverage.getTotalHits()).toBe(2);
-            expect(r200interactions.length).toBe(2);
-            expect(r200interactions[0].description).toEqual('interaction 1');
-            expect(r200interactions[1].description).toEqual('interaction 2');
+            expect(coverage.countTotalHits()).toBe(2);
+            expect(r200hits.length).toBe(2);
+            expect(r200hits[0].interaction.description).toEqual('interaction 1');
+            expect(r200hits[1].interaction.description).toEqual('interaction 2');
+        });
+    }));
+
+    it('should consolidate coverage information when multiple consumers are validated', willResolve(() => {
+        const pactA = defaultPactBuilder
+            .withConsumer('consumer A')
+            .withInteraction(
+                interactionBuilder
+                    .withDescription('interaction 1')
+                    .withRequestMethodGet()
+                    .withResponseStatus(200)
+                    .withRequestPath('/exist/resource')
+            );
+        const pactB = pactA.withConsumer('consumer B');
+        return invokeValidationWithPactBroker(pactA.build(), pactB.build()).then((coverage) => {
+            expect(coverage.countTotalHits()).toBe(2);
+            const hits = coverage.getResponseHits('[swaggerRoot].paths./exist/resource.get.responses.200');
+            expect(hits[0].mock.consumer).toEqual('consumer A');
+            expect(hits[1].mock.consumer).toEqual('consumer B');
         });
     }));
 
@@ -237,8 +303,8 @@ describe('coverage', () => {
                     .withRequestPath('/exist/resource')
             )
             .build();
-        return invokeValidationWithPaths(pactFile, defaultSwaggerBuilder.build(), false).then(() => {
-            expect(coverage.getTotalHits()).toBe(0);
+        return invokeValidationWithPaths(pactFile, defaultSwaggerBuilder.build(), true).then((coverage) => {
+            expect(coverage.results).toBeUndefined();
         });
     }));
 });

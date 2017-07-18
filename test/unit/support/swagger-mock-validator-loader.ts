@@ -2,13 +2,10 @@ import * as _ from 'lodash';
 import * as q from 'q';
 import swaggerMockValidator from '../../../lib/swagger-mock-validator';
 import {
-    CoverageReporter,
     FileSystem,
     HttpClient,
     Metadata,
     Pact,
-    ParsedMockInteraction,
-    SpecOperationCoverage,
     Swagger,
     SwaggerMockValidatorOptions,
     UuidGenerator,
@@ -30,26 +27,9 @@ export interface MockMetadataResponses {
     uptime?: number;
 }
 
-export interface CoverageAnalyzer {
-    results: SpecOperationCoverage[];
-    getTotalHits: () => number;
-    getOperationHits: (operation: string) => number;
-    getResponseHits: (response: string) => number;
-    getResponseInteractions: (response: string) => ParsedMockInteraction[];
-}
-
 export type MockUuidGeneratorResponses = string[];
 
 const swaggerMockValidatorLoader = {
-    createMockCoverageReporter: (coverageAnalyzer?: CoverageAnalyzer): CoverageReporter => {
-        const mockCoverageReporter = jasmine.createSpyObj('mockFileSystem', ['generate']);
-        if (coverageAnalyzer) {
-            mockCoverageReporter.generate.and.callFake((coverage: SpecOperationCoverage[]) => {
-                coverageAnalyzer.results = coverage;
-            });
-        }
-        return mockCoverageReporter;
-    },
     createMockFileSystem: (mockResponses: MockFileSystemResponses): FileSystem => {
         const mockFileSystem = jasmine.createSpyObj('mockFileSystem', ['readFile']);
 
@@ -104,7 +84,6 @@ const swaggerMockValidatorLoader = {
     invoke: (swaggerFile: Swagger, pactFile: Pact): Promise<ValidationOutcome> =>
         swaggerMockValidatorLoader.invokeWithMocks({
             coverage: false,
-            coverageReporter: swaggerMockValidatorLoader.createMockCoverageReporter(),
             fileSystem: swaggerMockValidatorLoader.createMockFileSystem({
                 'pact.json': q(JSON.stringify(pactFile)),
                 'swagger.json': q(JSON.stringify(swaggerFile))
@@ -117,7 +96,6 @@ const swaggerMockValidatorLoader = {
         swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,
             coverage: options.coverage,
-            coverageReporter: options.coverageReporter || swaggerMockValidatorLoader.createMockCoverageReporter(),
             fileSystem: options.fileSystem || swaggerMockValidatorLoader.createMockFileSystem({}),
             httpClient: options.httpClient || swaggerMockValidatorLoader.createMockHttpClient({}),
             metadata: options.metadata || swaggerMockValidatorLoader.createMockMetadata({}),
