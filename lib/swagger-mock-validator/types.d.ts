@@ -554,3 +554,5 @@ interface CoverageHit {
     interaction: ParsedMockInteraction;
     mock: ParsedMock;
 }
+
+type Printer = (message?: any, ...optionalParams: any[]) => void;

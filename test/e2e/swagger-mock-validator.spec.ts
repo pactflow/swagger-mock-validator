@@ -46,15 +46,6 @@ const invokeCommandAndExpectToReject = (options: InvokeCommandOptions) => expect
 const serverPort = 8000;
 const urlTo = (path: string) => `http://localhost:${serverPort}/${path}`;
 
-const extractCoverageReport = (output: string): string[][] => {
-    const separator = '│';
-    return output.split('\n')
-        .filter((line: string) => line.charAt(0) === separator && line.substr(-1) === separator)
-        .map((line) => line.substr(1, line.length - 2)
-            .split(separator)
-            .map((cell) => cell.replace(/^\s+|\s+$/g, '')));
-};
-
 describe('swagger-mock-validator', () => {
     let mockServer: Server;
     let mockAnalytics: {post: (body: string) => void};
@@ -323,16 +314,6 @@ describe('swagger-mock-validator', () => {
         })
     ), 30000);
 
-    it('should not show the coverage report by default', willResolve(() =>
-        invokeCommand({
-            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
-            providerName: 'provider-1',
-            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
-        }).then((result) => {
-            expect(result).not.toEqual(jasmine.stringMatching('Spec Coverage:'));
-        })
-    ), 30000);
-
     it('should show a spec coverage report when the cli option is present', willResolve(() =>
         invokeCommand({
             coverage: true,
@@ -340,32 +321,7 @@ describe('swagger-mock-validator', () => {
             providerName: 'provider-1',
             swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
         }).then((result) => {
-            expect(result).toEqual(jasmine.stringMatching('Spec Coverage:'));
-            expect(extractCoverageReport(result).sort()).toEqual([
-                ['Spec', 'Operation', 'Response', 'Hits', 'Interactions'],
-                ['http://localhost:8000/test/e2e/fixtures/swagger-provider.json', '2', ''],
-                [ '', 'POST /{accountId}/users', '0', ''],
-                [ '', '', '200', '0', ''],
-                [ '', '', '400', '0', ''],
-                [ '', '', '404', '0', ''],
-                [ '', '', '500', '0', ''],
-                [ '', 'GET /{accountId}/users/{userId}', '0', ''],
-                [ '', '', '200', '0', ''],
-                [ '', '', '400', '0', ''],
-                [ '', '', '404', '0', ''],
-                [ '', '', '500', '0', ''],
-                [ '', 'GET /test', '2', ''],
-                [ '', '', '200', '2', 'consumer-1 -> provider-1: consumer-1 request-1'],
-                [ '', '', '', '', 'consumer-2 -> provider-1: consumer-2 request-1'],
-                [ '', 'GET /accept-test', '0', ''],
-                [ '', '', '200', '0', ''],
-                [ '', 'POST /request-content-type-test', '0', ''],
-                [ '', '', '200', '0', ''],
-                [ '', 'POST /response-content-type-test', '0', ''],
-                [ '', '', '200', '0', ''],
-                [ '', 'GET /authorization-test', '0', ''],
-                [ '', '', '200', '0', '']
-            ].sort());
+            expect(result).toEqual(jasmine.stringMatching('COVERAGE:'));
         })
     ), 30000);
 

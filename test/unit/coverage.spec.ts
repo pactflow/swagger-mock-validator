@@ -1,9 +1,16 @@
 import {willResolve} from 'jasmine-promise-tools';
 import * as q from 'q';
+import displayCoverage from '../../lib/swagger-mock-validator/coverage/console-coverage-reporter';
 import {
     CoverageHit,
     HttpClient,
-    Pact, ParsedSpecOperation, ParsedSpecResponse, SpecCoverage, SpecOperationCoverage, SpecResponseCoverage,
+    Pact,
+    ParsedSpecOperation,
+    ParsedSpecResponse,
+    Printer,
+    SpecCoverage,
+    SpecOperationCoverage,
+    SpecResponseCoverage,
     Swagger,
     SwaggerMockValidatorOptions, SwaggerMockValidatorOutcome
 } from '../../lib/swagger-mock-validator/types';
@@ -31,6 +38,19 @@ interface CoverageAnalyzer {
     countResponseHits: (response: string) => number;
     getResponseHits: (response: string) => CoverageHit[];
 }
+
+interface ConsoleLogMock {
+    print: Printer;
+    lines: () => string[];
+}
+
+const newPrinter = ((): ConsoleLogMock => {
+    const calls: string[] = [];
+    return {
+        lines: () => calls.join('\n').split('\n'),
+        print: (message?: any) => calls.push(message)
+    };
+});
 
 describe('coverage', () => {
     let mockFiles: MockFileSystemResponses;
@@ -166,6 +186,57 @@ describe('coverage', () => {
             expect(coverage.countTotalHits()).toBe(0);
         })
     ));
+
+    it('should print a report with the coverage summary', willResolve(() => {
+        const pactFile = defaultPactBuilder
+            .withInteraction(
+                interactionBuilder
+                    .withDescription('Unauthorized')
+                    .withRequestMethodGet()
+                    .withRequestPath('/exist/resource')
+                    .withResponseStatus(401)
+            )
+            .withInteraction(
+                interactionBuilder
+                    .withDescription('OK')
+                    .withRequestMethodGet()
+                    .withRequestPath('/exist/resource')
+                    .withResponseStatus(200)
+            )
+            .withInteraction(
+                interactionBuilder
+                    .withDescription('Server Error')
+                    .withRequestMethodPost()
+                    .withRequestPath('/exist/resource')
+                    .withResponseStatus(500)
+            )
+            .build();
+        return invokeValidationWithPaths(pactFile).then((coverage) => {
+            const chalk = require('chalk');
+            const printer = newPrinter();
+
+            chalk.enabled = false;
+            displayCoverage(coverage.results, printer.print);
+            chalk.enabled = true;
+
+            expect(printer.lines()).toEqual([
+                'COVERAGE:',
+                '---------',
+                '[Spec: 75.00%] swagger.json',
+                '  [Operation: 100.00%] GET /exist/resource',
+                '    - Response: 200 ✔',
+                '      ○ a-default-consumer ⇨ a-default-provider: OK',
+                '    - Response: 401 ✔',
+                '      ○ a-default-consumer ⇨ a-default-provider: Unauthorized',
+                '  [Operation: 50.00%] POST /exist/resource',
+                '    - Response: 200 ✘',
+                '    - Response: 500 ✔',
+                '      ○ a-default-consumer ⇨ a-default-provider: Server Error',
+                '',
+                ''
+            ]);
+        });
+    }));
 
     it('should report interaction coverage on the matched spec operation and response', willResolve(() => {
         const pactFile = defaultPactBuilder

@@ -1,100 +1,114 @@
 import * as chalk from 'chalk';
-import * as Table from 'cli-table2';
-import {CoverageHit, ParsedSpecOperation, SpecCoverage, SpecOperationCoverage, SpecResponseCoverage} from '../types';
+import {
+    CoverageHit,
+    ParsedSpecOperation,
+    Printer,
+    SpecCoverage,
+    SpecOperationCoverage,
+    SpecResponseCoverage
+} from '../types';
 
-function getCoverageHitDescription(hit: CoverageHit): string {
-    return `${hit.mock.consumer} -> ${hit.mock.provider}: ${hit.interaction.description}`;
+function percentageStr(actual: number, total: number): string {
+    if (total <= 0) {
+        return '-%';
+    }
+    const pct = (actual / total * 100);
+    const color = pct === 0 ? chalk.red : pct < 100 ? chalk.yellow : chalk.green;
+    return color.bold(pct.toFixed(2) + '%');
 }
 
-interface ReportRow {
-    type: 'spec' | 'operation' | 'response';
-    hits: number;
-    style?: chalk.ChalkChain;
-    text: string;
-    details?: string;
+interface ReportLine {
+    format: () => string;
 }
 
-const rowFormat = {
-    operation: (text: any, hits: number, details: string) => [
-        '', {colSpan: 2, content: text}, chalk.bold(hits.toString()), details
-    ],
-    response: (text: any, hits: number, details: string) => [
-        '', '', text, hits, chalk.white(details)
-    ],
-    spec: (text: any, hits: number, details: string) => [
-        {colSpan: 3, content: chalk.bold(text)}, chalk.bold(hits.toString()), details
-    ]
-};
-
-function toTableRow(row: ReportRow) {
-    const style = row.style || chalk.white;
-    return rowFormat[row.type](style(row.text), row.hits, (row.details || ''));
+interface SummaryReportLine extends ReportLine {
+    actual: number;
+    total: number;
 }
 
-function printReport(rows: ReportRow[]) {
-    const table: any = new Table({
-        head: ['Spec', 'Operation', 'Response', 'Hits', 'Interactions'].map((header) => chalk.bold(header)),
-        style: {head: []},
-        wordWrap: true
-    });
-    rows.forEach((row: ReportRow) => {
-        table.push(toTableRow(row));
-    });
-    console.log(chalk.bold('Spec Coverage:'));
-    console.log(chalk.bold('=============='));
-    console.log(table.toString());
-}
+const newSpecReportLine = ((text: string): SummaryReportLine => {
+   const x: any = {actual: 0, total: 0};
+   x.format = () => {
+       const pct = percentageStr(x.actual, x.total);
+       return `[${chalk.bold('Spec')}: ${pct}] ${chalk.bold(text)}`;
+   };
+   return x;
+});
 
-function toResponseRow(responseCoverage: SpecResponseCoverage): ReportRow {
-    let response = responseCoverage.response.location;
-    response = response.substr(response.lastIndexOf('.') + 1);
-    const hits = responseCoverage.hits.length;
-
-    return {
-        details: responseCoverage.hits.map((hit: CoverageHit) => getCoverageHitDescription(hit)).join('\n'),
-        hits,
-        style: hits === 0 ? chalk.red : chalk.green,
-        text: response,
-        type: 'response'
+const newOperationReportLine = ((text: string): SummaryReportLine => {
+    const x: any = {actual: 0, total: 0};
+    x.format = () => {
+        const pct = percentageStr(x.actual, x.total);
+        return `  [${chalk.bold('Operation')}: ${pct}] ${chalk.bold(text)}`;
     };
+    return x;
+});
+
+const newResponseReportLine = ((text: string, covered: boolean): ReportLine => {
+    return {
+        format: () => {
+            const coverMark = covered ? chalk.green('✔') : chalk.red('✘');
+            return `    - ${chalk.bold('Response')}: ${chalk.bold(text)} ${coverMark}`;
+        }
+    };
+});
+
+const newInteractionReportLine = ((text: string): ReportLine => {
+    return {format: () => `      ○ ${text}`};
+});
+
+function printReport(reportLines: ReportLine[], printer: Printer) {
+    printer(chalk.bold('COVERAGE:'));
+    printer(chalk.bold('---------'));
+    printer(reportLines.map((reportLine) => reportLine.format()).join('\n'));
+    printer('\n');
+}
+
+function getResponseDisplayName(responseCoverage: SpecResponseCoverage): string {
+    const response = responseCoverage.response.location;
+    return response.substr(response.lastIndexOf('.') + 1);
 }
 
 function getOperationDisplayName(operation: ParsedSpecOperation) {
-    let name = operation.location.replace(/^\[swaggerRoot\]\.paths\./, '');
-    name = name.substr(0, name.lastIndexOf('.'));
+    const name = operation.pathName || '';
     const method = operation.method || 'default';
     return `${method.toUpperCase()} ${name}`;
 }
 
-function displayCoverage(specCoverage: SpecCoverage) {
-    const reportRows: ReportRow[] = [];
-    const specRow: ReportRow = {type: 'spec', text: specCoverage.spec.pathOrUrl, hits: 0};
+function getInterationDisplayName(hit: CoverageHit): string {
+    return `${hit.mock.consumer} ⇨ ${hit.mock.provider}: ${hit.interaction.description}`;
+}
 
-    reportRows.push(specRow);
+function displayCoverage(specCoverage: SpecCoverage | undefined, printer: Printer) {
+    if (!specCoverage) {
+        return;
+    }
+    const reportLines: ReportLine[] = [];
+    const specLine: SummaryReportLine = newSpecReportLine(specCoverage.spec.pathOrUrl);
+
+    reportLines.push(specLine);
 
     specCoverage.operations.forEach((specOperationCoverage: SpecOperationCoverage) => {
-        const operation = getOperationDisplayName(specOperationCoverage.operation);
-        const operationRow: ReportRow = {type: 'operation', text: operation, hits: 0, style: chalk.green};
-        reportRows.push(operationRow);
+        const operationName = getOperationDisplayName(specOperationCoverage.operation);
+        const operationLine: SummaryReportLine = newOperationReportLine(operationName);
+        reportLines.push(operationLine);
 
         specOperationCoverage.responses.forEach((specResponseCoverage: SpecResponseCoverage) => {
-            const responseRow: ReportRow = toResponseRow(specResponseCoverage);
-            reportRows.push(responseRow);
-            if (responseRow.hits === 0) {
-                operationRow.style = chalk.yellow;
-                specRow.style = chalk.yellow;
+            const responseName = getResponseDisplayName(specResponseCoverage);
+            const covered = specResponseCoverage.hits.length > 0;
+            reportLines.push(newResponseReportLine(responseName, covered));
+            specResponseCoverage.hits.forEach((hit) => {
+                reportLines.push(newInteractionReportLine(getInterationDisplayName(hit)));
+            });
+            operationLine.total++;
+            if (covered) {
+                operationLine.actual++;
             }
-            operationRow.hits += responseRow.hits;
         });
-        if (operationRow.hits === 0) {
-            operationRow.style = chalk.red;
-        }
-        specRow.hits += operationRow.hits;
-        if (specRow.hits === 0) {
-            specRow.style = chalk.red;
-        }
+        specLine.total += operationLine.total;
+        specLine.actual += operationLine.actual;
     });
-    printReport(reportRows);
+    printReport(reportLines, printer);
 }
 
 export default displayCoverage;
