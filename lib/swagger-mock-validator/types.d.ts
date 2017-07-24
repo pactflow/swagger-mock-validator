@@ -535,24 +535,33 @@ export type GetSwaggerValueResult<T> = GetSwaggerValueSuccessResult<T> | GetSwag
 
 export type MultiCollectionFormatSeparator = '[multi-array-separator]';
 
-interface SpecCoverage {
+export interface SpecCoverage {
     spec: ParsedSpec;
     operations: SpecOperationCoverage[];
 }
 
-interface SpecOperationCoverage {
+export interface SpecOperationCoverage {
     operation: ParsedSpecOperation;
     responses: SpecResponseCoverage[];
 }
 
-interface SpecResponseCoverage {
+export interface SpecResponseCoverage {
     response: ParsedSpecResponse;
     hits: CoverageHit[];
 }
 
-interface CoverageHit {
+export interface CoverageHit {
     interaction: ParsedMockInteraction;
     mock: ParsedMock;
 }
 
-type Printer = (message?: any, ...optionalParams: any[]) => void;
+export type Printer = (message?: any, ...optionalParams: any[]) => void;
+
+export type Formatter = (text: string) => string;
+
+export interface FormatterSet {
+    bold: Formatter;
+    green: Formatter;
+    red: Formatter;
+    yellow: Formatter;
+}

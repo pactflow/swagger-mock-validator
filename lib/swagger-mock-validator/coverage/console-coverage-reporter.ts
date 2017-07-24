@@ -1,6 +1,13 @@
-import * as chalk from 'chalk';
+import * as _chalk from 'chalk';
+import * as _ from 'lodash';
+import * as Mustache from 'mustache';
+
+import {coverage as template} from '../templates';
+
 import {
     CoverageHit,
+    Formatter,
+    FormatterSet,
     ParsedSpecOperation,
     Printer,
     SpecCoverage,
@@ -8,60 +15,78 @@ import {
     SpecResponseCoverage
 } from '../types';
 
-function percentageStr(actual: number, total: number): string {
-    if (total <= 0) {
-        return '-%';
-    }
-    const pct = (actual / total * 100);
-    const color = pct === 0 ? chalk.red : pct < 100 ? chalk.yellow : chalk.green;
-    return color.bold(pct.toFixed(2) + '%');
+const chalk = new _chalk.constructor({enabled: true});
+
+interface SummaryCoverageReport {
+    name: string;
+    totalCount: number;
+    coveredCount: number;
 }
 
-interface ReportLine {
-    format: () => string;
+interface SpecCoverageReport extends SummaryCoverageReport {
+    operations: OperationCoverageReport[];
 }
 
-interface SummaryReportLine extends ReportLine {
-    actual: number;
-    total: number;
+interface OperationCoverageReport extends SummaryCoverageReport {
+    responses: ResponseCoverageReport[];
 }
 
-const newSpecReportLine = ((text: string): SummaryReportLine => {
-   const x: any = {actual: 0, total: 0};
-   x.format = () => {
-       const pct = percentageStr(x.actual, x.total);
-       return `[${chalk.bold('Spec')}: ${pct}] ${chalk.bold(text)}`;
-   };
-   return x;
-});
+interface ResponseCoverageReport {
+    name: string;
+    covered: boolean;
+    interactions: InteractionCoverageReport[];
+}
 
-const newOperationReportLine = ((text: string): SummaryReportLine => {
-    const x: any = {actual: 0, total: 0};
-    x.format = () => {
-        const pct = percentageStr(x.actual, x.total);
-        return `  [${chalk.bold('Operation')}: ${pct}] ${chalk.bold(text)}`;
-    };
-    return x;
-});
+interface InteractionCoverageReport {
+    consumer: string;
+    provider: string;
+    description: string;
+}
 
-const newResponseReportLine = ((text: string, covered: boolean): ReportLine => {
-    return {
-        format: () => {
-            const coverMark = covered ? chalk.green('✔') : chalk.red('✘');
-            return `    - ${chalk.bold('Response')}: ${chalk.bold(text)} ${coverMark}`;
+function createPercentageRenderer(
+    green: Formatter,
+    yellow: Formatter,
+    red: Formatter
+): (this: SummaryCoverageReport) => string {
+    return function(this: SummaryCoverageReport): string {
+        if (this.totalCount <= 0) {
+            return '-%';
         }
+        const pct = this.coveredCount / this.totalCount * 100;
+        const pctStr = pct.toFixed(2) + '%';
+        return pct === 100 ? green(pctStr) : pct > 0 ? yellow(pctStr) : red(pctStr);
     };
-});
+}
 
-const newInteractionReportLine = ((text: string): ReportLine => {
-    return {format: () => `      ○ ${text}`};
-});
+type MustacheRenderer = (text: string, render: (text: string) => string) => string;
 
-function printReport(reportLines: ReportLine[], printer: Printer) {
-    printer(chalk.bold('COVERAGE:'));
-    printer(chalk.bold('---------'));
-    printer(reportLines.map((reportLine) => reportLine.format()).join('\n'));
-    printer('\n');
+function createMustacheRenderer(formatter: Formatter): MustacheRenderer {
+    return (text: string, render: (text: string) => string) => formatter(render(text));
+}
+
+const chalkFormatters: FormatterSet = {
+    bold: chalk.bold,
+    green: chalk.green,
+    red: chalk.red,
+    yellow: chalk.yellow
+};
+
+interface CoverageView {
+    spec: SpecCoverageReport;
+    bold: () => MustacheRenderer;
+    green: () => MustacheRenderer;
+    red: () => MustacheRenderer;
+    pct: (this: SummaryCoverageReport) => string;
+}
+
+function createView(spec: SpecCoverageReport, formatters: FormatterSet): CoverageView {
+    return {
+        bold: () => createMustacheRenderer(formatters.bold),
+        green: () => createMustacheRenderer(formatters.green),
+        pct: createPercentageRenderer(formatters.green, formatters.yellow, formatters.red),
+        red: () => createMustacheRenderer(formatters.red),
+        spec
+    };
 }
 
 function getResponseDisplayName(responseCoverage: SpecResponseCoverage): string {
@@ -75,40 +100,50 @@ function getOperationDisplayName(operation: ParsedSpecOperation) {
     return `${method.toUpperCase()} ${name}`;
 }
 
-function getInterationDisplayName(hit: CoverageHit): string {
-    return `${hit.mock.consumer} ⇨ ${hit.mock.provider}: ${hit.interaction.description}`;
+function buildSpecCoverageReport(specCoverage: SpecCoverage): SpecCoverageReport {
+    const name = specCoverage.spec.pathOrUrl;
+    const operations = specCoverage.operations.map((operation) => buildOperationCoverageReport(operation));
+    const coveredCount = _(operations).sumBy((op) => op.coveredCount);
+    const totalCount = _(operations).sumBy((op) => op.totalCount);
+    return {name, coveredCount, totalCount, operations};
 }
 
-function displayCoverage(specCoverage: SpecCoverage | undefined, printer: Printer) {
+function buildOperationCoverageReport(operationCoverage: SpecOperationCoverage): OperationCoverageReport {
+    const name = getOperationDisplayName(operationCoverage.operation);
+    const responses = operationCoverage.responses.map((response) => buildResponseCoverageReport(response));
+    const totalCount = responses.length;
+    const coveredCount = responses.filter((r) => r.covered).length;
+    return {name, totalCount, coveredCount, responses};
+}
+
+function buildResponseCoverageReport(responseCoverage: SpecResponseCoverage): ResponseCoverageReport {
+    const name = getResponseDisplayName(responseCoverage);
+    const covered = responseCoverage.hits.length > 0;
+    const interactions: InteractionCoverageReport[] = responseCoverage.hits.map(
+        (hit) => buildInteractionCoverageReport(hit)
+    );
+    return {name, covered, interactions};
+}
+
+function buildInteractionCoverageReport(coverageHit: CoverageHit): InteractionCoverageReport {
+    return {
+        consumer: coverageHit.mock.consumer,
+        description: coverageHit.interaction.description,
+        provider: coverageHit.mock.provider
+    };
+}
+
+function displayCoverage(
+    specCoverage: SpecCoverage | undefined,
+    printer: Printer,
+    formatters?: FormatterSet | undefined
+): void {
     if (!specCoverage) {
         return;
     }
-    const reportLines: ReportLine[] = [];
-    const specLine: SummaryReportLine = newSpecReportLine(specCoverage.spec.pathOrUrl);
-
-    reportLines.push(specLine);
-
-    specCoverage.operations.forEach((specOperationCoverage: SpecOperationCoverage) => {
-        const operationName = getOperationDisplayName(specOperationCoverage.operation);
-        const operationLine: SummaryReportLine = newOperationReportLine(operationName);
-        reportLines.push(operationLine);
-
-        specOperationCoverage.responses.forEach((specResponseCoverage: SpecResponseCoverage) => {
-            const responseName = getResponseDisplayName(specResponseCoverage);
-            const covered = specResponseCoverage.hits.length > 0;
-            reportLines.push(newResponseReportLine(responseName, covered));
-            specResponseCoverage.hits.forEach((hit) => {
-                reportLines.push(newInteractionReportLine(getInterationDisplayName(hit)));
-            });
-            operationLine.total++;
-            if (covered) {
-                operationLine.actual++;
-            }
-        });
-        specLine.total += operationLine.total;
-        specLine.actual += operationLine.actual;
-    });
-    printReport(reportLines, printer);
+    const model: SpecCoverageReport = buildSpecCoverageReport(specCoverage);
+    const view: CoverageView = createView(model, formatters || chalkFormatters);
+    printer(Mustache.render(template, view));
 }
 
 export default displayCoverage;
