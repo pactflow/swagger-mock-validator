@@ -61,6 +61,22 @@ Any errors sending the analytic events are ignored and do not impact the validat
 
 By default analytics are disabled. To protect your privacy this is an opt-in feature.
 
+### Coverage
+
+You can make `swagger-mock-validator` print a spec coverage report by passing the `--coverage` switch. E.g.:
+
+```
+swagger-mock-validator https://api.com/swagger.json https://pact-broker.com/pact.json --coverage
+```
+
+The report will show which interactions verify each of the responses of every operation defined in the the swagger spec.
+
+As the consumer, you can use this to find out which responses of the operations you invoke are not covered by your tests.
+
+As the provider, you can use this to find out which are the consumers of a given operation/response in case you are planning to
+implement a breaking change.
+
+
 ## Changelog
 See [CHANGELOG.md](CHANGELOG.md)
 
