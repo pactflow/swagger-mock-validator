@@ -121,12 +121,8 @@ const getPactFilesFromBroker = (mockPathOrUrl, providerName, loadJson) => {
         return providerPactsUrlTemplate.replace('{provider}', providerName);
     });
     const whenProviderPactsResponse = whenProviderPactsUrl.then((providerPactsUrl) => loadJson(providerPactsUrl));
-    return q.all([whenProviderPactsResponse, whenProviderPactsUrl])
-        .spread((providerPactsResponse, providerPactsUrl) => {
+    return whenProviderPactsResponse.then((providerPactsResponse) => {
         const providerPacts = _.get(providerPactsResponse, '_links.pacts', []);
-        if (providerPacts.length === 0) {
-            throw new Error(`Empty pact file list found at "${providerPactsUrl}"`);
-        }
         return _.map(providerPacts, (providerPact) => providerPact.href);
     });
 };

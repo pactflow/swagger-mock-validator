@@ -1,3 +1,13 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.0.2...v2.1.0) (2017-08-07)
+
+
+### Features
+
+* allow empty pact list to be returned from pact broker ([1eea0ee](https://bitbucket.org/atlassian/swagger-mock-validator/commits/1eea0ee)), closes [#63](https://bitbucket.org/atlassian/swagger-mock-validator/issue/63)
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.0.1...v2.0.2) (2017-07-14)
 

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const uuid = require("uuid");
+const uuid = require("uuidjs");
 const uuidGenerator = {
-    generate: () => uuid.v4()
+    generate: () => uuid.generate()
 };
 exports.default = uuidGenerator;
