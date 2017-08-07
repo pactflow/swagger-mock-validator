@@ -212,19 +212,15 @@ describe('reading urls', () => {
             });
         });
 
-        it('should fail when there are no provider pact files', willResolve(() => {
+        it('should pass when there are no provider pact files', willResolve(() => {
             mockUrls['http://pact-broker.com'] = q(JSON.stringify(pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/{provider}/pacts')
                 .build()
             ));
             mockUrls['http://pact-broker.com/provider-name/pacts'] = q(JSON.stringify(providerPactsBuilder.build()));
 
-            const result = invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name');
-
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error(
-                    'Empty pact file list found at "http://pact-broker.com/provider-name/pacts"'
-                ));
+            return invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name').then((result) => {
+                expect(result).toContainNoWarningsOrErrors();
             });
         }));
 

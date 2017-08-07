@@ -488,6 +488,7 @@ export type ValidationResultSource = 'pact-validation' | 'swagger-validation' | 
 export type ValidationResultType = 'error' | 'warning';
 
 export type ValidationResultCode =
+    'pv.warning' |
     'pv.error' |
     'spv.request.accept.incompatible' |
     'spv.request.accept.unknown' |
