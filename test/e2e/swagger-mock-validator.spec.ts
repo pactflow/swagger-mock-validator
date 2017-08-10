@@ -43,7 +43,7 @@ const urlTo = (path: string) => `http://localhost:${serverPort}/${path}`;
 
 describe('swagger-mock-validator', () => {
     let mockServer: Server;
-    let mockAnalytics: {post: (body: string) => void};
+    let mockAnalytics: jasmine.SpyObj<{post: (body: string) => void}>;
 
     beforeAll((done) => {
         mockAnalytics = jasmine.createSpyObj('mockAnalytics', ['post']);
@@ -56,6 +56,10 @@ describe('swagger-mock-validator', () => {
         });
         expressApp.use(express.static('.'));
         mockServer = expressApp.listen(serverPort, done);
+    });
+
+    beforeEach(() => {
+        mockAnalytics.post.calls.reset();
     });
 
     afterAll((done) => mockServer.close(done));
