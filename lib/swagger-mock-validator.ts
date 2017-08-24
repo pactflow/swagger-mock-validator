@@ -1,61 +1,53 @@
 import * as _ from 'lodash';
-import * as q from 'q';
+import {
+    SwaggerMockValidatorOptions, SwaggerMockValidatorOptionsMockType, SwaggerMockValidatorOptionsSpecType,
+    ValidationOutcome,
+    ValidationResult
+} from './api-types';
 import analytics from './swagger-mock-validator/analytics';
 import defaultMetadata from './swagger-mock-validator/analytics/metadata';
-import jsonLoader from './swagger-mock-validator/json-loader';
+import {FileStore} from './swagger-mock-validator/file-store';
 import defaultFileSystem from './swagger-mock-validator/json-loader/file-system';
 import defaultHttpClient from './swagger-mock-validator/json-loader/http-client';
 import mockParser from './swagger-mock-validator/mock-parser';
 import resolveSwagger from './swagger-mock-validator/resolve-swagger';
+import {ResourceLoader} from './swagger-mock-validator/resource-loader';
 import specParser from './swagger-mock-validator/spec-parser';
+import {transformStringToObject} from './swagger-mock-validator/transform-string-to-object';
 import {
-    FileSystem,
-    HttpClient,
     MockSource,
     Pact,
     PactBroker,
     PactBrokerProviderPacts,
     PactBrokerProviderPactsLinksPact,
     ParsedMock,
-    ParsedSpec,
     ParsedSwaggerMockValidatorOptions,
     SpecSource,
-    SwaggerMockValidator,
-    SwaggerMockValidatorOptions,
-    ValidationOutcome,
-    ValidationResult
+    SwaggerMockValidatorInternal,
+    SwaggerMockValidatorInternalOptions
 } from './swagger-mock-validator/types';
 import defaultUuidGenerator from './swagger-mock-validator/uuid-generator';
 import validatePact from './swagger-mock-validator/validate-pact';
 import validateSpecAndMock from './swagger-mock-validator/validate-spec-and-mock';
 import validateSwagger from './swagger-mock-validator/validate-swagger';
 
-type LoadJson = <T>(pathOrUrl: string) => q.Promise<T>;
-type PostAnalyticEvent = (
-    parsedMock: ParsedMock,
-    outcome: ValidationOutcome
-) => q.Promise<void>;
+type PostAnalyticEvent = (parsedMock: ParsedMock,
+                          outcome: ValidationOutcome) => Promise<void>;
 
 const getMockSource = (mockPathOrUrl: string, providerName?: string): MockSource => {
     if (providerName) {
         return 'pactBroker';
-    } else if (mockPathOrUrl.indexOf('http') === 0) {
+    } else if (FileStore.isUrl(mockPathOrUrl)) {
         return 'url';
     }
 
     return 'path';
 };
 
-interface LoadMockResult {
-    outcome: ValidationOutcome;
-    mock?: ParsedMock;
-}
-
-const getSpecSource = (specPathOrUrl: string): SpecSource =>
-    specPathOrUrl.indexOf('http') === 0 ? 'url' : 'path';
+const getSpecSource = (specPathOrUrl: string): SpecSource => FileStore.isUrl(specPathOrUrl) ? 'url' : 'path';
 
 // tslint:disable:cyclomatic-complexity
-const parseUserOptions = (userOptions: SwaggerMockValidatorOptions): ParsedSwaggerMockValidatorOptions => ({
+const parseUserOptions = (userOptions: SwaggerMockValidatorInternalOptions): ParsedSwaggerMockValidatorOptions => ({
     analyticsUrl: userOptions.analyticsUrl,
     fileSystem: userOptions.fileSystem || defaultFileSystem,
     httpClient: userOptions.httpClient || defaultHttpClient,
@@ -68,40 +60,33 @@ const parseUserOptions = (userOptions: SwaggerMockValidatorOptions): ParsedSwagg
     uuidGenerator: userOptions.uuidGenerator || defaultUuidGenerator
 });
 
+const combineValidationResults = (validationResults: ValidationResult[][]): ValidationResult[] => {
+    const flattenedValidationResults = _.flatten(validationResults);
+    return _.uniqWith(flattenedValidationResults, _.isEqual);
+};
+
 const combineValidationOutcomes = (validationOutcomes: ValidationOutcome[]): ValidationOutcome => {
     return {
-        errors: _(validationOutcomes)
-            .map((outcome: ValidationOutcome) => outcome.errors)
-            .flatten<ValidationResult>()
-            .value(),
-        reason: _(validationOutcomes)
-            .map((outcome: ValidationOutcome) => outcome.reason)
-            .filter((reason) => reason !== undefined)
+        errors: combineValidationResults(validationOutcomes.map((validationOutcome) => validationOutcome.errors)),
+        failureReason: _(validationOutcomes)
+            .map((outcome: ValidationOutcome) => outcome.failureReason)
+            .filter((failureReason) => failureReason !== undefined)
             .join(', ') || undefined,
-        success: _(validationOutcomes).every((outcome: ValidationOutcome) => outcome.success ),
-        warnings: _(validationOutcomes)
-            .map((outcome: ValidationOutcome) => outcome.warnings)
-            .flatten<ValidationResult>()
-            .value()
+        success: _.every(validationOutcomes, (outcome: ValidationOutcome) => outcome.success),
+        warnings: combineValidationResults(validationOutcomes.map((validationOutcome) => validationOutcome.warnings))
     };
 };
 
-const createLoadJsonFunction = (fileSystem: FileSystem, httpClient: HttpClient): LoadJson =>
-    (pathOrUrl: string) => jsonLoader.load(pathOrUrl, fileSystem, httpClient);
-
-const createPostAnalyticEventFunction = (
-    options: ParsedSwaggerMockValidatorOptions,
-    specValidationOutcome: ValidationOutcome
-): PostAnalyticEvent => {
+const createPostAnalyticEventFunction = (options: ParsedSwaggerMockValidatorOptions): PostAnalyticEvent => {
     const analyticsUrl = options.analyticsUrl;
 
     if (!analyticsUrl) {
-        return () => q.resolve(undefined);
+        return () => Promise.resolve(undefined);
     }
 
     const parentId = options.uuidGenerator.generate();
 
-    return (parsedMock, outcome) => analytics.postEvent({
+    return (parsedMock, validationOutcome) => analytics.postEvent({
         analyticsUrl,
         consumer: parsedMock.consumer,
         httpClient: options.httpClient,
@@ -113,131 +98,111 @@ const createPostAnalyticEventFunction = (
         specPathOrUrl: options.specPathOrUrl,
         specSource: options.specSource,
         uuidGenerator: options.uuidGenerator,
-        validationOutcome: combineValidationOutcomes([specValidationOutcome, outcome])
+        validationOutcome
     }).catch(() => {
         return;
     });
 };
 
-const loadMock = (
-    mockPathOrUrl: string,
-    loadJson: LoadJson
-): q.Promise<LoadMockResult> => {
-    const whenMockJson = loadJson<Pact>(mockPathOrUrl);
+const getPactFilesFromBroker = async (mockPathOrUrl: string,
+                                      providerName: string,
+                                      resourceLoader: ResourceLoader): Promise<string[]> => {
 
-    const whenMockValidationOutcome = whenMockJson
-        .then((mockJson) => validatePact(mockJson, mockPathOrUrl));
+    const pactBrokerResponse = await resourceLoader.load<PactBroker>(mockPathOrUrl);
 
-    return whenMockValidationOutcome
-        .then((mockValidationOutcome) => {
-            if (!mockValidationOutcome.success) {
-                return q({outcome: mockValidationOutcome});
-            }
-            return whenMockJson
-                .then((mockJson: Pact) => mockParser.parsePact(mockJson, mockPathOrUrl))
-                .then((parsedMock) => ({outcome: mockValidationOutcome, mock: parsedMock}));
-        });
+    const providerPactsUrlTemplate = _.get<string>(pactBrokerResponse, '_links.pb:latest-provider-pacts.href');
+    if (!providerPactsUrlTemplate) {
+        throw new Error(`No latest pact file url found at "${mockPathOrUrl}"`);
+    }
+    const providerPactsUrl = providerPactsUrlTemplate.replace('{provider}', providerName);
+    const providerPactsResponse = await resourceLoader.load<PactBrokerProviderPacts>(providerPactsUrl);
+
+    const providerPacts = _.get<PactBrokerProviderPactsLinksPact[]>(providerPactsResponse, '_links.pacts', []);
+    return _.map(providerPacts, (providerPact) => providerPact.href);
 };
 
-const validateMock = (
-    mockPathOrUrl: string,
-    loadJson: LoadJson,
-    parsedSpec: ParsedSpec,
-    postAnalyticEvent: PostAnalyticEvent
-): q.Promise<ValidationOutcome> => {
-    return loadMock(mockPathOrUrl, loadJson)
-        .then((loadMockResult: LoadMockResult) => {
-            if (!loadMockResult.mock) {
-                return loadMockResult.outcome;
-            }
+interface ValidationSpecAndMockContentResult {
+    parsedMock?: ParsedMock;
+    validationOutcome: ValidationOutcome;
+}
 
-            return validateSpecAndMock(loadMockResult.mock, parsedSpec)
-                .then((specAndMockOutcome: ValidationOutcome) => {
-                    return [
-                        loadMockResult.mock,
-                        combineValidationOutcomes([loadMockResult.outcome, specAndMockOutcome])
-                    ];
-                })
-                .spread((parsedMock, combinedOutcome) => {
-                    postAnalyticEvent(parsedMock, combinedOutcome);
-                    return combinedOutcome;
-                });
-        });
+export const validateSpecAndMockContent = async (
+    options: SwaggerMockValidatorOptions
+): Promise<ValidationSpecAndMockContentResult> => {
+    const spec = options.spec;
+    const mock = options.mock;
+
+    const specJson = transformStringToObject(spec.content, spec.pathOrUrl);
+    const specOutcome = await validateSwagger(specJson, spec.pathOrUrl);
+
+    if (!specOutcome.success) {
+        return {validationOutcome: specOutcome};
+    }
+
+    const mockJson = transformStringToObject<Pact>(mock.content, mock.pathOrUrl);
+
+    const mockOutcome = validatePact(mockJson, mock.pathOrUrl);
+
+    if (!mockOutcome.success) {
+        return {validationOutcome: mockOutcome};
+    }
+
+    const resolvedSpec = await resolveSwagger(specJson);
+    const parsedSpec = specParser.parseSwagger(resolvedSpec, spec.pathOrUrl);
+    const parsedMock = mockParser.parsePact(mockJson, mock.pathOrUrl);
+    const specAndMockOutcome = await validateSpecAndMock(parsedMock, parsedSpec);
+    const validationOutcome = combineValidationOutcomes([specOutcome, mockOutcome, specAndMockOutcome]);
+
+    return {
+        parsedMock,
+        validationOutcome
+    };
 };
 
-const getPactFilesFromBroker = (
-    mockPathOrUrl: string,
-    providerName: string,
-    loadJson: LoadJson
-): q.Promise<string[]> => {
-    const whenPactBrokerResponse = loadJson<PactBroker>(mockPathOrUrl);
-    const whenProviderPactsUrl = whenPactBrokerResponse.then((pactBrokerResponse) => {
-        const providerPactsUrlTemplate = _.get<string>(pactBrokerResponse, '_links.pb:latest-provider-pacts.href');
-
-        if (!providerPactsUrlTemplate) {
-            throw new Error(`No latest pact file url found at "${mockPathOrUrl}"`);
-        }
-
-        return providerPactsUrlTemplate.replace('{provider}', providerName);
-    });
-    const whenProviderPactsResponse = whenProviderPactsUrl.then((providerPactsUrl) =>
-        loadJson<PactBrokerProviderPacts>(providerPactsUrl));
-
-    return whenProviderPactsResponse.then((providerPactsResponse) => {
-        const providerPacts = _.get<PactBrokerProviderPactsLinksPact[]>(providerPactsResponse, '_links.pacts', []);
-
-        return _.map(providerPacts, (providerPact) => providerPact.href);
-    });
-};
-
-const validateMocks = (
-    mockPathOrUrl: string,
-    providerName: string | undefined,
-    parsedSpec: ParsedSpec,
-    loadJson: LoadJson,
-    postAnalyticEvent: PostAnalyticEvent
-): q.Promise<ValidationOutcome> => {
-    const whenMockFiles = providerName
-        ? getPactFilesFromBroker(mockPathOrUrl, providerName, loadJson)
-        : q([mockPathOrUrl]);
-
-    return whenMockFiles
-        .then((mockFiles) => q.all(
-            _.map(mockFiles, (mockFile) => validateMock(mockFile, loadJson, parsedSpec, postAnalyticEvent))
-        ))
-        .then((validationOutcomes: ValidationOutcome[]) => combineValidationOutcomes(validationOutcomes));
-};
-
-const swaggerMockValidator: SwaggerMockValidator = {
-    validate: (userOptions) => {
+const swaggerMockValidator: SwaggerMockValidatorInternal = {
+    validate: async (userOptions) => {
         const options = parseUserOptions(userOptions);
-        const loadJson = createLoadJsonFunction(options.fileSystem, options.httpClient);
+        const fileStore = new FileStore(options.fileSystem, options.httpClient);
+        const resourceLoader = new ResourceLoader(fileStore);
+        const postAnalyticEvent = createPostAnalyticEventFunction(options);
 
-        const whenSpecJson = loadJson<any>(options.specPathOrUrl);
-        const whenSpecValidationOutcome = whenSpecJson
-            .then((specJson) => validateSwagger(specJson, options.specPathOrUrl));
+        const whenSpecContent = fileStore.loadFile(options.specPathOrUrl);
 
-        return whenSpecValidationOutcome.then((specValidationOutcome) => {
-            if (!specValidationOutcome.success) {
-                return specValidationOutcome;
+        const whenMockPathsOrUrls = options.providerName
+            ? getPactFilesFromBroker(options.mockPathOrUrl, options.providerName, resourceLoader)
+            : Promise.resolve([options.mockPathOrUrl]);
+
+        const whenMocks = whenMockPathsOrUrls.then((mockPathsOrUrls) => {
+            return Promise.all(mockPathsOrUrls.map((mockPathOrUrl) => {
+                return fileStore.loadFile(mockPathOrUrl).then((content) => {
+                    return {
+                        content,
+                        format: 'pact' as SwaggerMockValidatorOptionsMockType,
+                        pathOrUrl: mockPathOrUrl
+                    };
+                });
+            }));
+        });
+
+        const specContentAndMocks = await Promise.all([whenSpecContent, whenMocks]);
+        const spec = {
+            content: specContentAndMocks[0],
+            format: 'swagger2' as SwaggerMockValidatorOptionsSpecType,
+            pathOrUrl: options.specPathOrUrl
+        };
+        const mocks = specContentAndMocks[1];
+
+        const validationOutcomes = await Promise.all(mocks.map(async (mock) => {
+            const result = await validateSpecAndMockContent({mock, spec});
+
+            if (result.parsedMock) {
+                await postAnalyticEvent(result.parsedMock, result.validationOutcome);
             }
 
-            const postAnalyticEvent = createPostAnalyticEventFunction(options, specValidationOutcome);
-            const whenParsedSpec = whenSpecValidationOutcome
-                .then(() => whenSpecJson)
-                .then(resolveSwagger)
-                .then((specJson) => specParser.parseSwagger(specJson, options.specPathOrUrl));
+            return result.validationOutcome;
+        }));
 
-            return whenParsedSpec
-                .then((parsedSpec) => {
-                    return validateMocks(
-                        options.mockPathOrUrl, options.providerName, parsedSpec, loadJson, postAnalyticEvent
-                    );
-                })
-                .then((mocksValidationOutcome: ValidationOutcome) => {
-                    return combineValidationOutcomes([specValidationOutcome, mocksValidationOutcome]);
-                });
-        });
+        return combineValidationOutcomes(validationOutcomes);
     }
 };
 

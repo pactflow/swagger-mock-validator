@@ -1,20 +1,17 @@
-import fs = require('fs');
-import q = require('q');
+import * as fs from 'fs';
 import {FileSystem} from '../types';
 
 const fileSystem: FileSystem = {
     readFile: (fileName) => {
-        const deferred = q.defer<string>();
-
-        fs.readFile(fileName, (error, file) => {
-            if (error) {
-                deferred.reject(error);
-            } else {
-                deferred.resolve(file.toString());
-            }
+        return new Promise((resolve, reject) => {
+            fs.readFile(fileName, (error, file) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(file.toString());
+                }
+            });
         });
-
-        return deferred.promise;
     }
 };
 

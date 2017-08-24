@@ -1,4 +1,5 @@
-import * as q from 'q';
+import {ValidationResult} from '../api-types';
+import {ValidationOutcome} from '../api-types';
 
 // Parsed Mock
 
@@ -361,7 +362,7 @@ export interface FileSystem {
 
 export interface HttpClient {
     get: JsonLoaderFunction;
-    post: (url: string, body: any) => q.Promise<void>;
+    post: (url: string, body: any) => Promise<void>;
 }
 
 export interface Metadata {
@@ -375,7 +376,7 @@ export interface UuidGenerator {
     generate: () => string;
 }
 
-export type JsonLoaderFunction = (location: string) => q.Promise<string>;
+export type JsonLoaderFunction = (location: string) => Promise<string>;
 
 export type JsonSchema = JsonSchemaValue | JsonSchemaReference | JsonSchemaAllOf;
 
@@ -419,11 +420,11 @@ export interface JsonSchemaProperties {
     [name: string]: JsonSchema;
 }
 
-export interface SwaggerMockValidator {
-    validate: (options: SwaggerMockValidatorOptions) => q.Promise<ValidationOutcome>;
+export interface SwaggerMockValidatorInternal {
+    validate: (options: SwaggerMockValidatorInternalOptions) => Promise<ValidationOutcome>;
 }
 
-export interface SwaggerMockValidatorOptions {
+export interface SwaggerMockValidatorInternalOptions {
     analyticsUrl?: string;
     fileSystem?: FileSystem;
     httpClient?: HttpClient;
@@ -450,70 +451,6 @@ interface ParsedSwaggerMockValidatorOptions {
 export type MockSource = 'pactBroker' | 'path' | 'url';
 
 export type SpecSource = 'path' | 'url';
-
-export interface ValidationOutcome {
-    warnings: ValidationResult[];
-    errors: ValidationResult[];
-    reason?: string;
-    success: boolean;
-}
-
-export interface ValidationResult {
-    code: ValidationResultCode;
-    message: string;
-    mockDetails?: ValidationResultMockDetails;
-    source: ValidationResultSource;
-    specDetails?: ValidationResultSpecDetails;
-    type: ValidationResultType;
-}
-
-export interface ValidationResultMockDetails {
-    interactionDescription: string | null;
-    interactionState: string | null;
-    location: string;
-    mockFile: string;
-    value: any;
-}
-
-export interface ValidationResultSpecDetails {
-    location: string;
-    pathMethod: string | null;
-    pathName: string | null;
-    specFile: string;
-    value: any;
-}
-
-export type ValidationResultSource = 'pact-validation' | 'swagger-validation' | 'spec-mock-validation';
-
-export type ValidationResultType = 'error' | 'warning';
-
-export type ValidationResultCode =
-    'pv.warning' |
-    'pv.error' |
-    'spv.request.accept.incompatible' |
-    'spv.request.accept.unknown' |
-    'spv.request.authorization.missing' |
-    'spv.request.body.incompatible' |
-    'spv.request.body.unknown' |
-    'spv.request.content-type.incompatible' |
-    'spv.request.content-type.missing' |
-    'spv.request.content-type.unknown' |
-    'spv.request.header.incompatible' |
-    'spv.request.header.unknown' |
-    'spv.request.path-or-method.unknown' |
-    'spv.request.query.incompatible' |
-    'spv.request.query.unknown' |
-    'spv.response.body.incompatible' |
-    'spv.response.body.unknown' |
-    'spv.response.content-type.incompatible' |
-    'spv.response.content-type.unknown' |
-    'spv.response.header.incompatible' |
-    'spv.response.header.undefined' |
-    'spv.response.header.unknown' |
-    'spv.response.status.default' |
-    'spv.response.status.unknown' |
-    'sv.error' |
-    'sv.warning';
 
 export interface GetSwaggerValueSuccessResult<T> {
     found: true;

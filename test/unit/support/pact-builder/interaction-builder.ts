@@ -1,6 +1,6 @@
 import {cloneDeep} from 'lodash';
 import {PactInteraction} from '../../../../lib/swagger-mock-validator/types';
-import {setValueOn} from '../builder-utilities';
+import {removeValueOn, setValueOn} from '../builder-utilities';
 
 export interface InteractionBuilder {
     build: () => PactInteraction;
@@ -10,6 +10,7 @@ const createInteractionBuilder = (interaction: PactInteraction) => ({
     build: () => cloneDeep(interaction),
     withDescription: (description: string) =>
         createInteractionBuilder(setValueOn(interaction, 'description', description)),
+    withMissingRequest: () => createInteractionBuilder(removeValueOn(interaction, 'request')),
     withRequestBody: (body: any) => createInteractionBuilder(setValueOn(interaction, 'request.body', body)),
     withRequestHeader: (name: string, value: string) =>
         createInteractionBuilder(setValueOn(interaction, `request.headers.${name}`, value)),

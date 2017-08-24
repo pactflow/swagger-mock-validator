@@ -1,7 +1,7 @@
-import {expectToReject, willResolve} from 'jasmine-promise-tools';
 import * as yaml from 'js-yaml';
-import * as q from 'q';
-import {FileSystem, ValidationOutcome} from '../../lib/swagger-mock-validator/types';
+import {ValidationOutcome} from '../../lib/api-types';
+import {FileSystem} from '../../lib/swagger-mock-validator/types';
+import {expectToFail} from '../support/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBuilder} from './support/pact-builder';
 import {interactionBuilder} from './support/pact-builder/interaction-builder';
@@ -29,186 +29,182 @@ describe('reading files', () => {
         }) as any;
 
     describe('reading the swagger file', () => {
-        it('should read the json swagger file from the file system', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
+        it('should read the json swagger file from the file system', async () => {
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            return invokeValidate('swagger.json', 'pact.json').then(() => {
-                expect(mockFileSystem.readFile).toHaveBeenCalledWith('swagger.json');
-            });
-        }));
+            await invokeValidate('swagger.json', 'pact.json');
 
-        it('should read the yaml swagger file from the file system', willResolve(() => {
-            mockFiles['swagger.yaml'] = q(yaml.safeDump(swaggerBuilder.build()));
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
+            expect(mockFileSystem.readFile).toHaveBeenCalledWith('swagger.json');
+        });
 
-            return invokeValidate('swagger.yaml', 'pact.json').then(() => {
-                expect(mockFileSystem.readFile).toHaveBeenCalledWith('swagger.yaml');
-            });
-        }));
+        it('should read the yaml swagger file from the file system', async () => {
+            mockFiles['swagger.yaml'] = Promise.resolve(yaml.safeDump(swaggerBuilder.build()));
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-        it('should fail error when reading the swagger file fails', willResolve(() => {
-            mockFiles['swagger.json'] = q.reject<string>(new Error('error-message'));
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
-            const result = invokeValidate('swagger.json', 'pact.json');
+            await invokeValidate('swagger.yaml', 'pact.json');
 
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error('Unable to read "swagger.json": error-message'));
-            });
-        }));
+            expect(mockFileSystem.readFile).toHaveBeenCalledWith('swagger.yaml');
+        });
 
-        it('should fail when the swagger file cannot be parsed', willResolve(() => {
-            mockFiles['swagger.json'] = q('');
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
-            const result = invokeValidate('swagger.json', 'pact.json');
+        it('should fail error when reading the swagger file fails', async () => {
+            mockFiles['swagger.json'] = Promise.reject(new Error('error-message'));
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            return expectToReject(result).then((error) => {
-                expect(error.message).toEqual(jasmine.stringMatching(
-                    'Unable to parse "swagger.json": Unexpected end'
-                ));
-            });
-        }));
+            const error = await expectToFail(invokeValidate('swagger.json', 'pact.json'));
 
-        it('should return the error when the swagger file is not valid', willResolve(() => {
-            mockFiles['swagger.json'] = q('{}');
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
-            return invokeValidate('swagger.json', 'pact.json')
-                .then((result) => {
-                    expect(result.reason).toEqual('"swagger.json" is not a valid swagger file');
-                    expect(result).toContainErrors([{
-                        code: 'sv.error',
-                        message: 'Missing required property: paths',
-                        source: 'swagger-validation',
-                        specDetails: {
-                            location: '[swaggerRoot]',
-                            pathMethod: null,
-                            pathName: null,
-                            specFile: 'swagger.json',
-                            value: null
-                        },
-                        type: 'error'
-                    }, {
-                        code: 'sv.error',
-                        message: 'Missing required property: info',
-                        source: 'swagger-validation',
-                        specDetails: {
-                            location: '[swaggerRoot]',
-                            pathMethod: null,
-                            pathName: null,
-                            specFile: 'swagger.json',
-                            value: null
-                        },
-                        type: 'error'
-                    }, {
-                        code: 'sv.error',
-                        message: 'Missing required property: swagger',
-                        source: 'swagger-validation',
-                        specDetails: {
-                            location: '[swaggerRoot]',
-                            pathMethod: null,
-                            pathName: null,
-                            specFile: 'swagger.json',
-                            value: null
-                        },
-                        type: 'error'
-                    }]);
-            });
-        }));
+            expect(error).toEqual(new Error('Unable to read "swagger.json": error-message'));
+        });
 
-        it('should indicate the location where the validation error was found', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder.withMissingInfoTitle().build()));
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
-            return invokeValidate('swagger.json', 'pact.json')
-                .then((result) => {
-                    expect(result).toContainErrors([{
-                        code: 'sv.error',
-                        message: 'Missing required property: title',
-                        source: 'swagger-validation',
-                        specDetails: {
-                            location: '[swaggerRoot].info',
-                            pathMethod: null,
-                            pathName: null,
-                            specFile: 'swagger.json',
-                            value: null
-                        },
-                        type: 'error'
-                    }]);
-            });
-        }));
+        it('should fail when the swagger file cannot be parsed', async () => {
+            mockFiles['swagger.json'] = Promise.resolve('');
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-        it('should return the warning when the swagger file contains warnings', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(
+            const error = await expectToFail(invokeValidate('swagger.json', 'pact.json'));
+
+            expect(error.message).toEqual(jasmine.stringMatching(
+                'Unable to parse "swagger.json": Unexpected end'
+            ));
+        });
+
+        it('should return the error when the swagger file is not valid', async () => {
+            mockFiles['swagger.json'] = Promise.resolve('{}');
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
+
+            const result = await invokeValidate('swagger.json', 'pact.json');
+
+            expect(result.failureReason).toEqual('"swagger.json" is not a valid swagger file');
+            expect(result).toContainErrors([{
+                code: 'sv.error',
+                message: 'Missing required property: paths',
+                source: 'swagger-validation',
+                specDetails: {
+                    location: '[swaggerRoot]',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: null
+                },
+                type: 'error'
+            }, {
+                code: 'sv.error',
+                message: 'Missing required property: info',
+                source: 'swagger-validation',
+                specDetails: {
+                    location: '[swaggerRoot]',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: null
+                },
+                type: 'error'
+            }, {
+                code: 'sv.error',
+                message: 'Missing required property: swagger',
+                source: 'swagger-validation',
+                specDetails: {
+                    location: '[swaggerRoot]',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: null
+                },
+                type: 'error'
+            }]);
+        });
+
+        it('should indicate the location where the validation error was found', async () => {
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.withMissingInfoTitle().build()));
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
+            const result = await invokeValidate('swagger.json', 'pact.json');
+
+            expect(result).toContainErrors([{
+                code: 'sv.error',
+                message: 'Missing required property: title',
+                source: 'swagger-validation',
+                specDetails: {
+                    location: '[swaggerRoot].info',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: null
+                },
+                type: 'error'
+            }]);
+        });
+
+        it('should return the warning when the swagger file contains warnings', async () => {
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(
                 swaggerBuilder
                     .withParameter('userId', pathParameterBuilder.withNumberNamed('userId'))
                     .build()
             ));
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            return invokeValidate('swagger.json', 'pact.json').then((result) => {
-                expect(result).toContainNoErrors();
-                expect(result).toContainWarnings([{
-                    code: 'sv.warning',
-                    message: 'Parameter is defined but is not used: #/parameters/userId',
-                    source: 'swagger-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].parameters.userId',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: null
-                    },
-                    type: 'warning'
-                }]);
-            });
-        }));
+            const result = await invokeValidate('swagger.json', 'pact.json');
 
-        it('should return any warnings when the swagger file contains errors and warnings', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(
+            expect(result).toContainNoErrors();
+            expect(result).toContainWarnings([{
+                code: 'sv.warning',
+                message: 'Parameter is defined but is not used: #/parameters/userId',
+                source: 'swagger-validation',
+                specDetails: {
+                    location: '[swaggerRoot].parameters.userId',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: null
+                },
+                type: 'warning'
+            }]);
+        });
+
+        it('should return any warnings when the swagger file contains errors and warnings', async () => {
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(
                 swaggerBuilder
                     .withPath('/account/{accountId}', pathBuilder.withGetOperation(operationBuilder))
                     .withParameter('userId', pathParameterBuilder.withNumberNamed('userId'))
                     .build()
             ));
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            return invokeValidate('swagger.json', 'pact.json')
-                .then((result) => {
-                    expect(result).toContainErrors([{
-                        code: 'sv.error',
-                        message: 'API requires path parameter but it is not defined: accountId',
-                        source: 'swagger-validation',
-                        specDetails: {
-                            location: '[swaggerRoot].paths./account/{accountId}.get',
-                            pathMethod: null,
-                            pathName: null,
-                            specFile: 'swagger.json',
-                            value: null
-                        },
-                        type: 'error'
-                    }]);
-                    expect(result).toContainWarnings([{
-                        code: 'sv.warning',
-                        message: 'Parameter is defined but is not used: #/parameters/userId',
-                        source: 'swagger-validation',
-                        specDetails: {
-                            location: '[swaggerRoot].parameters.userId',
-                            pathMethod: null,
-                            pathName: null,
-                            specFile: 'swagger.json',
-                            value: null
-                        },
-                        type: 'warning'
-                    }]);
-            });
-        }));
+            const result = await invokeValidate('swagger.json', 'pact.json');
 
-        it('should return the swagger warnings when the pact file contains errors', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(
+            expect(result).toContainErrors([{
+                code: 'sv.error',
+                message: 'API requires path parameter but it is not defined: accountId',
+                source: 'swagger-validation',
+                specDetails: {
+                    location: '[swaggerRoot].paths./account/{accountId}.get',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: null
+                },
+                type: 'error'
+            }]);
+            expect(result).toContainWarnings([{
+                code: 'sv.warning',
+                message: 'Parameter is defined but is not used: #/parameters/userId',
+                source: 'swagger-validation',
+                specDetails: {
+                    location: '[swaggerRoot].parameters.userId',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: null
+                },
+                type: 'warning'
+            }]);
+        });
+
+        it('should return the swagger warnings when the pact file contains errors', async () => {
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(
                 swaggerBuilder
                     .withParameter('userId', pathParameterBuilder.withNumberNamed('userId'))
                     .build()
             ));
-            mockFiles['pact.json'] = q(JSON.stringify(
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(
                 pactBuilder
                     .withInteraction(
                         interactionBuilder.withRequestPath('/does/not/exist')
@@ -216,98 +212,96 @@ describe('reading files', () => {
                     .build()
             ));
 
-            return invokeValidate('swagger.json', 'pact.json').then((result) => {
-                expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /does/not/exist',
-                    mockDetails: {
-                        interactionDescription: 'default-description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
-                        mockFile: 'pact.json',
-                        value: '/does/not/exist'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: {}
-                    },
-                    type: 'error'
-                }]);
-                expect(result).toContainWarnings([{
-                    code: 'sv.warning',
-                    message: 'Parameter is defined but is not used: #/parameters/userId',
-                    source: 'swagger-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].parameters.userId',
-                        pathMethod: null,
-                        pathName: null,
-                        specFile: 'swagger.json',
-                        value: null
-                    },
-                    type: 'warning'
-                }]);
-            });
-        }));
+            const result = await invokeValidate('swagger.json', 'pact.json');
+
+            expect(result).toContainErrors([{
+                code: 'spv.request.path-or-method.unknown',
+                message: 'Path or method not defined in swagger file: GET /does/not/exist',
+                mockDetails: {
+                    interactionDescription: 'default-description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.path',
+                    mockFile: 'pact.json',
+                    value: '/does/not/exist'
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[swaggerRoot].paths',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: {}
+                },
+                type: 'error'
+            }]);
+            expect(result).toContainWarnings([{
+                code: 'sv.warning',
+                message: 'Parameter is defined but is not used: #/parameters/userId',
+                source: 'swagger-validation',
+                specDetails: {
+                    location: '[swaggerRoot].parameters.userId',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: null
+                },
+                type: 'warning'
+            }]);
+        });
     });
 
     describe('reading the pact file', () => {
-        it('should read the pact file from the file system', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
-            mockFiles['pact.json'] = q(JSON.stringify(pactBuilder.build()));
+        it('should read the pact file from the file system', async () => {
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            return invokeValidate('swagger.json', 'pact.json').then(() => {
-                expect(mockFileSystem.readFile).toHaveBeenCalledWith('pact.json');
-            });
-        }));
+            await invokeValidate('swagger.json', 'pact.json');
 
-        it('should fail when reading the pact file fails', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
-            mockFiles['pact.json'] = q.reject<string>(new Error('error-message'));
-            const result = invokeValidate('swagger.json', 'pact.json');
+            expect(mockFileSystem.readFile).toHaveBeenCalledWith('pact.json');
+        });
 
-            return expectToReject(result).then((error) => {
-                expect(error).toEqual(new Error('Unable to read "pact.json": error-message'));
-            });
-        }));
+        it('should fail when reading the pact file fails', async () => {
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['pact.json'] = Promise.reject(new Error('error-message'));
 
-        it('should fail when the pact file cannot be parsed as json', willResolve(() => {
-            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
-            mockFiles['pact.json'] = q('');
-            const result = invokeValidate('swagger.json', 'pact.json');
+            const error = await expectToFail(invokeValidate('swagger.json', 'pact.json'));
 
-            return expectToReject(result).then((error) => {
-                expect(error.message).toEqual(jasmine.stringMatching(
-                    'Unable to parse "pact.json": Unexpected end'
-                ));
-            });
-        }));
+            expect(error).toEqual(new Error('Unable to read "pact.json": error-message'));
+        });
 
-        it('should return the error when the pact file is not valid', willResolve(() => {
+        it('should fail when the pact file cannot be parsed as json', async () => {
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['pact.json'] = Promise.resolve('');
+
+            const error = await expectToFail(invokeValidate('swagger.json', 'pact.json'));
+
+            expect(error.message).toEqual(jasmine.stringMatching(
+                'Unable to parse "pact.json": Unexpected end'
+            ));
+        });
+
+        it('should return the error when the pact file is not valid', async () => {
             const pact = pactBuilder.withMissingInteractions();
 
-            mockFiles['swagger.json'] = q(JSON.stringify(swaggerBuilder.build()));
-            mockFiles['pact.json'] = q(JSON.stringify(pact.build()));
-            return invokeValidate('swagger.json', 'pact.json')
-                .then((result) => {
-                    expect(result.reason).toBe('"pact.json" is not a valid pact file');
-                    expect(result).toContainErrors([{
-                        code: 'pv.error',
-                        message: 'Missing required property: interactions',
-                        mockDetails: {
-                            interactionDescription: null,
-                            interactionState: null,
-                            location: '[pactRoot]',
-                            mockFile: 'pact.json',
-                            value: pact.build()
-                        },
-                        source: 'pact-validation',
-                        type: 'error'
-                    }]);
-            });
-        }));
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pact.build()));
+
+            const result = await invokeValidate('swagger.json', 'pact.json');
+
+            expect(result.failureReason).toBe('"pact.json" is not a valid pact file');
+            expect(result).toContainErrors([{
+                code: 'pv.error',
+                message: 'Missing required property: interactions',
+                mockDetails: {
+                    interactionDescription: null,
+                    interactionState: null,
+                    location: '[pactRoot]',
+                    mockFile: 'pact.json',
+                    value: pact.build()
+                },
+                source: 'pact-validation',
+                type: 'error'
+            }]);
+        });
     });
 });

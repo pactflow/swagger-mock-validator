@@ -1,11 +1,11 @@
 import * as _ from 'lodash';
+import {ValidationResult} from '../../api-types';
 import result from '../result';
 import {
     ParsedMockInteraction,
     ParsedSpecOperation,
     ParsedSpecSecurityRequirement,
-    ParsedSpecSecurityRequirements,
-    ValidationResult
+    ParsedSpecSecurityRequirements
 } from '../types';
 
 const validateQueryRequirement = (

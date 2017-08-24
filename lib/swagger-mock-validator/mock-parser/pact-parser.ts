@@ -121,7 +121,7 @@ const parseInteraction = (
 export default {
     parse: (pactJson: Pact, mockPathOrUrl: string): ParsedMock => ({
         consumer: pactJson.consumer.name,
-        interactions: _.map(pactJson.interactions, (interaction: PactInteraction, interactionIndex: number) =>
+        interactions: pactJson.interactions.map((interaction: PactInteraction, interactionIndex: number) =>
             parseInteraction(interaction, interactionIndex, mockPathOrUrl)
         ),
         pathOrUrl: mockPathOrUrl,

@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import {ValidationResultCode} from '../../api-types';
 import result from '../result';
 import {
     JsonSchema,
@@ -7,8 +8,7 @@ import {
     ParsedMockValue,
     ParsedSpecItem,
     ParsedSpecItemCollectionFormat,
-    ParsedSpecParameter, ValidationResultCode
-} from '../types';
+    ParsedSpecParameter} from '../types';
 import validateJson from './validate-json';
 
 const toJsonSchema = (parsedSpecParameter: ParsedSpecParameter): JsonSchema => {

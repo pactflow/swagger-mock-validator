@@ -1,4 +1,3 @@
-import {willResolve} from 'jasmine-promise-tools';
 import * as _ from 'lodash';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
@@ -28,13 +27,11 @@ describe('request headers', () => {
         jasmine.addMatchers(customMatchers);
     });
 
-    const validateRequestHeaders = (
-        swaggerHeaderParameter?: ParameterBuilder,
-        pactRequestHeaders?: {[name: string]: string}
-    ) => {
+    const validateRequestHeaders = (swaggerHeaderParameter?: ParameterBuilder,
+                                    pactRequestHeaders?: { [name: string]: string }) => {
         let interaction = defaultInteractionBuilder;
 
-        _.each(pactRequestHeaders as {[name: string]: string}, (headerValue, headerName) => {
+        _.each(pactRequestHeaders as { [name: string]: string }, (headerValue, headerName) => {
             if (!headerName) {
                 return;
             }
@@ -54,143 +51,139 @@ describe('request headers', () => {
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
-    it('should pass when the pact request header matches the spec', willResolve(() => {
+    it('should pass when the pact request header matches the spec', async () => {
         const requestHeaders = {'x-custom-header': '1'};
         const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
-        return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await validateRequestHeaders(headerParameter, requestHeaders);
 
-    it('should return the error when the pact request header does not match the spec', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return the error when the pact request header does not match the spec', async () => {
         const requestHeaders = {'x-custom-header': 'not-a-number'};
         const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
-        return validateRequestHeaders(headerParameter, requestHeaders)
-            .then((result) => {
-                expect(result.reason).toEqual(expectedFailedValidationError);
-                expect(result).toContainErrors([{
-                    code: 'spv.request.header.incompatible',
-                    message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.headers.x-custom-header',
-                        mockFile: 'pact.json',
-                        value: 'not-a-number'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: headerParameter.build()
-                    },
-                    type: 'error'
-                }]);
-        });
-    }));
+        const result = await validateRequestHeaders(headerParameter, requestHeaders);
 
-    it('should return the error when a pact request header does not match an array type', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.header.incompatible',
+            message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].request.headers.x-custom-header',
+                mockFile: 'pact.json',
+                value: 'not-a-number'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: headerParameter.build()
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should return the error when a pact request header does not match an array type', async () => {
         const requestHeaders = {'x-custom-header': '1,2,a'};
         const headerParameter = requestHeaderParameterBuilder.withRequiredArrayOfNumbersNamed('x-custom-header');
 
-        return validateRequestHeaders(headerParameter, requestHeaders)
-            .then((result) => {
-                expect(result.reason).toEqual(expectedFailedValidationError);
-                expect(result).toContainErrors([{
-                    code: 'spv.request.header.incompatible',
-                    message:
-                        'Value is incompatible with the parameter defined in the swagger file: should be number',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.headers.x-custom-header',
-                        mockFile: 'pact.json',
-                        value: '1,2,a'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: headerParameter.build()
-                    },
-                    type: 'error'
-                }]);
-        });
-    }));
+        const result = await validateRequestHeaders(headerParameter, requestHeaders);
 
-    it('should pass when the pact request header is missing and the spec defines it as optional', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.header.incompatible',
+            message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].request.headers.x-custom-header',
+                mockFile: 'pact.json',
+                value: '1,2,a'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: headerParameter.build()
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should pass when the pact request header is missing and the spec defines it as optional', async () => {
         const headerParameter = requestHeaderParameterBuilder.withOptionalNumberNamed('x-custom-header');
 
-        return validateRequestHeaders(headerParameter, {}).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await validateRequestHeaders(headerParameter, {});
 
-    it('should fail when the pact request header is missing and the spec defines it as required', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should fail when the pact request header is missing and the spec defines it as required', async () => {
         const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('x-custom-header');
 
-        return validateRequestHeaders(headerParameter, {})
-            .then((result) => {
-                expect(result.reason).toEqual(expectedFailedValidationError);
-                expect(result).toContainErrors([{
-                    code: 'spv.request.header.incompatible',
-                    message: 'Value is incompatible with the parameter defined in the swagger file: ' +
-                        'should have required property \'value\'',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0]',
-                        mockFile: 'pact.json',
-                        value: defaultInteractionBuilder.build()
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
-                        pathMethod: 'get',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: headerParameter.build()
-                    },
-                    type: 'error'
-                }]);
-        });
-    }));
+        const result = await validateRequestHeaders(headerParameter, {});
 
-    it('should return a warning when a pact request header is defined that is not in the spec', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.header.incompatible',
+            message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+            'should have required property \'value\'',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: headerParameter.build()
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should return a warning when a pact request header is defined that is not in the spec', async () => {
         const requestHeaders = {'x-custom-header': 'value'};
 
-        return validateRequestHeaders(undefined, requestHeaders).then((result) => {
-            expect(result).toContainNoErrors();
-            expect(result).toContainWarnings([{
-                code: 'spv.request.header.unknown',
-                message: 'Request header is not defined in the swagger file: x-custom-header',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.x-custom-header',
-                    mockFile: 'pact.json',
-                    value: 'value'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: defaultOperationBuilder.build()
-                },
-                type: 'warning'
-            }]);
-        });
-    }));
+        const result = await validateRequestHeaders(undefined, requestHeaders);
 
-    it('should pass when pact request headers not defined in the spec are standard http headers', willResolve(() => {
+        expect(result).toContainNoErrors();
+        expect(result).toContainWarnings([{
+            code: 'spv.request.header.unknown',
+            message: 'Request header is not defined in the swagger file: x-custom-header',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].request.headers.x-custom-header',
+                mockFile: 'pact.json',
+                value: 'value'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: defaultOperationBuilder.build()
+            },
+            type: 'warning'
+        }]);
+    });
+
+    it('should pass when pact request headers not defined in the spec are standard http headers', async () => {
         const requestHeaders = {
             'Accept': 'text/plain',
             'Accept-Charset': 'utf-8',
@@ -227,17 +220,17 @@ describe('request headers', () => {
             'Warning': '199 Miscellaneous warning'
         };
 
-        return validateRequestHeaders(undefined, requestHeaders).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await validateRequestHeaders(undefined, requestHeaders);
 
-    it('should not be case sensitive when comparing mock and spec headers', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should not be case sensitive when comparing mock and spec headers', async () => {
         const requestHeaders = {'content-Type': 'application/x-www-form-urlencoded', 'x-Custom-header': '1'};
         const headerParameter = requestHeaderParameterBuilder.withRequiredNumberNamed('X-custom-header');
 
-        return validateRequestHeaders(headerParameter, requestHeaders).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await validateRequestHeaders(headerParameter, requestHeaders);
+
+        expect(result).toContainNoWarningsOrErrors();
+    });
 });

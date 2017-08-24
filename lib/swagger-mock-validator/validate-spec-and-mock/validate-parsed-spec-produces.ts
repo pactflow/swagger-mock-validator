@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
-import {ParsedMockInteraction, ParsedSpecOperation, ValidationResult} from '../types';
+import {ValidationResult} from '../../api-types';
+import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
 import Negotiator = require('negotiator');
 import result from '../result';
 

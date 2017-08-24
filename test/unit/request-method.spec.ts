@@ -1,4 +1,3 @@
-import {willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {operationBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
@@ -15,7 +14,7 @@ describe('request method', () => {
         jasmine.addMatchers(customMatchers);
     });
 
-    it('should pass when a pact calls a method that is defined in the swagger', willResolve(() => {
+    it('should pass when a pact calls a method that is defined in the swagger', async () => {
         const pactFile = pactBuilder
             .withInteraction(interactionBuilder
                 .withDescription('interaction description')
@@ -28,12 +27,12 @@ describe('request method', () => {
             .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
             .build();
 
-        return invokeSwaggerPactValidator(swaggerFile, pactFile).then((result) => {
-            (expect(result) as any).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await invokeSwaggerPactValidator(swaggerFile, pactFile);
 
-    it('should return the error when a pact calls a method that is not defined in the swagger', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return the error when a pact calls a method that is not defined in the swagger', async () => {
         const pactFile = pactBuilder
             .withInteraction(interactionBuilder
                 .withDescription('interaction description')
@@ -48,29 +47,28 @@ describe('request method', () => {
             .withPath('/does/exist', pathWithGetOperationBuilder)
             .build();
 
-        return invokeSwaggerPactValidator(swaggerFile, pactFile)
-            .then((result) => {
-            expect(result.reason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: POST /does/exist',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
-                    mockFile: 'pact.json',
-                    value: '/does/exist'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths',
-                    pathMethod: null,
-                    pathName: null,
-                    specFile: 'swagger.json',
-                    value: {'/does/exist': pathWithGetOperationBuilder.build()}
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+        const result = await invokeSwaggerPactValidator(swaggerFile, pactFile);
+
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.path-or-method.unknown',
+            message: 'Path or method not defined in swagger file: POST /does/exist',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].request.path',
+                mockFile: 'pact.json',
+                value: '/does/exist'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths',
+                pathMethod: null,
+                pathName: null,
+                specFile: 'swagger.json',
+                value: {'/does/exist': pathWithGetOperationBuilder.build()}
+            },
+            type: 'error'
+        }]);
+    });
 });

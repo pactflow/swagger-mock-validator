@@ -1,11 +1,10 @@
 import * as _ from 'lodash';
-import * as q from 'q';
+import {ValidationOutcome, ValidationResult} from '../api-types';
 import {
     ParsedMock,
     ParsedMockInteraction,
     ParsedSpec,
-    ParsedSpecOperation, ValidationOutcome,
-    ValidationResult
+    ParsedSpecOperation
 } from './types';
 import getParsedSpecOperation from './validate-spec-and-mock/get-parsed-spec-operation';
 import getParsedSpecResponse from './validate-spec-and-mock/get-parsed-spec-response';
@@ -61,7 +60,7 @@ const validateMockInteraction = (parsedMockInteraction: ParsedMockInteraction, p
     );
 };
 
-export default (parsedMock: ParsedMock, parsedSpec: ParsedSpec): q.Promise<ValidationOutcome> => {
+export default (parsedMock: ParsedMock, parsedSpec: ParsedSpec): Promise<ValidationOutcome> => {
     const validationResults = _(parsedMock.interactions)
         .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpec))
         .flatten<ValidationResult>()
@@ -70,8 +69,8 @@ export default (parsedMock: ParsedMock, parsedSpec: ParsedSpec): q.Promise<Valid
     const errors = _.filter(validationResults, (res) => res.type === 'error');
     const warnings = _.filter(validationResults, (res) => res.type === 'warning');
     const success = errors.length === 0;
-    const reason = success ? undefined : `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
+    const failureReason = success ? undefined : `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
         `with swagger file "${parsedSpec.pathOrUrl}"`;
 
-    return q({errors, warnings, reason, success});
+    return Promise.resolve({errors, failureReason, success, warnings});
 };

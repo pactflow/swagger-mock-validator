@@ -1,4 +1,5 @@
-import {HttpClient, Metadata, UuidGenerator, ValidationOutcome, ValidationResult} from './types';
+import {ValidationOutcome, ValidationResult} from '../api-types';
+import {HttpClient, Metadata, UuidGenerator} from './types';
 
 interface PostEventOptions {
     analyticsUrl: string;

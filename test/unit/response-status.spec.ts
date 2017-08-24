@@ -1,4 +1,3 @@
-import {willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
@@ -35,69 +34,69 @@ describe('response status', () => {
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
-    it('should pass when a pact mocks a response status that is defined in the swagger', willResolve(() => {
+    it('should pass when a pact mocks a response status that is defined in the swagger', async () => {
         const operation = operationBuilder.withResponse(200, responseBuilder);
 
-        return validateResponseStatus(200, operation).then((result) => {
-            (expect(result) as any).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await validateResponseStatus(200, operation);
 
-    it('should return the error when pact mocks response status not defined in the swagger', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return the error when pact mocks response status not defined in the swagger', async () => {
         const operation = operationBuilder.withResponse(200, responseBuilder);
 
-        return validateResponseStatus(202, operation).then((result) => {
-            expect(result.reason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.response.status.unknown',
-                message: 'Response status code not defined in swagger file: 202',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.status',
-                    mockFile: 'pact.json',
-                    value: 202
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: operation.build().responses
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+        const result = await validateResponseStatus(202, operation);
 
-    it('should return warning when pact mocks status matches the swagger default response', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.response.status.unknown',
+            message: 'Response status code not defined in swagger file: 202',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].response.status',
+                mockFile: 'pact.json',
+                value: 202
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.responses',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: operation.build().responses
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should return warning when pact mocks status matches the swagger default response', async () => {
         const operation = operationBuilder
             .withResponse(200, responseBuilder)
             .withDefaultResponse(responseBuilder);
 
-        return validateResponseStatus(202, operation).then((result) => {
-            (expect(result) as any).toContainNoErrors();
-            (expect(result) as any).toContainWarnings([{
-                code: 'spv.response.status.default',
-                message: 'Response status code matched default response in swagger file: 202',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.status',
-                    mockFile: 'pact.json',
-                    value: 202
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: operation.build().responses
-                },
-                type: 'warning'
-            }]);
-        });
-    }));
+        const result = await validateResponseStatus(202, operation);
+
+        expect(result).toContainNoErrors();
+        expect(result).toContainWarnings([{
+            code: 'spv.response.status.default',
+            message: 'Response status code matched default response in swagger file: 202',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].response.status',
+                mockFile: 'pact.json',
+                value: 202
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.responses',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: operation.build().responses
+            },
+            type: 'warning'
+        }]);
+    });
 });

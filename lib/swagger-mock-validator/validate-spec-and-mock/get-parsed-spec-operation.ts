@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import {ValidationResult} from '../../api-types';
 import result from '../result';
 import {
     GetSwaggerValueResult,
@@ -8,8 +9,7 @@ import {
     ParsedSpec,
     ParsedSpecOperation,
     ParsedSpecPathNameSegmentEqual,
-    ParsedSpecPathNameSegmentJsonSchema,
-    ValidationResult
+    ParsedSpecPathNameSegmentJsonSchema
 } from '../types';
 import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
 

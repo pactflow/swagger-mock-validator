@@ -1,4 +1,3 @@
-import * as q from 'q';
 import * as request from 'request';
 import {HttpClient} from '../types';
 
@@ -7,28 +6,24 @@ const hasHttp2xxStatusCode = (response: request.RequestResponse) =>
 
 const httpClient: HttpClient = {
     get: (url) => {
-        const deferred = q.defer<string>();
-
         const requestOptions = {
             timeout: 30000,
             url
         };
 
-        request(requestOptions, (error, response, body) => {
-            if (error) {
-                deferred.reject(error);
-            } else if (response.statusCode !== 200) {
-                deferred.reject(new Error(`Expected 200 but received ${response.statusCode}`));
-            } else {
-                deferred.resolve(body);
-            }
+        return new Promise((resolve, reject) => {
+            request(requestOptions, (error, response, body) => {
+                if (error) {
+                    reject(error);
+                } else if (response.statusCode !== 200) {
+                    reject(new Error(`Expected 200 but received ${response.statusCode}`));
+                } else {
+                    resolve(body);
+                }
+            });
         });
-
-        return deferred.promise;
     },
     post: (url, body) => {
-        const deferred = q.defer<void>();
-
         const requestOptions = {
             body,
             json: true,
@@ -37,17 +32,17 @@ const httpClient: HttpClient = {
             url
         };
 
-        request(requestOptions, (error, response) => {
-            if (error) {
-                deferred.reject(error);
-            } else if (!hasHttp2xxStatusCode(response)) {
-                deferred.reject(new Error(`Expected 2xx but received ${response.statusCode}}`));
-            } else {
-                deferred.resolve();
-            }
+        return new Promise<void>((resolve, reject) => {
+            request(requestOptions, (error, response) => {
+                if (error) {
+                    reject(error);
+                } else if (!hasHttp2xxStatusCode(response)) {
+                    reject(new Error(`Expected 2xx but received ${response.statusCode}}`));
+                } else {
+                    resolve();
+                }
+            });
         });
-
-        return deferred.promise;
     }
 };
 

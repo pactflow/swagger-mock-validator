@@ -3,8 +3,8 @@
 import * as commander from 'commander';
 import * as _ from 'lodash';
 import * as util from 'util';
+import {ValidationOutcome, ValidationResult} from './api-types';
 import swaggerMockValidator from './swagger-mock-validator';
-import {ValidationOutcome, ValidationResult} from './swagger-mock-validator/types';
 
 // tslint:disable:no-var-requires
 const packageJson = require('../package.json');
@@ -27,8 +27,8 @@ const displaySummaryForValidationResults = (name: string, resultsOrNone?: Valida
 };
 
 const displaySummary = (result: ValidationOutcome) => {
-    if (result.reason) {
-        console.log(result.reason);
+    if (result.failureReason) {
+        console.log(result.failureReason);
     }
     displaySummaryForValidationResults('error', result.errors);
     displaySummaryForValidationResults('warning', result.warnings);
@@ -36,6 +36,11 @@ const displaySummary = (result: ValidationOutcome) => {
     if (result.warnings.length > 0 || result.errors.length > 0) {
         console.log(`${util.inspect({warnings: result.warnings, errors: result.errors}, {depth: 4})}\n`);
     }
+};
+
+const logErrorAndExitProcess = (error: Error) => {
+    console.log(error.stack);
+    process.exitCode = 1;
 };
 
 commander
@@ -59,24 +64,24 @@ automatically find the latest versions of the consumer pact file(s) uploaded to 
 the specified provider name. The <swagger> argument should be the path or url to the swagger
 json file.`
     )
-    .action((swagger, mock, options) =>
-        swaggerMockValidator.validate({
-            analyticsUrl: options.analyticsUrl,
-            mockPathOrUrl: mock,
-            providerName: options.provider,
-            specPathOrUrl: swagger
-        })
-        .then((result) => {
+    .action(async (swagger, mock, options) => {
+        try {
+            const result = await swaggerMockValidator.validate({
+                analyticsUrl: options.analyticsUrl,
+                mockPathOrUrl: mock,
+                providerName: options.provider,
+                specPathOrUrl: swagger
+            });
+
             displaySummary(result);
+
             if (!result.success) {
-                throw new Error(result.reason);
+                logErrorAndExitProcess(new Error(result.failureReason));
             }
-        })
-        .catch((error) => {
-            console.log(error.stack);
-            process.exitCode = 1;
-        })
-    )
+        } catch (error) {
+            logErrorAndExitProcess(error);
+        }
+    })
     .parse(process.argv);
 
 if (!commander.args.length) {

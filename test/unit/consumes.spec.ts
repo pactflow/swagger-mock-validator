@@ -1,4 +1,3 @@
-import {willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
@@ -57,117 +56,116 @@ describe('consumes', () => {
         return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
-    it('should pass when the pact request content-type header matches the spec', willResolve(() =>
-        validateRequestContentTypeHeader(['application/json'], 'application/json', {id: 1}).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        })
-    ));
+    it('should pass when the pact request content-type header matches the spec', async () => {
+        const result = await validateRequestContentTypeHeader(['application/json'], 'application/json', {id: 1});
 
-    it('should pass when the pact request has no body and content-type header matches the spec', willResolve(() =>
-        validateRequestContentTypeHeader(['application/json'], 'application/json').then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        })
-    ));
+        expect(result).toContainNoWarningsOrErrors();
+    });
 
-    it('should pass when no pact request content-type and no body are defined', willResolve(() =>
-        validateRequestContentTypeHeader(['application/json']).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        })
-    ));
+    it('should pass when the pact request has no body and content-type header matches the spec', async () => {
+        const result = await validateRequestContentTypeHeader(['application/json'], 'application/json');
 
-    it('should pass when no pact request content-type and no spec consumes are defined', willResolve(() =>
-        validateRequestContentTypeHeader().then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        })
-    ));
+        expect(result).toContainNoWarningsOrErrors();
+    });
 
-    it('should pass for request with body and no content-type and when no spec consumes is defined', willResolve(() =>
-        validateRequestContentTypeHeader(undefined, undefined, {id: 2}).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        })
-    ));
+    it('should pass when no pact request content-type and no body are defined', async () => {
+        const result = await validateRequestContentTypeHeader(['application/json']);
 
-    it('should return warning when request content-type header is not defined and spec consumes is', willResolve(() =>
-        validateRequestContentTypeHeader(['application/json'], undefined, {id: 1}).then((result) => {
-            expect(result).toContainNoErrors();
-            expect(result).toContainWarnings([{
-                code: 'spv.request.content-type.missing',
-                message: 'Request content type header is not defined but there is consumes definition in the spec',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.withRequestBody({id: 1}).build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.post.consumes',
-                    pathMethod: 'post',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: ['application/json']
-                },
-                type: 'warning'
-            }]);
-        })
-    ));
+        expect(result).toContainNoWarningsOrErrors();
+    });
 
-    it('should return warning when request content-type header is defined and spec consumes is not', willResolve(() =>
-        validateRequestContentTypeHeader(undefined, 'application/json', {id: 1}).then((result) => {
-            expect(result).toContainNoErrors();
-            expect(result).toContainWarnings([{
-                code: 'spv.request.content-type.unknown',
-                message: 'Request content-type header is defined but there is no consumes definition in the spec',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.Content-Type',
-                    mockFile: 'pact.json',
-                    value: 'application/json'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.post',
-                    pathMethod: 'post',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: operationBuilder.withParameter(defaultSwaggerBodyParameter).build()
-                },
-                type: 'warning'
-            }]);
-        })
-    ));
+    it('should pass when no pact request content-type and no spec consumes are defined', async () => {
+        const result = await validateRequestContentTypeHeader();
 
-    it('should return error when pact request content-type header does not match the spec', willResolve(() => {
-        return validateRequestContentTypeHeader(['application/xml'], 'application/json', {id: 1})
-            .then((result) => {
-                expect(result.reason).toEqual(expectedFailedValidationError);
-                expect(result).toContainErrors([{
-                    code: 'spv.request.content-type.incompatible',
-                    message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
-                    'in the swagger file',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.headers.Content-Type',
-                        mockFile: 'pact.json',
-                        value: 'application/json'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.post.consumes',
-                        pathMethod: 'post',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: ['application/xml']
-                    },
-                    type: 'error'
-                }]);
-        });
-    }));
+        expect(result).toContainNoWarningsOrErrors();
+    });
 
-    it('should return error when pact request content-type header does not match the global spec', willResolve(() => {
+    it('should pass for request with body and no content-type and when no spec consumes is defined', async () => {
+        const result = await validateRequestContentTypeHeader(undefined, undefined, {id: 2});
+
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return warning when request content-type header is not defined and spec consumes is', async () => {
+        const result = await validateRequestContentTypeHeader(['application/json'], undefined, {id: 1});
+
+        expect(result).toContainNoErrors();
+        expect(result).toContainWarnings([{
+            code: 'spv.request.content-type.missing',
+            message: 'Request content type header is not defined but there is consumes definition in the spec',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.withRequestBody({id: 1}).build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.post.consumes',
+                pathMethod: 'post',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: ['application/json']
+            },
+            type: 'warning'
+        }]);
+    });
+
+    it('should return warning when request content-type header is defined and spec consumes is not', async () => {
+        const result = await validateRequestContentTypeHeader(undefined, 'application/json', {id: 1});
+
+        expect(result).toContainNoErrors();
+        expect(result).toContainWarnings([{
+            code: 'spv.request.content-type.unknown',
+            message: 'Request content-type header is defined but there is no consumes definition in the spec',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                mockFile: 'pact.json',
+                value: 'application/json'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.post',
+                pathMethod: 'post',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: operationBuilder.withParameter(defaultSwaggerBodyParameter).build()
+            },
+            type: 'warning'
+        }]);
+    });
+
+    it('should return error when pact request content-type header does not match the spec', async () => {
+        const result = await validateRequestContentTypeHeader(['application/xml'], 'application/json', {id: 1});
+
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.content-type.incompatible',
+            message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
+            'in the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                mockFile: 'pact.json',
+                value: 'application/json'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.post.consumes',
+                pathMethod: 'post',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: ['application/xml']
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should return error when pact request content-type header does not match the global spec', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder.withRequestHeader('Content-Type', 'application/json'))
             .build();
@@ -177,34 +175,33 @@ describe('consumes', () => {
             .withConsumes(['application/xml'])
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile)
-            .then((result) => {
-                expect(result.reason).toEqual(expectedFailedValidationError);
-                expect(result).toContainErrors([{
-                    code: 'spv.request.content-type.incompatible',
-                    message: 'Request Content-Type header is incompatible with the consumes mime type defined in the ' +
-                    'swagger file',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.headers.Content-Type',
-                        mockFile: 'pact.json',
-                        value: 'application/json'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].consumes',
-                        pathMethod: 'post',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: ['application/xml']
-                    },
-                    type: 'error'
-                }]);
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should use the operation produces over the global produces', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.content-type.incompatible',
+            message: 'Request Content-Type header is incompatible with the consumes mime type defined in the ' +
+            'swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                mockFile: 'pact.json',
+                value: 'application/json'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].consumes',
+                pathMethod: 'post',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: ['application/xml']
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should use the operation produces over the global produces', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder.withRequestHeader('Content-Type', 'application/json'))
             .build();
@@ -214,30 +211,29 @@ describe('consumes', () => {
             .withConsumes(['application/json'])
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile)
-            .then((result) => {
-                expect(result.reason).toEqual(expectedFailedValidationError);
-                expect(result).toContainErrors([{
-                    code: 'spv.request.content-type.incompatible',
-                    message: 'Request Content-Type header is incompatible with the consumes mime ' +
-                    'type defined in the swagger file',
-                    mockDetails: {
-                        interactionDescription: 'interaction description',
-                        interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.headers.Content-Type',
-                        mockFile: 'pact.json',
-                        value: 'application/json'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: '[swaggerRoot].paths./does/exist.post.consumes',
-                        pathMethod: 'post',
-                        pathName: '/does/exist',
-                        specFile: 'swagger.json',
-                        value: ['application/xml']
-                    },
-                    type: 'error'
-                }]);
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.content-type.incompatible',
+            message: 'Request Content-Type header is incompatible with the consumes mime ' +
+            'type defined in the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                mockFile: 'pact.json',
+                value: 'application/json'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.post.consumes',
+                pathMethod: 'post',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: ['application/xml']
+            },
+            type: 'error'
+        }]);
+    });
 });

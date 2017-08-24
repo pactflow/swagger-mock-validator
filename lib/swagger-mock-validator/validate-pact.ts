@@ -1,7 +1,7 @@
-import * as q from 'q';
-import {ValidationOutcome, ValidationResult} from './types';
+import {ValidationResult} from '../api-types';
+import {ValidationOutcome} from '../api-types';
 
-export default (pactJson: any, mockPathOrUrl: string): q.Promise<ValidationOutcome> => {
+export default (pactJson: any, mockPathOrUrl: string): ValidationOutcome => {
     let errors: ValidationResult[] = [];
     const warnings: ValidationResult[] = [];
     if (!pactJson.interactions) {
@@ -20,6 +20,6 @@ export default (pactJson: any, mockPathOrUrl: string): q.Promise<ValidationOutco
             }];
     }
     const success = errors.length === 0;
-    const reason = success ? undefined : `"${mockPathOrUrl}" is not a valid pact file`;
-    return q({warnings, errors, reason, success});
+    const failureReason = success ? undefined : `"${mockPathOrUrl}" is not a valid pact file`;
+    return {warnings, errors, failureReason, success};
 };

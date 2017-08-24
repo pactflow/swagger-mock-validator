@@ -1,4 +1,3 @@
-import {willResolve} from 'jasmine-promise-tools';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
@@ -22,7 +21,7 @@ describe('security', () => {
         jasmine.addMatchers(customMatchers);
     });
 
-    it('should pass when the pact request is has the required basic auth', willResolve(() => {
+    it('should pass when the pact request is has the required basic auth', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder
                 .withRequestHeader('Authorization', 'Basic user:pass')
@@ -36,12 +35,12 @@ describe('security', () => {
             .withSecurityDefinitionNamed('basic', securitySchemeBuilder.withTypeBasic())
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should return an error when the pact request is missing required basic auth', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return an error when the pact request is missing required basic auth', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
         const swaggerFile = swaggerBuilder
@@ -51,32 +50,32 @@ describe('security', () => {
             .withSecurityDefinitionNamed('basic', securitySchemeBuilder.withTypeBasic())
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result.reason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.authorization.missing',
-                message: 'Request Authorization header is missing but is required by the swagger file',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.security[0].basic',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: []
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should pass when the pact request is has the required apiKey auth header', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.authorization.missing',
+            message: 'Request Authorization header is missing but is required by the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.security[0].basic',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: []
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should pass when the pact request is has the required apiKey auth header', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder
                 .withRequestHeader('x-api-token', 'Bearer a-token')
@@ -90,12 +89,12 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInHeader('x-api-token'))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should return an error when the pact request is missing required apiKey auth header', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return an error when the pact request is missing required apiKey auth header', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
         const swaggerFile = swaggerBuilder
@@ -105,32 +104,32 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInHeader('x-api-token'))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result.reason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.authorization.missing',
-                message: 'Request Authorization header is missing but is required by the swagger file',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.security[0].apiKey',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: []
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should pass when the pact request is has the required apiKey auth query', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.authorization.missing',
+            message: 'Request Authorization header is missing but is required by the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKey',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: []
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should pass when the pact request is has the required apiKey auth query', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder
                 .withRequestQuery('apiToken=an-api-token')
@@ -144,12 +143,12 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInQuery('apiToken'))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should return an error when the pact request is missing required apiKey auth query', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return an error when the pact request is missing required apiKey auth query', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
         const swaggerFile = swaggerBuilder
@@ -159,32 +158,32 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInQuery('apiToken'))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result.reason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.authorization.missing',
-                message: 'Request Authorization query is missing but is required by the swagger file',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.security[0].apiKey',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: []
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should pass when the pact request is has one of the required apiKey query or header', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.authorization.missing',
+            message: 'Request Authorization query is missing but is required by the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKey',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: []
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should pass when the pact request is has one of the required apiKey query or header', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder.withRequestHeader('x-api-key-header', 'Bearer a-token'))
             .build();
@@ -202,12 +201,12 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKeyQuery', securitySchemeBuilder.withTypeApiKeyInQuery('apiKey'))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should return an error when the pact request is missing required apiKey query and header', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return an error when the pact request is missing required apiKey query and header', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
         const swaggerFile = swaggerBuilder
@@ -220,51 +219,51 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKeyQuery', securitySchemeBuilder.withTypeApiKeyInQuery('apiKey'))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result.reason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.authorization.missing',
-                message: 'Request Authorization header is missing but is required by the swagger file',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.security[0].apiKeyHeader',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: []
-                },
-                type: 'error'
-            }, {
-                code: 'spv.request.authorization.missing',
-                message: 'Request Authorization query is missing but is required by the swagger file',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.security[0].apiKeyQuery',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: []
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should ignore oauth2 security definitions', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.authorization.missing',
+            message: 'Request Authorization header is missing but is required by the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKeyHeader',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: []
+            },
+            type: 'error'
+        }, {
+            code: 'spv.request.authorization.missing',
+            message: 'Request Authorization query is missing but is required by the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKeyQuery',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: []
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should ignore oauth2 security definitions', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
         const swaggerFile = swaggerBuilder
@@ -274,12 +273,12 @@ describe('security', () => {
             .withSecurityDefinitionNamed('oauth', securitySchemeBuilder.withTypeOAuth2())
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result).toContainNoWarningsOrErrors();
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should return an error when the pact request is missing a globally required apiKey', willResolve(() => {
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should return an error when the pact request is missing a globally required apiKey', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
         const swaggerFile = swaggerBuilder
@@ -288,32 +287,32 @@ describe('security', () => {
             .withSecurityRequirementNamed('apiKey')
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result.reason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.authorization.missing',
-                message: 'Request Authorization query is missing but is required by the swagger file',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].security[0].apiKey',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: []
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
 
-    it('should use operation security definitions over globally defined ones', willResolve(() => {
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.authorization.missing',
+            message: 'Request Authorization query is missing but is required by the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].security[0].apiKey',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: []
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should use operation security definitions over globally defined ones', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
         const swaggerFile = swaggerBuilder
@@ -325,28 +324,28 @@ describe('security', () => {
             .withSecurityRequirementNamed('query')
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile).then((result) => {
-            expect(result.reason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.authorization.missing',
-                message: 'Request Authorization header is missing but is required by the swagger file',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0]',
-                    mockFile: 'pact.json',
-                    value: defaultInteractionBuilder.build()
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.security[0].header',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: []
-                },
-                type: 'error'
-            }]);
-        });
-    }));
+        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+        expect(result).toContainErrors([{
+            code: 'spv.request.authorization.missing',
+            message: 'Request Authorization header is missing but is required by the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.security[0].header',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: []
+            },
+            type: 'error'
+        }]);
+    });
 });

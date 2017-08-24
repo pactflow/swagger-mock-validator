@@ -1,21 +1,20 @@
 import * as _ from 'lodash';
-import * as q from 'q';
 import * as SwaggerTools from 'swagger-tools';
 import {
-    ValidationOutcome, ValidationResult, ValidationResultCode, ValidationResultType
-} from './types';
+    ValidationResultCode} from '../api-types';
+import {ValidationResultType} from '../api-types';
+import {ValidationOutcome, ValidationResult} from '../api-types';
 
-const validate = (document: any): q.Promise<SwaggerTools.ValidationResultCollection> => {
-    const deferred = q.defer<SwaggerTools.ValidationResultCollection>();
-    SwaggerTools.specs.v2.validate(document, (error, result) => {
-        if (error) {
-            deferred.reject(error);
-        } else {
-            deferred.resolve(result);
-        }
+const validate = (document: any): Promise<SwaggerTools.ValidationResultCollection> => {
+    return new Promise((resolve, reject) => {
+        SwaggerTools.specs.v2.validate(document, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
     });
-
-    return deferred.promise;
 };
 
 const generateLocation = (path: string[]) => {
@@ -73,11 +72,13 @@ const parseValidationResult = (
             }));
 
     const success = errors.length === 0;
-    const reason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;
+    const failureReason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;
 
-    return q({errors, warnings, reason, success});
+    return Promise.resolve({errors, warnings, failureReason, success});
 };
 
-export default (specJson: any, specPathOrUrl: string): q.Promise<ValidationOutcome> =>
-    validate(specJson)
-        .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl));
+export default async (specJson: any, specPathOrUrl: string): Promise<ValidationOutcome> => {
+    const validationResult = await validate(specJson);
+
+    return parseValidationResult(validationResult, specPathOrUrl);
+};

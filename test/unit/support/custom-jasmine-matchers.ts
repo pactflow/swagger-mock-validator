@@ -4,9 +4,9 @@ import CustomMatcherFactories = jasmine.CustomMatcherFactories;
 import CustomEqualityTester = jasmine.CustomEqualityTester;
 import MatchersUtil = jasmine.MatchersUtil;
 import {
-    ValidationOutcome,
     ValidationResult
-} from '../../../lib/swagger-mock-validator/types';
+} from '../../../lib/api-types';
+import {ValidationOutcome} from '../../../lib/api-types';
 
 interface CompareResultCollectionOptions<T> {
     actualResults: T[];
