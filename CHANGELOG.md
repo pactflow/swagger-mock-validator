@@ -1,3 +1,13 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.1.0...2.2.0) (2017-09-01)
+
+
+### Features
+
+* add javascript api ([ea0f098](https://bitbucket.org/atlassian/swagger-mock-validator/commits/ea0f098))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.0.2...v2.1.0) (2017-08-07)
 

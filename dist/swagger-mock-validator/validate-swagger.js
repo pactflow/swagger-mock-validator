@@ -1,19 +1,26 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
-const q = require("q");
 const SwaggerTools = require("swagger-tools");
 const validate = (document) => {
-    const deferred = q.defer();
-    SwaggerTools.specs.v2.validate(document, (error, result) => {
-        if (error) {
-            deferred.reject(error);
-        }
-        else {
-            deferred.resolve(result);
-        }
+    return new Promise((resolve, reject) => {
+        SwaggerTools.specs.v2.validate(document, (error, result) => {
+            if (error) {
+                reject(error);
+            }
+            else {
+                resolve(result);
+            }
+        });
     });
-    return deferred.promise;
 };
 const generateLocation = (path) => {
     if (path.length > 0) {
@@ -52,8 +59,10 @@ const parseValidationResult = (validationResult, specPathOrUrl) => {
         type: 'warning'
     }));
     const success = errors.length === 0;
-    const reason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;
-    return q({ errors, warnings, reason, success });
+    const failureReason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;
+    return Promise.resolve({ errors, warnings, failureReason, success });
 };
-exports.default = (specJson, specPathOrUrl) => validate(specJson)
-    .then((validationResult) => parseValidationResult(validationResult, specPathOrUrl));
+exports.default = (specJson, specPathOrUrl) => __awaiter(this, void 0, void 0, function* () {
+    const validationResult = yield validate(specJson);
+    return parseValidationResult(validationResult, specPathOrUrl);
+});

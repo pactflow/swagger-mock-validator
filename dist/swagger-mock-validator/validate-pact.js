@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const q = require("q");
 exports.default = (pactJson, mockPathOrUrl) => {
     let errors = [];
     const warnings = [];
@@ -20,6 +19,6 @@ exports.default = (pactJson, mockPathOrUrl) => {
             }];
     }
     const success = errors.length === 0;
-    const reason = success ? undefined : `"${mockPathOrUrl}" is not a valid pact file`;
-    return q({ warnings, errors, reason, success });
+    const failureReason = success ? undefined : `"${mockPathOrUrl}" is not a valid pact file`;
+    return { warnings, errors, failureReason, success };
 };

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
-const q = require("q");
 const get_parsed_spec_operation_1 = require("./validate-spec-and-mock/get-parsed-spec-operation");
 const get_parsed_spec_response_1 = require("./validate-spec-and-mock/get-parsed-spec-response");
 const validate_parsed_mock_request_body_1 = require("./validate-spec-and-mock/validate-parsed-mock-request-body");
@@ -35,7 +34,7 @@ exports.default = (parsedMock, parsedSpec) => {
     const errors = _.filter(validationResults, (res) => res.type === 'error');
     const warnings = _.filter(validationResults, (res) => res.type === 'warning');
     const success = errors.length === 0;
-    const reason = success ? undefined : `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
+    const failureReason = success ? undefined : `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
         `with swagger file "${parsedSpec.pathOrUrl}"`;
-    return q({ errors, warnings, reason, success });
+    return Promise.resolve({ errors, failureReason, success, warnings });
 };
