@@ -3,10 +3,7 @@ import * as util from 'util';
 import CustomMatcherFactories = jasmine.CustomMatcherFactories;
 import CustomEqualityTester = jasmine.CustomEqualityTester;
 import MatchersUtil = jasmine.MatchersUtil;
-import {
-    ValidationResult
-} from '../../../lib/api-types';
-import {ValidationOutcome} from '../../../lib/api-types';
+import {ValidationOutcome, ValidationResult} from '../../../lib/api-types';
 
 interface CompareResultCollectionOptions<T> {
     actualResults: T[];

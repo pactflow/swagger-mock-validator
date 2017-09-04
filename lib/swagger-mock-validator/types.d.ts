@@ -1,5 +1,4 @@
-import {ValidationResult} from '../api-types';
-import {ValidationOutcome} from '../api-types';
+import {ValidationOutcome, ValidationResult} from '../api-types';
 
 // Parsed Mock
 

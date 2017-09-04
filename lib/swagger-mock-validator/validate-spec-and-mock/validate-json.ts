@@ -57,8 +57,9 @@ const changeTypeToKeywordForCustomFormats = (schema?: JsonSchema) => {
     _.each((schema as JsonSchemaValue).properties, changeTypeToKeywordForCustomFormats);
     changeTypeToKeywordForCustomFormats((schema as JsonSchemaValue).items);
 
-    if (typeof (schema as JsonSchemaValue).additionalProperties === 'object') {
-        changeTypeToKeywordForCustomFormats((schema as JsonSchemaValue).additionalProperties);
+    const schemaAsJsonSchemaValue = schema as JsonSchemaValue;
+    if (typeof schemaAsJsonSchemaValue.additionalProperties === 'object') {
+        changeTypeToKeywordForCustomFormats(schemaAsJsonSchemaValue.additionalProperties);
     }
 };
 

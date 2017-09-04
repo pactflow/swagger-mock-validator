@@ -1,9 +1,6 @@
 import * as _ from 'lodash';
 import * as SwaggerTools from 'swagger-tools';
-import {
-    ValidationResultCode} from '../api-types';
-import {ValidationResultType} from '../api-types';
-import {ValidationOutcome, ValidationResult} from '../api-types';
+import {ValidationOutcome, ValidationResult, ValidationResultCode, ValidationResultType} from '../api-types';
 
 const validate = (document: any): Promise<SwaggerTools.ValidationResultCollection> => {
     return new Promise((resolve, reject) => {

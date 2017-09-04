@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
-import {ValidationResult} from '../../api-types';
-import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
 import Negotiator = require('negotiator');
+import {ValidationResult} from '../../api-types';
 import result from '../result';
+import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
 
 const acceptHeaderName = 'accept';
 const contentTypeHeaderName = 'content-type';

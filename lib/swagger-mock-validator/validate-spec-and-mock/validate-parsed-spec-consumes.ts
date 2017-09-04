@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
 import Negotiator = require('negotiator');
 import result from '../result';
+import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
 
 const contentTypeHeaderName = 'content-type';
 

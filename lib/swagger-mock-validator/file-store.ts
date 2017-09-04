@@ -1,5 +1,5 @@
-import {FileSystem, HttpClient} from './types';
 import VError = require('verror');
+import {FileSystem, HttpClient} from './types';
 
 export class FileStore {
     public static isUrl(pathOrUrl: string): boolean {

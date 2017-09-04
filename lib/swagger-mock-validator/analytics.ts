@@ -27,8 +27,7 @@ const generateResultSummary = (results: ValidationResult[]) => {
         return partialSummary;
     }, {});
 
-    // tslint:disable:no-string-literal
-    summary['count'] = results.length;
+    (summary as any).count = results.length;
 
     return summary;
 };

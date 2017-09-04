@@ -2,8 +2,8 @@ import * as bodyParser from 'body-parser';
 import {exec} from 'child_process';
 import * as express from 'express';
 import * as fs from 'fs';
-import VError = require('verror');
 import {Server} from 'http';
+import VError = require('verror');
 import * as SwaggerMockValidator from '../../lib/api';
 import {expectToFail} from '../support/expect-to-fail';
 
