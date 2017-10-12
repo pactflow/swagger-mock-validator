@@ -57,10 +57,10 @@
     "minimist": "^1.2.0",
     "run-sequence": "^2.0.0",
     "tslint": "5.7.0",
-    "typescript": "2.5.2"
+    "typescript": "2.5.3"
   },
   "dependencies": {
-    "ajv": "^4.9.0",
+    "ajv": "^5.2.3",
     "commander": "^2.9.0",
     "decimal.js": "^7.1.0",
     "js-yaml": "^3.8.1",
@@ -70,7 +70,7 @@
     "swagger-parser": "^3.4.1",
     "swagger-tools": "^0.10.1",
     "uuidjs": "^3.5.3",
-    "validator": "^8.0.0",
+    "validator": "^9.0.0",
     "verror": "^1.8.1"
   },
   "types": "lib/api-types.d.ts"

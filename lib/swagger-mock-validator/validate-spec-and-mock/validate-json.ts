@@ -9,6 +9,10 @@ import {formatForInt32Numbers, int32AjvKeyword, isInt32} from './validate-json/i
 import {formatForInt64Numbers, int64AjvKeyword, isInt64} from './validate-json/int64';
 import {isPassword} from './validate-json/password';
 
+// tslint:disable:no-var-requires
+// tslint:disable:no-submodule-imports
+const draft4MetaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
+
 const addSwaggerFormatsAndKeywords = (ajv: Ajv.Ajv) => {
     ajv.addFormat('binary', isBinary);
     ajv.addFormat('byte', isByte);
@@ -63,11 +67,32 @@ const changeTypeToKeywordForCustomFormats = (schema?: JsonSchema) => {
     }
 };
 
+const createAjvForDraft4 = (userOptions: Ajv.Options) => {
+    // see ajv migration guide for ajv v4 -> ajv v5 for details on what all these settings do
+
+    const optionsRequiredForDraft4 = {
+        extendRefs: true,
+        meta: true,
+        unknownFormats: 'ignore'
+    };
+
+    const options: Ajv.Options = _.defaultsDeep({}, userOptions, optionsRequiredForDraft4);
+
+    const ajv = new Ajv(options);
+    ajv.addMetaSchema(draft4MetaSchema);
+    (ajv as any)._opts.defaultMeta = draft4MetaSchema.id;
+    (ajv as any)._refs['http://json-schema.org/schema'] = 'http://json-schema.org/draft-04/schema';
+    ajv.removeKeyword('propertyNames');
+    ajv.removeKeyword('contains');
+    ajv.removeKeyword('const');
+
+    return ajv;
+};
+
 export default (jsonSchema: JsonSchema, json: any, numbersSentAsStrings?: boolean) => {
-    const ajv = new Ajv({
+    const ajv = createAjvForDraft4({
         allErrors: true,
         coerceTypes: numbersSentAsStrings || false,
-        unknownFormats: 'ignore',
         verbose: true
     });
 

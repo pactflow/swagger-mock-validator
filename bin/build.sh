@@ -9,14 +9,14 @@ npm install
 npm test
 
 echo ==== Test using node 6.x ====
-nvm install 6.11.1
+nvm install 6.11.4
 rm -rf node_modules
 npm install
 npm test
 curl -sSL https://download.sourceclear.com/ci.sh | bash
 
 echo ==== Test using node 8.x ====
-nvm install 8.1.4
+nvm install 8.7.0
 rm -rf node_modules
 npm install --no-shrinkwrap
 npm test
