@@ -44,15 +44,26 @@ const newNegotiator = (acceptHeaderValue: string) => {
     });
 };
 
-const validateParedMockContentTypeAgainstParsedSpecConsumes = (
+const negotiateMediaTypes = (
+    parsedMockContentTypeRequestHeaderValue: string, parsedSpecConsumesValues: string[]
+): boolean => {
+    return parsedSpecConsumesValues.some((consumesValue) => {
+        const foundMatches = newNegotiator(consumesValue)
+            .mediaTypes([parsedMockContentTypeRequestHeaderValue]);
+        return foundMatches.length > 0;
+    });
+};
+
+const validateParsedMockContentTypeAgainstParsedSpecConsumes = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation,
     parsedMockContentTypeRequestHeaderValue: string
 ) => {
-    const foundMatches = newNegotiator(parsedMockContentTypeRequestHeaderValue)
-        .mediaTypes(parsedSpecOperation.consumes.value);
+    const foundMatches = negotiateMediaTypes(
+        parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value
+    );
 
-    if (foundMatches.length === 0) {
+    if (!foundMatches) {
         return [result.build({
             code: 'spv.request.content-type.incompatible',
             message:
@@ -83,7 +94,7 @@ export default (parsedMockInteraction: ParsedMockInteraction, parsedSpecOperatio
         return validateHasNoContentTypeHeader(parsedMockInteraction, parsedSpecOperation);
     }
 
-    return validateParedMockContentTypeAgainstParsedSpecConsumes(
+    return validateParsedMockContentTypeAgainstParsedSpecConsumes(
         parsedMockInteraction,
         parsedSpecOperation,
         parsedMockContentTypeRequestHeaderValue
