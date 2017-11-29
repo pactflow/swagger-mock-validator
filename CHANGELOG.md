@@ -1,3 +1,13 @@
+<a name="2.2.2"></a>
+## [2.2.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.1...2.2.2) (2017-11-29)
+
+
+### Bug Fixes
+
+* reverting fix for content negotiation, this will be re-released as a major version ([c72993f](https://bitbucket.org/atlassian/swagger-mock-validator/commits/c72993f))
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.0...2.2.1) (2017-11-29)
 

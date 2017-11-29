@@ -33,16 +33,10 @@ const newNegotiator = (acceptHeaderValue) => {
         }
     });
 };
-const negotiateMediaTypes = (parsedMockContentTypeRequestHeaderValue, parsedSpecConsumesValues) => {
-    return parsedSpecConsumesValues.some((consumesValue) => {
-        const foundMatches = newNegotiator(consumesValue)
-            .mediaTypes([parsedMockContentTypeRequestHeaderValue]);
-        return foundMatches.length > 0;
-    });
-};
-const validateParsedMockContentTypeAgainstParsedSpecConsumes = (parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue) => {
-    const foundMatches = negotiateMediaTypes(parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value);
-    if (!foundMatches) {
+const validateParedMockContentTypeAgainstParsedSpecConsumes = (parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue) => {
+    const foundMatches = newNegotiator(parsedMockContentTypeRequestHeaderValue)
+        .mediaTypes(parsedSpecOperation.consumes.value);
+    if (foundMatches.length === 0) {
         return [result_1.default.build({
                 code: 'spv.request.content-type.incompatible',
                 message: 'Request Content-Type header is incompatible with the consumes mime type defined in the swagger file',
@@ -62,5 +56,5 @@ exports.default = (parsedMockInteraction, parsedSpecOperation) => {
     if (!parsedMockContentTypeRequestHeaderValue) {
         return validateHasNoContentTypeHeader(parsedMockInteraction, parsedSpecOperation);
     }
-    return validateParsedMockContentTypeAgainstParsedSpecConsumes(parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue);
+    return validateParedMockContentTypeAgainstParsedSpecConsumes(parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue);
 };
