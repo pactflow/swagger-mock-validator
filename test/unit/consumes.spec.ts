@@ -68,20 +68,6 @@ describe('consumes', () => {
         expect(result).toContainNoWarningsOrErrors();
     });
 
-    it('should pass when the pact request has additional charset defined', async () => {
-        const result = await validateRequestContentTypeHeader(['application/json'], 'application/json;charset=utf-8');
-
-        expect(result).toContainNoWarningsOrErrors();
-    });
-
-    it('should pass when the spec has multiple consumes mine types', async () => {
-        const result = await validateRequestContentTypeHeader(
-            ['application/xml', 'application/json'], 'application/json'
-        );
-
-        expect(result).toContainNoWarningsOrErrors();
-    });
-
     it('should pass when no pact request content-type and no body are defined', async () => {
         const result = await validateRequestContentTypeHeader(['application/json']);
 
@@ -179,33 +165,6 @@ describe('consumes', () => {
         }]);
     });
 
-    it('should return error when request content-type does not comply with the charset of the spec', async () => {
-        const result = await validateRequestContentTypeHeader(['application/json;charset=utf-8'], 'application/json');
-
-        expect(result.failureReason).toEqual(expectedFailedValidationError);
-        expect(result).toContainErrors([{
-            code: 'spv.request.content-type.incompatible',
-            message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
-            'in the swagger file',
-            mockDetails: {
-                interactionDescription: 'interaction description',
-                interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.headers.Content-Type',
-                mockFile: 'pact.json',
-                value: 'application/json'
-            },
-            source: 'spec-mock-validation',
-            specDetails: {
-                location: '[swaggerRoot].paths./does/exist.post.consumes',
-                pathMethod: 'post',
-                pathName: '/does/exist',
-                specFile: 'swagger.json',
-                value: ['application/json;charset=utf-8']
-            },
-            type: 'error'
-        }]);
-    });
-
     it('should return error when pact request content-type header does not match the global spec', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder.withRequestHeader('Content-Type', 'application/json'))
@@ -242,7 +201,7 @@ describe('consumes', () => {
         }]);
     });
 
-    it('should use the operation consumes over the global consumes', async () => {
+    it('should use the operation produces over the global produces', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder.withRequestHeader('Content-Type', 'application/json'))
             .build();

@@ -43,12 +43,6 @@ describe('produces', () => {
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should pass when the pact request accept header is more generous then the spec', async () => {
-            const result = await validateRequestAcceptHeader(['application/json;charset=utf-8'], 'application/json');
-
-            expect(result).toContainNoWarningsOrErrors();
-        });
-
         it('should pass when the pact request accept header is not defined', async () => {
             const result = await validateRequestAcceptHeader(['application/json']);
 
@@ -109,33 +103,6 @@ describe('produces', () => {
                     pathName: '/does/exist',
                     specFile: 'swagger.json',
                     value: ['application/xml']
-                },
-                type: 'error'
-            }]);
-        });
-
-        it('should return an error when pact request accept header is more restrictive then the spec', async () => {
-            const result = await validateRequestAcceptHeader(['application/json'], 'application/json;charset=utf-8');
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.accept.incompatible',
-                message: 'Request Accept header is incompatible with the produces mime type ' +
-                'defined in the swagger file',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.Accept',
-                    mockFile: 'pact.json',
-                    value: 'application/json;charset=utf-8'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.produces',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: ['application/json']
                 },
                 type: 'error'
             }]);
