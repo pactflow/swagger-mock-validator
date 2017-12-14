@@ -1,4 +1,4 @@
-import * as Decimal from 'decimal.js';
+import {Decimal} from 'decimal.js';
 import {JsonSchemaValue} from '../../types';
 
 const maximumDoublePrecision = 15;

@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-const setMutableValueOn = <T>(obj: T, path: string, mutableValue: any): T =>
+const setMutableValueOn = <T extends object>(obj: T, path: string, mutableValue: any): T =>
     _.set<T>(_.cloneDeep(obj), path, mutableValue);
 
 export function addToArrayOn(obj: any, path: string, value: any) {
@@ -20,7 +20,7 @@ export function removeValueOn(obj: any, path: string) {
     return copyOfObj;
 }
 
-export function setValueOn<T>(obj: T, path: string, value: any): T {
+export function setValueOn<T extends object>(obj: T, path: string, value: any): T {
     return setMutableValueOn(obj, path, _.cloneDeep(value));
 }
 

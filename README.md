@@ -11,7 +11,7 @@
 For a list of all the validation rules see [RULES.md](RULES.md).
 
 ## Requirements
-- nodejs 4.x or higher (tested using 4.x, 6.x and 8.x)
+- nodejs 4.x or higher (tested using 4.x, 6.x, 8.x and 9.x)
 - npm 2.x or higher (tested using 2.x, 3.x and 5x)
 
 ## Installation
