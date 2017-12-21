@@ -110,14 +110,14 @@ const getPactFilesFromBroker = async (mockPathOrUrl: string,
 
     const pactBrokerResponse = await resourceLoader.load<PactBroker>(mockPathOrUrl);
 
-    const providerPactsUrlTemplate = _.get<string>(pactBrokerResponse, '_links.pb:latest-provider-pacts.href');
+    const providerPactsUrlTemplate: string = _.get(pactBrokerResponse, '_links.pb:latest-provider-pacts.href');
     if (!providerPactsUrlTemplate) {
         throw new Error(`No latest pact file url found at "${mockPathOrUrl}"`);
     }
     const providerPactsUrl = providerPactsUrlTemplate.replace('{provider}', providerName);
     const providerPactsResponse = await resourceLoader.load<PactBrokerProviderPacts>(providerPactsUrl);
 
-    const providerPacts = _.get<PactBrokerProviderPactsLinksPact[]>(providerPactsResponse, '_links.pacts', []);
+    const providerPacts: PactBrokerProviderPactsLinksPact[] = _.get(providerPactsResponse, '_links.pacts', []);
     return _.map(providerPacts, (providerPact) => providerPact.href);
 };
 

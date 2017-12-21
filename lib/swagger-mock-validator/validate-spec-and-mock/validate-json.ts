@@ -1,6 +1,6 @@
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
-import {JsonSchema, JsonSchemaAllOf, JsonSchemaValue} from '../types';
+import {JsonSchema, JsonSchemaAllOf, JsonSchemaDefinitions, JsonSchemaProperties, JsonSchemaValue} from '../types';
 import {isBinary} from './validate-json/binary';
 import {isByte} from './validate-json/byte';
 import {doubleAjvKeyword, formatForDoubleNumbers, isDouble} from './validate-json/double';
@@ -50,7 +50,7 @@ const changeTypeToKeywordForCustomFormats = (schema?: JsonSchema) => {
         return;
     }
 
-    _.each(schema.definitions, changeTypeToKeywordForCustomFormats);
+    _.each(schema.definitions as JsonSchemaDefinitions, changeTypeToKeywordForCustomFormats);
     _.each((schema as JsonSchemaAllOf).allOf, changeTypeToKeywordForCustomFormats);
 
     formatForDoubleNumbers(schema);
@@ -58,7 +58,7 @@ const changeTypeToKeywordForCustomFormats = (schema?: JsonSchema) => {
     formatForInt32Numbers(schema);
     formatForInt64Numbers(schema);
 
-    _.each((schema as JsonSchemaValue).properties, changeTypeToKeywordForCustomFormats);
+    _.each((schema as JsonSchemaValue).properties as JsonSchemaProperties, changeTypeToKeywordForCustomFormats);
     changeTypeToKeywordForCustomFormats((schema as JsonSchemaValue).items);
 
     const schemaAsJsonSchemaValue = schema as JsonSchemaValue;

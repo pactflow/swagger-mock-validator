@@ -8,8 +8,7 @@ const generateResultSummary = (results) => {
         partialSummary[result.code] += 1;
         return partialSummary;
     }, {});
-    // tslint:disable:no-string-literal
-    summary['count'] = results.length;
+    summary.count = results.length;
     return summary;
 };
 exports.default = {

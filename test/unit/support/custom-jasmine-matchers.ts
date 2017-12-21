@@ -3,7 +3,7 @@ import * as util from 'util';
 import CustomMatcherFactories = jasmine.CustomMatcherFactories;
 import CustomEqualityTester = jasmine.CustomEqualityTester;
 import MatchersUtil = jasmine.MatchersUtil;
-import {ValidationOutcome, ValidationResult} from '../../../lib/api-types';
+import {ValidationResult} from '../../../lib/api-types';
 
 interface CompareResultCollectionOptions<T> {
     actualResults: T[];
@@ -123,10 +123,20 @@ const compareResults = <T>(options: CompareResultCollectionOptions<T>) => {
     };
 };
 
+type ObjectWithPossibleErrors =  {errors?: ValidationResult[]} | undefined;
+type ObjectWithPossibleWarnings =  {warnings?: ValidationResult[]} | undefined;
+type ObjectWithPossibleErrorsAndWarnings = {errors?: ValidationResult[]; warnings?: ValidationResult[]} | undefined;
+
+const getErrors = (objectWithPossibleErrors: ObjectWithPossibleErrors): ValidationResult[] =>
+    (objectWithPossibleErrors || {}).errors || [];
+
+const getWarnings = (objectWithPossibleWarnings: ObjectWithPossibleWarnings): ValidationResult[] =>
+    (objectWithPossibleWarnings || {}).warnings || [];
+
 export const customMatchers: CustomMatcherFactories = {
     toContainErrors: (utilities, customEqualityTesters) => ({
-        compare: (actual: ValidationOutcome, expected: ValidationResult[]) => compareResults({
-            actualResults: _.get(actual, 'errors', []),
+        compare: (actual: ObjectWithPossibleErrors, expected: ValidationResult[]) => compareResults({
+            actualResults: getErrors(actual),
             customEqualityTesters,
             expectedResults: expected,
             type: 'errors',
@@ -134,25 +144,25 @@ export const customMatchers: CustomMatcherFactories = {
         })
     }),
     toContainNoErrors: (utilities, customEqualityTesters) => ({
-        compare: <T>(actual: T) => {
-            const expected: T[] = [];
-            const actualResults = _.get(actual, 'errors', []);
+        compare: (actual: ObjectWithPossibleErrors) => {
+            const expected: ValidationResult[] = [];
+            const actualResults = getErrors(actual);
             return {pass: utilities.equals(actualResults, expected, customEqualityTesters)};
         }
     }),
     toContainNoWarningsOrErrors: (utilities, customEqualityTesters) => ({
-        compare: <T>(actual: T) => {
-            const expected: {warnings: T[], errors: T[]} = {warnings: [], errors: []};
+        compare: (actual: ObjectWithPossibleErrorsAndWarnings) => {
+            const expected: ObjectWithPossibleErrorsAndWarnings = {warnings: [], errors: []};
             const actualResults = {
-                errors: _.get(actual, 'errors', []),
-                warnings: _.get(actual, 'warnings', [])
+                errors: getErrors(actual),
+                warnings: getWarnings(actual)
             };
             return {pass: utilities.equals(actualResults, expected, customEqualityTesters)};
         }
     }),
     toContainWarnings: (utilities, customEqualityTesters) => ({
-        compare: <T>(actual: {warnings?: T[]}, expected: T[]) => compareResults({
-            actualResults: _.get(actual, 'warnings', []),
+        compare: (actual: ObjectWithPossibleWarnings, expected: ValidationResult[]) => compareResults({
+            actualResults: getWarnings(actual),
             customEqualityTesters,
             expectedResults: expected,
             type: 'warnings',

@@ -1,4 +1,4 @@
-declare module 'swagger-tools' {
+declare module 'swagger-tools-fix-issue-when-object-has-a-length-property' {
     export interface ValidationResult {
         code: string;
         message: string;

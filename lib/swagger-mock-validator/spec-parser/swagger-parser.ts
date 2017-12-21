@@ -22,7 +22,6 @@ import {
     SwaggerPathParameter,
     SwaggerQueryParameter,
     SwaggerRequestHeaderParameter,
-    SwaggerResponseHeader,
     SwaggerResponseHeaderCollection,
     SwaggerResponses,
     SwaggerSecurityDefinitions,
@@ -34,7 +33,7 @@ const removeRequiredPropertiesFromSchema = (schema?: JsonSchema) => {
         _.each((schema as JsonSchemaAllOf).allOf, removeRequiredPropertiesFromSchema);
         delete (schema as JsonSchemaValue).required;
         removeRequiredPropertiesFromSchema((schema as JsonSchemaValue).items);
-        _.each((schema as JsonSchemaValue).properties, removeRequiredPropertiesFromSchema);
+        _.each((schema as JsonSchemaValue).properties as JsonSchemaProperties, removeRequiredPropertiesFromSchema);
     }
 };
 
@@ -68,15 +67,16 @@ const modifySchemaForResponses = (schema: JsonSchema): JsonSchema => {
     return modifiedSchema;
 };
 
-const parseDefinitionsForResponses = (definitions?: JsonSchemaDefinitions) => {
-    return _.reduce<JsonSchema, JsonSchemaDefinitions>(
-        definitions,
-        (parsedDefinitions, definitionSchema, definitionName) => {
-            parsedDefinitions[definitionName] = modifySchemaForResponses(definitionSchema);
-            return parsedDefinitions;
-        },
-        {}
-    );
+const parseDefinitionsForResponses = (definitions?: JsonSchemaDefinitions): JsonSchemaDefinitions => {
+    if (!definitions) {
+        return {};
+    }
+
+    return Object.keys(definitions).reduce<JsonSchemaDefinitions>((parsedDefinitions, definitionName) => {
+        const definitionSchema = definitions[definitionName];
+        parsedDefinitions[definitionName] = modifySchemaForResponses(definitionSchema);
+        return parsedDefinitions;
+    }, {});
 };
 
 const toParsedSpecValue = (
@@ -184,22 +184,24 @@ const parseResponseHeaders = (
     headers: SwaggerResponseHeaderCollection | undefined,
     responseLocation: string,
     parentOperation: ParsedSpecOperation
-): ParsedSpecParameterCollection =>
-    _.reduce<SwaggerResponseHeader, ParsedSpecParameterCollection>(
-        headers as SwaggerResponseHeaderCollection,
-        (result, header, headerName) => {
-            const value = {
-                location: `${responseLocation}.headers.${headerName}`,
-                parentOperation,
-                value: header
-            };
+): ParsedSpecParameterCollection => {
+    if (!headers) {
+        return {};
+    }
 
-            result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
+    return Object.keys(headers).reduce<ParsedSpecParameterCollection>((result, headerName) => {
+        const header = headers[headerName];
+        const value = {
+            location: `${responseLocation}.headers.${headerName}`,
+            parentOperation,
+            value: header
+        };
 
-            return result;
-        },
-        {}
-    );
+        result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
+
+        return result;
+    }, {});
+};
 
 const parseResponses = (
     responses: SwaggerResponses,

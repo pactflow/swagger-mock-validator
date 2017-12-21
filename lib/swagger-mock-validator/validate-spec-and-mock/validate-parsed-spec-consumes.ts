@@ -67,8 +67,8 @@ const validateParedMockContentTypeAgainstParsedSpecConsumes = (
 };
 
 export default (parsedMockInteraction: ParsedMockInteraction, parsedSpecOperation: ParsedSpecOperation) => {
-    const parsedMockContentTypeRequestHeaderValue =
-        _.get<string>(parsedMockInteraction.requestHeaders[contentTypeHeaderName], 'value');
+    const parsedMockContentTypeRequestHeaderValue: string =
+        _.get(parsedMockInteraction.requestHeaders[contentTypeHeaderName], 'value');
     const parsedSpecHasConsumesValue = parsedSpecOperation.consumes.value.length > 0;
 
     if (!parsedSpecHasConsumesValue) {

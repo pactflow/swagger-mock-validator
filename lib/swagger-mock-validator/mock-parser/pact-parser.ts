@@ -39,6 +39,18 @@ const parseValues = (
     );
 };
 
+const parseRequestQuery = (requestQuery: string | undefined): {[name: string]: string} => {
+    const parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery || '');
+    const separator: MultiCollectionFormatSeparator = '[multi-array-separator]';
+
+    return Object.keys(parsedQueryAsStringsOrArrayOfStrings)
+        .reduce<{[name: string]: string}>((accumulator, queryName) => {
+            const queryValue = parsedQueryAsStringsOrArrayOfStrings[queryName];
+            accumulator[queryName] = (queryValue instanceof Array) ? queryValue.join(separator) : queryValue;
+            return accumulator;
+        }, {});
+};
+
 const parseInteraction = (
     interaction: PactInteraction, interactionIndex: number, mockPathOrUrl: string
 ) => {
@@ -91,15 +103,8 @@ const parseInteraction = (
         value: interaction.request.path
     };
     parsedInteraction.requestPathSegments = parseRequestPathSegments(interaction.request.path, parsedInteraction);
-    const query = querystring.parse(interaction.request.query || '');
-    const separator: MultiCollectionFormatSeparator = '[multi-array-separator]';
-    _.each(query, (v: any, k: string) => {
-        if (_.isArray(v)) {
-            query[k] = v.join(separator);
-        }
-    });
-    parsedInteraction.requestQuery = parseValues(
-        query, `${parsedInteraction.location}.request.query`, parsedInteraction
+    parsedInteraction.requestQuery =  parseValues(
+        parseRequestQuery(interaction.request.query), `${parsedInteraction.location}.request.query`, parsedInteraction
     );
     parsedInteraction.responseBody = {
         location: `${parsedInteraction.location}.response.body`,

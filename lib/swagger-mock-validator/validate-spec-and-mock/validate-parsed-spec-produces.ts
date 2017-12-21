@@ -14,8 +14,8 @@ const validateParsedMockRequestAcceptsHeader = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ) => {
-    const parsedMockAcceptRequestHeaderValue =
-        _.get<string>(parsedMockInteraction.requestHeaders[acceptHeaderName], 'value');
+    const parsedMockAcceptRequestHeaderValue: string =
+        _.get(parsedMockInteraction.requestHeaders[acceptHeaderName], 'value');
 
     if (!parsedMockAcceptRequestHeaderValue) {
         return [];
@@ -51,8 +51,8 @@ const validateParsedMockResponseContentTypeAndBody = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ) => {
-    const parsedMockResponseContentType =
-        _.get<string>(parsedMockInteraction.responseHeaders[contentTypeHeaderName], `value`);
+    const parsedMockResponseContentType: string =
+        _.get(parsedMockInteraction.responseHeaders[contentTypeHeaderName], `value`);
 
     if (!parsedMockResponseContentType) {
         return [];

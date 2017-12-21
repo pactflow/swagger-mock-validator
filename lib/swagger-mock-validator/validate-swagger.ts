@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as SwaggerTools from 'swagger-tools';
+import * as SwaggerTools from 'swagger-tools-fix-issue-when-object-has-a-length-property';
 import {ValidationOutcome, ValidationResult, ValidationResultCode, ValidationResultType} from '../api-types';
 
 const validate = (document: any): Promise<SwaggerTools.ValidationResultCollection> => {
@@ -48,25 +48,25 @@ const parseValidationResult = (
     validationResult: SwaggerTools.ValidationResultCollection,
     specPathOrUrl: string
 ) => {
-    const errors: ValidationResult[] = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'errors', [])
-        .map((swaggerValidationError) =>
-            generateResult({
-                code: 'sv.error',
-                message: swaggerValidationError.message,
-                specLocation: generateLocation(swaggerValidationError.path),
-                specPathOrUrl,
-                type: 'error'
-            })
-        );
-    const warnings: ValidationResult[] = _.get<SwaggerTools.ValidationResult[]>(validationResult, 'warnings', [])
-        .map((swaggerValidationWarning) =>
-            generateResult({
-                code: 'sv.warning',
-                message: swaggerValidationWarning.message,
-                specLocation: generateLocation(swaggerValidationWarning.path),
-                specPathOrUrl,
-                type: 'warning'
-            }));
+    const swaggerToolsErrors: SwaggerTools.ValidationResult[] = _.get(validationResult, 'errors', []);
+    const errors: ValidationResult[] = swaggerToolsErrors.map((swaggerValidationError) =>
+        generateResult({
+            code: 'sv.error',
+            message: swaggerValidationError.message,
+            specLocation: generateLocation(swaggerValidationError.path),
+            specPathOrUrl,
+            type: 'error'
+        }));
+
+    const swaggerToolsWarnings: SwaggerTools.ValidationResult[] = _.get(validationResult, 'warnings', []);
+    const warnings: ValidationResult[] = swaggerToolsWarnings.map((swaggerValidationWarning) =>
+        generateResult({
+            code: 'sv.warning',
+            message: swaggerValidationWarning.message,
+            specLocation: generateLocation(swaggerValidationWarning.path),
+            specPathOrUrl,
+            type: 'warning'
+        }));
 
     const success = errors.length === 0;
     const failureReason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;

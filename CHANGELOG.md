@@ -1,3 +1,33 @@
+<a name="2.2.3"></a>
+## [2.2.3](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.2...2.2.3) (2017-12-21)
+
+
+### Bug Fixes
+
+* bump swagger-tools to resolve issue where the tool locks up when swagger examples contain a length property ([46dac30](https://bitbucket.org/atlassian/swagger-mock-validator/commits/46dac30))
+
+
+
+<a name="2.2.2"></a>
+## [2.2.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.1...2.2.2) (2017-11-29)
+
+
+### Bug Fixes
+
+* reverting fix for content negotiation, this will be re-released as a major version ([c72993f](https://bitbucket.org/atlassian/swagger-mock-validator/commits/c72993f))
+
+
+
+<a name="2.2.1"></a>
+## [2.2.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.0...2.2.1) (2017-11-29)
+
+
+### Bug Fixes
+
+* fix content negotiation between request content type header and consumes values in spec ([4953743](https://bitbucket.org/atlassian/swagger-mock-validator/commits/4953743))
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.1.0...2.2.0) (2017-09-01)
 
