@@ -11,6 +11,7 @@ Prior to accepting your contributions we ask that you please follow the appropri
 
 ## Guidelines for pull requests
 
+
 - Write tests for any changes
 - Follow existing code style and conventions
 - Separate unrelated changes into multiple pull requests
