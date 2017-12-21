@@ -67,7 +67,7 @@
     "negotiator": "^0.6.1",
     "request": "^2.78.0",
     "swagger-parser": "^3.4.1",
-    "swagger-tools": "^0.10.1",
+    "swagger-tools-fix-issue-when-object-has-a-length-property": "^0.10.4",
     "uuidjs": "^3.5.3",
     "validator": "^9.0.0",
     "verror": "^1.8.1"

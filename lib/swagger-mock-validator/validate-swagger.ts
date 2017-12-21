@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as SwaggerTools from 'swagger-tools';
+import * as SwaggerTools from 'swagger-tools-fix-issue-when-object-has-a-length-property';
 import {ValidationOutcome, ValidationResult, ValidationResultCode, ValidationResultType} from '../api-types';
 
 const validate = (document: any): Promise<SwaggerTools.ValidationResultCollection> => {
