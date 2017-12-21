@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
-const SwaggerTools = require("swagger-tools");
+const SwaggerTools = require("swagger-tools-fix-issue-when-object-has-a-length-property");
 const validate = (document) => {
     return new Promise((resolve, reject) => {
         SwaggerTools.specs.v2.validate(document, (error, result) => {
@@ -42,16 +42,16 @@ const generateResult = (options) => ({
     type: options.type
 });
 const parseValidationResult = (validationResult, specPathOrUrl) => {
-    const errors = _.get(validationResult, 'errors', [])
-        .map((swaggerValidationError) => generateResult({
+    const swaggerToolsErrors = _.get(validationResult, 'errors', []);
+    const errors = swaggerToolsErrors.map((swaggerValidationError) => generateResult({
         code: 'sv.error',
         message: swaggerValidationError.message,
         specLocation: generateLocation(swaggerValidationError.path),
         specPathOrUrl,
         type: 'error'
     }));
-    const warnings = _.get(validationResult, 'warnings', [])
-        .map((swaggerValidationWarning) => generateResult({
+    const swaggerToolsWarnings = _.get(validationResult, 'warnings', []);
+    const warnings = swaggerToolsWarnings.map((swaggerValidationWarning) => generateResult({
         code: 'sv.warning',
         message: swaggerValidationWarning.message,
         specLocation: generateLocation(swaggerValidationWarning.path),

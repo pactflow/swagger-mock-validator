@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Decimal = require("decimal.js");
+const decimal_js_1 = require("decimal.js");
 const maximumFloatPrecision = 6;
 exports.floatAjvKeyword = 'formatFloat';
 exports.formatForFloatNumbers = (schema) => {
@@ -9,4 +9,4 @@ exports.formatForFloatNumbers = (schema) => {
         schema[exports.floatAjvKeyword] = true;
     }
 };
-exports.isFloat = (value) => new Decimal(value).precision() <= maximumFloatPrecision;
+exports.isFloat = (value) => new decimal_js_1.Decimal(value).precision() <= maximumFloatPrecision;

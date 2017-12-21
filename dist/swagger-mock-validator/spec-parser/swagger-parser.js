@@ -33,7 +33,11 @@ const modifySchemaForResponses = (schema) => {
     return modifiedSchema;
 };
 const parseDefinitionsForResponses = (definitions) => {
-    return _.reduce(definitions, (parsedDefinitions, definitionSchema, definitionName) => {
+    if (!definitions) {
+        return {};
+    }
+    return Object.keys(definitions).reduce((parsedDefinitions, definitionName) => {
+        const definitionSchema = definitions[definitionName];
         parsedDefinitions[definitionName] = modifySchemaForResponses(definitionSchema);
         return parsedDefinitions;
     }, {});
@@ -113,15 +117,21 @@ const toParsedParameter = (parameter, name) => ({
     uniqueItems: parameter.value.uniqueItems,
     value: parameter.value
 });
-const parseResponseHeaders = (headers, responseLocation, parentOperation) => _.reduce(headers, (result, header, headerName) => {
-    const value = {
-        location: `${responseLocation}.headers.${headerName}`,
-        parentOperation,
-        value: header
-    };
-    result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
-    return result;
-}, {});
+const parseResponseHeaders = (headers, responseLocation, parentOperation) => {
+    if (!headers) {
+        return {};
+    }
+    return Object.keys(headers).reduce((result, headerName) => {
+        const header = headers[headerName];
+        const value = {
+            location: `${responseLocation}.headers.${headerName}`,
+            parentOperation,
+            value: header
+        };
+        result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
+        return result;
+    }, {});
+};
 const parseResponses = (responses, parentOperation, definitions) => {
     // tslint:disable:no-object-literal-type-assertion
     const parsedResponses = {

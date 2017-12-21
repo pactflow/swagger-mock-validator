@@ -1,3 +1,13 @@
+<a name="2.2.3"></a>
+## [2.2.3](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.2...2.2.3) (2017-12-21)
+
+
+### Bug Fixes
+
+* bump swagger-tools to resolve issue where the tool locks up when swagger examples contain a length property ([46dac30](https://bitbucket.org/atlassian/swagger-mock-validator/commits/46dac30))
+
+
+
 <a name="2.2.2"></a>
 ## [2.2.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.1...2.2.2) (2017-11-29)
 

@@ -20,6 +20,16 @@ const parseValues = (values, location, parentInteraction) => {
         return result;
     }, {});
 };
+const parseRequestQuery = (requestQuery) => {
+    const parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery || '');
+    const separator = '[multi-array-separator]';
+    return Object.keys(parsedQueryAsStringsOrArrayOfStrings)
+        .reduce((accumulator, queryName) => {
+        const queryValue = parsedQueryAsStringsOrArrayOfStrings[queryName];
+        accumulator[queryName] = (queryValue instanceof Array) ? queryValue.join(separator) : queryValue;
+        return accumulator;
+    }, {});
+};
 const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
     // tslint:disable:no-object-literal-type-assertion
     const parsedInteraction = {
@@ -62,14 +72,7 @@ const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
         value: interaction.request.path
     };
     parsedInteraction.requestPathSegments = parseRequestPathSegments(interaction.request.path, parsedInteraction);
-    const query = querystring.parse(interaction.request.query || '');
-    const separator = '[multi-array-separator]';
-    _.each(query, (v, k) => {
-        if (_.isArray(v)) {
-            query[k] = v.join(separator);
-        }
-    });
-    parsedInteraction.requestQuery = parseValues(query, `${parsedInteraction.location}.request.query`, parsedInteraction);
+    parsedInteraction.requestQuery = parseValues(parseRequestQuery(interaction.request.query), `${parsedInteraction.location}.request.query`, parsedInteraction);
     parsedInteraction.responseBody = {
         location: `${parsedInteraction.location}.response.body`,
         parentInteraction: parsedInteraction,
