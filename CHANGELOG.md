@@ -7,6 +7,11 @@
 * content negotiation between request content type header and consumes values in spec ([100aaf3](https://bitbucket.org/atlassian/swagger-mock-validator/commits/100aaf3))
 
 
+### BREAKING CHANGES
+
+* This release contains a bug fix for the way content type headers were being validated. As a result of this bug fix some mocks and specs which were previously considered valid will now be considered invalid.
+
+
 
 <a name="2.2.3"></a>
 ## [2.2.3](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.2...2.2.3) (2017-12-21)
