@@ -1,3 +1,13 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.3...3.0.0) (2018-01-31)
+
+
+### Bug Fixes
+
+* content negotiation between request content type header and consumes values in spec ([100aaf3](https://bitbucket.org/atlassian/swagger-mock-validator/commits/100aaf3))
+
+
+
 <a name="2.2.3"></a>
 ## [2.2.3](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.2...2.2.3) (2017-12-21)
 
