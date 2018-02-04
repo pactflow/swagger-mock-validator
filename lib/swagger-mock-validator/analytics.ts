@@ -32,7 +32,7 @@ const generateResultSummary = (results: ValidationResult[]) => {
     return summary;
 };
 
-export default {
+export const analytics = {
     postEvent: (options: PostEventOptions) => options.httpClient.post(options.analyticsUrl, {
         execution: {
             consumer: options.consumer,

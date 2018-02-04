@@ -2,10 +2,9 @@ import * as _ from 'lodash';
 import {SwaggerOperation, SwaggerSecurityRequirement} from '../../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, setValueOn} from '../builder-utilities';
 import {ParameterBuilder} from './parameter-builder';
-import * as responseBuilder from './response-builder';
+import {responseBuilder, ResponseBuilder} from './response-builder';
 
-type ResponseBuilder = responseBuilder.ResponseBuilder;
-const defaultResponseBuilder = responseBuilder.default;
+const defaultResponseBuilder = responseBuilder;
 
 export interface OperationBuilder {
     build: () => SwaggerOperation;
@@ -36,4 +35,4 @@ const createOperationBuilder = (operation: SwaggerOperation) => ({
     }
 });
 
-export default createOperationBuilder({responses: {200: defaultResponseBuilder.build()}});
+export const operationBuilder = createOperationBuilder({responses: {200: defaultResponseBuilder.build()}});

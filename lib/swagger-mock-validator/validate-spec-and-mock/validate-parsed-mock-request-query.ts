@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import result from '../result';
+import {result} from '../result';
 import {ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation} from '../types';
-import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
+import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 
 const queryUsedForSecurity = (queryName: string, parsedSpecOperation: ParsedSpecOperation) =>
     _.some(parsedSpecOperation.securityRequirements, (securityRequirement) =>
@@ -10,11 +10,9 @@ const queryUsedForSecurity = (queryName: string, parsedSpecOperation: ParsedSpec
         )
     );
 
-const getWarningForUndefinedQueryParameter = (
-    queryName: string,
-    parsedMockRequestQuery: ParsedMockValue<string>,
-    parsedSpecOperation: ParsedSpecOperation
-) => {
+const getWarningForUndefinedQueryParameter = (queryName: string,
+                                              parsedMockRequestQuery: ParsedMockValue<string>,
+                                              parsedSpecOperation: ParsedSpecOperation) => {
     if (queryUsedForSecurity(queryName, parsedSpecOperation)) {
         return [];
     }
@@ -28,7 +26,8 @@ const getWarningForUndefinedQueryParameter = (
     })];
 };
 
-export default (parsedMockInteraction: ParsedMockInteraction, parsedSpecOperation: ParsedSpecOperation) => {
+export const validateParsedMockRequestQuery = (parsedMockInteraction: ParsedMockInteraction,
+                                               parsedSpecOperation: ParsedSpecOperation) => {
     return _(_.keys(parsedMockInteraction.requestQuery))
         .union(_.keys(parsedSpecOperation.requestQueryParameters))
         .map((queryName) => {

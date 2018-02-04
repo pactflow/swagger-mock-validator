@@ -1,10 +1,11 @@
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
-import result from '../result';
+import {result} from '../result';
 import {ParsedMockInteraction, ParsedSpecResponse} from '../types';
-import validateJson from './validate-json';
+import {validateJson} from './validate-json';
 
-export default (parsedMockInteraction: ParsedMockInteraction, parsedSpecResponse: ParsedSpecResponse) => {
+export const validateParsedMockResponseBody = (parsedMockInteraction: ParsedMockInteraction,
+                                               parsedSpecResponse: ParsedSpecResponse) => {
     if (!parsedMockInteraction.responseBody.value) {
         return [];
     }

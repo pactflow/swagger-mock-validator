@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {ValidationResultCode} from '../../api-types';
-import result from '../result';
+import {result} from '../result';
 import {
     JsonSchema,
     MultiCollectionFormatSeparator,
@@ -9,7 +9,7 @@ import {
     ParsedSpecItem,
     ParsedSpecItemCollectionFormat,
     ParsedSpecParameter} from '../types';
-import validateJson from './validate-json';
+import {validateJson} from './validate-json';
 
 const toJsonSchema = (parsedSpecParameter: ParsedSpecParameter): JsonSchema => {
     const schema: JsonSchema = {
@@ -80,7 +80,7 @@ const toWrappedParsedMockValue = (
     return {value: expandArrays(parsedMockValue.value, parsedSpecItem)};
 };
 
-export default <T>(
+export const validateMockValueAgainstSpec = <T>(
     parsedSpecParameter: ParsedSpecParameter,
     parsedMockValue: ParsedMockValue<T>,
     parsedMockInteraction: ParsedMockInteraction,

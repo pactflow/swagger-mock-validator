@@ -6,7 +6,7 @@ import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers'
 import {pactBuilder} from './support/pact-builder';
 import {interactionBuilder} from './support/pact-builder/interaction-builder';
 import {operationBuilder, pathBuilder, pathParameterBuilder, swaggerBuilder} from './support/swagger-builder';
-import {default as swaggerPactValidatorLoader, MockFileSystemResponses} from './support/swagger-mock-validator-loader';
+import {MockFileSystemResponses, swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -18,11 +18,11 @@ describe('reading files', () => {
         jasmine.addMatchers(customMatchers);
 
         mockFiles = {};
-        mockFileSystem = swaggerPactValidatorLoader.createMockFileSystem(mockFiles);
+        mockFileSystem = swaggerMockValidatorLoader.createMockFileSystem(mockFiles);
     });
 
     const invokeValidate = (specPathOrUrl: string, mockPathOrUrl: string): Promise<ValidationOutcome> =>
-        swaggerPactValidatorLoader.invokeWithMocks({
+        swaggerMockValidatorLoader.invokeWithMocks({
             fileSystem: mockFileSystem,
             mockPathOrUrl,
             specPathOrUrl

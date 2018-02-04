@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import Negotiator = require('negotiator');
-import result from '../result';
+import {result} from '../result';
 import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
 
 const contentTypeHeaderName = 'content-type';
@@ -77,7 +77,8 @@ const validateParsedMockContentTypeAgainstParsedSpecConsumes = (
     return [];
 };
 
-export default (parsedMockInteraction: ParsedMockInteraction, parsedSpecOperation: ParsedSpecOperation) => {
+export const validateParsedSpecConsumes = (parsedMockInteraction: ParsedMockInteraction,
+                                           parsedSpecOperation: ParsedSpecOperation) => {
     const parsedMockContentTypeRequestHeaderValue: string =
         _.get(parsedMockInteraction.requestHeaders[contentTypeHeaderName], 'value');
     const parsedSpecHasConsumesValue = parsedSpecOperation.consumes.value.length > 0;

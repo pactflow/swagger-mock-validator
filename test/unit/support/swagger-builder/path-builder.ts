@@ -21,4 +21,4 @@ const createPathBuilder = (path: SwaggerPath) => ({
         createPathBuilder(setValueOn(path, 'post', operationBuilder.build()))
 });
 
-export default createPathBuilder({});
+export const pathBuilder = createPathBuilder({});

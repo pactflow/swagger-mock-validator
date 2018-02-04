@@ -4,7 +4,7 @@ import * as commander from 'commander';
 import * as _ from 'lodash';
 import * as util from 'util';
 import {ValidationOutcome, ValidationResult} from './api-types';
-import swaggerMockValidator from './swagger-mock-validator';
+import {swaggerMockValidator} from './swagger-mock-validator';
 
 // tslint:disable:no-var-requires
 const packageJson = require('../package.json');

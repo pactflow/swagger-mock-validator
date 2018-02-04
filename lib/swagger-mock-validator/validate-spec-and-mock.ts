@@ -6,16 +6,16 @@ import {
     ParsedSpec,
     ParsedSpecOperation
 } from './types';
-import getParsedSpecOperation from './validate-spec-and-mock/get-parsed-spec-operation';
-import getParsedSpecResponse from './validate-spec-and-mock/get-parsed-spec-response';
-import validateParsedMockRequestBody from './validate-spec-and-mock/validate-parsed-mock-request-body';
-import validateParsedMockRequestHeaders from './validate-spec-and-mock/validate-parsed-mock-request-headers';
-import validateParsedMockRequestQuery from './validate-spec-and-mock/validate-parsed-mock-request-query';
-import validateParsedMockResponseBody from './validate-spec-and-mock/validate-parsed-mock-response-body';
-import validateParsedMockResponseHeaders from './validate-spec-and-mock/validate-parsed-mock-response-headers';
-import validateParsedSpecConsumes from './validate-spec-and-mock/validate-parsed-spec-consumes';
-import validateParsedSpecProduces from './validate-spec-and-mock/validate-parsed-spec-produces';
-import validateParsedSpecSecurity from './validate-spec-and-mock/validate-parsed-spec-security';
+import {getParsedSpecOperation} from './validate-spec-and-mock/get-parsed-spec-operation';
+import {getParsedSpecResponse} from './validate-spec-and-mock/get-parsed-spec-response';
+import {validateParsedMockRequestBody} from './validate-spec-and-mock/validate-parsed-mock-request-body';
+import {validateParsedMockRequestHeaders} from './validate-spec-and-mock/validate-parsed-mock-request-headers';
+import {validateParsedMockRequestQuery} from './validate-spec-and-mock/validate-parsed-mock-request-query';
+import {validateParsedMockResponseBody} from './validate-spec-and-mock/validate-parsed-mock-response-body';
+import {validateParsedMockResponseHeaders} from './validate-spec-and-mock/validate-parsed-mock-response-headers';
+import {validateParsedSpecConsumes} from './validate-spec-and-mock/validate-parsed-spec-consumes';
+import {validateParsedSpecProduces} from './validate-spec-and-mock/validate-parsed-spec-produces';
+import {validateParsedSpecSecurity} from './validate-spec-and-mock/validate-parsed-spec-security';
 
 const validateMockInteractionRequest = (
     parsedMockInteraction: ParsedMockInteraction,
@@ -60,7 +60,7 @@ const validateMockInteraction = (parsedMockInteraction: ParsedMockInteraction, p
     );
 };
 
-export default (parsedMock: ParsedMock, parsedSpec: ParsedSpec): Promise<ValidationOutcome> => {
+export const validateSpecAndMock = (parsedMock: ParsedMock, parsedSpec: ParsedSpec): Promise<ValidationOutcome> => {
     const validationResults = _(parsedMock.interactions)
         .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpec))
         .flatten<ValidationResult>()

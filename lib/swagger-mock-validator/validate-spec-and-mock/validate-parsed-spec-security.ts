@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {ValidationResult} from '../../api-types';
-import result from '../result';
+import {result} from '../result';
 import {
     ParsedMockInteraction,
     ParsedSpecOperation,
@@ -58,7 +58,7 @@ const validateRequirement = (
         .value();
 };
 
-export default (
+export const validateParsedSpecSecurity = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ): ValidationResult[] => {

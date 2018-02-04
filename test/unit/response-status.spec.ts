@@ -2,12 +2,12 @@ import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers'
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     operationBuilder,
-    OperationBuilder,
     pathBuilder,
     responseBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {OperationBuilder} from './support/swagger-builder/operation-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -31,7 +31,7 @@ describe('response status', () => {
             .withPath('/does/exist', pathBuilder.withGetOperation(swaggerOperation))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     it('should pass when a pact mocks a response status that is defined in the swagger', async () => {

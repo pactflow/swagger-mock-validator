@@ -6,7 +6,7 @@ import {
     securitySchemeBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -35,7 +35,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('basic', securitySchemeBuilder.withTypeBasic())
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result).toContainNoWarningsOrErrors();
     });
@@ -50,7 +50,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('basic', securitySchemeBuilder.withTypeBasic())
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -89,7 +89,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInHeader('x-api-token'))
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result).toContainNoWarningsOrErrors();
     });
@@ -104,7 +104,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInHeader('x-api-token'))
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -143,7 +143,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInQuery('apiToken'))
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result).toContainNoWarningsOrErrors();
     });
@@ -158,7 +158,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInQuery('apiToken'))
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -201,7 +201,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKeyQuery', securitySchemeBuilder.withTypeApiKeyInQuery('apiKey'))
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result).toContainNoWarningsOrErrors();
     });
@@ -219,7 +219,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('apiKeyQuery', securitySchemeBuilder.withTypeApiKeyInQuery('apiKey'))
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -273,7 +273,7 @@ describe('security', () => {
             .withSecurityDefinitionNamed('oauth', securitySchemeBuilder.withTypeOAuth2())
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result).toContainNoWarningsOrErrors();
     });
@@ -287,7 +287,7 @@ describe('security', () => {
             .withSecurityRequirementNamed('apiKey')
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -324,7 +324,7 @@ describe('security', () => {
             .withSecurityRequirementNamed('query')
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{

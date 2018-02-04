@@ -5,16 +5,16 @@ import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     definitionsBuilder,
     operationBuilder,
-    PathBuilder,
     pathBuilder,
     pathParameterBuilder,
     responseBuilder,
     responseHeaderBuilder,
     schemaBuilder,
-    SchemaBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {PathBuilder} from './support/swagger-builder/path-builder';
+import {SchemaBuilder} from './support/swagger-builder/schema-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -35,7 +35,7 @@ describe('formats', () => {
             .withPath('/{value}', swaggerPath)
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     const invokeValidatorWithResponseBody = (pactResponseBody: any, swaggerBodySchema: SchemaBuilder) => {
@@ -57,7 +57,7 @@ describe('formats', () => {
             )
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     beforeEach(() => {
@@ -1014,7 +1014,7 @@ describe('formats', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -1064,7 +1064,7 @@ describe('formats', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -1120,7 +1120,7 @@ describe('formats', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -1173,7 +1173,7 @@ describe('formats', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{

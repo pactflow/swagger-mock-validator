@@ -6,11 +6,11 @@ import {
     operationBuilder,
     pathBuilder,
     responseBuilder,
-    ResponseBuilder,
     responseHeaderBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {ResponseBuilder} from './support/swagger-builder/response-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -45,7 +45,7 @@ describe('response headers', () => {
             .withProduces(['application/json'])
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     it('should pass when the pact response header matches the spec', async () => {
@@ -257,7 +257,7 @@ describe('response headers', () => {
             )
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import result from '../result';
+import {result} from '../result';
 import {ParsedMockInteraction, ParsedMockValue, ParsedSpecBody, ParsedSpecOperation} from '../types';
-import validateJson from './validate-json';
+import {validateJson} from './validate-json';
 
 const validateRequestBodyAgainstSchema = (
     parsedMockRequestBody: ParsedMockValue<any>,
@@ -24,7 +24,8 @@ const isOptionalRequestBodyMissing = (
     parsedSpecOperation: ParsedSpecOperation
 ) => !parsedMockInteraction.requestBody.value && !(parsedSpecOperation.requestBodyParameter as ParsedSpecBody).required;
 
-export default (parsedMockInteraction: ParsedMockInteraction, parsedSpecOperation: ParsedSpecOperation) => {
+export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockInteraction,
+                                              parsedSpecOperation: ParsedSpecOperation) => {
     const parsedMockInteractionHasBody = Boolean(parsedMockInteraction.requestBody.value);
 
     if (!parsedSpecOperation.requestBodyParameter) {

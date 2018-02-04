@@ -1,8 +1,6 @@
 import * as uuid from 'uuidjs';
 import {UuidGenerator} from './types';
 
-const uuidGenerator: UuidGenerator = {
+export const defaultUuidGenerator: UuidGenerator = {
     generate: () => uuid.generate()
 };
-
-export default uuidGenerator;

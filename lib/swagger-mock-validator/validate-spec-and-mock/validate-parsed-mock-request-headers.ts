@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import result from '../result';
+import {result} from '../result';
 import {ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation} from '../types';
-import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
+import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 
 const headerUsedForSecurity = (headerName: string, parsedSpecOperation: ParsedSpecOperation) =>
     _.some(parsedSpecOperation.securityRequirements, (securityRequirement) =>
@@ -46,11 +46,9 @@ const standardHttpRequestHeaders = [
     'warning'
 ];
 
-const getWarningForUndefinedHeader = (
-    headerName: string,
-    parsedMockRequestHeader: ParsedMockValue<string>,
-    parsedSpecOperation: ParsedSpecOperation
-) => {
+const getWarningForUndefinedHeader = (headerName: string,
+                                      parsedMockRequestHeader: ParsedMockValue<string>,
+                                      parsedSpecOperation: ParsedSpecOperation) => {
     if (standardHttpRequestHeaders.indexOf(headerName) > -1 || headerUsedForSecurity(headerName, parsedSpecOperation)) {
         return [];
     }
@@ -64,7 +62,8 @@ const getWarningForUndefinedHeader = (
     })];
 };
 
-export default (parsedMockInteraction: ParsedMockInteraction, parsedSpecOperation: ParsedSpecOperation) =>
+export const validateParsedMockRequestHeaders = (parsedMockInteraction: ParsedMockInteraction,
+                                                 parsedSpecOperation: ParsedSpecOperation) =>
     _(_.keys(parsedMockInteraction.requestHeaders))
         .union(_.keys(parsedSpecOperation.requestHeaderParameters))
         .map((headerName) => {

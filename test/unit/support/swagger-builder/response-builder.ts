@@ -17,4 +17,4 @@ const createResponseBuilder = (response: SwaggerResponse) => ({
         createResponseBuilder(setValueOn(response, 'schema', schemaBuilder.build()))
 });
 
-export default createResponseBuilder({description: 'default-response'});
+export const responseBuilder = createResponseBuilder({description: 'default-response'});

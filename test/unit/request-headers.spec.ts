@@ -8,7 +8,7 @@ import {
     requestHeaderParameterBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -48,7 +48,7 @@ describe('request headers', () => {
             .withPath('/does/exist', pathBuilder.withGetOperation(operation))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     it('should pass when the pact request header matches the spec', async () => {

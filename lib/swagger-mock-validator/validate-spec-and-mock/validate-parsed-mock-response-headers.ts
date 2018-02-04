@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import result from '../result';
+import {result} from '../result';
 import {ParsedMockInteraction, ParsedMockValue, ParsedSpecResponse} from '../types';
-import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
+import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 
 const ignoredHttpHeaders = [
     'content-type'
@@ -50,7 +50,8 @@ const standardHttpHeaders = [
     'x-frame-options'
 ];
 
-export default (parsedMockInteraction: ParsedMockInteraction, parsedSpecResponse: ParsedSpecResponse) =>
+export const validateParsedMockResponseHeaders = (parsedMockInteraction: ParsedMockInteraction,
+                                                  parsedSpecResponse: ParsedSpecResponse) =>
     _(parsedMockInteraction.responseHeaders)
         .map((parsedMockResponseHeader: ParsedMockValue<string>, headerName: string) => {
             const parsedSpecResponseHeader = parsedSpecResponse.headers[headerName];

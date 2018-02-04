@@ -3,14 +3,14 @@ import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     bodyParameterBuilder,
     definitionsBuilder,
-    DefinitionsBuilder,
     operationBuilder,
     ParameterBuilder,
     pathBuilder,
     schemaBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {DefinitionsBuilder} from './support/swagger-builder/definitions-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -45,7 +45,7 @@ describe('request body', () => {
             swaggerWithOperationBuilder = swaggerWithOperationBuilder.withDefinitions(swaggerDefinitions);
         }
 
-        return swaggerPactValidatorLoader.invoke(swaggerWithOperationBuilder.build(), pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerWithOperationBuilder.build(), pactFile);
     };
 
     it('should pass when a pact request body is compatible with the swagger schema', async () => {

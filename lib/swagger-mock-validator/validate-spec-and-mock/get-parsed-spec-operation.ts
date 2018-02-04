@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {ValidationResult} from '../../api-types';
-import result from '../result';
+import {result} from '../result';
 import {
     GetSwaggerValueResult,
     GetSwaggerValueSuccessResult,
@@ -11,7 +11,7 @@ import {
     ParsedSpecPathNameSegmentEqual,
     ParsedSpecPathNameSegmentJsonSchema
 } from '../types';
-import validateMockValueAgainstSpec from './validate-mock-value-against-spec';
+import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 
 interface MatchResult {
     match: boolean;
@@ -100,7 +100,7 @@ const doInteractionAndOperationMatch = (
     };
 };
 
-export default (
+export const getParsedSpecOperation = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpec: ParsedSpec
 ): GetSwaggerValueResult<ParsedSpecOperation> => {

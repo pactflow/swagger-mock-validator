@@ -2,15 +2,15 @@ import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers'
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     definitionsBuilder,
-    DefinitionsBuilder,
     operationBuilder,
     pathBuilder,
     responseBuilder,
     schemaBuilder,
-    SchemaBuilder,
     swaggerBuilder
 } from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {DefinitionsBuilder} from './support/swagger-builder/definitions-builder';
+import {SchemaBuilder} from './support/swagger-builder/schema-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -45,7 +45,7 @@ describe('response body', () => {
             swaggerWithBodySchemaBuilder = swaggerWithBodySchemaBuilder.withDefinitions(swaggerDefinitions);
         }
 
-        return swaggerPactValidatorLoader.invoke(swaggerWithBodySchemaBuilder.build(), pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerWithBodySchemaBuilder.build(), pactFile);
     };
 
     it('should pass when a pact calls a method that is defined in the swagger', async () => {
@@ -653,7 +653,7 @@ describe('response body', () => {
             .withPath('/does/exist', pathBuilder.withGetOperation(operation))
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{

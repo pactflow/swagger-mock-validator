@@ -15,11 +15,11 @@ import {
     swaggerBuilder
 } from './support/swagger-builder';
 import {
-    default as swaggerPactValidatorLoader,
     MockFileSystemResponses,
     MockHttpClientResponses,
     MockMetadataResponses,
-    MockUuidGeneratorResponses
+    MockUuidGeneratorResponses,
+    swaggerMockValidatorLoader
 } from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
@@ -45,21 +45,21 @@ describe('analytics', () => {
         mockMetadataResponses = {};
         mockUuids = [];
 
-        mockHttpClient = swaggerPactValidatorLoader.createMockHttpClient(mockUrls);
+        mockHttpClient = swaggerMockValidatorLoader.createMockHttpClient(mockUrls);
     });
 
     const invokeValidation = (options: SwaggerMockValidatorInternalOptions) => {
         mockUrls['http://analytics.com/event'] = Promise.resolve('');
 
-        return swaggerPactValidatorLoader.invokeWithMocks({
+        return swaggerMockValidatorLoader.invokeWithMocks({
             analyticsUrl: 'http://analytics.com/event',
-            fileSystem: swaggerPactValidatorLoader.createMockFileSystem(mockFiles),
+            fileSystem: swaggerMockValidatorLoader.createMockFileSystem(mockFiles),
             httpClient: mockHttpClient,
-            metadata: swaggerPactValidatorLoader.createMockMetadata(mockMetadataResponses),
+            metadata: swaggerMockValidatorLoader.createMockMetadata(mockMetadataResponses),
             mockPathOrUrl: options.mockPathOrUrl,
             providerName: options.providerName,
             specPathOrUrl: options.specPathOrUrl,
-            uuidGenerator: swaggerPactValidatorLoader.createMockUuidGenerator(mockUuids)
+            uuidGenerator: swaggerMockValidatorLoader.createMockUuidGenerator(mockUuids)
         });
     };
 

@@ -1,14 +1,14 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {operationBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('request method', () => {
     const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
 
-    const invokeSwaggerPactValidator = swaggerPactValidatorLoader.invoke;
+    const invokeSwaggerPactValidator = swaggerMockValidatorLoader.invoke;
 
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
