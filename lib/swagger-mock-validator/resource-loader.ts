@@ -2,9 +2,8 @@ import {FileStore} from './file-store';
 import {transformStringToObject} from './transform-string-to-object';
 
 export class ResourceLoader {
-    private fileStore: FileStore;
 
-    constructor(fileStore: FileStore) {
+    public constructor(private readonly fileStore: FileStore) {
         this.fileStore = fileStore;
     }
 

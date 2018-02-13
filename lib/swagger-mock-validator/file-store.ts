@@ -6,10 +6,7 @@ export class FileStore {
         return pathOrUrl.indexOf('http') === 0;
     }
 
-    private fileSystem: FileSystem;
-    private httpClient: HttpClient;
-
-    constructor(fileSystem: FileSystem, httpClient: HttpClient) {
+    public constructor(private readonly fileSystem: FileSystem, private readonly httpClient: HttpClient) {
         this.fileSystem = fileSystem;
         this.httpClient = httpClient;
     }
