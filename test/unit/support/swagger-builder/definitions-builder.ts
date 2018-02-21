@@ -13,4 +13,4 @@ const createDefinitionsBuilder = (definitions: JsonSchemaDefinitions) => ({
         createDefinitionsBuilder(setValueOn(definitions, name, schemaBuilder.build()))
 });
 
-export default createDefinitionsBuilder({});
+export const definitionsBuilder = createDefinitionsBuilder({});

@@ -74,7 +74,7 @@ const parseValidationResult = (
     return Promise.resolve({errors, warnings, failureReason, success});
 };
 
-export default async (specJson: any, specPathOrUrl: string): Promise<ValidationOutcome> => {
+export const validateSwagger = async (specJson: any, specPathOrUrl: string): Promise<ValidationOutcome> => {
     const validationResult = await validate(specJson);
 
     return parseValidationResult(validationResult, specPathOrUrl);

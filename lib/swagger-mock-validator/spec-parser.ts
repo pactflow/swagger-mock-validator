@@ -1,3 +1,3 @@
-import swaggerParser from './spec-parser/swagger-parser';
+import {swaggerParser} from './spec-parser/swagger-parser';
 
-export default {parseSwagger: swaggerParser.parse};
+export const specParser = {parseSwagger: swaggerParser.parse};

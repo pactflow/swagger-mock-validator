@@ -30,7 +30,7 @@ const errorCodes = [
 const codeToType = (code: ValidationResultCode): ValidationResultType =>
     (errorCodes.indexOf(code) > -1) ? 'error' : 'warning';
 
-export default {
+export const result = {
     build: (options: ResultOptions): ValidationResult => {
         const interaction = options.mockSegment.parentInteraction;
         const operation = options.specSegment.parentOperation;

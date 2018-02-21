@@ -1,16 +1,12 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {
-    operationBuilder,
-    PathBuilder,
-    pathBuilder,
-    pathParameterBuilder,
-    responseBuilder,
-    ResponseHeaderBuilder,
-    responseHeaderBuilder,
-    swaggerBuilder
-} from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
+import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
+import {pathBuilder, PathBuilder} from './support/swagger-builder/path-builder';
+import {responseBuilder} from './support/swagger-builder/response-builder';
+import {responseHeaderBuilder, ResponseHeaderBuilder} from './support/swagger-builder/response-header-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -31,7 +27,7 @@ describe('keywords', () => {
             .withPath('/{value}', swaggerPath)
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     const invokeValidatorWithResponseHeader = (swaggerResponseHeader: ResponseHeaderBuilder,
@@ -55,7 +51,7 @@ describe('keywords', () => {
             )
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     beforeEach(() => {

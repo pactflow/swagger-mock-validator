@@ -1,6 +1,6 @@
 import {ValidationOutcome, ValidationResult} from '../api-types';
 
-export default (pactJson: any, mockPathOrUrl: string): ValidationOutcome => {
+export const validatePact = (pactJson: any, mockPathOrUrl: string): ValidationOutcome => {
     let errors: ValidationResult[] = [];
     const warnings: ValidationResult[] = [];
     if (!pactJson.interactions) {

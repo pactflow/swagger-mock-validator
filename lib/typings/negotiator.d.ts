@@ -8,7 +8,7 @@ declare module 'negotiator' {
     }
 
     class NegotiatorStatic {
-        constructor(request: Request);
+        public constructor(request: Request);
         public mediaTypes(produces: string[]): string[];
     }
 

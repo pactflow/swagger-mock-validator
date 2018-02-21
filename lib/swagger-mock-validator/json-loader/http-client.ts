@@ -4,7 +4,7 @@ import {HttpClient} from '../types';
 const hasHttp2xxStatusCode = (response: request.RequestResponse) =>
     response.statusCode && response.statusCode >= 200 && response.statusCode <= 299;
 
-const httpClient: HttpClient = {
+export const defaultHttpClient: HttpClient = {
     get: (url) => {
         const requestOptions = {
             timeout: 30000,
@@ -45,5 +45,3 @@ const httpClient: HttpClient = {
         });
     }
 };
-
-export default httpClient;

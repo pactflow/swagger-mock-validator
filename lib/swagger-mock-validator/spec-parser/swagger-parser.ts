@@ -478,7 +478,7 @@ const createEmptyParentOperation = (specPathOrUrl: string, location: string): Pa
     return emptyParentOperation;
 };
 
-export default {
+export const swaggerParser = {
     parse: (specJson: Swagger, specPathOrUrl: string): ParsedSpec => ({
         operations: _(specJson.paths)
             .map(

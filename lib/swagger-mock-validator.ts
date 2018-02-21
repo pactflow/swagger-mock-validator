@@ -4,15 +4,16 @@ import {
     ValidationOutcome,
     ValidationResult
 } from './api-types';
-import analytics from './swagger-mock-validator/analytics';
-import defaultMetadata from './swagger-mock-validator/analytics/metadata';
+
+import {analytics} from './swagger-mock-validator/analytics';
+import {defaultMetadata} from './swagger-mock-validator/analytics/metadata';
 import {FileStore} from './swagger-mock-validator/file-store';
-import defaultFileSystem from './swagger-mock-validator/json-loader/file-system';
-import defaultHttpClient from './swagger-mock-validator/json-loader/http-client';
-import mockParser from './swagger-mock-validator/mock-parser';
-import resolveSwagger from './swagger-mock-validator/resolve-swagger';
+import {defaultFileSystem} from './swagger-mock-validator/json-loader/file-system';
+import {defaultHttpClient} from './swagger-mock-validator/json-loader/http-client';
+import {mockParser} from './swagger-mock-validator/mock-parser';
+import {resolveSwagger} from './swagger-mock-validator/resolve-swagger';
 import {ResourceLoader} from './swagger-mock-validator/resource-loader';
-import specParser from './swagger-mock-validator/spec-parser';
+import {specParser} from './swagger-mock-validator/spec-parser';
 import {transformStringToObject} from './swagger-mock-validator/transform-string-to-object';
 import {
     MockSource,
@@ -26,10 +27,10 @@ import {
     SwaggerMockValidatorInternal,
     SwaggerMockValidatorInternalOptions
 } from './swagger-mock-validator/types';
-import defaultUuidGenerator from './swagger-mock-validator/uuid-generator';
-import validatePact from './swagger-mock-validator/validate-pact';
-import validateSpecAndMock from './swagger-mock-validator/validate-spec-and-mock';
-import validateSwagger from './swagger-mock-validator/validate-swagger';
+import {defaultUuidGenerator} from './swagger-mock-validator/uuid-generator';
+import {validatePact} from './swagger-mock-validator/validate-pact';
+import {validateSpecAndMock} from './swagger-mock-validator/validate-spec-and-mock';
+import {validateSwagger} from './swagger-mock-validator/validate-swagger';
 
 type PostAnalyticEvent = (parsedMock: ParsedMock,
                           outcome: ValidationOutcome) => Promise<void>;
@@ -159,7 +160,7 @@ export const validateSpecAndMockContent = async (
     };
 };
 
-const swaggerMockValidator: SwaggerMockValidatorInternal = {
+export const swaggerMockValidator: SwaggerMockValidatorInternal = {
     validate: async (userOptions) => {
         const options = parseUserOptions(userOptions);
         const fileStore = new FileStore(options.fileSystem, options.httpClient);
@@ -205,5 +206,3 @@ const swaggerMockValidator: SwaggerMockValidatorInternal = {
         return combineValidationOutcomes(validationOutcomes);
     }
 };
-
-export default swaggerMockValidator;

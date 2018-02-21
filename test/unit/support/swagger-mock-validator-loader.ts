@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {ValidationOutcome} from '../../../lib/api-types';
-import swaggerMockValidator from '../../../lib/swagger-mock-validator';
+import {swaggerMockValidator} from '../../../lib/swagger-mock-validator';
 import {
     FileSystem,
     HttpClient,
@@ -27,7 +27,7 @@ export interface MockMetadataResponses {
 
 export type MockUuidGeneratorResponses = string[];
 
-const swaggerMockValidatorLoader = {
+export const swaggerMockValidatorLoader = {
     createMockFileSystem: (mockResponses: MockFileSystemResponses): FileSystem => {
         const mockFileSystem = jasmine.createSpyObj('mockFileSystem', ['readFile']);
 
@@ -101,5 +101,3 @@ const swaggerMockValidatorLoader = {
             uuidGenerator: options.uuidGenerator || swaggerMockValidatorLoader.createMockUuidGenerator([])
         }) as any
 };
-
-export default swaggerMockValidatorLoader;

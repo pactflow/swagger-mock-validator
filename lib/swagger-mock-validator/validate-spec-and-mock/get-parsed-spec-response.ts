@@ -1,9 +1,9 @@
-import result from '../result';
+import {result} from '../result';
 import {
     GetSwaggerValueResult, ParsedMockInteraction, ParsedSpecOperation, ParsedSpecResponse
 } from '../types';
 
-export default (
+export const getParsedSpecResponse = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ): GetSwaggerValueResult<ParsedSpecResponse> => {

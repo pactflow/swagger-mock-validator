@@ -89,7 +89,7 @@ const createAjvForDraft4 = (userOptions: Ajv.Options) => {
     return ajv;
 };
 
-export default (jsonSchema: JsonSchema, json: any, numbersSentAsStrings?: boolean) => {
+export const validateJson = (jsonSchema: JsonSchema, json: any, numbersSentAsStrings?: boolean) => {
     const ajv = createAjvForDraft4({
         allErrors: true,
         coerceTypes: numbersSentAsStrings || false,

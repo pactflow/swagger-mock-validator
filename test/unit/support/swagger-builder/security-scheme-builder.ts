@@ -20,4 +20,4 @@ const createSecuritySchemeBuilder = (securityScheme: SwaggerSecurityScheme) => (
     })
 });
 
-export default createSecuritySchemeBuilder({type: 'basic'});
+export const securitySchemeBuilder = createSecuritySchemeBuilder({type: 'basic'});

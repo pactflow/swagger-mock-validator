@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import Negotiator = require('negotiator');
 import {ValidationResult} from '../../api-types';
-import result from '../result';
+import {result} from '../result';
 import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
 
 const acceptHeaderName = 'accept';
@@ -84,7 +84,7 @@ const validateParsedMockResponseContentTypeAndBody = (
     return [];
 };
 
-export default (
+export const validateParsedSpecProduces = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ): ValidationResult[] => {

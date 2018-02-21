@@ -1,7 +1,9 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
+import {pathBuilder} from './support/swagger-builder/path-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -34,7 +36,7 @@ describe('produces', () => {
                 .withPath('/does/exist', pathBuilder.withGetOperation(operation))
                 .build();
 
-            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
         };
 
         it('should pass when the pact request accept header matches the spec', async () => {
@@ -151,7 +153,7 @@ describe('produces', () => {
                 .withProduces(['application/xml'])
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -189,7 +191,7 @@ describe('produces', () => {
                 .withProduces(['application/json'])
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -234,7 +236,7 @@ describe('produces', () => {
                 .withPath('/does/exist', pathBuilder.withPostOperation(operation))
                 .build();
 
-            return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
         };
 
         it('should pass when the pact response content type header matches the spec', async () => {

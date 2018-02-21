@@ -1,13 +1,10 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {
-    operationBuilder,
-    PathBuilder,
-    pathBuilder,
-    pathParameterBuilder,
-    swaggerBuilder
-} from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
+import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
+import {pathBuilder, PathBuilder} from './support/swagger-builder/path-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -28,7 +25,7 @@ describe('request path', () => {
             .withPath('/{value}', swaggerPath)
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     beforeEach(() => {
@@ -44,7 +41,7 @@ describe('request path', () => {
             .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result).toContainNoWarningsOrErrors();
     });
@@ -60,7 +57,7 @@ describe('request path', () => {
 
         const swaggerFile = swaggerBuilder.build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -96,7 +93,7 @@ describe('request path', () => {
 
         const swaggerFile = swaggerBuilder.build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -134,7 +131,7 @@ describe('request path', () => {
                 .withPath('/almost', pathBuilder)
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -171,7 +168,7 @@ describe('request path', () => {
                 .withPath('/almost/matches', pathBuilder)
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -211,7 +208,7 @@ describe('request path', () => {
                 .withPath('/almost/matches/{userId}', swaggerPathBuilder)
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -247,7 +244,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -263,7 +260,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -278,7 +275,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -294,7 +291,7 @@ describe('request path', () => {
                 .withParameter('userId', pathParameterBuilder.withNumberNamed('userId'))
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -309,7 +306,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -325,7 +322,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -668,7 +665,7 @@ describe('request path', () => {
                 .withPath('/{accountId}/users/{userId}', getUserIdPath)
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -715,7 +712,7 @@ describe('request path', () => {
                 .withPath('/{accountId}/users/{userId}', getUserIdPath)
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -775,7 +772,7 @@ describe('request path', () => {
                 .withPath('/users/{userId', getUserPath)
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -814,7 +811,7 @@ describe('request path', () => {
                 .withPath('/users/userId}', getUserPath)
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
@@ -851,7 +848,7 @@ describe('request path', () => {
                 .withBasePath('/base/path')
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -870,7 +867,7 @@ describe('request path', () => {
                 .withBasePath('/base/path')
                 .build();
 
-            const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{

@@ -48,4 +48,4 @@ const createSchemaValueBuilder = (schema: JsonSchemaValue) => ({
     withTypeString: () => createSchemaValueBuilder(setValueOn(schema, 'type', 'string'))
 });
 
-export default createSchemaValueBuilder({type: 'string'});
+export const schemaBuilder = createSchemaValueBuilder({type: 'string'});

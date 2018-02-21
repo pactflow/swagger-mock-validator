@@ -1,13 +1,11 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {
-    bodyParameterBuilder,
-    operationBuilder,
-    pathBuilder,
-    schemaBuilder,
-    swaggerBuilder
-} from './support/swagger-builder';
-import swaggerPactValidatorLoader from './support/swagger-mock-validator-loader';
+import {swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
+import {bodyParameterBuilder} from './support/swagger-builder/parameter-builder/body-parameter-builder';
+import {pathBuilder} from './support/swagger-builder/path-builder';
+import {schemaBuilder} from './support/swagger-builder/schema-builder';
+import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -53,7 +51,7 @@ describe('consumes', () => {
                 pathBuilder.withPostOperation(operation.withParameter(defaultSwaggerBodyParameter)))
             .build();
 
-        return swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
 
     it('should pass when the pact request content-type header matches the spec', async () => {
@@ -216,7 +214,7 @@ describe('consumes', () => {
             .withConsumes(['application/xml'])
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -252,7 +250,7 @@ describe('consumes', () => {
             .withConsumes(['application/json'])
             .build();
 
-        const result = await swaggerPactValidatorLoader.invoke(swaggerFile, pactFile);
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
