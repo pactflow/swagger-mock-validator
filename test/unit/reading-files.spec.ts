@@ -5,7 +5,10 @@ import {expectToFail} from '../support/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBuilder} from './support/pact-builder';
 import {interactionBuilder} from './support/pact-builder/interaction-builder';
-import {operationBuilder, pathBuilder, pathParameterBuilder, swaggerBuilder} from './support/swagger-builder';
+import {swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
+import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
+import {pathBuilder} from './support/swagger-builder/path-builder';
 import {MockFileSystemResponses, swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;

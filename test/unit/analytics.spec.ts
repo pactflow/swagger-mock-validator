@@ -9,11 +9,9 @@ import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers'
 import {pactBrokerBuilder} from './support/pact-broker-builder';
 import {providerPactsBuilder} from './support/pact-broker-builder/provider-pacts-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {
-    operationBuilder,
-    pathBuilder,
-    swaggerBuilder
-} from './support/swagger-builder';
+import {swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
+import {pathBuilder} from './support/swagger-builder/path-builder';
 import {
     MockFileSystemResponses,
     MockHttpClientResponses,

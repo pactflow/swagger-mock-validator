@@ -36,16 +36,3 @@ export const swaggerBuilder = createSwaggerBuilder({
     paths: {},
     swagger: '2.0'
 });
-
-export {definitionsBuilder} from './swagger-builder/definitions-builder';
-export {operationBuilder} from './swagger-builder/operation-builder';
-export {ParameterBuilder} from './swagger-builder/parameter-builder';
-export {bodyParameterBuilder} from './swagger-builder/parameter-builder/body-parameter-builder';
-export {pathParameterBuilder} from './swagger-builder/parameter-builder/path-parameter-builder';
-export {queryParameterBuilder} from './swagger-builder/parameter-builder/query-parameter-builder';
-export {requestHeaderParameterBuilder} from './swagger-builder/parameter-builder/request-header-parameter-builder';
-export {pathBuilder} from './swagger-builder/path-builder';
-export {responseBuilder} from './swagger-builder/response-builder';
-export {responseHeaderBuilder} from './swagger-builder/response-header-builder';
-export {schemaBuilder} from './swagger-builder/schema-builder';
-export {securitySchemeBuilder} from './swagger-builder/security-scheme-builder';

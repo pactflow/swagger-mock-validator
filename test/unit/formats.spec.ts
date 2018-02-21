@@ -2,18 +2,14 @@ import * as _ from 'lodash';
 import {ValidationOutcome} from '../../lib/api-types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {
-    definitionsBuilder,
-    operationBuilder,
-    pathBuilder,
-    pathParameterBuilder,
-    responseBuilder,
-    responseHeaderBuilder,
-    schemaBuilder,
-    swaggerBuilder
-} from './support/swagger-builder';
-import {PathBuilder} from './support/swagger-builder/path-builder';
-import {SchemaBuilder} from './support/swagger-builder/schema-builder';
+import {swaggerBuilder} from './support/swagger-builder';
+import {definitionsBuilder} from './support/swagger-builder/definitions-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
+import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
+import {pathBuilder, PathBuilder} from './support/swagger-builder/path-builder';
+import {responseBuilder} from './support/swagger-builder/response-builder';
+import {responseHeaderBuilder} from './support/swagger-builder/response-header-builder';
+import {schemaBuilder, SchemaBuilder} from './support/swagger-builder/schema-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;

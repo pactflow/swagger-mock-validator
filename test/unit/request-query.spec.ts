@@ -1,12 +1,10 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {
-    operationBuilder,
-    ParameterBuilder,
-    pathBuilder,
-    queryParameterBuilder,
-    swaggerBuilder
-} from './support/swagger-builder';
+import {swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
+import {ParameterBuilder} from './support/swagger-builder/parameter-builder';
+import {queryParameterBuilder} from './support/swagger-builder/parameter-builder/query-parameter-builder';
+import {pathBuilder} from './support/swagger-builder/path-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;

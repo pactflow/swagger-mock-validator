@@ -4,8 +4,10 @@ import {expectToFail} from '../support/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder, providerPactsBuilder} from './support/pact-broker-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder, pathBuilder, swaggerBuilder} from './support/swagger-builder';
+import {swaggerBuilder} from './support/swagger-builder';
+import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
+import {pathBuilder} from './support/swagger-builder/path-builder';
 import {MockHttpClientResponses, swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
