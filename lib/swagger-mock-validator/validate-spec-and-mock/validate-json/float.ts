@@ -12,4 +12,10 @@ export const formatForFloatNumbers = (schema: JsonSchemaValue) => {
     }
 };
 
-export const isFloat = (value: number) => new Decimal(value).precision() <= maximumFloatPrecision;
+export const isFloat = (rawValue: number | string) => {
+    try {
+        return new Decimal(rawValue).precision() <= maximumFloatPrecision;
+    } catch (error) {
+        return false;
+    }
+};

@@ -236,7 +236,27 @@ describe('formats', () => {
         it('should return the error when a pact path contains blank int32 value', async () => {
             const result = await invokeValidatorWithPath(swaggerPathWithInt32Builder, ' ');
 
-            expect(result).toContainNoWarningsOrErrors();
+            expect(result.failureReason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
+                code: 'spv.request.path-or-method.unknown',
+                message: `Path or method not defined in swagger file: GET / `,
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.path',
+                    mockFile: 'pact.json',
+                    value: `/ `
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[swaggerRoot].paths',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: {'/{value}': swaggerPathWithInt32Builder.build()}
+                },
+                type: 'error'
+            }]);
         });
 
         it('should pass when the pact response body contains the a valid int32 value', async () => {
@@ -324,13 +344,10 @@ describe('formats', () => {
         const swaggerPathWithInt64Parameter = defaultSwaggerPathBuilder
             .withParameter(pathParameterBuilder.withInt64Named('value'));
 
-        // loss of precision due to javascript 64bit floating point number format
-        // https://en.wikipedia.org/wiki/Double-precision_floating-point_format
-
-        const minimumInt64Allowed = '-9223372036854776000';
-        const minimumInt64AllowedMinusOneThousand = '-9223372036854777000';
-        const maximumInt64Allowed = '9223372036854776000';
-        const maximumInt64AllowedPlusOneThousand = '9223372036854777000';
+        const minimumInt64Allowed = '-9223372036854775808';
+        const minimumInt64AllowedMinusOne = '-9223372036854775809';
+        const maximumInt64Allowed = '9223372036854775807';
+        const maximumInt64AllowedPlusOne = '9223372036854775808';
 
         it('should pass when the pact path contains the minimum int64 value', async () => {
             const result = await invokeValidatorWithPath(swaggerPathWithInt64Parameter, minimumInt64Allowed);
@@ -347,20 +364,20 @@ describe('formats', () => {
         it('should return the error when a pact path contains smaller then the min int64 value', async () => {
             const result = await invokeValidatorWithPath(
                 swaggerPathWithInt64Parameter,
-                minimumInt64AllowedMinusOneThousand
+                minimumInt64AllowedMinusOne
             );
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'spv.request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: ' +
-                `GET /${minimumInt64AllowedMinusOneThousand}`,
+                `GET /${minimumInt64AllowedMinusOne}`,
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].request.path',
                     mockFile: 'pact.json',
-                    value: `/${minimumInt64AllowedMinusOneThousand}`
+                    value: `/${minimumInt64AllowedMinusOne}`
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
@@ -377,20 +394,20 @@ describe('formats', () => {
         it('should return the error when a pact path contains bigger then the max int64 value', async () => {
             const result = await invokeValidatorWithPath(
                 swaggerPathWithInt64Parameter,
-                maximumInt64AllowedPlusOneThousand
+                maximumInt64AllowedPlusOne
             );
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'spv.request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: ' +
-                `GET /${maximumInt64AllowedPlusOneThousand}`,
+                `GET /${maximumInt64AllowedPlusOne}`,
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].request.path',
                     mockFile: 'pact.json',
-                    value: `/${maximumInt64AllowedPlusOneThousand}`
+                    value: `/${maximumInt64AllowedPlusOne}`
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
@@ -433,7 +450,27 @@ describe('formats', () => {
         it('should pass when a pact path contains blank int64 value', async () => {
             const result = await invokeValidatorWithPath(swaggerPathWithInt64Parameter, ' ');
 
-            expect(result).toContainNoWarningsOrErrors();
+            expect(result.failureReason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
+                code: 'spv.request.path-or-method.unknown',
+                message: `Path or method not defined in swagger file: GET / `,
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.path',
+                    mockFile: 'pact.json',
+                    value: `/ `
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[swaggerRoot].paths',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: {'/{value}': swaggerPathWithInt64Parameter.build()}
+                },
+                type: 'error'
+            }]);
         });
 
         it('should pass when the pact response body contains the a valid int64 value', async () => {
@@ -590,10 +627,30 @@ describe('formats', () => {
             }]);
         });
 
-        it('should pass when a pact path contains blank float value', async () => {
+        it('should return the error when a pact path contains blank float value', async () => {
             const result = await invokeValidatorWithPath(swaggerPathWithFloatParameter, ' ');
 
-            expect(result).toContainNoWarningsOrErrors();
+            expect(result.failureReason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
+                code: 'spv.request.path-or-method.unknown',
+                message: `Path or method not defined in swagger file: GET / `,
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.path',
+                    mockFile: 'pact.json',
+                    value: `/ `
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[swaggerRoot].paths',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: {'/{value}': swaggerPathWithFloatParameter.build()}
+                },
+                type: 'error'
+            }]);
         });
 
         it('should pass when the pact response body contains the a valid float value', async () => {
@@ -680,37 +737,31 @@ describe('formats', () => {
         const swaggerPathWithDoubleParameter = defaultSwaggerPathBuilder
             .withParameter(pathParameterBuilder.withDoubleNamed('value'));
 
-        it('should pass when the pact path contains a value with 14 significant digits', async () => {
-            const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, '12345678901234');
+        it('should pass when the pact path contains a value that is a double', async () => {
+            const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, '1234567890123456');
 
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should pass when the pact path contains a value with 15 significant digits', async () => {
-            const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, '123456789012345');
-
-            expect(result).toContainNoWarningsOrErrors();
-        });
-
-        it('should pass when pact path contains a value with 15 sig digits involving decimals', async () => {
+        it('should pass when the pact path contains a value with decimals that is a double', async () => {
             const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, '001234567.8901234500');
 
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should return the error when pact path contains a value with 16 significant digits', async () => {
-            const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, '1234567890123456');
+        it('should return the error when pact path contains a value that does not fit in a double', async () => {
+            const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, '12345678901234567890');
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'spv.request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /1234567890123456',
+                message: 'Path or method not defined in swagger file: GET /12345678901234567890',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[pactRoot].interactions[0].request.path',
                     mockFile: 'pact.json',
-                    value: '/1234567890123456'
+                    value: '/12345678901234567890'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
@@ -750,13 +801,33 @@ describe('formats', () => {
             }]);
         });
 
-        it('should pass when a pact path contains blank double value', async () => {
+        it('should return the error when a pact path contains blank double value', async () => {
             const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, ' ');
 
-            expect(result).toContainNoWarningsOrErrors();
+            expect(result.failureReason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
+                code: 'spv.request.path-or-method.unknown',
+                message: `Path or method not defined in swagger file: GET / `,
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[pactRoot].interactions[0].request.path',
+                    mockFile: 'pact.json',
+                    value: `/ `
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[swaggerRoot].paths',
+                    pathMethod: null,
+                    pathName: null,
+                    specFile: 'swagger.json',
+                    value: {'/{value}': swaggerPathWithDoubleParameter.build()}
+                },
+                type: 'error'
+            }]);
         });
 
-        it('should pass when the pact response body contains the a valid double value', async () => {
+        it('should pass when the pact response body contains a value that is a double', async () => {
             const pactResponseBody = {id: 1.1};
 
             const swaggerBodySchema = schemaBuilder
@@ -768,7 +839,7 @@ describe('formats', () => {
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should return the error when the pact response body contains a string double value', async () => {
+        it('should return the error when the pact response body a value that is a string', async () => {
             const pactResponseBody = {id: 'abc'};
 
             const swaggerBodySchema = schemaBuilder
@@ -801,8 +872,9 @@ describe('formats', () => {
             }]);
         });
 
-        it('should return the error when the pact response body contains a too large double value', async () => {
-            const pactResponseBody = {id: 123456789.0123456789};
+        it('should pass when the pact response body contains a value that is so big precision is lost', async () => {
+            const valueWherePrecisionIsLost = 12345678901234567890;
+            const pactResponseBody = {id: valueWherePrecisionIsLost};
 
             const swaggerBodySchema = schemaBuilder
                 .withTypeObject()
@@ -810,29 +882,7 @@ describe('formats', () => {
 
             const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
 
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
-                message: 'Response body is incompatible with the response body schema in the swagger file: ' +
-                'should pass "formatDouble" keyword validation',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.body.id',
-                    mockFile: 'pact.json',
-                    value: 123456789.01234567
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '' +
-                    '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.formatDouble',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'swagger.json',
-                    value: undefined
-                },
-                type: 'error'
-            }]);
+            expect(result).toContainNoWarningsOrErrors();
         });
     });
 

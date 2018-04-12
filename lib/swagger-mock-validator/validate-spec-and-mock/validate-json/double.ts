@@ -1,8 +1,6 @@
 import {Decimal} from 'decimal.js';
 import {JsonSchemaValue} from '../../types';
 
-const maximumDoublePrecision = 15;
-
 export const doubleAjvKeyword = 'formatDouble';
 
 export const formatForDoubleNumbers = (schema: JsonSchemaValue) => {
@@ -12,4 +10,12 @@ export const formatForDoubleNumbers = (schema: JsonSchemaValue) => {
     }
 };
 
-export const isDouble = (value: number) => new Decimal(value).precision() <= maximumDoublePrecision;
+export const isDouble = (rawValue: string | number) => {
+    try {
+        const fullPrecisionValue = new Decimal(rawValue);
+        const doublePrecisionValue = new Decimal(fullPrecisionValue.toNumber());
+        return fullPrecisionValue.eq(doublePrecisionValue);
+    } catch (error) {
+        return false;
+    }
+};

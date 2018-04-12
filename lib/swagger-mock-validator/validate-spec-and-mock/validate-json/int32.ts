@@ -1,8 +1,8 @@
-import * as _ from 'lodash';
+import {Decimal} from 'decimal.js';
 import {JsonSchemaValue} from '../../types';
 
-const int32MinValue = -Math.pow(2, 31);
-const int32MaxValue = Math.pow(2, 31) - 1;
+const int32MinValue = Decimal.pow(2, 31).negated();
+const int32MaxValue = Decimal.pow(2, 31).minus(1);
 
 export const int32AjvKeyword = 'formatInt32';
 
@@ -13,4 +13,11 @@ export const formatForInt32Numbers = (schema: JsonSchemaValue) => {
     }
 };
 
-export const isInt32 = (value: number) => _.isInteger(value) && value >= int32MinValue && value <= int32MaxValue;
+export const isInt32 = (rawValue: number | string) => {
+    try {
+        const value = new Decimal(rawValue);
+        return value.isInteger() && value.greaterThanOrEqualTo(int32MinValue) && value.lessThanOrEqualTo(int32MaxValue);
+    } catch (error) {
+        return false;
+    }
+};

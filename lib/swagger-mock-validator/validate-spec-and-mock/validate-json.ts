@@ -13,15 +13,38 @@ import {isPassword} from './validate-json/password';
 // tslint:disable:no-submodule-imports
 const draft4MetaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
 
-const addSwaggerFormatsAndKeywords = (ajv: Ajv.Ajv) => {
+const addSwaggerFormatsAndKeywords = (ajv: Ajv.Ajv, rawJson: any) => {
     ajv.addFormat('binary', isBinary);
     ajv.addFormat('byte', isByte);
     ajv.addFormat('password', isPassword);
     // tslint:disable:variable-name
-    ajv.addKeyword(doubleAjvKeyword, {type: 'number', validate: (_schema: any, data: number) => isDouble(data)});
-    ajv.addKeyword(floatAjvKeyword, {type: 'number', validate: (_schema: any, data: number) => isFloat(data)});
-    ajv.addKeyword(int32AjvKeyword, {type: 'integer', validate: (_schema: any, data: number) => isInt32(data)});
-    ajv.addKeyword(int64AjvKeyword, {type: 'integer', validate: (_schema: any, data: number) => isInt64(data)});
+    ajv.addKeyword(doubleAjvKeyword, {
+        type: 'number',
+        validate: (_schema: any, _data: number, _parentSchema: any, dataPath: string) => {
+            const rawValue = _.get(rawJson, dataPath.substring(1));
+            return isDouble(rawValue);
+        }
+    });
+    ajv.addKeyword(floatAjvKeyword, {
+        type: 'number',
+        validate: (_schema: any, _data: number, _parentSchema: any, dataPath: string) => {
+            const rawValue = _.get(rawJson, dataPath.substring(1));
+            return isFloat(rawValue);
+        }});
+    ajv.addKeyword(int32AjvKeyword, {
+        type: 'integer',
+        validate: (_schema: any, _data: number, _parentSchema: any, dataPath: string) => {
+            const rawValue = _.get(rawJson, dataPath.substring(1));
+            return isInt32(rawValue);
+        }
+    });
+    ajv.addKeyword(int64AjvKeyword, {
+        type: 'integer',
+        validate: (_schema: any, _data: number, _parentSchema: any, dataPath: string) => {
+            const rawValue = _.get(rawJson, dataPath.substring(1));
+            return isInt64(rawValue);
+        }
+    });
 };
 
 const nonSwaggerAjvFormats = [
@@ -96,14 +119,14 @@ export const validateJson = (jsonSchema: JsonSchema, json: any, numbersSentAsStr
         verbose: true
     });
 
-    addSwaggerFormatsAndKeywords(ajv);
+    addSwaggerFormatsAndKeywords(ajv, json);
     removeNonSwaggerAjvFormats(ajv);
 
     const ajvCompatibleJsonSchema = _.cloneDeep(jsonSchema);
 
     changeTypeToKeywordForCustomFormats(ajvCompatibleJsonSchema);
 
-    ajv.validate(ajvCompatibleJsonSchema, json);
+    ajv.validate(ajvCompatibleJsonSchema, _.cloneDeep(json));
 
     return ajv.errors || [];
 };
