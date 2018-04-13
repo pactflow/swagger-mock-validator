@@ -7,7 +7,7 @@ const equalsTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegmen
     const match = parsedSpecPathNameSegment.value === parsedMockPathNameSegment.value;
     return { match, results: [] };
 };
-const jsonSchemaTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegment) => validate_mock_value_against_spec_1.default(parsedSpecPathNameSegment.parameter, parsedMockPathNameSegment, parsedMockPathNameSegment.parentInteraction, 'spv.request.path-or-method.unknown');
+const jsonSchemaTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegment) => validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecPathNameSegment.parameter, parsedMockPathNameSegment, parsedMockPathNameSegment.parentInteraction, 'spv.request.path-or-method.unknown');
 const doInteractionAndOperationMatchPaths = (parsedMockInteraction, parsedSpecOperation) => {
     const parsedSpecPathNameSegments = parsedSpecOperation.pathNameSegments;
     if (parsedMockInteraction.requestPathSegments.length !== parsedSpecPathNameSegments.length) {
@@ -51,7 +51,7 @@ const doInteractionAndOperationMatch = (parsedMockInteraction, parsedSpecOperati
         value: parsedSpecOperation
     };
 };
-exports.default = (parsedMockInteraction, parsedSpec) => {
+exports.getParsedSpecOperation = (parsedMockInteraction, parsedSpec) => {
     const match = _(parsedSpec.operations)
         .map((parsedSpecOperation) => doInteractionAndOperationMatch(parsedMockInteraction, parsedSpecOperation))
         .find('found');
@@ -59,7 +59,7 @@ exports.default = (parsedMockInteraction, parsedSpec) => {
         return {
             found: false,
             results: [
-                result_1.default.build({
+                result_1.result.build({
                     code: 'spv.request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: ' +
                         `${parsedMockInteraction.requestMethod.value.toUpperCase()} ` +

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (pactJson, mockPathOrUrl) => {
+exports.validatePact = (pactJson, mockPathOrUrl) => {
     let errors = [];
     const warnings = [];
     if (!pactJson.interactions) {

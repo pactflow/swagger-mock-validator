@@ -64,13 +64,13 @@ const toWrappedParsedMockValue = (parsedMockValue, parsedSpecItem) => {
     }
     return { value: expandArrays(parsedMockValue.value, parsedSpecItem) };
 };
-exports.default = (parsedSpecParameter, parsedMockValue, parsedMockInteraction, validationResultCode) => {
+exports.validateMockValueAgainstSpec = (parsedSpecParameter, parsedMockValue, parsedMockInteraction, validationResultCode) => {
     const schema = toJsonSchema(parsedSpecParameter);
     const wrappedParsedMockValue = toWrappedParsedMockValue(parsedMockValue, parsedSpecParameter);
-    const errors = validate_json_1.default(schema, wrappedParsedMockValue, true);
+    const errors = validate_json_1.validateJson(schema, wrappedParsedMockValue, true);
     return {
         match: errors.length === 0,
-        results: _.map(errors, (error) => result_1.default.build({
+        results: _.map(errors, (error) => result_1.result.build({
             code: validationResultCode,
             message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 error.message,

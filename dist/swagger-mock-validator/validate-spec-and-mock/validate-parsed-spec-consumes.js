@@ -6,7 +6,7 @@ const result_1 = require("../result");
 const contentTypeHeaderName = 'content-type';
 const validateHasNoConsumesValue = (parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue) => {
     return parsedMockContentTypeRequestHeaderValue
-        ? [result_1.default.build({
+        ? [result_1.result.build({
                 code: 'spv.request.content-type.unknown',
                 message: 'Request content-type header is defined but there is no consumes definition in the spec',
                 mockSegment: parsedMockInteraction.requestHeaders[contentTypeHeaderName],
@@ -17,7 +17,7 @@ const validateHasNoConsumesValue = (parsedMockInteraction, parsedSpecOperation, 
 };
 const validateHasNoContentTypeHeader = (parsedMockInteraction, parsedSpecOperation) => {
     return parsedMockInteraction.requestBody.value
-        ? [result_1.default.build({
+        ? [result_1.result.build({
                 code: 'spv.request.content-type.missing',
                 message: 'Request content type header is not defined but there is consumes definition in the spec',
                 mockSegment: parsedMockInteraction,
@@ -43,7 +43,7 @@ const negotiateMediaTypes = (parsedMockContentTypeRequestHeaderValue, parsedSpec
 const validateParsedMockContentTypeAgainstParsedSpecConsumes = (parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue) => {
     const foundMatches = negotiateMediaTypes(parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value);
     if (!foundMatches) {
-        return [result_1.default.build({
+        return [result_1.result.build({
                 code: 'spv.request.content-type.incompatible',
                 message: 'Request Content-Type header is incompatible with the consumes mime type defined in the swagger file',
                 mockSegment: parsedMockInteraction.requestHeaders[contentTypeHeaderName],
@@ -53,7 +53,7 @@ const validateParsedMockContentTypeAgainstParsedSpecConsumes = (parsedMockIntera
     }
     return [];
 };
-exports.default = (parsedMockInteraction, parsedSpecOperation) => {
+exports.validateParsedSpecConsumes = (parsedMockInteraction, parsedSpecOperation) => {
     const parsedMockContentTypeRequestHeaderValue = _.get(parsedMockInteraction.requestHeaders[contentTypeHeaderName], 'value');
     const parsedSpecHasConsumesValue = parsedSpecOperation.consumes.value.length > 0;
     if (!parsedSpecHasConsumesValue) {

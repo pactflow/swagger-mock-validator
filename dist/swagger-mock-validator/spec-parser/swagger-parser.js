@@ -332,7 +332,7 @@ const createEmptyParentOperation = (specPathOrUrl, location) => {
     emptyParentOperation.responses.parentOperation = emptyParentOperation;
     return emptyParentOperation;
 };
-exports.default = {
+exports.swaggerParser = {
     parse: (specJson, specPathOrUrl) => ({
         operations: _(specJson.paths)
             .map((path, pathName) => parseOperationFromPath(path, pathName, specPathOrUrl, specJson))

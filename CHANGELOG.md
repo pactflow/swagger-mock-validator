@@ -1,3 +1,20 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/3.0.0...4.0.0) (2018-04-13)
+
+
+### Bug Fixes
+
+* format validators for int32, int64, float and double no longer accept spaces and now test for the full range of accepted values ([a38b085](https://bitbucket.org/atlassian/swagger-mock-validator/commits/a38b085)), closes [#67](https://bitbucket.org/atlassian/swagger-mock-validator/issue/67)
+
+
+### BREAKING CHANGES
+
+* Prior to this change the tool used to accept blank spaces in path parameters for int32, int64, float and double formatted numbers. A bug has been fixed to disallow blank spaces. This means some mock responses that were previously considered valid will now be considered invalid. This change has also updated the int64 and double format validators to now test for the full range of values these types support. This means some mock responses that were previously considered invalid will now be considered valid.
+
+It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/2.2.3...3.0.0) (2018-01-31)
 

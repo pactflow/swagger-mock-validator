@@ -9,4 +9,11 @@ exports.formatForFloatNumbers = (schema) => {
         schema[exports.floatAjvKeyword] = true;
     }
 };
-exports.isFloat = (value) => new decimal_js_1.Decimal(value).precision() <= maximumFloatPrecision;
+exports.isFloat = (rawValue) => {
+    try {
+        return new decimal_js_1.Decimal(rawValue).precision() <= maximumFloatPrecision;
+    }
+    catch (error) {
+        return false;
+    }
+};

@@ -4,7 +4,7 @@ const _ = require("lodash");
 const result_1 = require("../result");
 const validateQueryRequirement = (parsedSpecSecurityRequirement, parsedMockInteraction) => {
     if (!parsedMockInteraction.requestQuery[parsedSpecSecurityRequirement.credentialKey]) {
-        return result_1.default.build({
+        return result_1.result.build({
             code: 'spv.request.authorization.missing',
             message: 'Request Authorization query is missing but is required by the swagger file',
             mockSegment: parsedMockInteraction,
@@ -16,7 +16,7 @@ const validateQueryRequirement = (parsedSpecSecurityRequirement, parsedMockInter
 };
 const validateHeaderRequirement = (parsedSpecSecurityRequirement, parsedMockInteraction) => {
     if (!parsedMockInteraction.requestHeaders[parsedSpecSecurityRequirement.credentialKey]) {
-        return result_1.default.build({
+        return result_1.result.build({
             code: 'spv.request.authorization.missing',
             message: 'Request Authorization header is missing but is required by the swagger file',
             mockSegment: parsedMockInteraction,
@@ -37,7 +37,7 @@ const validateRequirement = (parsedMockInteraction, parsedSpecSecurityRequiremen
         .compact()
         .value();
 };
-exports.default = (parsedMockInteraction, parsedSpecOperation) => {
+exports.validateParsedSpecSecurity = (parsedMockInteraction, parsedSpecOperation) => {
     const validationResultsPerRequirement = _(parsedSpecOperation.securityRequirements)
         .map((requirements) => {
         return validateRequirement(parsedMockInteraction, requirements);

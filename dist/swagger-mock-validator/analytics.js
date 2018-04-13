@@ -11,7 +11,7 @@ const generateResultSummary = (results) => {
     summary.count = results.length;
     return summary;
 };
-exports.default = {
+exports.analytics = {
     postEvent: (options) => options.httpClient.post(options.analyticsUrl, {
         execution: {
             consumer: options.consumer,

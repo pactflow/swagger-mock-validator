@@ -43,7 +43,7 @@ const getWarningForUndefinedHeader = (headerName, parsedMockRequestHeader, parse
     if (standardHttpRequestHeaders.indexOf(headerName) > -1 || headerUsedForSecurity(headerName, parsedSpecOperation)) {
         return [];
     }
-    return [result_1.default.build({
+    return [result_1.result.build({
             code: 'spv.request.header.unknown',
             message: `Request header is not defined in the swagger file: ${headerName}`,
             mockSegment: parsedMockRequestHeader,
@@ -51,7 +51,7 @@ const getWarningForUndefinedHeader = (headerName, parsedMockRequestHeader, parse
             specSegment: parsedSpecOperation
         })];
 };
-exports.default = (parsedMockInteraction, parsedSpecOperation) => _(_.keys(parsedMockInteraction.requestHeaders))
+exports.validateParsedMockRequestHeaders = (parsedMockInteraction, parsedSpecOperation) => _(_.keys(parsedMockInteraction.requestHeaders))
     .union(_.keys(parsedSpecOperation.requestHeaderParameters))
     .map((headerName) => {
     const parsedMockRequestHeader = parsedMockInteraction.requestHeaders[headerName];
@@ -59,7 +59,7 @@ exports.default = (parsedMockInteraction, parsedSpecOperation) => _(_.keys(parse
     if (!parsedSpecRequestHeader && parsedMockRequestHeader) {
         return getWarningForUndefinedHeader(headerName, parsedMockRequestHeader, parsedSpecOperation);
     }
-    const validationResult = validate_mock_value_against_spec_1.default(parsedSpecRequestHeader, parsedMockRequestHeader, parsedMockInteraction, 'spv.request.header.incompatible');
+    const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecRequestHeader, parsedMockRequestHeader, parsedMockInteraction, 'spv.request.header.incompatible');
     return validationResult.results;
 })
     .flatten()

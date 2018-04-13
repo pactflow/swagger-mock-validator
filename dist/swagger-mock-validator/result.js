@@ -16,7 +16,7 @@ const errorCodes = [
     'spv.response.status.unknown'
 ];
 const codeToType = (code) => (errorCodes.indexOf(code) > -1) ? 'error' : 'warning';
-exports.default = {
+exports.result = {
     build: (options) => {
         const interaction = options.mockSegment.parentInteraction;
         const operation = options.specSegment.parentOperation;

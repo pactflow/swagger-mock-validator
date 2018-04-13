@@ -8,7 +8,7 @@ const getWarningForUndefinedQueryParameter = (queryName, parsedMockRequestQuery,
     if (queryUsedForSecurity(queryName, parsedSpecOperation)) {
         return [];
     }
-    return [result_1.default.build({
+    return [result_1.result.build({
             code: 'spv.request.query.unknown',
             message: `Query parameter is not defined in the swagger file: ${queryName}`,
             mockSegment: parsedMockRequestQuery,
@@ -16,7 +16,7 @@ const getWarningForUndefinedQueryParameter = (queryName, parsedMockRequestQuery,
             specSegment: parsedSpecOperation
         })];
 };
-exports.default = (parsedMockInteraction, parsedSpecOperation) => {
+exports.validateParsedMockRequestQuery = (parsedMockInteraction, parsedSpecOperation) => {
     return _(_.keys(parsedMockInteraction.requestQuery))
         .union(_.keys(parsedSpecOperation.requestQueryParameters))
         .map((queryName) => {
@@ -25,7 +25,7 @@ exports.default = (parsedMockInteraction, parsedSpecOperation) => {
         if (!parsedSpecRequestQuery && parsedMockRequestQuery) {
             return getWarningForUndefinedQueryParameter(queryName, parsedMockRequestQuery, parsedSpecOperation);
         }
-        const validationResult = validate_mock_value_against_spec_1.default(parsedSpecRequestQuery, parsedMockRequestQuery, parsedMockInteraction, 'spv.request.query.incompatible');
+        const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecRequestQuery, parsedMockRequestQuery, parsedMockInteraction, 'spv.request.query.incompatible');
         return validationResult.results;
     })
         .flatten()

@@ -11,22 +11,22 @@ const validate_parsed_mock_response_headers_1 = require("./validate-spec-and-moc
 const validate_parsed_spec_consumes_1 = require("./validate-spec-and-mock/validate-parsed-spec-consumes");
 const validate_parsed_spec_produces_1 = require("./validate-spec-and-mock/validate-parsed-spec-produces");
 const validate_parsed_spec_security_1 = require("./validate-spec-and-mock/validate-parsed-spec-security");
-const validateMockInteractionRequest = (parsedMockInteraction, parsedSpecOperation) => _.concat(validate_parsed_spec_consumes_1.default(parsedMockInteraction, parsedSpecOperation), validate_parsed_spec_produces_1.default(parsedMockInteraction, parsedSpecOperation), validate_parsed_spec_security_1.default(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_body_1.default(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_headers_1.default(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_query_1.default(parsedMockInteraction, parsedSpecOperation));
+const validateMockInteractionRequest = (parsedMockInteraction, parsedSpecOperation) => _.concat(validate_parsed_spec_consumes_1.validateParsedSpecConsumes(parsedMockInteraction, parsedSpecOperation), validate_parsed_spec_produces_1.validateParsedSpecProduces(parsedMockInteraction, parsedSpecOperation), validate_parsed_spec_security_1.validateParsedSpecSecurity(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_body_1.validateParsedMockRequestBody(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_headers_1.validateParsedMockRequestHeaders(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_query_1.validateParsedMockRequestQuery(parsedMockInteraction, parsedSpecOperation));
 const validateMockInteractionResponse = (parsedMockInteraction, parsedSpecOperation) => {
-    const parsedSpecResponseResult = get_parsed_spec_response_1.default(parsedMockInteraction, parsedSpecOperation);
+    const parsedSpecResponseResult = get_parsed_spec_response_1.getParsedSpecResponse(parsedMockInteraction, parsedSpecOperation);
     if (!parsedSpecResponseResult.found) {
         return parsedSpecResponseResult.results;
     }
-    return _.concat(parsedSpecResponseResult.results, validate_parsed_mock_response_body_1.default(parsedMockInteraction, parsedSpecResponseResult.value), validate_parsed_mock_response_headers_1.default(parsedMockInteraction, parsedSpecResponseResult.value));
+    return _.concat(parsedSpecResponseResult.results, validate_parsed_mock_response_body_1.validateParsedMockResponseBody(parsedMockInteraction, parsedSpecResponseResult.value), validate_parsed_mock_response_headers_1.validateParsedMockResponseHeaders(parsedMockInteraction, parsedSpecResponseResult.value));
 };
 const validateMockInteraction = (parsedMockInteraction, parsedSpec) => {
-    const getParsedSpecOperationResult = get_parsed_spec_operation_1.default(parsedMockInteraction, parsedSpec);
+    const getParsedSpecOperationResult = get_parsed_spec_operation_1.getParsedSpecOperation(parsedMockInteraction, parsedSpec);
     if (!getParsedSpecOperationResult.found) {
         return getParsedSpecOperationResult.results;
     }
     return _.concat(getParsedSpecOperationResult.results, validateMockInteractionRequest(parsedMockInteraction, getParsedSpecOperationResult.value), validateMockInteractionResponse(parsedMockInteraction, getParsedSpecOperationResult.value));
 };
-exports.default = (parsedMock, parsedSpec) => {
+exports.validateSpecAndMock = (parsedMock, parsedSpec) => {
     const validationResults = _(parsedMock.interactions)
         .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpec))
         .flatten()

@@ -48,7 +48,7 @@ const standardHttpHeaders = [
     'www-authenticate',
     'x-frame-options'
 ];
-exports.default = (parsedMockInteraction, parsedSpecResponse) => _(parsedMockInteraction.responseHeaders)
+exports.validateParsedMockResponseHeaders = (parsedMockInteraction, parsedSpecResponse) => _(parsedMockInteraction.responseHeaders)
     .map((parsedMockResponseHeader, headerName) => {
     const parsedSpecResponseHeader = parsedSpecResponse.headers[headerName];
     if (!parsedSpecResponseHeader) {
@@ -56,7 +56,7 @@ exports.default = (parsedMockInteraction, parsedSpecResponse) => _(parsedMockInt
             return [];
         }
         if (standardHttpHeaders.indexOf(headerName) > -1) {
-            return [result_1.default.build({
+            return [result_1.result.build({
                     code: 'spv.response.header.undefined',
                     message: `Standard http response header is not defined in the swagger file: ${headerName}`,
                     mockSegment: parsedMockResponseHeader,
@@ -64,7 +64,7 @@ exports.default = (parsedMockInteraction, parsedSpecResponse) => _(parsedMockInt
                     specSegment: parsedSpecResponse
                 })];
         }
-        return [result_1.default.build({
+        return [result_1.result.build({
                 code: 'spv.response.header.unknown',
                 message: `Response header is not defined in the swagger file: ${headerName}`,
                 mockSegment: parsedMockResponseHeader,
@@ -72,7 +72,7 @@ exports.default = (parsedMockInteraction, parsedSpecResponse) => _(parsedMockInt
                 specSegment: parsedSpecResponse
             })];
     }
-    const validationResult = validate_mock_value_against_spec_1.default(parsedSpecResponseHeader, parsedMockResponseHeader, parsedMockInteraction, 'spv.response.header.incompatible');
+    const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecResponseHeader, parsedMockResponseHeader, parsedMockInteraction, 'spv.response.header.incompatible');
     return validationResult.results;
 })
     .flatten()

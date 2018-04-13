@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const decimal_js_1 = require("decimal.js");
-const maximumDoublePrecision = 15;
 exports.doubleAjvKeyword = 'formatDouble';
 exports.formatForDoubleNumbers = (schema) => {
     if (schema.type === 'number' && schema.format === 'double') {
@@ -9,4 +8,13 @@ exports.formatForDoubleNumbers = (schema) => {
         schema[exports.doubleAjvKeyword] = true;
     }
 };
-exports.isDouble = (value) => new decimal_js_1.Decimal(value).precision() <= maximumDoublePrecision;
+exports.isDouble = (rawValue) => {
+    try {
+        const fullPrecisionValue = new decimal_js_1.Decimal(rawValue);
+        const doublePrecisionValue = new decimal_js_1.Decimal(fullPrecisionValue.toNumber());
+        return fullPrecisionValue.eq(doublePrecisionValue);
+    }
+    catch (error) {
+        return false;
+    }
+};

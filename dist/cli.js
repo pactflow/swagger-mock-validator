@@ -62,7 +62,7 @@ the specified provider name. The <swagger> argument should be the path or url to
 json file.`)
     .action((swagger, mock, options) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const result = yield swagger_mock_validator_1.default.validate({
+        const result = yield swagger_mock_validator_1.swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,
             mockPathOrUrl: mock,
             providerName: options.provider,

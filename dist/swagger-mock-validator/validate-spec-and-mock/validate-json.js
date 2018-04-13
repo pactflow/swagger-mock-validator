@@ -12,15 +12,39 @@ const password_1 = require("./validate-json/password");
 // tslint:disable:no-var-requires
 // tslint:disable:no-submodule-imports
 const draft4MetaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
-const addSwaggerFormatsAndKeywords = (ajv) => {
+const addSwaggerFormatsAndKeywords = (ajv, rawJson) => {
     ajv.addFormat('binary', binary_1.isBinary);
     ajv.addFormat('byte', byte_1.isByte);
     ajv.addFormat('password', password_1.isPassword);
     // tslint:disable:variable-name
-    ajv.addKeyword(double_1.doubleAjvKeyword, { type: 'number', validate: (_schema, data) => double_1.isDouble(data) });
-    ajv.addKeyword(float_1.floatAjvKeyword, { type: 'number', validate: (_schema, data) => float_1.isFloat(data) });
-    ajv.addKeyword(int32_1.int32AjvKeyword, { type: 'integer', validate: (_schema, data) => int32_1.isInt32(data) });
-    ajv.addKeyword(int64_1.int64AjvKeyword, { type: 'integer', validate: (_schema, data) => int64_1.isInt64(data) });
+    ajv.addKeyword(double_1.doubleAjvKeyword, {
+        type: 'number',
+        validate: (_schema, _data, _parentSchema, dataPath) => {
+            const rawValue = _.get(rawJson, dataPath.substring(1));
+            return double_1.isDouble(rawValue);
+        }
+    });
+    ajv.addKeyword(float_1.floatAjvKeyword, {
+        type: 'number',
+        validate: (_schema, _data, _parentSchema, dataPath) => {
+            const rawValue = _.get(rawJson, dataPath.substring(1));
+            return float_1.isFloat(rawValue);
+        }
+    });
+    ajv.addKeyword(int32_1.int32AjvKeyword, {
+        type: 'integer',
+        validate: (_schema, _data, _parentSchema, dataPath) => {
+            const rawValue = _.get(rawJson, dataPath.substring(1));
+            return int32_1.isInt32(rawValue);
+        }
+    });
+    ajv.addKeyword(int64_1.int64AjvKeyword, {
+        type: 'integer',
+        validate: (_schema, _data, _parentSchema, dataPath) => {
+            const rawValue = _.get(rawJson, dataPath.substring(1));
+            return int64_1.isInt64(rawValue);
+        }
+    });
 };
 const nonSwaggerAjvFormats = [
     'email',
@@ -74,16 +98,16 @@ const createAjvForDraft4 = (userOptions) => {
     ajv.removeKeyword('const');
     return ajv;
 };
-exports.default = (jsonSchema, json, numbersSentAsStrings) => {
+exports.validateJson = (jsonSchema, json, numbersSentAsStrings) => {
     const ajv = createAjvForDraft4({
         allErrors: true,
         coerceTypes: numbersSentAsStrings || false,
         verbose: true
     });
-    addSwaggerFormatsAndKeywords(ajv);
+    addSwaggerFormatsAndKeywords(ajv, json);
     removeNonSwaggerAjvFormats(ajv);
     const ajvCompatibleJsonSchema = _.cloneDeep(jsonSchema);
     changeTypeToKeywordForCustomFormats(ajvCompatibleJsonSchema);
-    ajv.validate(ajvCompatibleJsonSchema, json);
+    ajv.validate(ajvCompatibleJsonSchema, _.cloneDeep(json));
     return ajv.errors || [];
 };

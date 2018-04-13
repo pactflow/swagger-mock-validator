@@ -12,6 +12,7 @@ const transform_string_to_object_1 = require("./transform-string-to-object");
 class ResourceLoader {
     constructor(fileStore) {
         this.fileStore = fileStore;
+        this.fileStore = fileStore;
     }
     load(pathOrUrl) {
         return __awaiter(this, void 0, void 0, function* () {

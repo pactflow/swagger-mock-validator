@@ -10,12 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const VError = require("verror");
 class FileStore {
-    static isUrl(pathOrUrl) {
-        return pathOrUrl.indexOf('http') === 0;
-    }
     constructor(fileSystem, httpClient) {
         this.fileSystem = fileSystem;
         this.httpClient = httpClient;
+        this.fileSystem = fileSystem;
+        this.httpClient = httpClient;
+    }
+    static isUrl(pathOrUrl) {
+        return pathOrUrl.indexOf('http') === 0;
     }
     loadFile(pathOrUrl) {
         return __awaiter(this, void 0, void 0, function* () {

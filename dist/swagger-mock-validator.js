@@ -36,15 +36,15 @@ const getSpecSource = (specPathOrUrl) => file_store_1.FileStore.isUrl(specPathOr
 // tslint:disable:cyclomatic-complexity
 const parseUserOptions = (userOptions) => ({
     analyticsUrl: userOptions.analyticsUrl,
-    fileSystem: userOptions.fileSystem || file_system_1.default,
-    httpClient: userOptions.httpClient || http_client_1.default,
-    metadata: userOptions.metadata || metadata_1.default,
+    fileSystem: userOptions.fileSystem || file_system_1.defaultFileSystem,
+    httpClient: userOptions.httpClient || http_client_1.defaultHttpClient,
+    metadata: userOptions.metadata || metadata_1.defaultMetadata,
     mockPathOrUrl: userOptions.mockPathOrUrl,
     mockSource: getMockSource(userOptions.mockPathOrUrl, userOptions.providerName),
     providerName: userOptions.providerName,
     specPathOrUrl: userOptions.specPathOrUrl,
     specSource: getSpecSource(userOptions.specPathOrUrl),
-    uuidGenerator: userOptions.uuidGenerator || uuid_generator_1.default
+    uuidGenerator: userOptions.uuidGenerator || uuid_generator_1.defaultUuidGenerator
 });
 const combineValidationResults = (validationResults) => {
     const flattenedValidationResults = _.flatten(validationResults);
@@ -67,7 +67,7 @@ const createPostAnalyticEventFunction = (options) => {
         return () => Promise.resolve(undefined);
     }
     const parentId = options.uuidGenerator.generate();
-    return (parsedMock, validationOutcome) => analytics_1.default.postEvent({
+    return (parsedMock, validationOutcome) => analytics_1.analytics.postEvent({
         analyticsUrl,
         consumer: parsedMock.consumer,
         httpClient: options.httpClient,
@@ -99,26 +99,26 @@ exports.validateSpecAndMockContent = (options) => __awaiter(this, void 0, void 0
     const spec = options.spec;
     const mock = options.mock;
     const specJson = transform_string_to_object_1.transformStringToObject(spec.content, spec.pathOrUrl);
-    const specOutcome = yield validate_swagger_1.default(specJson, spec.pathOrUrl);
+    const specOutcome = yield validate_swagger_1.validateSwagger(specJson, spec.pathOrUrl);
     if (!specOutcome.success) {
         return { validationOutcome: specOutcome };
     }
     const mockJson = transform_string_to_object_1.transformStringToObject(mock.content, mock.pathOrUrl);
-    const mockOutcome = validate_pact_1.default(mockJson, mock.pathOrUrl);
+    const mockOutcome = validate_pact_1.validatePact(mockJson, mock.pathOrUrl);
     if (!mockOutcome.success) {
         return { validationOutcome: mockOutcome };
     }
-    const resolvedSpec = yield resolve_swagger_1.default(specJson);
-    const parsedSpec = spec_parser_1.default.parseSwagger(resolvedSpec, spec.pathOrUrl);
-    const parsedMock = mock_parser_1.default.parsePact(mockJson, mock.pathOrUrl);
-    const specAndMockOutcome = yield validate_spec_and_mock_1.default(parsedMock, parsedSpec);
+    const resolvedSpec = yield resolve_swagger_1.resolveSwagger(specJson);
+    const parsedSpec = spec_parser_1.specParser.parseSwagger(resolvedSpec, spec.pathOrUrl);
+    const parsedMock = mock_parser_1.mockParser.parsePact(mockJson, mock.pathOrUrl);
+    const specAndMockOutcome = yield validate_spec_and_mock_1.validateSpecAndMock(parsedMock, parsedSpec);
     const validationOutcome = combineValidationOutcomes([specOutcome, mockOutcome, specAndMockOutcome]);
     return {
         parsedMock,
         validationOutcome
     };
 });
-const swaggerMockValidator = {
+exports.swaggerMockValidator = {
     validate: (userOptions) => __awaiter(this, void 0, void 0, function* () {
         const options = parseUserOptions(userOptions);
         const fileStore = new file_store_1.FileStore(options.fileSystem, options.httpClient);
@@ -156,4 +156,3 @@ const swaggerMockValidator = {
         return combineValidationOutcomes(validationOutcomes);
     })
 };
-exports.default = swaggerMockValidator;

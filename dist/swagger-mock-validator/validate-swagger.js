@@ -62,7 +62,7 @@ const parseValidationResult = (validationResult, specPathOrUrl) => {
     const failureReason = success ? undefined : `"${specPathOrUrl}" is not a valid swagger file`;
     return Promise.resolve({ errors, warnings, failureReason, success });
 };
-exports.default = (specJson, specPathOrUrl) => __awaiter(this, void 0, void 0, function* () {
+exports.validateSwagger = (specJson, specPathOrUrl) => __awaiter(this, void 0, void 0, function* () {
     const validationResult = yield validate(specJson);
     return parseValidationResult(validationResult, specPathOrUrl);
 });
