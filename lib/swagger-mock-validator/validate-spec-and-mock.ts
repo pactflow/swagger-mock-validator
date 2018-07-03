@@ -8,6 +8,7 @@ import {
 } from './types';
 import {getParsedSpecOperation} from './validate-spec-and-mock/get-parsed-spec-operation';
 import {getParsedSpecResponse} from './validate-spec-and-mock/get-parsed-spec-response';
+import {toParsedSpecWithSortedOperations} from './validate-spec-and-mock/to-parsed-spec-with-sorted-operations';
 import {validateParsedMockRequestBody} from './validate-spec-and-mock/validate-parsed-mock-request-body';
 import {validateParsedMockRequestHeaders} from './validate-spec-and-mock/validate-parsed-mock-request-headers';
 import {validateParsedMockRequestQuery} from './validate-spec-and-mock/validate-parsed-mock-request-query';
@@ -46,8 +47,11 @@ const validateMockInteractionResponse = (
     );
 };
 
-const validateMockInteraction = (parsedMockInteraction: ParsedMockInteraction, parsedSpec: ParsedSpec) => {
-    const getParsedSpecOperationResult = getParsedSpecOperation(parsedMockInteraction, parsedSpec);
+const validateMockInteraction = (
+    parsedMockInteraction: ParsedMockInteraction,
+    parsedSpecWithSortedOperations: ParsedSpec
+): ValidationResult[] => {
+    const getParsedSpecOperationResult = getParsedSpecOperation(parsedMockInteraction, parsedSpecWithSortedOperations);
 
     if (!getParsedSpecOperationResult.found) {
         return getParsedSpecOperationResult.results;
@@ -61,8 +65,10 @@ const validateMockInteraction = (parsedMockInteraction: ParsedMockInteraction, p
 };
 
 export const validateSpecAndMock = (parsedMock: ParsedMock, parsedSpec: ParsedSpec): Promise<ValidationOutcome> => {
+    const parsedSpecWithSortedOperations = toParsedSpecWithSortedOperations(parsedSpec);
+
     const validationResults = _(parsedMock.interactions)
-        .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpec))
+        .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpecWithSortedOperations))
         .flatten<ValidationResult>()
         .value();
 
