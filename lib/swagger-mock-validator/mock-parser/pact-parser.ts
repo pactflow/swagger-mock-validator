@@ -45,7 +45,7 @@ const parseRequestQuery = (requestQuery: string | undefined): {[name: string]: s
 
     return Object.keys(parsedQueryAsStringsOrArrayOfStrings)
         .reduce<{[name: string]: string}>((accumulator, queryName) => {
-            const queryValue = parsedQueryAsStringsOrArrayOfStrings[queryName];
+            const queryValue = parsedQueryAsStringsOrArrayOfStrings[queryName] || '';
             accumulator[queryName] = (queryValue instanceof Array) ? queryValue.join(separator) : queryValue;
             return accumulator;
         }, {});

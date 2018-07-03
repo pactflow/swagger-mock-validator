@@ -95,20 +95,19 @@ const mergePathAndOperationParameters = (
 ) => {
     const mergedParameters = _.clone(pathParameters);
 
-    _.each(operationParameters, (operationParameter) => {
-        const duplicateIndex = _.findIndex(mergedParameters, {
-            value: {
-                in: operationParameter.value.in,
-                name: operationParameter.value.name
-            }
-        });
+    for (const operationParameter of operationParameters) {
+        const duplicateIndex = mergedParameters.findIndex(
+            (mergedParameter) =>
+                mergedParameter.value.in === operationParameter.value.in &&
+                mergedParameter.value.name === operationParameter.value.name
+        );
 
         if (duplicateIndex > -1) {
             mergedParameters[duplicateIndex] = operationParameter;
         } else {
             mergedParameters.push(operationParameter);
         }
-    });
+    }
 
     return mergedParameters;
 };
@@ -361,7 +360,7 @@ const parseSecurityRequirements = (
     operationSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
     globalSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
     parsedOperation: ParsedSpecOperation
-): ParsedSpecSecurityRequirements[] =>  {
+): ParsedSpecSecurityRequirements[] => {
     const securityDefinitions = securityDefinitionsOrUndefined || {};
     const securityRequirementsAndBaseLocation = getSecurityRequirementsAndBaseLocation(
         operationSecurityRequirements,
