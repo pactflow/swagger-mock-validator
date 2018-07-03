@@ -100,13 +100,16 @@ const doInteractionAndOperationMatch = (
     };
 };
 
+const isGetSwaggerValueSuccessResult = <T>(res: GetSwaggerValueResult<T>): res is GetSwaggerValueSuccessResult<T> =>
+    res.found;
+
 export const getParsedSpecOperation = (
     parsedMockInteraction: ParsedMockInteraction,
-    parsedSpec: ParsedSpec
+    parsedSpecWithSortedOperations: ParsedSpec
 ): GetSwaggerValueResult<ParsedSpecOperation> => {
-    const match = _(parsedSpec.operations)
+    const match = parsedSpecWithSortedOperations.operations
         .map((parsedSpecOperation) => doInteractionAndOperationMatch(parsedMockInteraction, parsedSpecOperation))
-        .find('found');
+        .find(isGetSwaggerValueSuccessResult);
 
     if (!match) {
         return {
@@ -119,7 +122,7 @@ export const getParsedSpecOperation = (
                         `${parsedMockInteraction.requestPath.value}`,
                     mockSegment: parsedMockInteraction.requestPath,
                     source: 'spec-mock-validation',
-                    specSegment: parsedSpec.paths
+                    specSegment: parsedSpecWithSortedOperations.paths
                 })
             ]
         };
@@ -128,6 +131,6 @@ export const getParsedSpecOperation = (
     return {
         found: true,
         results: match.results,
-        value: (match as GetSwaggerValueSuccessResult<ParsedSpecOperation>).value
+        value: match.value
     };
 };

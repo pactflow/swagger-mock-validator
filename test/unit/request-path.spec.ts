@@ -3,6 +3,9 @@ import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
+import {
+    requestHeaderParameterBuilder
+} from './support/swagger-builder/parameter-builder/request-header-parameter-builder';
 import {pathBuilder, PathBuilder} from './support/swagger-builder/path-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
@@ -528,123 +531,123 @@ describe('request path', () => {
                 }]);
             });
         });
-    });
 
-    describe('array params', () => {
-        it('should pass when a pact path has a correct type as an array param with default commas', async () => {
-            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
-                .withParameter(pathParameterBuilder.withArrayOfNumberNamed('value'));
+        describe('array params', () => {
+            it('should pass when a pact path has a correct type as an array param with default commas', async () => {
+                const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                    .withParameter(pathParameterBuilder.withArrayOfNumberNamed('value'));
 
-            const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2,3');
+                const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2,3');
 
-            expect(result).toContainNoWarningsOrErrors();
-        });
+                expect(result).toContainNoWarningsOrErrors();
+            });
 
-        it('should pass when a pact path has a correct type as an array param with commas', async () => {
-            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
-                .withParameter(pathParameterBuilder.withArrayOfNumberCommaSeparatedNamed('value'));
+            it('should pass when a pact path has a correct type as an array param with commas', async () => {
+                const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                    .withParameter(pathParameterBuilder.withArrayOfNumberCommaSeparatedNamed('value'));
 
-            const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2,3');
+                const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2,3');
 
-            expect(result).toContainNoWarningsOrErrors();
-        });
+                expect(result).toContainNoWarningsOrErrors();
+            });
 
-        it('should pass when a pact path has a correct type as an array param with spaces', async () => {
-            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
-                .withParameter(pathParameterBuilder.withArrayOfNumberSpaceSeparatedNamed('value'));
+            it('should pass when a pact path has a correct type as an array param with spaces', async () => {
+                const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                    .withParameter(pathParameterBuilder.withArrayOfNumberSpaceSeparatedNamed('value'));
 
-            const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1 2 3');
+                const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1 2 3');
 
-            expect(result).toContainNoWarningsOrErrors();
-        });
+                expect(result).toContainNoWarningsOrErrors();
+            });
 
-        it('should pass when a pact path has a correct type as an array param with tabs', async () => {
-            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
-                .withParameter(pathParameterBuilder.withArrayOfNumberTabSeparatedNamed('value'));
+            it('should pass when a pact path has a correct type as an array param with tabs', async () => {
+                const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                    .withParameter(pathParameterBuilder.withArrayOfNumberTabSeparatedNamed('value'));
 
-            const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1\t2\t3');
+                const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1\t2\t3');
 
-            expect(result).toContainNoWarningsOrErrors();
-        });
+                expect(result).toContainNoWarningsOrErrors();
+            });
 
-        it('should pass when a pact path has a correct type as an array param with pipes', async () => {
-            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
-                .withParameter(pathParameterBuilder.withArrayOfNumberPipeSeparatedNamed('value'));
+            it('should pass when a pact path has a correct type as an array param with pipes', async () => {
+                const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                    .withParameter(pathParameterBuilder.withArrayOfNumberPipeSeparatedNamed('value'));
 
-            const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1|2|3');
+                const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1|2|3');
 
-            expect(result).toContainNoWarningsOrErrors();
-        });
+                expect(result).toContainNoWarningsOrErrors();
+            });
 
-        it('should pass when a pact path has a correct type as an array param with 2 levels', async () => {
-            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
-                .withParameter(pathParameterBuilder.withArrayOfArrayOfNumberTabAndCommaSeparatedNamed('value'));
+            it('should pass when a pact path has a correct type as an array param with 2 levels', async () => {
+                const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                    .withParameter(pathParameterBuilder.withArrayOfArrayOfNumberTabAndCommaSeparatedNamed('value'));
 
-            const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2\t3,4\t5,6');
+                const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, '1,2\t3,4\t5,6');
 
-            expect(result).toContainNoWarningsOrErrors();
-        });
+                expect(result).toContainNoWarningsOrErrors();
+            });
 
-        it('should return the error when a pact path has an incorrect type as an array param', async () => {
-            const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
-                .withParameter(pathParameterBuilder.withArrayOfNumberNamed('value'));
+            it('should return the error when a pact path has an incorrect type as an array param', async () => {
+                const swaggerPathWithArrayOfNumbersParameter = defaultSwaggerPathBuilder
+                    .withParameter(pathParameterBuilder.withArrayOfNumberNamed('value'));
 
-            const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, 'a,b,c');
+                const result = await invokeValidatorWithPath(swaggerPathWithArrayOfNumbersParameter, 'a,b,c');
 
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /a,b,c',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
-                    mockFile: 'pact.json',
-                    value: '/a,b,c'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths',
-                    pathMethod: null,
-                    pathName: null,
-                    specFile: 'swagger.json',
-                    value: {'/{value}': swaggerPathWithArrayOfNumbersParameter.build()}
-                },
-                type: 'error'
-            }]);
-        });
+                expect(result.failureReason).toEqual(expectedFailedValidationError);
+                expect(result).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
+                    message: 'Path or method not defined in swagger file: GET /a,b,c',
+                    mockDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        mockFile: 'pact.json',
+                        value: '/a,b,c'
+                    },
+                    source: 'spec-mock-validation',
+                    specDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        specFile: 'swagger.json',
+                        value: {'/{value}': swaggerPathWithArrayOfNumbersParameter.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
 
-        it('should return the error when a pact path has incorrect type as an array of int32 param', async () => {
-            const swaggerPathWithArrayOfInt32Parameter = defaultSwaggerPathBuilder
-                .withParameter(pathParameterBuilder.withArrayOfInt32Named('value'));
+            it('should return the error when a pact path has incorrect type as an array of int32 param', async () => {
+                const swaggerPathWithArrayOfInt32Parameter = defaultSwaggerPathBuilder
+                    .withParameter(pathParameterBuilder.withArrayOfInt32Named('value'));
 
-            const maxInt32 = Math.pow(2, 31) - 1;
-            const maxInt32PlusOne = maxInt32 + 1;
-            const pactValue = `${maxInt32},${maxInt32PlusOne}`;
+                const maxInt32 = Math.pow(2, 31) - 1;
+                const maxInt32PlusOne = maxInt32 + 1;
+                const pactValue = `${maxInt32},${maxInt32PlusOne}`;
 
-            const result = await invokeValidatorWithPath(swaggerPathWithArrayOfInt32Parameter, pactValue);
+                const result = await invokeValidatorWithPath(swaggerPathWithArrayOfInt32Parameter, pactValue);
 
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
-                message: `Path or method not defined in swagger file: GET /${pactValue}`,
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
-                    mockFile: 'pact.json',
-                    value: `/${pactValue}`
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[swaggerRoot].paths',
-                    pathMethod: null,
-                    pathName: null,
-                    specFile: 'swagger.json',
-                    value: {'/{value}': swaggerPathWithArrayOfInt32Parameter.build()}
-                },
-                type: 'error'
-            }]);
+                expect(result.failureReason).toEqual(expectedFailedValidationError);
+                expect(result).toContainErrors([{
+                    code: 'spv.request.path-or-method.unknown',
+                    message: `Path or method not defined in swagger file: GET /${pactValue}`,
+                    mockDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[0].request.path',
+                        mockFile: 'pact.json',
+                        value: `/${pactValue}`
+                    },
+                    source: 'spec-mock-validation',
+                    specDetails: {
+                        location: '[swaggerRoot].paths',
+                        pathMethod: null,
+                        pathName: null,
+                        specFile: 'swagger.json',
+                        value: {'/{value}': swaggerPathWithArrayOfInt32Parameter.build()}
+                    },
+                    type: 'error'
+                }]);
+            });
         });
     });
 
@@ -892,6 +895,58 @@ describe('request path', () => {
                 },
                 type: 'error'
             }]);
+        });
+    });
+
+    describe('conflicting paths', () => {
+        it('should match paths with no parameters before paths with parameters', async () => {
+            const pactFileWithoutIdHeader = pactBuilder
+                .withInteraction(interactionBuilder
+                    .withDescription('interaction description')
+                    .withRequestPath('/path/all')
+                )
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/path/{name}', pathBuilder
+                    .withGetOperation(operationBuilder
+                        .withParameter(pathParameterBuilder.withStringNamed('name'))
+                        .withParameter(requestHeaderParameterBuilder.withRequiredNumberNamed('id'))
+                    )
+                )
+                .withPath('/path/all', pathBuilder
+                    .withGetOperation(operationBuilder)
+                )
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFileWithoutIdHeader);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
+        it('should not care about the order paths are declared in when matching conflicting paths', async () => {
+            const pactFileWithoutIdHeader = pactBuilder
+                .withInteraction(interactionBuilder
+                    .withDescription('interaction description')
+                    .withRequestPath('/path/all')
+                )
+                .build();
+
+            const swaggerFile = swaggerBuilder
+                .withPath('/path/all', pathBuilder
+                    .withGetOperation(operationBuilder)
+                )
+                .withPath('/path/{name}', pathBuilder
+                    .withGetOperation(operationBuilder
+                        .withParameter(pathParameterBuilder.withStringNamed('name'))
+                        .withParameter(requestHeaderParameterBuilder.withRequiredNumberNamed('id'))
+                    )
+                )
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFileWithoutIdHeader);
+
+            expect(result).toContainNoWarningsOrErrors();
         });
     });
 });
