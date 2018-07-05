@@ -1,3 +1,13 @@
+<a name="4.0.1"></a>
+## [4.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/4.0.0...4.0.1) (2018-07-05)
+
+
+### Bug Fixes
+
+* paths without parameters not matching before paths with parameters ([b0f0f4e](https://bitbucket.org/atlassian/swagger-mock-validator/commits/b0f0f4e)), closes [#69](https://bitbucket.org/atlassian/swagger-mock-validator/issue/69)
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/3.0.0...4.0.0) (2018-04-13)
 

@@ -25,7 +25,7 @@ const parseRequestQuery = (requestQuery) => {
     const separator = '[multi-array-separator]';
     return Object.keys(parsedQueryAsStringsOrArrayOfStrings)
         .reduce((accumulator, queryName) => {
-        const queryValue = parsedQueryAsStringsOrArrayOfStrings[queryName];
+        const queryValue = parsedQueryAsStringsOrArrayOfStrings[queryName] || '';
         accumulator[queryName] = (queryValue instanceof Array) ? queryValue.join(separator) : queryValue;
         return accumulator;
     }, {});

@@ -1,6 +1,6 @@
 {
   "name": "swagger-mock-validator",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A CLI tool to validate mocks against swagger specs.",
   "bin": {
     "swagger-mock-validator": "./bin/swagger-mock-validator"

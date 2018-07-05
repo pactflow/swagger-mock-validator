@@ -51,10 +51,11 @@ const doInteractionAndOperationMatch = (parsedMockInteraction, parsedSpecOperati
         value: parsedSpecOperation
     };
 };
-exports.getParsedSpecOperation = (parsedMockInteraction, parsedSpec) => {
-    const match = _(parsedSpec.operations)
+const isGetSwaggerValueSuccessResult = (res) => res.found;
+exports.getParsedSpecOperation = (parsedMockInteraction, parsedSpecWithSortedOperations) => {
+    const match = parsedSpecWithSortedOperations.operations
         .map((parsedSpecOperation) => doInteractionAndOperationMatch(parsedMockInteraction, parsedSpecOperation))
-        .find('found');
+        .find(isGetSwaggerValueSuccessResult);
     if (!match) {
         return {
             found: false,
@@ -66,7 +67,7 @@ exports.getParsedSpecOperation = (parsedMockInteraction, parsedSpec) => {
                         `${parsedMockInteraction.requestPath.value}`,
                     mockSegment: parsedMockInteraction.requestPath,
                     source: 'spec-mock-validation',
-                    specSegment: parsedSpec.paths
+                    specSegment: parsedSpecWithSortedOperations.paths
                 })
             ]
         };

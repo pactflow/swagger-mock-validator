@@ -49,20 +49,16 @@ const toParsedSpecValue = (parameters, parentLocation, parentOperation) => _.map
 }));
 const mergePathAndOperationParameters = (pathParameters, operationParameters) => {
     const mergedParameters = _.clone(pathParameters);
-    _.each(operationParameters, (operationParameter) => {
-        const duplicateIndex = _.findIndex(mergedParameters, {
-            value: {
-                in: operationParameter.value.in,
-                name: operationParameter.value.name
-            }
-        });
+    for (const operationParameter of operationParameters) {
+        const duplicateIndex = mergedParameters.findIndex((mergedParameter) => mergedParameter.value.in === operationParameter.value.in &&
+            mergedParameter.value.name === operationParameter.value.name);
         if (duplicateIndex > -1) {
             mergedParameters[duplicateIndex] = operationParameter;
         }
         else {
             mergedParameters.push(operationParameter);
         }
-    });
+    }
     return mergedParameters;
 };
 const parsePathNameSegments = (pathName, pathParameters, parsedOperation, basePath) => {

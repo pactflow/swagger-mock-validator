@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
 const get_parsed_spec_operation_1 = require("./validate-spec-and-mock/get-parsed-spec-operation");
 const get_parsed_spec_response_1 = require("./validate-spec-and-mock/get-parsed-spec-response");
+const to_parsed_spec_with_sorted_operations_1 = require("./validate-spec-and-mock/to-parsed-spec-with-sorted-operations");
 const validate_parsed_mock_request_body_1 = require("./validate-spec-and-mock/validate-parsed-mock-request-body");
 const validate_parsed_mock_request_headers_1 = require("./validate-spec-and-mock/validate-parsed-mock-request-headers");
 const validate_parsed_mock_request_query_1 = require("./validate-spec-and-mock/validate-parsed-mock-request-query");
@@ -19,16 +20,17 @@ const validateMockInteractionResponse = (parsedMockInteraction, parsedSpecOperat
     }
     return _.concat(parsedSpecResponseResult.results, validate_parsed_mock_response_body_1.validateParsedMockResponseBody(parsedMockInteraction, parsedSpecResponseResult.value), validate_parsed_mock_response_headers_1.validateParsedMockResponseHeaders(parsedMockInteraction, parsedSpecResponseResult.value));
 };
-const validateMockInteraction = (parsedMockInteraction, parsedSpec) => {
-    const getParsedSpecOperationResult = get_parsed_spec_operation_1.getParsedSpecOperation(parsedMockInteraction, parsedSpec);
+const validateMockInteraction = (parsedMockInteraction, parsedSpecWithSortedOperations) => {
+    const getParsedSpecOperationResult = get_parsed_spec_operation_1.getParsedSpecOperation(parsedMockInteraction, parsedSpecWithSortedOperations);
     if (!getParsedSpecOperationResult.found) {
         return getParsedSpecOperationResult.results;
     }
     return _.concat(getParsedSpecOperationResult.results, validateMockInteractionRequest(parsedMockInteraction, getParsedSpecOperationResult.value), validateMockInteractionResponse(parsedMockInteraction, getParsedSpecOperationResult.value));
 };
 exports.validateSpecAndMock = (parsedMock, parsedSpec) => {
+    const parsedSpecWithSortedOperations = to_parsed_spec_with_sorted_operations_1.toParsedSpecWithSortedOperations(parsedSpec);
     const validationResults = _(parsedMock.interactions)
-        .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpec))
+        .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpecWithSortedOperations))
         .flatten()
         .value();
     const errors = _.filter(validationResults, (res) => res.type === 'error');
