@@ -11,13 +11,13 @@ import {FileStore} from './swagger-mock-validator/file-store';
 import {defaultFileSystem} from './swagger-mock-validator/json-loader/file-system';
 import {defaultHttpClient} from './swagger-mock-validator/json-loader/http-client';
 import {mockParser} from './swagger-mock-validator/mock-parser';
-import {resolveSwagger} from './swagger-mock-validator/resolve-swagger';
+import {validateAndResolveSwagger} from './swagger-mock-validator/resolve-swagger';
 import {ResourceLoader} from './swagger-mock-validator/resource-loader';
 import {specParser} from './swagger-mock-validator/spec-parser';
+import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator/swagger-mock-validator-error-impl';
 import {transformStringToObject} from './swagger-mock-validator/transform-string-to-object';
 import {
     MockSource,
-    Pact,
     PactBroker,
     PactBrokerProviderPacts,
     PactBrokerProviderPactsLinksPact,
@@ -28,9 +28,8 @@ import {
     SwaggerMockValidatorInternalOptions
 } from './swagger-mock-validator/types';
 import {defaultUuidGenerator} from './swagger-mock-validator/uuid-generator';
-import {validatePact} from './swagger-mock-validator/validate-pact';
+import {validateAndResolvePact} from './swagger-mock-validator/validate-and-resolve-pact';
 import {validateSpecAndMock} from './swagger-mock-validator/validate-spec-and-mock';
-import {validateSwagger} from './swagger-mock-validator/validate-swagger';
 
 type PostAnalyticEvent = (parsedMock: ParsedMock,
                           outcome: ValidationOutcome) => Promise<void>;
@@ -113,7 +112,10 @@ const getPactFilesFromBroker = async (mockPathOrUrl: string,
 
     const providerPactsUrlTemplate: string = _.get(pactBrokerResponse, '_links.pb:latest-provider-pacts.href');
     if (!providerPactsUrlTemplate) {
-        throw new Error(`No latest pact file url found at "${mockPathOrUrl}"`);
+        throw new SwaggerMockValidatorErrorImpl(
+            'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
+            `Unable to read "${mockPathOrUrl}": No latest pact file url found`
+        );
     }
     const providerPactsUrl = providerPactsUrlTemplate.replace('{provider}', providerName);
     const providerPactsResponse = await resourceLoader.load<PactBrokerProviderPacts>(providerPactsUrl);
@@ -133,26 +135,15 @@ export const validateSpecAndMockContent = async (
     const spec = options.spec;
     const mock = options.mock;
 
-    const specJson = transformStringToObject(spec.content, spec.pathOrUrl);
-    const specOutcome = await validateSwagger(specJson, spec.pathOrUrl);
+    const specJson = transformStringToObject<object>(spec.content, spec.pathOrUrl);
+    const resolvedSpec = await validateAndResolveSwagger(specJson, spec.pathOrUrl);
 
-    if (!specOutcome.success) {
-        return {validationOutcome: specOutcome};
-    }
+    const mockJson = transformStringToObject<object>(mock.content, mock.pathOrUrl);
+    const resolvedPact = validateAndResolvePact(mockJson, mock.pathOrUrl);
 
-    const mockJson = transformStringToObject<Pact>(mock.content, mock.pathOrUrl);
-
-    const mockOutcome = validatePact(mockJson, mock.pathOrUrl);
-
-    if (!mockOutcome.success) {
-        return {validationOutcome: mockOutcome};
-    }
-
-    const resolvedSpec = await resolveSwagger(specJson);
     const parsedSpec = specParser.parseSwagger(resolvedSpec, spec.pathOrUrl);
-    const parsedMock = mockParser.parsePact(mockJson, mock.pathOrUrl);
-    const specAndMockOutcome = await validateSpecAndMock(parsedMock, parsedSpec);
-    const validationOutcome = combineValidationOutcomes([specOutcome, mockOutcome, specAndMockOutcome]);
+    const parsedMock = mockParser.parsePact(resolvedPact, mock.pathOrUrl);
+    const validationOutcome = await validateSpecAndMock(parsedMock, parsedSpec);
 
     return {
         parsedMock,

@@ -103,7 +103,7 @@ describe('consumes', () => {
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
-            code: 'spv.request.content-type.missing',
+            code: 'request.content-type.missing',
             message: 'Request content type header is not defined but there is consumes definition in the spec',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -129,7 +129,7 @@ describe('consumes', () => {
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
-            code: 'spv.request.content-type.unknown',
+            code: 'request.content-type.unknown',
             message: 'Request content-type header is defined but there is no consumes definition in the spec',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -155,7 +155,7 @@ describe('consumes', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.content-type.incompatible',
+            code: 'request.content-type.incompatible',
             message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
             'in the swagger file',
             mockDetails: {
@@ -182,7 +182,7 @@ describe('consumes', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.content-type.incompatible',
+            code: 'request.content-type.incompatible',
             message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
             'in the swagger file',
             mockDetails: {
@@ -218,7 +218,7 @@ describe('consumes', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.content-type.incompatible',
+            code: 'request.content-type.incompatible',
             message: 'Request Content-Type header is incompatible with the consumes mime type defined in the ' +
             'swagger file',
             mockDetails: {
@@ -254,7 +254,7 @@ describe('consumes', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.content-type.incompatible',
+            code: 'request.content-type.incompatible',
             message: 'Request Content-Type header is incompatible with the consumes mime ' +
             'type defined in the swagger file',
             mockDetails: {

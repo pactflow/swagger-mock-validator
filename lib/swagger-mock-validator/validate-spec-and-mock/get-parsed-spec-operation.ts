@@ -35,7 +35,7 @@ const jsonSchemaTypeValidator = (
         parsedSpecPathNameSegment.parameter,
         parsedMockPathNameSegment,
         parsedMockPathNameSegment.parentInteraction,
-        'spv.request.path-or-method.unknown'
+        'request.path-or-method.unknown'
     );
 
 const doInteractionAndOperationMatchPaths = (
@@ -116,7 +116,7 @@ export const getParsedSpecOperation = (
             found: false,
             results: [
                 result.build({
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: ' +
                         `${parsedMockInteraction.requestMethod.value.toUpperCase()} ` +
                         `${parsedMockInteraction.requestPath.value}`,

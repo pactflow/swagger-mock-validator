@@ -1,4 +1,4 @@
-import VError = require('verror');
+import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator-error-impl';
 import {FileSystem, HttpClient} from './types';
 
 export class FileStore {
@@ -15,7 +15,9 @@ export class FileStore {
         try {
             return await this.loadPathOrUrl(pathOrUrl);
         } catch (error) {
-            throw new VError(error, `Unable to read "${pathOrUrl}"`);
+            throw new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR', `Unable to read "${pathOrUrl}"`, error
+            );
         }
     }
 

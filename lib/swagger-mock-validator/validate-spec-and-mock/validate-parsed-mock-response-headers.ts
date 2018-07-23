@@ -63,7 +63,7 @@ export const validateParsedMockResponseHeaders = (parsedMockInteraction: ParsedM
 
                 if (standardHttpHeaders.indexOf(headerName) > -1) {
                     return [result.build({
-                        code: 'spv.response.header.undefined',
+                        code: 'response.header.undefined',
                         message: `Standard http response header is not defined in the swagger file: ${headerName}`,
                         mockSegment: parsedMockResponseHeader,
                         source: 'spec-mock-validation',
@@ -72,7 +72,7 @@ export const validateParsedMockResponseHeaders = (parsedMockInteraction: ParsedM
                 }
 
                 return [result.build({
-                    code: 'spv.response.header.unknown',
+                    code: 'response.header.unknown',
                     message: `Response header is not defined in the swagger file: ${headerName}`,
                     mockSegment: parsedMockResponseHeader,
                     source: 'spec-mock-validation',
@@ -84,7 +84,7 @@ export const validateParsedMockResponseHeaders = (parsedMockInteraction: ParsedM
                 parsedSpecResponseHeader,
                 parsedMockResponseHeader,
                 parsedMockInteraction,
-                'spv.response.header.incompatible'
+                'response.header.incompatible'
             );
 
             return validationResult.results;

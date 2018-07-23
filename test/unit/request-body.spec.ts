@@ -68,7 +68,7 @@ describe('request body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: ' +
             'should be number',
             mockDetails: {
@@ -102,7 +102,7 @@ describe('request body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -138,7 +138,7 @@ describe('request body', () => {
         const result = await validateRequestBody(pactRequestBody, swaggerBodyParameter, definitions);
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -174,7 +174,7 @@ describe('request body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: ' +
             'should be number',
             mockDetails: {
@@ -194,7 +194,7 @@ describe('request body', () => {
             },
             type: 'error'
         }, {
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: ' +
             'should be number',
             mockDetails: {
@@ -223,7 +223,7 @@ describe('request body', () => {
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
-            code: 'spv.request.body.unknown',
+            code: 'request.body.unknown',
             message: 'No schema found for request body',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -254,7 +254,7 @@ describe('request body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: ' +
             'should be object',
             mockDetails: {
@@ -298,7 +298,7 @@ describe('request body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: ' +
             'should be object',
             mockDetails: {
@@ -332,7 +332,7 @@ describe('request body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: ' +
             'should NOT have additional properties',
             mockDetails: {
@@ -366,7 +366,7 @@ describe('request body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.body.incompatible',
+            code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',

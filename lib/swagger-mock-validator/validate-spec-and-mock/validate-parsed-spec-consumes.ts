@@ -12,7 +12,7 @@ const validateHasNoConsumesValue = (
 ) => {
     return parsedMockContentTypeRequestHeaderValue
         ? [result.build({
-            code: 'spv.request.content-type.unknown',
+            code: 'request.content-type.unknown',
             message: 'Request content-type header is defined but there is no consumes definition in the spec',
             mockSegment: parsedMockInteraction.requestHeaders[contentTypeHeaderName],
             source: 'spec-mock-validation',
@@ -27,7 +27,7 @@ const validateHasNoContentTypeHeader = (
 ) => {
     return parsedMockInteraction.requestBody.value
         ? [result.build({
-            code: 'spv.request.content-type.missing',
+            code: 'request.content-type.missing',
             message: 'Request content type header is not defined but there is consumes definition in the spec',
             mockSegment: parsedMockInteraction,
             source: 'spec-mock-validation',
@@ -65,7 +65,7 @@ const validateParsedMockContentTypeAgainstParsedSpecConsumes = (
 
     if (!foundMatches) {
         return [result.build({
-            code: 'spv.request.content-type.incompatible',
+            code: 'request.content-type.incompatible',
             message:
                 'Request Content-Type header is incompatible with the consumes mime type defined in the swagger file',
             mockSegment: parsedMockInteraction.requestHeaders[contentTypeHeaderName],

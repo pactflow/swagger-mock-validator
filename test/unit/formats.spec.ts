@@ -75,7 +75,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /2016',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -112,7 +112,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /2016-12-01T',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -160,7 +160,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET /${minimumInt32AllowedMinusOne}`,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -186,7 +186,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET /${maximumInt32AllowedPlusOne}`,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -212,7 +212,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET /1.1`,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -238,7 +238,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET / `,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -282,7 +282,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should be integer',
                 mockDetails: {
@@ -316,7 +316,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should pass "formatInt32" keyword validation',
                 mockDetails: {
@@ -369,7 +369,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: ' +
                 `GET /${minimumInt64AllowedMinusOne}`,
                 mockDetails: {
@@ -399,7 +399,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: ' +
                 `GET /${maximumInt64AllowedPlusOne}`,
                 mockDetails: {
@@ -426,7 +426,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET /1.1`,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -452,7 +452,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET / `,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -496,7 +496,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should be integer',
                 mockDetails: {
@@ -529,7 +529,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should pass "formatInt64" keyword validation',
                 mockDetails: {
@@ -580,7 +580,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /1234567',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -606,7 +606,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET /a`,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -632,7 +632,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET / `,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -676,7 +676,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should be number',
                 mockDetails: {
@@ -709,7 +709,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should pass "formatFloat" keyword validation',
                 mockDetails: {
@@ -754,7 +754,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /12345678901234567890',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -780,7 +780,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET /a`,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -806,7 +806,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: `Path or method not defined in swagger file: GET / `,
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -850,7 +850,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should be number',
                 mockDetails: {
@@ -903,7 +903,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /not-base-64-encoded',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -946,7 +946,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -989,7 +989,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -1064,7 +1064,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should pass "formatInt32" keyword validation',
                 mockDetails: {
@@ -1114,7 +1114,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should pass "formatInt32" keyword validation',
                 mockDetails: {
@@ -1170,7 +1170,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should pass "formatInt32" keyword validation',
                 mockDetails: {
@@ -1223,7 +1223,7 @@ describe('formats', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.body.incompatible',
+                code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the swagger file: ' +
                 'should pass "formatInt32" keyword validation',
                 mockDetails: {

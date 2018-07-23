@@ -68,7 +68,7 @@ describe('request query', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.query.incompatible',
+            code: 'request.query.incompatible',
             message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -95,7 +95,7 @@ describe('request query', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.query.incompatible',
+            code: 'request.query.incompatible',
             message: 'Value is incompatible with the parameter defined in the swagger file: ' +
             'should have required property \'value\'',
             mockDetails: {
@@ -123,7 +123,7 @@ describe('request query', () => {
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
-            code: 'spv.request.query.unknown',
+            code: 'request.query.unknown',
             message: 'Query parameter is not defined in the swagger file: value',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -152,7 +152,7 @@ describe('request query', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.query.incompatible',
+            code: 'request.query.incompatible',
             message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',

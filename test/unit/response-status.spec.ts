@@ -46,7 +46,7 @@ describe('response status', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.status.unknown',
+            code: 'response.status.unknown',
             message: 'Response status code not defined in swagger file: 202',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -76,7 +76,7 @@ describe('response status', () => {
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
-            code: 'spv.response.status.default',
+            code: 'response.status.default',
             message: 'Response status code matched default response in swagger file: 202',
             mockDetails: {
                 interactionDescription: 'interaction description',

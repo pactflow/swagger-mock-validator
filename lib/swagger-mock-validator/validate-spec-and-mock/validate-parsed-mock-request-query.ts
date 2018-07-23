@@ -18,7 +18,7 @@ const getWarningForUndefinedQueryParameter = (queryName: string,
     }
 
     return [result.build({
-        code: 'spv.request.query.unknown',
+        code: 'request.query.unknown',
         message: `Query parameter is not defined in the swagger file: ${queryName}`,
         mockSegment: parsedMockRequestQuery,
         source: 'spec-mock-validation',
@@ -42,7 +42,7 @@ export const validateParsedMockRequestQuery = (parsedMockInteraction: ParsedMock
                 parsedSpecRequestQuery,
                 parsedMockRequestQuery,
                 parsedMockInteraction,
-                'spv.request.query.incompatible'
+                'request.query.incompatible'
             );
 
             return validationResult.results;

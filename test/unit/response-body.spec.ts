@@ -67,7 +67,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
             mockDetails: {
@@ -103,7 +103,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
             mockDetails: {
@@ -143,7 +143,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
             mockDetails: {
@@ -186,7 +186,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
             mockDetails: {
@@ -231,7 +231,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be string',
             mockDetails: {
@@ -268,7 +268,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
             mockDetails: {
@@ -288,7 +288,7 @@ describe('response body', () => {
             },
             type: 'error'
         }, {
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
             mockDetails: {
@@ -317,7 +317,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.unknown',
+            code: 'response.body.unknown',
             message: 'No schema found for response body',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -488,7 +488,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be number',
             mockDetails: {
@@ -604,7 +604,7 @@ describe('response body', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message:
                 'Response body is incompatible with the response body schema in the swagger file: should be string',
             mockDetails: {
@@ -653,7 +653,7 @@ describe('response body', () => {
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
-            code: 'spv.response.status.default',
+            code: 'response.status.default',
             message: 'Response status code matched default response in swagger file: 202',
             mockDetails: {
                 interactionDescription: 'interaction description',

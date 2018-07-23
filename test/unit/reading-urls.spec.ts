@@ -1,4 +1,5 @@
 import {ValidationOutcome} from '../../lib/api-types';
+import {SwaggerMockValidatorErrorImpl} from '../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
 import {HttpClient} from '../../lib/swagger-mock-validator/types';
 import {expectToFail} from '../support/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
@@ -6,7 +7,6 @@ import {pactBrokerBuilder, providerPactsBuilder} from './support/pact-broker-bui
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {MockHttpClientResponses, swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 
@@ -67,7 +67,10 @@ describe('reading urls', () => {
                 'http://domain.com/pact.json'
             ));
 
-            expect(error).toEqual(new Error('Unable to read "http://domain.com/swagger.json": error-message'));
+            expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
+                'Unable to read "http://domain.com/swagger.json": error-message'
+            ));
         });
 
         it('should fail when the swagger file cannot be parsed as json', async () => {
@@ -77,11 +80,10 @@ describe('reading urls', () => {
             const error = await expectToFail(invokeValidate(
                 'http://domain.com/swagger.json',
                 'http://domain.com/pact.json'
-            ));
+            )) as SwaggerMockValidatorErrorImpl;
 
-            expect(error.message).toEqual(jasmine.stringMatching(
-                'Unable to parse "http://domain.com/swagger.json": Unexpected end'
-            ));
+            expect(error.code).toEqual('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR');
+            expect(error.message).toEqual(jasmine.stringMatching('Unable to parse "http://domain.com/swagger.json":'));
         });
     });
 
@@ -107,7 +109,10 @@ describe('reading urls', () => {
                 'http://domain.com/pact.json'
             ));
 
-            expect(error).toEqual(new Error('Unable to read "http://domain.com/pact.json": error-message'));
+            expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
+                'Unable to read "http://domain.com/pact.json": error-message'
+            ));
         });
 
         it('should fail when the pact file cannot be parsed as json', async () => {
@@ -117,11 +122,10 @@ describe('reading urls', () => {
             const error = await expectToFail(invokeValidate(
                 'http://domain.com/swagger.json',
                 'http://domain.com/pact.json'
-            ));
+            )) as SwaggerMockValidatorErrorImpl;
 
-            expect(error.message).toEqual(jasmine.stringMatching(
-                'Unable to parse "http://domain.com/pact.json": Unexpected end'
-            ));
+            expect(error.code).toEqual('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR');
+            expect(error.message).toEqual(jasmine.stringMatching('Unable to parse "http://domain.com/pact.json":'));
         });
     });
 
@@ -153,7 +157,10 @@ describe('reading urls', () => {
 
             const error = await expectToFail(invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name'));
 
-            expect(error).toEqual(new Error('Unable to read "http://pact-broker.com": error-message'));
+            expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
+                'Unable to read "http://pact-broker.com": error-message'
+            ));
         });
 
         it('should fail when no url for latest pact files is in the pact root response', async () => {
@@ -164,7 +171,10 @@ describe('reading urls', () => {
 
             const error = await expectToFail(invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name'));
 
-            expect(error).toEqual(new Error('No latest pact file url found at "http://pact-broker.com"'));
+            expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
+                'Unable to read "http://pact-broker.com": No latest pact file url found'
+            ));
         });
 
         it('should make a request for the latest pact files for the provider', async () => {
@@ -189,7 +199,8 @@ describe('reading urls', () => {
 
             const error = await expectToFail(invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name'));
 
-            expect(error).toEqual(new Error(
+            expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
                 'Unable to read "http://pact-broker.com/provider-name/pacts": error-message'
             ));
         });
@@ -245,7 +256,8 @@ describe('reading urls', () => {
 
             const error = await expectToFail(invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name'));
 
-            expect(error).toEqual(new Error(
+            expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
                 'Unable to read "http://pact-broker.com/provider-name/consumer-2/pact": error-message'
             ));
         });
@@ -292,7 +304,7 @@ describe('reading urls', () => {
                 'is not compatible with swagger file "http://domain.com/swagger.json"'
             );
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /does/not/exist',
                 mockDetails: {
                     interactionDescription: 'default-description',
@@ -311,7 +323,7 @@ describe('reading urls', () => {
                 },
                 type: 'error'
             }, {
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /doesnt/exist',
                 mockDetails: {
                     interactionDescription: 'default-description',
@@ -333,10 +345,7 @@ describe('reading urls', () => {
         });
 
         it('should not report on the same validation error twice', async () => {
-            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder
-                .withParameter('userId', pathParameterBuilder.withNumberNamed('userId'))
-                .build()
-            ));
+            mockUrls['http://url.com/swagger.json'] = Promise.resolve('{}');
             mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/{provider}/pacts')
                 .build()
@@ -351,24 +360,14 @@ describe('reading urls', () => {
             mockUrls['http://pact-broker.com/provider-name/consumer-2/pact'] =
                 Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            const result = await invokeValidate('http://domain.com/swagger.json',
+            const error = await expectToFail(invokeValidate('http://url.com/swagger.json',
                 'http://pact-broker.com',
-                'provider-name');
+                'provider-name'));
 
-            expect(result).toContainNoErrors();
-            expect(result).toContainWarnings([{
-                code: 'sv.warning',
-                message: 'Parameter is defined but is not used: #/parameters/userId',
-                source: 'swagger-validation',
-                specDetails: {
-                    location: '[swaggerRoot].parameters.userId',
-                    pathMethod: null,
-                    pathName: null,
-                    specFile: 'swagger.json',
-                    value: null
-                },
-                type: 'warning'
-            }]);
+            expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR',
+                'Unable to parse "http://url.com/swagger.json": [object Object] is not a valid Openapi API definition'
+            ));
         });
     });
 });

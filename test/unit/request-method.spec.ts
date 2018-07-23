@@ -53,7 +53,7 @@ describe('request method', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.path-or-method.unknown',
+            code: 'request.path-or-method.unknown',
             message: 'Path or method not defined in swagger file: POST /does/exist',
             mockDetails: {
                 interactionDescription: 'interaction description',

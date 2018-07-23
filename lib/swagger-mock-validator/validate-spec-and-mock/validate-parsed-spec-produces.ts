@@ -23,7 +23,7 @@ const validateParsedMockRequestAcceptsHeader = (
 
     if (parsedSpecOperation.produces.value.length === 0) {
         return [result.build({
-            code: 'spv.request.accept.unknown',
+            code: 'request.accept.unknown',
             message: 'Request Accept header is defined but there is no produces definition in the spec',
             mockSegment: parsedMockInteraction.requestHeaders[acceptHeaderName],
             source: 'spec-mock-validation',
@@ -36,7 +36,7 @@ const validateParsedMockRequestAcceptsHeader = (
 
     if (matchingMediaTypes.length === 0) {
         return [result.build({
-            code: 'spv.request.accept.incompatible',
+            code: 'request.accept.incompatible',
             message: 'Request Accept header is incompatible with the produces mime type defined in the swagger file',
             mockSegment: parsedMockInteraction.requestHeaders[acceptHeaderName],
             source: 'spec-mock-validation',
@@ -60,7 +60,7 @@ const validateParsedMockResponseContentTypeAndBody = (
 
     if (parsedSpecOperation.produces.value.length === 0) {
         return [result.build({
-            code: 'spv.response.content-type.unknown',
+            code: 'response.content-type.unknown',
             message: 'Response Content-Type header is defined but there is no produces definition in the spec',
             mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
             source: 'spec-mock-validation',
@@ -72,7 +72,7 @@ const validateParsedMockResponseContentTypeAndBody = (
 
     if (matchingMediaTypes.length === 0) {
         return [result.build({
-            code: 'spv.response.content-type.incompatible',
+            code: 'response.content-type.incompatible',
             message: 'Response Content-Type header is incompatible with the produces mime ' +
             'type defined in the swagger file',
             mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],

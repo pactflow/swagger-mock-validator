@@ -332,8 +332,8 @@ describe('analytics', () => {
 
         await invokeValidationWithUrls(pactFile);
 
-        expect(getPostBody().result.errors['spv.request.path-or-method.unknown']).toBe(2);
-        expect(getPostBody().result.errors['spv.response.status.unknown']).toBe(1);
+        expect(getPostBody().result.errors['request.path-or-method.unknown']).toBe(2);
+        expect(getPostBody().result.errors['response.status.unknown']).toBe(1);
     });
 
     it('should send the success of the validation when it is successful', async () => {
@@ -381,8 +381,8 @@ describe('analytics', () => {
 
         await invokeValidationWithUrls(pactFile);
 
-        expect(getPostBody().result.warnings['spv.request.body.unknown']).toBe(2);
-        expect(getPostBody().result.warnings['spv.request.header.unknown']).toBe(1);
+        expect(getPostBody().result.warnings['request.body.unknown']).toBe(2);
+        expect(getPostBody().result.warnings['request.header.unknown']).toBe(1);
     });
 
     it('should send the source', async () => {

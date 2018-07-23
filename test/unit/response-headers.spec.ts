@@ -62,7 +62,7 @@ describe('response headers', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.header.incompatible',
+            code: 'response.header.incompatible',
             message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -92,7 +92,7 @@ describe('response headers', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.header.incompatible',
+            code: 'response.header.incompatible',
             message:
                 'Value is incompatible with the parameter defined in the swagger file: should be number',
             mockDetails: {
@@ -128,7 +128,7 @@ describe('response headers', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.header.unknown',
+            code: 'response.header.unknown',
             message: 'Response header is not defined in the swagger file: x-custom-header',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -195,7 +195,7 @@ describe('response headers', () => {
 
         const result = await validateResponseHeaders(undefined, pactResponseHeaders);
         const warnings = _.map(pactResponseHeaders, (headerValue: string, headerName: string) => ({
-            code: 'spv.response.header.undefined' as ValidationResultCode,
+            code: 'response.header.undefined' as ValidationResultCode,
             message:
                 `Standard http response header is not defined in the swagger file: ${headerName.toLowerCase()}`,
             mockDetails: {
@@ -258,7 +258,7 @@ describe('response headers', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.response.header.incompatible',
+            code: 'response.header.incompatible',
             message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',

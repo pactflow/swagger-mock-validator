@@ -194,6 +194,18 @@
             "status": 200
         }
     }, {
+        "description": "unknown header as a warning test",
+        "request": {
+            "headers": {
+                "x-unknown-header": "1,2"
+            },
+            "method": "get",
+            "path": "/test"
+        },
+        "response": {
+            "status": 200
+        }
+    }, {
         "description": "minitems valid test",
         "request": {
             "headers": {

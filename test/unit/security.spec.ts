@@ -52,7 +52,7 @@ describe('security', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.authorization.missing',
+            code: 'request.authorization.missing',
             message: 'Request Authorization header is missing but is required by the swagger file',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -106,7 +106,7 @@ describe('security', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.authorization.missing',
+            code: 'request.authorization.missing',
             message: 'Request Authorization header is missing but is required by the swagger file',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -160,7 +160,7 @@ describe('security', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.authorization.missing',
+            code: 'request.authorization.missing',
             message: 'Request Authorization query is missing but is required by the swagger file',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -221,7 +221,7 @@ describe('security', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.authorization.missing',
+            code: 'request.authorization.missing',
             message: 'Request Authorization header is missing but is required by the swagger file',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -240,7 +240,7 @@ describe('security', () => {
             },
             type: 'error'
         }, {
-            code: 'spv.request.authorization.missing',
+            code: 'request.authorization.missing',
             message: 'Request Authorization query is missing but is required by the swagger file',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -289,7 +289,7 @@ describe('security', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.authorization.missing',
+            code: 'request.authorization.missing',
             message: 'Request Authorization query is missing but is required by the swagger file',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -326,7 +326,7 @@ describe('security', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.authorization.missing',
+            code: 'request.authorization.missing',
             message: 'Request Authorization header is missing but is required by the swagger file',
             mockDetails: {
                 interactionDescription: 'interaction description',

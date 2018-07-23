@@ -10,7 +10,7 @@ const validateRequestBodyAgainstSchema = (
     const validationErrors = validateJson(parsedSpecRequestBody.schema, parsedMockRequestBody.value);
 
     return _.map(validationErrors, (error) => result.build({
-        code: 'spv.request.body.incompatible',
+        code: 'request.body.incompatible',
         message:
             `Request body is incompatible with the request body schema in the swagger file: ${error.message}`,
         mockSegment: parsedMockRequestBody.parentInteraction.getRequestBodyPath(error.dataPath),
@@ -32,7 +32,7 @@ export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockI
         if (parsedMockInteractionHasBody) {
             return [
                 result.build({
-                    code: 'spv.request.body.unknown',
+                    code: 'request.body.unknown',
                     message: 'No schema found for request body',
                     mockSegment: parsedMockInteraction.requestBody,
                     source: 'spec-mock-validation',

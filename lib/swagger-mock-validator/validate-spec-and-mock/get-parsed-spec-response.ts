@@ -15,7 +15,7 @@ export const getParsedSpecResponse = (
             found: false,
             results: [
                 result.build({
-                    code: 'spv.response.status.unknown',
+                    code: 'response.status.unknown',
                     message: 'Response status code not defined in swagger file: ' +
                         `${parsedMockInteraction.responseStatus.value}`,
                     mockSegment: parsedMockInteraction.responseStatus,
@@ -31,7 +31,7 @@ export const getParsedSpecResponse = (
             found: true,
             results: [
                 result.build({
-                    code: 'spv.response.status.default',
+                    code: 'response.status.default',
                     message: 'Response status code matched default response in swagger file: ' +
                         `${parsedMockInteraction.responseStatus.value}`,
                     mockSegment: parsedMockInteraction.responseStatus,

@@ -73,7 +73,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /b',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -100,7 +100,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should be equal to one of the allowed values',
                 mockDetails: {
@@ -138,7 +138,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /101',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -166,7 +166,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /100',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -193,7 +193,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should be < 100',
                 mockDetails: {
@@ -231,7 +231,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /99',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -259,7 +259,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /100',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -286,7 +286,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should be > 100',
                 mockDetails: {
@@ -324,7 +324,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /abcd',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -351,7 +351,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should NOT be longer than 3 characters',
                 mockDetails: {
@@ -389,7 +389,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /ab',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -416,7 +416,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should NOT be shorter than 3 characters',
                 mockDetails: {
@@ -454,7 +454,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /abcdefg',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -481,7 +481,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should match pattern "^[a-f]+$"',
                 mockDetails: {
@@ -519,7 +519,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /7',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -546,7 +546,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should be multiple of 3',
                 mockDetails: {
@@ -584,7 +584,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /1,2,3,4',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -611,7 +611,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should NOT have more than 3 items',
                 mockDetails: {
@@ -649,7 +649,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /1,2',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -676,7 +676,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should NOT have less than 3 items',
                 mockDetails: {
@@ -714,7 +714,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /1,1',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -741,7 +741,7 @@ describe('keywords', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.response.header.incompatible',
+                code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the swagger file: ' +
                 'should NOT have duplicate items (items ## 0 and 1 are identical)',
                 mockDetails: {

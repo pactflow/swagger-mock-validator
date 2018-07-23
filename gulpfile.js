@@ -119,11 +119,13 @@ gulp.task('release', (callback) => {
     );
 });
 
-gulp.task('test', () => gulp.src('build-output/test/**/*.spec.js').pipe(jasmine()));
+const specHelperPath = 'build-output/test/support/spec-helper.js';
 
-gulp.task('unit-test', () => gulp.src('build-output/test/unit/**/*.spec.js').pipe(jasmine()));
+gulp.task('test', () => gulp.src([specHelperPath, 'build-output/test/**/*.spec.js']).pipe(jasmine()));
 
-gulp.task('e2e-test', () => gulp.src('build-output/test/e2e/**/*.spec.js').pipe(jasmine()));
+gulp.task('unit-test', () => gulp.src([specHelperPath, 'build-output/test/unit/**/*.spec.js']).pipe(jasmine()));
+
+gulp.task('e2e-test', () => gulp.src([specHelperPath, 'build-output/test/e2e/**/*.spec.js']).pipe(jasmine()));
 
 gulp.task('watch', ['clean-copy-and-compile-build-output'], () => {
     gulp.watch(['lib/**/*.ts', 'test/**/*.ts'], ['compile-build-output']);

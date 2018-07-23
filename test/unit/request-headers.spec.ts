@@ -68,7 +68,7 @@ describe('request headers', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.header.incompatible',
+            code: 'request.header.incompatible',
             message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -97,7 +97,7 @@ describe('request headers', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.header.incompatible',
+            code: 'request.header.incompatible',
             message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -133,7 +133,7 @@ describe('request headers', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.header.incompatible',
+            code: 'request.header.incompatible',
             message: 'Value is incompatible with the parameter defined in the swagger file: ' +
             'should have required property \'value\'',
             mockDetails: {
@@ -162,7 +162,7 @@ describe('request headers', () => {
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
-            code: 'spv.request.header.unknown',
+            code: 'request.header.unknown',
             message: 'Request header is not defined in the swagger file: x-custom-header',
             mockDetails: {
                 interactionDescription: 'interaction description',

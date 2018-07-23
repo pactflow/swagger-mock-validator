@@ -45,7 +45,7 @@ const urlTo = (path: string) => `http://localhost:${serverPort}/${path}`;
 
 describe('swagger-mock-validator', () => {
     let mockServer: Server;
-    let mockAnalytics: jasmine.SpyObj<{ post: (body: string) => void }>;
+    let mockAnalytics: jasmine.SpyObj<{post: (body: string) => void}>;
 
     beforeAll((done) => {
         mockAnalytics = jasmine.createSpyObj('mockAnalytics', ['post']);
@@ -76,7 +76,7 @@ describe('swagger-mock-validator', () => {
             expect(result).toEqual(jasmine.stringMatching('0 error'));
             expect(result).toEqual(jasmine.stringMatching('1 warning'));
             expect(result).toEqual(
-                jasmine.stringMatching('Definition is defined but is not used: #/definitions/unused')
+                jasmine.stringMatching('Request header is not defined in the swagger file: x-unknown-header')
             );
         }, 30000);
 
@@ -92,14 +92,7 @@ describe('swagger-mock-validator', () => {
             ));
 
             expect(error).toEqual(jasmine.stringMatching('23 error'));
-            expect(error).toEqual(jasmine.stringMatching('1 warning'));
-
-            // swagger warning
-            expect(error).toEqual(jasmine.stringMatching(/\[swaggerRoot]\.definitions\.unused/));
-            expect(error).toEqual(
-                jasmine.stringMatching('Definition is defined but is not used: #/definitions/unused')
-            );
-
+            expect(error).toEqual(jasmine.stringMatching('0 warning'));
             // request path missing
             expect(error).toEqual(jasmine.stringMatching(/\[pactRoot].interactions\[0]\.request\.path/));
             expect(error).toEqual(
@@ -290,8 +283,7 @@ describe('swagger-mock-validator', () => {
                 swagger: 'test/e2e/fixtures/swagger-invalid-provider.json'
             }));
 
-            expect(error).toEqual(jasmine.stringMatching('Missing required property: version'));
-            expect(error).toEqual(jasmine.stringMatching('Additional properties not allowed: wrongVersion'));
+            expect(error).toEqual(jasmine.stringMatching('Missing required property: version at #/info'));
         }, 30000);
 
         it('should succeed when a pact url and a swagger url are compatible', async () => {
@@ -351,7 +343,7 @@ describe('swagger-mock-validator', () => {
                     success: true,
                     warnings: {
                         'count': 1,
-                        'sv.warning': 1
+                        'request.header.unknown': 1
                     }
                 },
                 source: 'swagger-mock-validator'
@@ -397,15 +389,22 @@ describe('swagger-mock-validator', () => {
                 failureReason: undefined,
                 success: true,
                 warnings: [{
-                    code: 'sv.warning',
-                    message: 'Definition is defined but is not used: #/definitions/unused',
-                    source: 'swagger-validation',
+                    code: 'request.header.unknown',
+                    message: 'Request header is not defined in the swagger file: x-unknown-header',
+                    mockDetails: {
+                        interactionDescription: 'unknown header as a warning test',
+                        interactionState: '[none]',
+                        location: '[pactRoot].interactions[16].request.headers.x-unknown-header',
+                        mockFile: 'test/e2e/fixtures/pact-working-consumer.json',
+                        value: '1,2'
+                    },
+                    source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].definitions.unused',
-                        pathMethod: null,
-                        pathName: null,
+                        location: '[swaggerRoot].paths./test.get',
+                        pathMethod: 'get',
+                        pathName: '/test',
                         specFile: specPath,
-                        value: null
+                        value: jasmine.any(Object)
                     },
                     type: 'warning'
                 }]
@@ -434,7 +433,7 @@ describe('swagger-mock-validator', () => {
 
             expect(result.errors.length).toBe(23, 'result.errors.length');
             expect(result.errors[0]).toEqual({
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /one/users/2',
                 mockDetails: {
                     interactionDescription: 'request path missing test',
@@ -459,13 +458,13 @@ describe('swagger-mock-validator', () => {
                 'result.failureReason'
             );
             expect(result.success).toBe(false, 'result.success');
-            expect(result.warnings.length).toBe(1, 'result.warnings.length');
+            expect(result.warnings.length).toBe(0, 'result.warnings.length');
         }, 30000);
 
         it('should fail when the swagger file is invalid', async () => {
             const mockPath = 'test/e2e/fixtures/pact-working-consumer.json';
 
-            const specContent = 'not a swagger file';
+            const specContent = '{not a swagger file';
             const mockContent = await loadContent(mockPath);
 
             const error = await expectToFail(SwaggerMockValidator.validate({
@@ -481,7 +480,9 @@ describe('swagger-mock-validator', () => {
                 }
             }));
 
-            expect(error).toEqual(new Error('swaggerObject must be an object'));
+            expect(error.message).toEqual(jasmine.stringMatching(
+                'Unable to parse "not-a-swagger-file.json"'
+            ));
         }, 30000);
     });
 });

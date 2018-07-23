@@ -54,7 +54,7 @@ const getWarningForUndefinedHeader = (headerName: string,
     }
 
     return [result.build({
-        code: 'spv.request.header.unknown',
+        code: 'request.header.unknown',
         message: `Request header is not defined in the swagger file: ${headerName}`,
         mockSegment: parsedMockRequestHeader,
         source: 'spec-mock-validation',
@@ -78,7 +78,7 @@ export const validateParsedMockRequestHeaders = (parsedMockInteraction: ParsedMo
                 parsedSpecRequestHeader,
                 parsedMockRequestHeader,
                 parsedMockInteraction,
-                'spv.request.header.incompatible'
+                'request.header.incompatible'
             );
 
             return validationResult.results;

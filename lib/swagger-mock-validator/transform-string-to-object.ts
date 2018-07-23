@@ -1,11 +1,15 @@
 import * as yaml from 'js-yaml';
-import VError = require('verror');
+import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator-error-impl';
 
 const parseJson = <T>(pathOrUrl: string, rawString: string): T => {
     try {
         return JSON.parse(rawString);
     } catch (error) {
-        throw new VError(error, `Unable to parse "${pathOrUrl}"`);
+        throw new SwaggerMockValidatorErrorImpl(
+            'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR',
+            `Unable to parse "${pathOrUrl}"`,
+            error
+        );
     }
 };
 
@@ -15,14 +19,18 @@ const parseYaml = <T>(pathOrUrl: string, rawString: string): T => {
     try {
         parsedYaml = yaml.safeLoad(rawString);
     } catch (error) {
-        throw new VError(error, `Unable to parse "${pathOrUrl}"`);
+        throw new SwaggerMockValidatorErrorImpl(
+            'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR',
+            `Unable to parse "${pathOrUrl}"`,
+            error
+        );
     }
 
     if (!parsedYaml) {
-        throw new VError(`Unable to parse "${pathOrUrl}"`);
+        throw new SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `Unable to parse "${pathOrUrl}"`);
     }
 
-    return parsedYaml as any;
+    return parsedYaml;
 };
 
 export function transformStringToObject<T>(rawString: string, pathOrUrl: string): T {

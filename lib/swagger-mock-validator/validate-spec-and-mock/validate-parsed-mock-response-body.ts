@@ -13,7 +13,7 @@ export const validateParsedMockResponseBody = (parsedMockInteraction: ParsedMock
     if (!parsedSpecResponse.schema) {
         return [
             result.build({
-                code: 'spv.response.body.unknown',
+                code: 'response.body.unknown',
                 message: 'No schema found for response body',
                 mockSegment: parsedMockInteraction.responseBody,
                 source: 'spec-mock-validation',
@@ -30,7 +30,7 @@ export const validateParsedMockResponseBody = (parsedMockInteraction: ParsedMock
             : error.message;
 
         return result.build({
-            code: 'spv.response.body.incompatible',
+            code: 'response.body.incompatible',
             message: `Response body is incompatible with the response body schema in the swagger file: ${message}`,
             mockSegment: parsedMockInteraction.getResponseBodyPath(error.dataPath),
             source: 'spec-mock-validation',

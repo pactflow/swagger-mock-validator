@@ -64,7 +64,7 @@ describe('request path', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.path-or-method.unknown',
+            code: 'request.path-or-method.unknown',
             message: 'Path or method not defined in swagger file: GET /does/not/exist',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -100,7 +100,7 @@ describe('request path', () => {
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
-            code: 'spv.request.path-or-method.unknown',
+            code: 'request.path-or-method.unknown',
             message: 'Path or method not defined in swagger file: GET /does/not/exist',
             mockDetails: {
                 interactionDescription: 'interaction description',
@@ -138,7 +138,7 @@ describe('request path', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /almost/matches',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -175,7 +175,7 @@ describe('request path', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /almost',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -215,7 +215,7 @@ describe('request path', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /almost',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -347,7 +347,7 @@ describe('request path', () => {
 
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /foo',
                     mockDetails: {
                         interactionDescription: 'interaction description',
@@ -373,7 +373,7 @@ describe('request path', () => {
 
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /',
                     mockDetails: {
                         interactionDescription: 'interaction description',
@@ -410,7 +410,7 @@ describe('request path', () => {
 
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /on',
                     mockDetails: {
                         interactionDescription: 'interaction description',
@@ -447,7 +447,7 @@ describe('request path', () => {
 
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /',
                     mockDetails: {
                         interactionDescription: 'interaction description',
@@ -484,7 +484,7 @@ describe('request path', () => {
 
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /1.1',
                     mockDetails: {
                         interactionDescription: 'interaction description',
@@ -510,7 +510,7 @@ describe('request path', () => {
 
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /',
                     mockDetails: {
                         interactionDescription: 'interaction description',
@@ -595,7 +595,7 @@ describe('request path', () => {
 
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: 'Path or method not defined in swagger file: GET /a,b,c',
                     mockDetails: {
                         interactionDescription: 'interaction description',
@@ -628,7 +628,7 @@ describe('request path', () => {
 
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
-                    code: 'spv.request.path-or-method.unknown',
+                    code: 'request.path-or-method.unknown',
                     message: `Path or method not defined in swagger file: GET /${pactValue}`,
                     mockDetails: {
                         interactionDescription: 'interaction description',
@@ -672,7 +672,7 @@ describe('request path', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /1/users/a',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -719,7 +719,7 @@ describe('request path', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /1/users/a',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -738,7 +738,7 @@ describe('request path', () => {
                 },
                 type: 'error'
             }, {
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /a/users/1',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -779,7 +779,7 @@ describe('request path', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /users/1',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -818,7 +818,7 @@ describe('request path', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /users/1',
                 mockDetails: {
                     interactionDescription: 'interaction description',
@@ -874,7 +874,7 @@ describe('request path', () => {
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
-                code: 'spv.request.path-or-method.unknown',
+                code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in swagger file: GET /wrong/base/does/exist',
                 mockDetails: {
                     interactionDescription: 'interaction description',

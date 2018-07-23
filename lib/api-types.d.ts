@@ -5,32 +5,28 @@ declare namespace SwaggerMockValidator {
     export type ValidationResultType = 'error' | 'warning';
 
     export type ValidationResultCode =
-        'pv.warning' |
-        'pv.error' |
-        'spv.request.accept.incompatible' |
-        'spv.request.accept.unknown' |
-        'spv.request.authorization.missing' |
-        'spv.request.body.incompatible' |
-        'spv.request.body.unknown' |
-        'spv.request.content-type.incompatible' |
-        'spv.request.content-type.missing' |
-        'spv.request.content-type.unknown' |
-        'spv.request.header.incompatible' |
-        'spv.request.header.unknown' |
-        'spv.request.path-or-method.unknown' |
-        'spv.request.query.incompatible' |
-        'spv.request.query.unknown' |
-        'spv.response.body.incompatible' |
-        'spv.response.body.unknown' |
-        'spv.response.content-type.incompatible' |
-        'spv.response.content-type.unknown' |
-        'spv.response.header.incompatible' |
-        'spv.response.header.undefined' |
-        'spv.response.header.unknown' |
-        'spv.response.status.default' |
-        'spv.response.status.unknown' |
-        'sv.error' |
-        'sv.warning';
+        'request.accept.incompatible' |
+        'request.accept.unknown' |
+        'request.authorization.missing' |
+        'request.body.incompatible' |
+        'request.body.unknown' |
+        'request.content-type.incompatible' |
+        'request.content-type.missing' |
+        'request.content-type.unknown' |
+        'request.header.incompatible' |
+        'request.header.unknown' |
+        'request.path-or-method.unknown' |
+        'request.query.incompatible' |
+        'request.query.unknown' |
+        'response.body.incompatible' |
+        'response.body.unknown' |
+        'response.content-type.incompatible' |
+        'response.content-type.unknown' |
+        'response.header.incompatible' |
+        'response.header.undefined' |
+        'response.header.unknown' |
+        'response.status.default' |
+        'response.status.unknown';
 
     export interface ValidationResultMockDetails {
         interactionDescription: string | null;
@@ -82,6 +78,15 @@ declare namespace SwaggerMockValidator {
     export interface SwaggerMockValidatorOptions {
         mock: SwaggerMockValidatorOptionsMock;
         spec: SwaggerMockValidatorOptionsSpec;
+    }
+
+    export type ErrorCode =
+        'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR' |
+        'SWAGGER_MOCK_VALIDATOR_READ_ERROR' |
+        'SWAGGER_MOCK_VALIDATOR_UNKNOWN_ERROR';
+
+    export interface SwaggerMockValidatorError extends Error {
+        code: ErrorCode;
     }
 }
 
