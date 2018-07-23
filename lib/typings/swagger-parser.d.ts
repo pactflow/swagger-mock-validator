@@ -15,7 +15,7 @@ declare module 'swagger-parser' {
             schema?: boolean;
             spec?: boolean;
         };
-        $refs?: {
+        dereference?: {
             internal?: boolean;
             external?: boolean;
             circular?: boolean | 'ignore';

@@ -3,7 +3,7 @@ import {Swagger} from './types';
 
 export const resolveSwagger = (document: any): Promise<Swagger> => {
     return SwaggerParser.validate(document, {
-        $refs: {
+        dereference: {
             circular: 'ignore'
         }
     });
