@@ -1,6 +1,6 @@
 import {ValidationOutcome} from '../../lib/api-types';
+import {HttpClient} from '../../lib/swagger-mock-validator/clients/http-client';
 import {
-    HttpClient,
     Pact,
     Swagger,
     SwaggerMockValidatorInternalOptions

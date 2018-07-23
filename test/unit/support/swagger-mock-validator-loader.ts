@@ -1,14 +1,14 @@
 import * as _ from 'lodash';
 import {ValidationOutcome} from '../../../lib/api-types';
-import {swaggerMockValidator} from '../../../lib/swagger-mock-validator';
-import {
-    FileSystem,
-    HttpClient,
-    Metadata,
-    Pact,
-    Swagger,
-    SwaggerMockValidatorInternalOptions,
-    UuidGenerator} from '../../../lib/swagger-mock-validator/types';
+import {SwaggerMockValidator} from '../../../lib/swagger-mock-validator';
+import {Analytics} from '../../../lib/swagger-mock-validator/analytics';
+import {Metadata} from '../../../lib/swagger-mock-validator/analytics/metadata';
+import {FileSystem} from '../../../lib/swagger-mock-validator/clients/file-system';
+import {HttpClient} from '../../../lib/swagger-mock-validator/clients/http-client';
+import {FileStore} from '../../../lib/swagger-mock-validator/file-store';
+import {ResourceLoader} from '../../../lib/swagger-mock-validator/resource-loader';
+import {Pact, Swagger} from '../../../lib/swagger-mock-validator/types';
+import {UuidGenerator} from '../../../lib/swagger-mock-validator/uuid-generator';
 
 export interface MockFileSystemResponses {
     [filename: string]: Promise<string>;
@@ -26,6 +26,17 @@ export interface MockMetadataResponses {
 }
 
 export type MockUuidGeneratorResponses = string[];
+
+export interface SwaggerMockValidatorLoaderInvokeWithMocksOptions {
+    analyticsUrl?: string;
+    fileSystem?: FileSystem;
+    httpClient?: HttpClient;
+    metadata?: Metadata;
+    mockPathOrUrl: string;
+    providerName?: string;
+    specPathOrUrl: string;
+    uuidGenerator?: UuidGenerator;
+}
 
 export const swaggerMockValidatorLoader = {
     createMockFileSystem: (mockResponses: MockFileSystemResponses): FileSystem => {
@@ -89,15 +100,22 @@ export const swaggerMockValidatorLoader = {
             specPathOrUrl: 'swagger.json'
         }),
     // tslint:disable:cyclomatic-complexity
-    invokeWithMocks: (options: SwaggerMockValidatorInternalOptions): Promise<ValidationOutcome> =>
-        swaggerMockValidator.validate({
+    invokeWithMocks: (options: SwaggerMockValidatorLoaderInvokeWithMocksOptions): Promise<ValidationOutcome> => {
+        const mockFileSystem = options.fileSystem || swaggerMockValidatorLoader.createMockFileSystem({});
+        const mockHttpClient = options.httpClient || swaggerMockValidatorLoader.createMockHttpClient({});
+        const mockUuidGenerator = options.uuidGenerator || swaggerMockValidatorLoader.createMockUuidGenerator([]);
+        const mockMetadata = options.metadata || swaggerMockValidatorLoader.createMockMetadata({});
+
+        const fileStore = new FileStore(mockFileSystem, mockHttpClient);
+        const resourceLoader = new ResourceLoader(fileStore);
+        const analytics = new Analytics(mockHttpClient, mockUuidGenerator, mockMetadata);
+        const swaggerMockValidator = new SwaggerMockValidator(fileStore, resourceLoader, analytics);
+
+        return swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,
-            fileSystem: options.fileSystem || swaggerMockValidatorLoader.createMockFileSystem({}),
-            httpClient: options.httpClient || swaggerMockValidatorLoader.createMockHttpClient({}),
-            metadata: options.metadata || swaggerMockValidatorLoader.createMockMetadata({}),
             mockPathOrUrl: options.mockPathOrUrl,
             providerName: options.providerName,
-            specPathOrUrl: options.specPathOrUrl,
-            uuidGenerator: options.uuidGenerator || swaggerMockValidatorLoader.createMockUuidGenerator([])
-        }) as any
+            specPathOrUrl: options.specPathOrUrl
+        });
+    }
 };

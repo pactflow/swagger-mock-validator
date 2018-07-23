@@ -1,11 +1,10 @@
 import * as request from 'request';
-import {HttpClient} from '../types';
 
 const hasHttp2xxStatusCode = (response: request.RequestResponse) =>
     response.statusCode && response.statusCode >= 200 && response.statusCode <= 299;
 
-export const defaultHttpClient: HttpClient = {
-    get: (url) => {
+export class HttpClient {
+    public get(url: string): Promise<string> {
         const requestOptions = {
             timeout: 30000,
             url
@@ -22,8 +21,9 @@ export const defaultHttpClient: HttpClient = {
                 }
             });
         });
-    },
-    post: (url, body) => {
+    }
+
+    public post(url: string, body: any): Promise<void> {
         const requestOptions = {
             body,
             json: true,
@@ -44,4 +44,4 @@ export const defaultHttpClient: HttpClient = {
             });
         });
     }
-};
+}

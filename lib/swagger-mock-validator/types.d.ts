@@ -1,4 +1,4 @@
-import {ValidationOutcome, ValidationResult} from '../api-types';
+import {ValidationResult} from '../api-types';
 
 // Parsed Mock
 
@@ -355,28 +355,6 @@ export type SwaggerItemType = 'string' | 'number' | 'integer' | 'boolean' | 'arr
 
 // Other Interfaces
 
-export interface FileSystem {
-    readFile: JsonLoaderFunction;
-}
-
-export interface HttpClient {
-    get: JsonLoaderFunction;
-    post: (url: string, body: any) => Promise<void>;
-}
-
-export interface Metadata {
-    getHostname: () => string;
-    getOsVersion: () => string;
-    getToolVersion: () => string;
-    getUptime: () => number;
-}
-
-export interface UuidGenerator {
-    generate: () => string;
-}
-
-export type JsonLoaderFunction = (location: string) => Promise<string>;
-
 export type JsonSchema = JsonSchemaValue | JsonSchemaReference | JsonSchemaAllOf;
 
 export interface JsonSchemaReference {
@@ -419,32 +397,20 @@ export interface JsonSchemaProperties {
     [name: string]: JsonSchema;
 }
 
-export interface SwaggerMockValidatorInternal {
-    validate: (options: SwaggerMockValidatorInternalOptions) => Promise<ValidationOutcome>;
-}
-
 export interface SwaggerMockValidatorInternalOptions {
     analyticsUrl?: string;
-    fileSystem?: FileSystem;
-    httpClient?: HttpClient;
-    metadata?: Metadata;
     mockPathOrUrl: string;
     providerName?: string;
     specPathOrUrl: string;
-    uuidGenerator?: UuidGenerator;
 }
 
 interface ParsedSwaggerMockValidatorOptions {
     analyticsUrl?: string;
-    fileSystem: FileSystem;
-    httpClient: HttpClient;
-    metadata: Metadata;
     mockPathOrUrl: string;
     mockSource: MockSource;
     providerName?: string;
     specPathOrUrl: string;
     specSource: SpecSource;
-    uuidGenerator: UuidGenerator;
 }
 
 export type MockSource = 'pactBroker' | 'path' | 'url';

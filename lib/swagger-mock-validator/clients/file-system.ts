@@ -1,8 +1,7 @@
 import * as fs from 'fs';
-import {FileSystem} from '../types';
 
-export const defaultFileSystem: FileSystem = {
-    readFile: (fileName) => {
+export class FileSystem {
+    public readFile(fileName: string): Promise<string> {
         return new Promise((resolve, reject) => {
             fs.readFile(fileName, (error, file) => {
                 if (error) {
@@ -13,4 +12,4 @@ export const defaultFileSystem: FileSystem = {
             });
         });
     }
-};
+}

@@ -4,10 +4,11 @@ import * as commander from 'commander';
 import * as _ from 'lodash';
 import * as util from 'util';
 import {ValidationOutcome, ValidationResult} from './api-types';
-import {swaggerMockValidator} from './swagger-mock-validator';
+import {SwaggerMockValidatorFactory} from './swagger-mock-validator-factory';
 
 // tslint:disable:no-var-requires
 const packageJson = require('../package.json');
+const swaggerMockValidator = SwaggerMockValidatorFactory.create();
 
 const displaySummaryForValidationResults = (name: string, resultsOrNone?: ValidationResult[]) => {
     const results = resultsOrNone || [];
