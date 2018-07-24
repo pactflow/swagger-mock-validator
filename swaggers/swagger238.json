@@ -20,6 +20,8 @@
         "title": "default-title",
         "version": "1.0.0"
     },
+    "parameters": {
+    },
     "paths": {
         "/does/exist": {
             "get": {
@@ -33,6 +35,8 @@
                 }
             }
         }
+    },
+    "securityDefinitions": {
     },
     "swagger": "2.0"
 }

@@ -1,7 +1,11 @@
 {
+    "definitions": {
+    },
     "info": {
         "title": "default-title",
         "version": "1.0.0"
+    },
+    "parameters": {
     },
     "paths": {
         "/does/exist": {
@@ -22,5 +26,7 @@
     "produces": [
         "application/json"
     ],
+    "securityDefinitions": {
+    },
     "swagger": "2.0"
 }

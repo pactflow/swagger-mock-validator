@@ -1,7 +1,11 @@
 {
+    "definitions": {
+    },
     "info": {
         "title": "default-title",
         "version": "1.0.0"
+    },
+    "parameters": {
     },
     "paths": {
         "/{value}": {
@@ -23,6 +27,8 @@
                 }
             ]
         }
+    },
+    "securityDefinitions": {
     },
     "swagger": "2.0"
 }

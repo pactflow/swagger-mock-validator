@@ -1,7 +1,11 @@
 {
+    "definitions": {
+    },
     "info": {
         "title": "default-title",
         "version": "1.0.0"
+    },
+    "parameters": {
     },
     "paths": {
         "/users/{userId}": {
@@ -21,6 +25,8 @@
                 }
             ]
         }
+    },
+    "securityDefinitions": {
     },
     "swagger": "2.0"
 }

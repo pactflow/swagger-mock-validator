@@ -1,7 +1,11 @@
 {
+    "definitions": {
+    },
     "info": {
         "title": "default-title",
         "version": "1.0.0"
+    },
+    "parameters": {
     },
     "paths": {
         "/does/exist": {
@@ -31,6 +35,8 @@
                 }
             }
         }
+    },
+    "securityDefinitions": {
     },
     "swagger": "2.0"
 }

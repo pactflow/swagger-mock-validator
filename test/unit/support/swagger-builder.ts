@@ -1,3 +1,6 @@
+import * as fs from 'fs';
+import stringify = require('json-stable-stringify');
+import * as _ from 'lodash';
 import {
     Swagger,
     SwaggerParameters,
@@ -119,6 +122,8 @@ export class SwaggerBuilder {
         setIfDefined(swagger, 'produces', this.state.produces);
         setIfDefined(swagger, 'basePath', this.state.basePath);
         setIfDefined(swagger, 'security', this.state.security);
+
+        fs.writeFileSync(`swaggers/${_.uniqueId('swagger')}.json`, stringify(swagger, {space: 4}));
 
         return swagger;
     }
