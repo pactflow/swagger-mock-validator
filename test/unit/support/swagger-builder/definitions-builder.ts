@@ -1,16 +1,28 @@
-import * as _ from 'lodash';
 import {JsonSchemaDefinitions} from '../../../../lib/swagger-mock-validator/types';
-import {setValueOn} from '../builder-utilities';
 import {SchemaBuilder} from './schema-builder';
 
-export interface DefinitionsBuilder {
-    build: () => JsonSchemaDefinitions;
+interface DefinitionsBuilderState {
+    definitions: {
+        [name: string]: SchemaBuilder;
+    };
 }
 
-const createDefinitionsBuilder = (definitions: JsonSchemaDefinitions) => ({
-    build: () => _.cloneDeep(definitions),
-    withDefinition: (name: string, schemaBuilder: SchemaBuilder) =>
-        createDefinitionsBuilder(setValueOn(definitions, name, schemaBuilder.build()))
-});
+export class DefinitionsBuilder {
+    public constructor(private readonly state: DefinitionsBuilderState) {}
 
-export const definitionsBuilder = createDefinitionsBuilder({});
+    public build(): JsonSchemaDefinitions {
+        return Object.keys(this.state.definitions).reduce<JsonSchemaDefinitions>((accumulator, definitionName) => {
+            const schemaBuilder = this.state.definitions[definitionName];
+            accumulator[definitionName] = schemaBuilder.build();
+            return accumulator;
+        }, {});
+    }
+
+    public withDefinition(name: string, schemaBuilder: SchemaBuilder): DefinitionsBuilder {
+        const newDefinitions = {...this.state.definitions};
+        newDefinitions[name] = schemaBuilder;
+        return new DefinitionsBuilder({...this.state, definitions: newDefinitions});
+    }
+}
+
+export const definitionsBuilder = new DefinitionsBuilder({definitions: {}});

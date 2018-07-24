@@ -34,3 +34,9 @@ export function setValuesOn(obj: any, values: {[name: string]: any}) {
         copyOfObj
     );
 }
+
+export const setIfDefined = <T extends object, P extends keyof T> (obj: T, propertyName: P, value: T[P]): void => {
+    if (value !== undefined) {
+        obj[propertyName] = _.cloneDeep(value);
+    }
+};

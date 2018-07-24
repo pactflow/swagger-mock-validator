@@ -205,6 +205,7 @@ export interface Swagger {
     info: SwaggerInfo;
     paths: SwaggerPaths;
     produces?: string[];
+    parameters?: SwaggerParameters;
     security?: SwaggerSecurityRequirement[];
     securityDefinitions?: SwaggerSecurityDefinitions;
     swagger: string;
@@ -221,6 +222,10 @@ export interface SwaggerInfo {
 
 export interface SwaggerPaths {
     [path: string]: SwaggerPath;
+}
+
+export interface SwaggerParameters {
+    [name: string]: SwaggerParameter;
 }
 
 export interface SwaggerSecurityDefinitions {

@@ -10,6 +10,21 @@ export interface OperationBuilder {
     build: () => SwaggerOperation;
 }
 
+// interface OperationBuilderState {
+// }
+
+// export class OperationBuilder {
+//     public constructor(private readonly state: OperationBuilderState) {}
+
+//     public build(): SwaggerOperation {
+//         throw new Error('Not Implemented');
+//     }
+
+//     public withConsumes(consumes: string[]): OperationBuilder {
+
+//     }
+// }
+
 const createOperationBuilder = (operation: SwaggerOperation) => ({
     build: () => _.cloneDeep(operation),
     withConsumes: (consumes: string[]) => createOperationBuilder(setValueOn(operation, 'consumes', consumes)),
