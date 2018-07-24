@@ -1,0 +1,38 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "properties": {
+                                        "first": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                {
+                                    "properties": {
+                                        "last": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

@@ -1,0 +1,24 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "headers": {
+                            "x-custom-header": {
+                                "format": "int32",
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

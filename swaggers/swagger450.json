@@ -1,0 +1,41 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/users/{userId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "type": "number"
+                }
+            ],
+            "post": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

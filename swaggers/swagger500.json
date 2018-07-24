@@ -1,0 +1,41 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/path/all": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            }
+        },
+        "/path/{name}": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "id",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

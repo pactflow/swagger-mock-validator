@@ -1,0 +1,42 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                },
+                "security": [
+                    {
+                        "header": [
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "security": [
+        {
+            "query": [
+            ]
+        }
+    ],
+    "securityDefinitions": {
+        "header": {
+            "in": "header",
+            "name": "Authorization",
+            "type": "apiKey"
+        },
+        "query": {
+            "in": "query",
+            "name": "auth",
+            "type": "apiKey"
+        }
+    },
+    "swagger": "2.0"
+}

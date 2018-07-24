@@ -1,0 +1,11 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/almost": {
+        }
+    },
+    "swagger": "2.0"
+}

@@ -1,0 +1,28 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": false,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

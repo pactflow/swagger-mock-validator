@@ -1,0 +1,38 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyHeader": [
+                        ],
+                        "apiKeyQuery": [
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "apiKeyHeader": {
+            "in": "header",
+            "name": "x-api-key-header",
+            "type": "apiKey"
+        },
+        "apiKeyQuery": {
+            "in": "query",
+            "name": "apiKey",
+            "type": "apiKey"
+        }
+    },
+    "swagger": "2.0"
+}

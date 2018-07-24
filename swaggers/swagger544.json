@@ -1,0 +1,52 @@
+{
+    "definitions": {
+        "Response": {
+            "items": {
+                "properties": {
+                    "customer": {
+                        "properties": {
+                            "child": {
+                                "$ref": "#/definitions/Response"
+                            },
+                            "first": {
+                                "type": "string"
+                            },
+                            "last": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "first",
+                            "last"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "customer"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        }
+    },
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

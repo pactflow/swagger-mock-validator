@@ -1,0 +1,44 @@
+{
+    "definitions": {
+        "Request": {
+            "properties": {
+                "child": {
+                    "$ref": "#/definitions/Request"
+                },
+                "id": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "type": "object"
+        }
+    },
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

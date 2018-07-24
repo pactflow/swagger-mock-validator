@@ -1,0 +1,42 @@
+{
+    "definitions": {
+        "Response": {
+            "items": {
+                "properties": {
+                    "item": {
+                        "properties": {
+                            "child": {
+                                "$ref": "#/definitions/Response"
+                            },
+                            "id": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        }
+    },
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

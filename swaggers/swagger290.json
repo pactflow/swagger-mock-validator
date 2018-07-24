@@ -1,0 +1,30 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/{value}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "in": "path",
+                    "items": {
+                        "type": "number"
+                    },
+                    "maxItems": 3,
+                    "name": "value",
+                    "required": true,
+                    "type": "array"
+                }
+            ]
+        }
+    },
+    "swagger": "2.0"
+}

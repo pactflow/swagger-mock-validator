@@ -1,0 +1,31 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "parameters": {
+        "userId": {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "number"
+        }
+    },
+    "paths": {
+        "/users/{userId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "$ref": "#/parameters/userId"
+                }
+            ]
+        }
+    },
+    "swagger": "2.0"
+}

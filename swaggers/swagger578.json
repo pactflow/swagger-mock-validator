@@ -1,0 +1,26 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "headers": {
+                            "X-custom-header": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "produces": [
+        "application/json"
+    ],
+    "swagger": "2.0"
+}

@@ -1,0 +1,27 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/{value}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "format": "int64",
+                    "in": "path",
+                    "name": "value",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        }
+    },
+    "swagger": "2.0"
+}

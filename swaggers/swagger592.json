@@ -1,0 +1,31 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": [
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "apiKey": {
+            "in": "header",
+            "name": "x-api-token",
+            "type": "apiKey"
+        }
+    },
+    "swagger": "2.0"
+}

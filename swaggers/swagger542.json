@@ -1,0 +1,44 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "schema": {
+                            "items": {
+                                "properties": {
+                                    "customer": {
+                                        "properties": {
+                                            "first": {
+                                                "type": "string"
+                                            },
+                                            "last": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "first",
+                                            "last"
+                                        ],
+                                        "type": "object"
+                                    }
+                                },
+                                "required": [
+                                    "customer"
+                                ],
+                                "type": "object"
+                            },
+                            "type": "array"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

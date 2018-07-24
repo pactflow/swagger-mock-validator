@@ -1,0 +1,26 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "headers": {
+                            "x-value": {
+                                "enum": [
+                                    "a"
+                                ],
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

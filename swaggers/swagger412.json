@@ -1,0 +1,35 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "items": {
+                            "type": "number"
+                        },
+                        "name": "x-custom-header",
+                        "required": true,
+                        "type": "array"
+                    }
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

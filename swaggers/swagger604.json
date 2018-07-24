@@ -1,0 +1,35 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth": [
+                            "write"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "oauth": {
+            "flow": "application",
+            "scopes": {
+                "write": "write permissions"
+            },
+            "tokenUrl": "http://token-url.com",
+            "type": "oauth2"
+        }
+    },
+    "swagger": "2.0"
+}

@@ -1,4 +1,7 @@
+import * as fs from 'fs';
+import * as stringify from 'json-stable-stringify';
 import {cloneDeep} from 'lodash';
+import * as _ from 'lodash';
 import {Swagger, SwaggerSecurityRequirement} from '../../../lib/swagger-mock-validator/types';
 import {addToArrayOn, removeValueOn, setValueOn} from './builder-utilities';
 import {DefinitionsBuilder} from './swagger-builder/definitions-builder';
@@ -7,7 +10,11 @@ import {PathBuilder} from './swagger-builder/path-builder';
 import {SecuritySchemeBuilder} from './swagger-builder/security-scheme-builder';
 
 const createSwaggerBuilder = (swagger: Swagger) => ({
-    build: () => cloneDeep(swagger),
+    build: () => {
+        const s = cloneDeep(swagger);
+        fs.writeFileSync(`swaggers/${_.uniqueId('swagger')}.json`, stringify(s, {space: 4}));
+        return s;
+    },
     withBasePath: (basePath: string) => createSwaggerBuilder(setValueOn(swagger, 'basePath', basePath)),
     withConsumes: (consumes: string[]) => createSwaggerBuilder(setValueOn(swagger, 'consumes', consumes)),
     withDefinitions: (definitionsBuilder: DefinitionsBuilder) =>

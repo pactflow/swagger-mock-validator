@@ -1,0 +1,52 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "schema": {
+                            "properties": {
+                                "value": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "a": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "required": [
+                                                "a"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "b": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "b"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

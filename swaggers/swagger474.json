@@ -1,0 +1,30 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/{value}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "collectionFormat": "csv",
+                    "in": "path",
+                    "items": {
+                        "type": "number"
+                    },
+                    "name": "value",
+                    "required": true,
+                    "type": "array"
+                }
+            ]
+        }
+    },
+    "swagger": "2.0"
+}

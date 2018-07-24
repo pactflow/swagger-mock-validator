@@ -1,0 +1,52 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "schema": {
+                            "properties": {
+                                "customer": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "first": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "first"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "last": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "last"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "customer"
+                            ],
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

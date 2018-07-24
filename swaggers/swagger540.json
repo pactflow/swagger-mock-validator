@@ -1,0 +1,37 @@
+{
+    "definitions": {
+        "Response": {
+            "properties": {
+                "child": {
+                    "$ref": "#/definitions/Response"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "type": "object"
+        }
+    },
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/does/exist": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger": "2.0"
+}

@@ -1,0 +1,27 @@
+{
+    "info": {
+        "title": "default-title",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/{value}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "default-response"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "format": "ipv6",
+                    "in": "path",
+                    "name": "value",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "swagger": "2.0"
+}
