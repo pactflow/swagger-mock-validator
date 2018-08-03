@@ -13,6 +13,9 @@ import {isPassword} from './validate-json/password';
 // tslint:disable:no-submodule-imports
 const draft4MetaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
 
+const getRawValueFromJson = (rawJson: any, dataPath?: string): any =>
+    dataPath ? _.get(rawJson, dataPath.substring(1)) : rawJson;
+
 const addSwaggerFormatsAndKeywords = (ajv: Ajv.Ajv, rawJson: any) => {
     ajv.addFormat('binary', isBinary);
     ajv.addFormat('byte', isByte);
@@ -20,28 +23,29 @@ const addSwaggerFormatsAndKeywords = (ajv: Ajv.Ajv, rawJson: any) => {
     // tslint:disable:variable-name
     ajv.addKeyword(doubleAjvKeyword, {
         type: 'number',
-        validate: (_schema: any, _data: number, _parentSchema: any, dataPath: string) => {
-            const rawValue = _.get(rawJson, dataPath.substring(1));
+        validate: (_schema: any, _data: number, _parentSchema: any, dataPath?: string) => {
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
             return isDouble(rawValue);
         }
     });
     ajv.addKeyword(floatAjvKeyword, {
         type: 'number',
-        validate: (_schema: any, _data: number, _parentSchema: any, dataPath: string) => {
-            const rawValue = _.get(rawJson, dataPath.substring(1));
+        validate: (_schema: any, _data: number, _parentSchema: any, dataPath?: string) => {
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
             return isFloat(rawValue);
-        }});
+        }
+    });
     ajv.addKeyword(int32AjvKeyword, {
         type: 'integer',
-        validate: (_schema: any, _data: number, _parentSchema: any, dataPath: string) => {
-            const rawValue = _.get(rawJson, dataPath.substring(1));
+        validate: (_schema: any, _data: number, _parentSchema: any, dataPath?: string) => {
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
             return isInt32(rawValue);
         }
     });
     ajv.addKeyword(int64AjvKeyword, {
         type: 'integer',
-        validate: (_schema: any, _data: number, _parentSchema: any, dataPath: string) => {
-            const rawValue = _.get(rawJson, dataPath.substring(1));
+        validate: (_schema: any, _data: number, _parentSchema: any, dataPath?: string) => {
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
             return isInt64(rawValue);
         }
     });

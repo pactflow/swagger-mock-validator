@@ -259,12 +259,22 @@ describe('formats', () => {
             }]);
         });
 
-        it('should pass when the pact response body contains the a valid int32 value', async () => {
+        it('should pass when the pact response body contains a valid int32 value', async () => {
             const pactResponseBody = {id: 1};
 
             const swaggerBodySchema = schemaBuilder
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt32());
+
+            const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
+        it('should pass when the pact response body contains a valid int32 as root value', async () => {
+            const pactResponseBody = 1;
+
+            const swaggerBodySchema = schemaBuilder.withTypeInteger().withFormatInt32();
 
             const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
 
@@ -447,7 +457,7 @@ describe('formats', () => {
             }]);
         });
 
-        it('should pass when a pact path contains blank int64 value', async () => {
+        it('should return the error when a pact path contains blank int64 value', async () => {
             const result = await invokeValidatorWithPath(swaggerPathWithInt64Parameter, ' ');
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
@@ -473,12 +483,22 @@ describe('formats', () => {
             }]);
         });
 
-        it('should pass when the pact response body contains the a valid int64 value', async () => {
+        it('should pass when the pact response body contains a valid int64 value', async () => {
             const pactResponseBody = {id: 1};
 
             const swaggerBodySchema = schemaBuilder
                 .withTypeObject()
                 .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt64());
+
+            const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
+        it('should pass when the pact response body contains a valid int64 value as a root value', async () => {
+            const pactResponseBody = 1;
+
+            const swaggerBodySchema = schemaBuilder.withTypeInteger().withFormatInt64();
 
             const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
 
@@ -653,7 +673,7 @@ describe('formats', () => {
             }]);
         });
 
-        it('should pass when the pact response body contains the a valid float value', async () => {
+        it('should pass when the pact response body contains a valid float value', async () => {
             const pactResponseBody = {id: 1.1};
 
             const swaggerBodySchema = schemaBuilder
@@ -665,7 +685,17 @@ describe('formats', () => {
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should return the error when the pact response body contains a string float value', async () => {
+        it('should pass when the pact response body contains a valid float as a root value', async () => {
+            const pactResponseBody = 1.1;
+
+            const swaggerBodySchema = schemaBuilder.withTypeNumber().withFormatFloat();
+
+            const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
+        it('should return the error when the pact response body contains a string value', async () => {
             const pactResponseBody = {id: 'abc'};
 
             const swaggerBodySchema = schemaBuilder
@@ -839,7 +869,17 @@ describe('formats', () => {
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should return the error when the pact response body a value that is a string', async () => {
+        it('should pass when the pact response body contains a double as a root value', async () => {
+            const pactResponseBody = 1.1;
+
+            const swaggerBodySchema = schemaBuilder.withTypeNumber().withFormatDouble();
+
+            const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
+        it('should return the error when the pact response body value is a string', async () => {
             const pactResponseBody = {id: 'abc'};
 
             const swaggerBodySchema = schemaBuilder
