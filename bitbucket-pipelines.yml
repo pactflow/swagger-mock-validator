@@ -1,5 +1,18 @@
 pipelines:
   default:
-    - step:
-        script:
-          - ./bin/build.sh
+    - parallel:
+      - step:
+          name: 'Node 6.x'
+          image: node:6.14.3
+          script:
+                - ./bin/build.sh
+      - step:
+          name: 'Node 8.x'
+          image: node:8.11.3
+          script:
+                - ./bin/build.sh
+      - step:
+          name: 'Node 10.x'
+          image: node:10.8.0
+          script:
+                - ./bin/build.sh
