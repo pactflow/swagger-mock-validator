@@ -1,14 +1,10 @@
 import * as _ from 'lodash';
 import {ValidationOutcome, ValidationResult} from '../api-types';
-import {
-    ParsedMock,
-    ParsedMockInteraction,
-    ParsedSpec,
-    ParsedSpecOperation
-} from './types';
+import {ParsedMock, ParsedMockInteraction, ParsedSpec, ParsedSpecOperation} from './types';
 import {getParsedSpecOperation} from './validate-spec-and-mock/get-parsed-spec-operation';
 import {getParsedSpecResponse} from './validate-spec-and-mock/get-parsed-spec-response';
-import {toParsedSpecWithSortedOperations} from './validate-spec-and-mock/to-parsed-spec-with-sorted-operations';
+import {toNormalizedParsedMock} from './validate-spec-and-mock/to-normalized-parsed-mock';
+import {toNormalizedParsedSpec} from './validate-spec-and-mock/to-normalized-parsed-spec';
 import {validateParsedMockRequestBody} from './validate-spec-and-mock/validate-parsed-mock-request-body';
 import {validateParsedMockRequestHeaders} from './validate-spec-and-mock/validate-parsed-mock-request-headers';
 import {validateParsedMockRequestQuery} from './validate-spec-and-mock/validate-parsed-mock-request-query';
@@ -49,9 +45,9 @@ const validateMockInteractionResponse = (
 
 const validateMockInteraction = (
     parsedMockInteraction: ParsedMockInteraction,
-    parsedSpecWithSortedOperations: ParsedSpec
+    normalizedParsedSpec: ParsedSpec
 ): ValidationResult[] => {
-    const getParsedSpecOperationResult = getParsedSpecOperation(parsedMockInteraction, parsedSpecWithSortedOperations);
+    const getParsedSpecOperationResult = getParsedSpecOperation(parsedMockInteraction, normalizedParsedSpec);
 
     if (!getParsedSpecOperationResult.found) {
         return getParsedSpecOperationResult.results;
@@ -64,19 +60,28 @@ const validateMockInteraction = (
     );
 };
 
-export const validateSpecAndMock = (parsedMock: ParsedMock, parsedSpec: ParsedSpec): Promise<ValidationOutcome> => {
-    const parsedSpecWithSortedOperations = toParsedSpecWithSortedOperations(parsedSpec);
-
-    const validationResults = _(parsedMock.interactions)
-        .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpecWithSortedOperations))
-        .flatten<ValidationResult>()
-        .value();
-
+const createValidationOutcome = (
+    validationResults: ValidationResult[],
+    mockPathOrUrl: string,
+    specPathOrUrl: string
+): ValidationOutcome => {
     const errors = _.filter(validationResults, (res) => res.type === 'error');
     const warnings = _.filter(validationResults, (res) => res.type === 'warning');
     const success = errors.length === 0;
-    const failureReason = success ? undefined : `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
-        `with swagger file "${parsedSpec.pathOrUrl}"`;
+    const failureReason = success ? undefined : `Mock file "${mockPathOrUrl}" is not compatible ` +
+        `with swagger file "${specPathOrUrl}"`;
 
-    return Promise.resolve({errors, failureReason, success, warnings});
+    return {errors, failureReason, success, warnings};
+};
+
+export const validateSpecAndMock = (parsedMock: ParsedMock, parsedSpec: ParsedSpec): Promise<ValidationOutcome> => {
+    const normalizedParsedSpec = toNormalizedParsedSpec(parsedSpec);
+    const normalizedParsedMock = toNormalizedParsedMock(parsedMock);
+
+    const validationResults = _(normalizedParsedMock.interactions)
+        .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, normalizedParsedSpec))
+        .flatten<ValidationResult>()
+        .value();
+
+    return Promise.resolve(createValidationOutcome(validationResults, parsedMock.pathOrUrl, parsedSpec.pathOrUrl));
 };

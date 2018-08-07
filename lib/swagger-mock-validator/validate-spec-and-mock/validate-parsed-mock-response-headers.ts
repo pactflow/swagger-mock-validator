@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
+import {ValidationResult} from '../../api-types';
 import {result} from '../result';
-import {ParsedMockInteraction, ParsedMockValue, ParsedSpecResponse} from '../types';
+import {ParsedMockInteraction, ParsedMockValue, ParsedSpecParameter, ParsedSpecResponse} from '../types';
 import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 
 const ignoredHttpHeaders = [
@@ -50,44 +51,88 @@ const standardHttpHeaders = [
     'x-frame-options'
 ];
 
+const createUndefinedHeaderValidationResult = (
+    headerName: string,
+    mockHeader: ParsedMockValue<string>,
+    parsedSpecResponse: ParsedSpecResponse
+): ValidationResult =>
+    result.build({
+        code: 'response.header.unknown',
+        message: `Response header is not defined in the swagger file: ${headerName}`,
+        mockSegment: mockHeader,
+        source: 'spec-mock-validation',
+        specSegment: parsedSpecResponse
+    });
+
+const createUndefinedStandardHeaderValidationResult = (
+    headerName: string,
+    mockHeader: ParsedMockValue<string>,
+    parsedSpecResponse: ParsedSpecResponse
+): ValidationResult =>
+    result.build({
+        code: 'response.header.undefined',
+        message: `Standard http response header is not defined in the swagger file: ${headerName}`,
+        mockSegment: mockHeader,
+        source: 'spec-mock-validation',
+        specSegment: parsedSpecResponse
+    });
+
+const shouldIgnoreHeader = (headerName: string): boolean =>
+    ignoredHttpHeaders.indexOf(headerName) > -1;
+
+const isStandardHeader = (headerName: string): boolean =>
+    standardHttpHeaders.indexOf(headerName) > -1;
+
+const validateMockHeaderMissingInSpec = (
+    headerName: string,
+    mockHeader: ParsedMockValue<string>,
+    parsedSpecResponse: ParsedSpecResponse
+): ValidationResult[] => {
+    if (shouldIgnoreHeader(headerName)) {
+        return [];
+    }
+
+    if (isStandardHeader(headerName)) {
+        return [createUndefinedStandardHeaderValidationResult(headerName, mockHeader, parsedSpecResponse)];
+    }
+
+    return [createUndefinedHeaderValidationResult(headerName, mockHeader, parsedSpecResponse)];
+};
+
+const validateParsedMockResponseHeader = (
+    headerName: string,
+    parsedMockResponseHeader: ParsedMockValue<string>,
+    parsedSpecResponseHeader: ParsedSpecParameter | undefined,
+    parsedMockInteraction: ParsedMockInteraction,
+    parsedSpecResponse: ParsedSpecResponse
+): ValidationResult[] => {
+    if (!parsedSpecResponseHeader) {
+        return validateMockHeaderMissingInSpec(headerName, parsedMockResponseHeader, parsedSpecResponse);
+    }
+
+    const validationResult = validateMockValueAgainstSpec(
+        parsedSpecResponseHeader,
+        parsedMockResponseHeader,
+        parsedMockInteraction,
+        'response.header.incompatible'
+    );
+
+    return validationResult.results;
+};
+
 export const validateParsedMockResponseHeaders = (parsedMockInteraction: ParsedMockInteraction,
-                                                  parsedSpecResponse: ParsedSpecResponse) =>
-    _(parsedMockInteraction.responseHeaders)
-        .map((parsedMockResponseHeader: ParsedMockValue<string>, headerName: string) => {
-            const parsedSpecResponseHeader = parsedSpecResponse.headers[headerName];
+                                                  parsedSpecResponse: ParsedSpecResponse) => {
+    const mockResponseHeaders = parsedMockInteraction.responseHeaders;
+    const specResponseHeaders = parsedSpecResponse.headers;
 
-            if (!parsedSpecResponseHeader) {
-                if (ignoredHttpHeaders.indexOf(headerName) > -1) {
-                    return [];
-                }
-
-                if (standardHttpHeaders.indexOf(headerName) > -1) {
-                    return [result.build({
-                        code: 'response.header.undefined',
-                        message: `Standard http response header is not defined in the swagger file: ${headerName}`,
-                        mockSegment: parsedMockResponseHeader,
-                        source: 'spec-mock-validation',
-                        specSegment: parsedSpecResponse
-                    })];
-                }
-
-                return [result.build({
-                    code: 'response.header.unknown',
-                    message: `Response header is not defined in the swagger file: ${headerName}`,
-                    mockSegment: parsedMockResponseHeader,
-                    source: 'spec-mock-validation',
-                    specSegment: parsedSpecResponse
-                })];
-            }
-
-            const validationResult = validateMockValueAgainstSpec(
-                parsedSpecResponseHeader,
+    return _(mockResponseHeaders)
+        .map((parsedMockResponseHeader: ParsedMockValue<string>, headerName: string) =>
+            validateParsedMockResponseHeader(
+                headerName,
                 parsedMockResponseHeader,
+                specResponseHeaders[headerName],
                 parsedMockInteraction,
-                'response.header.incompatible'
-            );
-
-            return validationResult.results;
-        })
+                parsedSpecResponse))
         .flatten()
         .value();
+};

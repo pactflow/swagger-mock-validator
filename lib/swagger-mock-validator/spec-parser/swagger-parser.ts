@@ -196,7 +196,7 @@ const parseResponseHeaders = (
             value: header
         };
 
-        result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
+        result[headerName] = toParsedParameter(value, headerName);
 
         return result;
     }, {});
@@ -245,7 +245,7 @@ const parseResponses = (
 
 const toSpecParameterCollection = (parameters: ParsedSpecParameter[]) =>
     _.reduce<ParsedSpecParameter, ParsedSpecParameterCollection>(parameters, (result, parameter) => {
-        result[parameter.name.toLowerCase()] = parameter;
+        result[parameter.name] = parameter;
         return result;
     }, {});
 
@@ -376,7 +376,7 @@ const parseSecurityRequirements = (
                 let credentialLocation: 'header' | 'query' = 'header';
 
                 if (securityDefinition.type === 'apiKey') {
-                    credentialKey = securityDefinition.name.toLowerCase();
+                    credentialKey = securityDefinition.name;
                     credentialLocation = securityDefinition.in;
                 }
 

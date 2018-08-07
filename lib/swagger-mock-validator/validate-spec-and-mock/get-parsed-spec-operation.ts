@@ -105,9 +105,9 @@ const isGetSwaggerValueSuccessResult = <T>(res: GetSwaggerValueResult<T>): res i
 
 export const getParsedSpecOperation = (
     parsedMockInteraction: ParsedMockInteraction,
-    parsedSpecWithSortedOperations: ParsedSpec
+    normalizedParsedSpec: ParsedSpec
 ): GetSwaggerValueResult<ParsedSpecOperation> => {
-    const match = parsedSpecWithSortedOperations.operations
+    const match = normalizedParsedSpec.operations
         .map((parsedSpecOperation) => doInteractionAndOperationMatch(parsedMockInteraction, parsedSpecOperation))
         .find(isGetSwaggerValueSuccessResult);
 
@@ -122,7 +122,7 @@ export const getParsedSpecOperation = (
                         `${parsedMockInteraction.requestPath.value}`,
                     mockSegment: parsedMockInteraction.requestPath,
                     source: 'spec-mock-validation',
-                    specSegment: parsedSpecWithSortedOperations.paths
+                    specSegment: normalizedParsedSpec.paths
                 })
             ]
         };

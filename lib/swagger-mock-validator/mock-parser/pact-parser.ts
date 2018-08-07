@@ -28,7 +28,7 @@ const parseValues = (
     return _.reduce(
         values as PactInteractionHeaders,
         (result: ParsedMockValueCollection, value: string, name: string) => {
-            result[name.toLowerCase()] = {
+            result[name] = {
                 location: `${location}.${name}`,
                 parentInteraction,
                 value

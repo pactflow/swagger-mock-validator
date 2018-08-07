@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
+import {ValidationResult} from '../../api-types';
 import {result} from '../result';
-import {ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation} from '../types';
+import {ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation, ParsedSpecParameter} from '../types';
 import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 
 const headerUsedForSecurity = (headerName: string, parsedSpecOperation: ParsedSpecOperation) =>
@@ -62,26 +63,41 @@ const getWarningForUndefinedHeader = (headerName: string,
     })];
 };
 
+const validateParsedMockRequestHeader = (
+    parsedMockInteraction: ParsedMockInteraction,
+    parsedSpecOperation: ParsedSpecOperation,
+    headerName: string,
+    mockHeader: ParsedMockValue<string>,
+    specHeader: ParsedSpecParameter
+): ValidationResult[] => {
+    if (!specHeader && mockHeader) {
+        return getWarningForUndefinedHeader(headerName, mockHeader, parsedSpecOperation);
+    }
+
+    const validationResult = validateMockValueAgainstSpec(
+        specHeader,
+        mockHeader,
+        parsedMockInteraction,
+        'request.header.incompatible'
+    );
+
+    return validationResult.results;
+};
+
 export const validateParsedMockRequestHeaders = (parsedMockInteraction: ParsedMockInteraction,
-                                                 parsedSpecOperation: ParsedSpecOperation) =>
-    _(_.keys(parsedMockInteraction.requestHeaders))
-        .union(_.keys(parsedSpecOperation.requestHeaderParameters))
-        .map((headerName) => {
-            const parsedMockRequestHeader = parsedMockInteraction.requestHeaders[headerName];
-            const parsedSpecRequestHeader = parsedSpecOperation.requestHeaderParameters[headerName];
+                                                 parsedSpecOperation: ParsedSpecOperation) => {
+    const mockRequestHeaders = parsedMockInteraction.requestHeaders;
+    const specRequestHeaders = parsedSpecOperation.requestHeaderParameters;
 
-            if (!parsedSpecRequestHeader && parsedMockRequestHeader) {
-                return getWarningForUndefinedHeader(headerName, parsedMockRequestHeader, parsedSpecOperation);
-            }
-
-            const validationResult = validateMockValueAgainstSpec(
-                parsedSpecRequestHeader,
-                parsedMockRequestHeader,
+    return _(_.keys(mockRequestHeaders))
+        .union(_.keys(specRequestHeaders))
+        .map((headerName) =>
+            validateParsedMockRequestHeader(
                 parsedMockInteraction,
-                'request.header.incompatible'
-            );
-
-            return validationResult.results;
-        })
+                parsedSpecOperation,
+                headerName,
+                mockRequestHeaders[headerName],
+                specRequestHeaders[headerName]))
         .flatten()
         .value();
+};

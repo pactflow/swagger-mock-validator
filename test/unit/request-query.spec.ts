@@ -51,7 +51,7 @@ describe('request query', () => {
         expect(result).toContainNoWarningsOrErrors();
     });
 
-    it('should pass when the pact request query matches the spec', async () => {
+    it('should pass when the pact request query with multiple values matches the spec', async () => {
         const requestQuery = 'value=1&value=2';
         const queryParameter = queryParameterBuilder.withRequiredArrayOfNumbersNamed('value', 'multi');
 
@@ -76,6 +76,35 @@ describe('request query', () => {
                 location: '[pactRoot].interactions[0].request.query.value',
                 mockFile: 'pact.json',
                 value: 'a'
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: queryParameter.build()
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should fail when the pact request query has different case than the defined in the spec', async () => {
+        const requestQuery = 'VALUE=1';
+        const queryParameter = queryParameterBuilder.withRequiredNumberNamed('value');
+
+        const result = await validateRequestQuery(queryParameter, requestQuery);
+
+        expect(result).toContainErrors([{
+            code: 'request.query.incompatible',
+            message: 'Value is incompatible with the parameter defined in the swagger file: '
+            + 'should have required property \'value\'',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: defaultInteractionBuilder.withRequestQuery(requestQuery).build()
             },
             source: 'spec-mock-validation',
             specDetails: {

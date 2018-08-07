@@ -19,7 +19,7 @@ describe('security', () => {
         jasmine.addMatchers(customMatchers);
     });
 
-    it('should pass when the pact request is has the required basic auth', async () => {
+    it('should pass when the pact request has the required basic auth', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder
                 .withRequestHeader('Authorization', 'Basic user:pass')
@@ -73,7 +73,7 @@ describe('security', () => {
         }]);
     });
 
-    it('should pass when the pact request is has the required apiKey auth header', async () => {
+    it('should pass when the pact request has the required apiKey auth header', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder
                 .withRequestHeader('x-api-token', 'Bearer a-token')
@@ -85,6 +85,25 @@ describe('security', () => {
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
             )
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInHeader('x-api-token'))
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should pass when the pact request has the required apiKey auth header but in a different case', async () => {
+        const pactFile = pactBuilder
+            .withInteraction(defaultInteractionBuilder
+                .withRequestHeader('x-API-token', 'Bearer a-token')
+            )
+            .build();
+
+        const swaggerFile = swaggerBuilder
+            .withPath('/does/exist', pathBuilder
+                .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
+            )
+            .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInHeader('X-Api-Token'))
             .build();
 
         const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
@@ -127,7 +146,7 @@ describe('security', () => {
         }]);
     });
 
-    it('should pass when the pact request is has the required apiKey auth query', async () => {
+    it('should pass when the pact request has the required apiKey auth query', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder
                 .withRequestQuery('apiToken=an-api-token')
@@ -144,6 +163,45 @@ describe('security', () => {
         const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
         expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should fail when the pact request has the required apiKey auth query but with a different case', async () => {
+        const pactInteraction = defaultInteractionBuilder
+            .withRequestQuery('APIToken=an-api-token');
+
+        const pactFile = pactBuilder
+            .withInteraction(pactInteraction)
+            .build();
+
+        const swaggerFile = swaggerBuilder
+            .withPath('/does/exist', pathBuilder
+                .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
+            )
+            .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInQuery('ApiToken'))
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result).toContainErrors([{
+            code: 'request.authorization.missing',
+            message: 'Request Authorization query is missing but is required by the swagger file',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[pactRoot].interactions[0]',
+                mockFile: 'pact.json',
+                value: pactInteraction.build()
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKey',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'swagger.json',
+                value: []
+            },
+            type: 'error'
+        }]);
     });
 
     it('should return an error when the pact request is missing required apiKey auth query', async () => {
@@ -181,7 +239,7 @@ describe('security', () => {
         }]);
     });
 
-    it('should pass when the pact request is has one of the required apiKey query or header', async () => {
+    it('should pass when the pact request has one of the required apiKey query or header', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder.withRequestHeader('x-api-key-header', 'Bearer a-token'))
             .build();
