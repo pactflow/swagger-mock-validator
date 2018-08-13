@@ -1,8 +1,20 @@
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
+import {traverseJsonSchema} from '../common/traverse-json-schema';
+import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
-import {ParsedMockInteraction, ParsedSpecResponse} from '../types';
+import {ParsedSpecJsonSchema, ParsedSpecResponse} from '../spec-parser/parsed-spec';
 import {validateJson} from './validate-json';
+
+const removeRequiredPropertiesFromSchema = (schema: ParsedSpecJsonSchema): ParsedSpecJsonSchema => {
+    const modifiedSchema = _.cloneDeep(schema);
+
+    traverseJsonSchema(modifiedSchema, (mutableSchema) => {
+        delete mutableSchema.required;
+    });
+
+    return modifiedSchema;
+};
 
 export const validateParsedMockResponseBody = (parsedMockInteraction: ParsedMockInteraction,
                                                parsedSpecResponse: ParsedSpecResponse) => {
@@ -22,7 +34,12 @@ export const validateParsedMockResponseBody = (parsedMockInteraction: ParsedMock
         ];
     }
 
-    const validationErrors = validateJson(parsedSpecResponse.schema, parsedMockInteraction.responseBody.value);
+    const responseBodyWithoutRequiredProperties = removeRequiredPropertiesFromSchema(parsedSpecResponse.schema);
+
+    const validationErrors = validateJson(
+        responseBodyWithoutRequiredProperties,
+        parsedMockInteraction.responseBody.value
+    );
 
     return _.map(validationErrors, (error) => {
         const message = error.keyword === 'additionalProperties'

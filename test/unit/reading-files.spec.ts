@@ -5,8 +5,8 @@ import {SwaggerMockValidatorErrorImpl} from '../../lib/swagger-mock-validator/sw
 import {expectToFail} from '../support/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {MockFileSystemResponses, swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -30,7 +30,7 @@ describe('reading files', () => {
 
     describe('reading the swagger file', () => {
         it('should read the json swagger file from the file system', async () => {
-            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
             await invokeValidate('swagger.json', 'pact.json');
@@ -39,7 +39,7 @@ describe('reading files', () => {
         });
 
         it('should read the yaml swagger file from the file system', async () => {
-            mockFiles['swagger.yaml'] = Promise.resolve(yaml.safeDump(swaggerBuilder.build()));
+            mockFiles['swagger.yaml'] = Promise.resolve(yaml.safeDump(swagger2Builder.build()));
             mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
             await invokeValidate('swagger.yaml', 'pact.json');
@@ -88,7 +88,7 @@ describe('reading files', () => {
 
     describe('reading the pact file', () => {
         it('should read the pact file from the file system', async () => {
-            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
             await invokeValidate('swagger.json', 'pact.json');
@@ -97,7 +97,7 @@ describe('reading files', () => {
         });
 
         it('should fail when reading the pact file fails', async () => {
-            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockFiles['pact.json'] = Promise.reject(new Error('error-message'));
 
             const error = await expectToFail(invokeValidate('swagger.json', 'pact.json'));
@@ -109,7 +109,7 @@ describe('reading files', () => {
         });
 
         it('should fail when the pact file cannot be parsed as json', async () => {
-            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockFiles['pact.json'] = Promise.resolve('');
 
             const error = await expectToFail(
@@ -122,7 +122,7 @@ describe('reading files', () => {
         it('should return the error when the pact file is not valid', async () => {
             const pact = pactBuilder.withMissingInteractions();
 
-            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pact.build()));
 
             const error = await expectToFail(invokeValidate('swagger.json', 'pact.json'));

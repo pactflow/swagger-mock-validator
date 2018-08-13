@@ -1,9 +1,9 @@
 import {Decimal} from 'decimal.js';
-import {JsonSchemaValue} from '../../types';
+import {ParsedSpecJsonSchemaValue} from '../../spec-parser/parsed-spec';
 
 export const doubleAjvKeyword = 'formatDouble';
 
-export const formatForDoubleNumbers = (schema: JsonSchemaValue) => {
+export const formatForDoubleNumbers = (schema: ParsedSpecJsonSchemaValue) => {
     if (schema.type === 'number' && schema.format as any === 'double') {
         delete schema.format;
         (schema as any)[doubleAjvKeyword] = true;

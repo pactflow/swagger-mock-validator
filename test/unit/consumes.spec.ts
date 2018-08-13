@@ -1,11 +1,11 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {bodyParameterBuilder} from './support/swagger-builder/parameter-builder/body-parameter-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {schemaBuilder} from './support/swagger-builder/schema-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -46,7 +46,7 @@ describe('consumes', () => {
             ? operationBuilder.withConsumes(swaggerConsumes)
             : operationBuilder;
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist',
                 pathBuilder.withPostOperation(operation.withParameter(defaultSwaggerBodyParameter)))
             .build();
@@ -209,7 +209,7 @@ describe('consumes', () => {
             .withInteraction(defaultInteractionBuilder.withRequestHeader('Content-Type', 'application/json'))
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withPostOperation(operationBuilder))
             .withConsumes(['application/xml'])
             .build();
@@ -245,7 +245,7 @@ describe('consumes', () => {
             .withInteraction(defaultInteractionBuilder.withRequestHeader('Content-Type', 'application/json'))
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withPostOperation(operationBuilder.withConsumes(['application/xml'])))
             .withConsumes(['application/json'])
             .build();

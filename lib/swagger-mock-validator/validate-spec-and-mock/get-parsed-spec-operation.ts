@@ -1,15 +1,16 @@
 import * as _ from 'lodash';
 import {ValidationResult} from '../../api-types';
+import {ParsedMockInteraction, ParsedMockValue} from '../mock-parser/parsed-mock';
 import {result} from '../result';
 import {
-    GetSwaggerValueResult,
-    GetSwaggerValueSuccessResult,
-    ParsedMockInteraction,
-    ParsedMockValue,
     ParsedSpec,
     ParsedSpecOperation,
     ParsedSpecPathNameSegmentEqual,
     ParsedSpecPathNameSegmentJsonSchema
+} from '../spec-parser/parsed-spec';
+import {
+    GetSwaggerValueResult,
+    GetSwaggerValueSuccessResult
 } from '../types';
 import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 

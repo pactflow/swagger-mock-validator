@@ -1,10 +1,10 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {securitySchemeBuilder} from './support/swagger-builder/security-scheme-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -26,7 +26,7 @@ describe('security', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('basic'))
             )
@@ -41,7 +41,7 @@ describe('security', () => {
     it('should return an error when the pact request is missing required basic auth', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('basic'))
             )
@@ -80,7 +80,7 @@ describe('security', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
             )
@@ -99,7 +99,7 @@ describe('security', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
             )
@@ -114,7 +114,7 @@ describe('security', () => {
     it('should return an error when the pact request is missing required apiKey auth header', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
             )
@@ -153,7 +153,7 @@ describe('security', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
             )
@@ -173,7 +173,7 @@ describe('security', () => {
             .withInteraction(pactInteraction)
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
             )
@@ -207,7 +207,7 @@ describe('security', () => {
     it('should return an error when the pact request is missing required apiKey auth query', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('apiKey'))
             )
@@ -244,7 +244,7 @@ describe('security', () => {
             .withInteraction(defaultInteractionBuilder.withRequestHeader('x-api-key-header', 'Bearer a-token'))
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder
                     .withSecurityRequirementNamed('apiKeyQuery')
@@ -265,7 +265,7 @@ describe('security', () => {
     it('should return an error when the pact request is missing required apiKey query and header', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementsNamed(['apiKeyHeader', 'apiKeyQuery']))
             )
@@ -322,7 +322,7 @@ describe('security', () => {
     it('should ignore oauth2 security definitions', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withSecurityRequirementNamed('oauth', ['write']))
             )
@@ -337,7 +337,7 @@ describe('security', () => {
     it('should return an error when the pact request is missing a globally required apiKey', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
             .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInQuery('apiToken'))
             .withSecurityRequirementNamed('apiKey')
@@ -371,7 +371,7 @@ describe('security', () => {
     it('should use operation security definitions over globally defined ones', async () => {
         const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder
                 .withSecurityRequirementNamed('header')
             ))

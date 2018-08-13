@@ -1,15 +1,12 @@
 import {ValidationOutcome} from '../../lib/api-types';
 import {HttpClient} from '../../lib/swagger-mock-validator/clients/http-client';
-import {
-    Pact,
-    Swagger,
-    SwaggerMockValidatorInternalOptions
-} from '../../lib/swagger-mock-validator/types';
+import {Pact} from '../../lib/swagger-mock-validator/mock-parser/pact/pact';
+import {Swagger2} from '../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
+import {SwaggerMockValidatorInternalOptions} from '../../lib/swagger-mock-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder} from './support/pact-broker-builder';
 import {providerPactsBuilder} from './support/pact-broker-builder/provider-pacts-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {
@@ -19,6 +16,7 @@ import {
     MockUuidGeneratorResponses,
     swaggerMockValidatorLoader
 } from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -32,7 +30,7 @@ describe('analytics', () => {
         .withConsumer('a-default-consumer')
         .withProvider('a-default-provider')
         .withInteraction(interactionBuilder.withRequestPath('/does/exist'));
-    const defaultSwaggerBuilder = swaggerBuilder
+    const defaultSwaggerBuilder = swagger2Builder
         .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder));
 
     beforeEach(() => {
@@ -61,7 +59,7 @@ describe('analytics', () => {
         });
     };
 
-    const invokeValidationWithUrls = (pactFile?: Pact, swaggerFile?: Swagger): Promise<ValidationOutcome> => {
+    const invokeValidationWithUrls = (pactFile?: Pact, swaggerFile?: Swagger2): Promise<ValidationOutcome> => {
         mockUrls['http://domain.com/pact.json'] =
             Promise.resolve(JSON.stringify(pactFile || defaultPactBuilder.build()));
         mockUrls['http://domain.com/swagger.json'] =
@@ -73,7 +71,7 @@ describe('analytics', () => {
         });
     };
 
-    const invokeValidationWithPaths = (pactFile?: Pact, swaggerFile?: Swagger): Promise<ValidationOutcome> => {
+    const invokeValidationWithPaths = (pactFile?: Pact, swaggerFile?: Swagger2): Promise<ValidationOutcome> => {
         mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactFile || defaultPactBuilder.build()));
         mockFiles['swagger.json'] = Promise.resolve(JSON.stringify(swaggerFile || defaultSwaggerBuilder.build()));
 
@@ -85,7 +83,7 @@ describe('analytics', () => {
 
     const invokeValidationWithPactBroker = (consumer1PactFile?: Pact,
                                             consumer2PactFile?: Pact,
-                                            swaggerFile?: Swagger): Promise<ValidationOutcome> => {
+                                            swaggerFile?: Swagger2): Promise<ValidationOutcome> => {
         mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(
             pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/a-provider/pacts')

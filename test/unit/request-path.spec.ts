@@ -1,6 +1,5 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
 import {
@@ -8,6 +7,7 @@ import {
 } from './support/swagger-builder/parameter-builder/request-header-parameter-builder';
 import {pathBuilder, PathBuilder} from './support/swagger-builder/path-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -24,7 +24,7 @@ describe('request path', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/{value}', swaggerPath)
             .build();
 
@@ -40,7 +40,7 @@ describe('request path', () => {
             .withInteraction(interactionBuilder.withRequestPath('/does/exist'))
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
             .build();
 
@@ -58,7 +58,7 @@ describe('request path', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder.build();
+        const swaggerFile = swagger2Builder.build();
 
         const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
@@ -94,7 +94,7 @@ describe('request path', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder.build();
+        const swaggerFile = swagger2Builder.build();
 
         const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
@@ -130,7 +130,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/almost', pathBuilder)
                 .build();
 
@@ -167,7 +167,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/almost/matches', pathBuilder)
                 .build();
 
@@ -207,7 +207,7 @@ describe('request path', () => {
             const swaggerPathBuilder = pathBuilder
                 .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')));
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/almost/matches/{userId}', swaggerPathBuilder)
                 .build();
 
@@ -241,7 +241,7 @@ describe('request path', () => {
         it('should pass when the parameter is defined on the operation object', async () => {
             const pactFile = pactBuilder.withInteraction(interactionBuilder.withRequestPath('/users/1')).build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/users/{userId}', pathBuilder
                     .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                 )
@@ -257,7 +257,7 @@ describe('request path', () => {
                 .withInteraction(interactionBuilder.withRequestPath('/users/1').withRequestMethodPost())
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/users/{userId}', pathBuilder
                     .withPostOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                 )
@@ -271,7 +271,7 @@ describe('request path', () => {
         it('should pass when the parameter is defined on the path item object', async () => {
             const pactFile = pactBuilder.withInteraction(interactionBuilder.withRequestPath('/users/1')).build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/users/{userId}', pathBuilder
                     .withParameter(pathParameterBuilder.withNumberNamed('userId'))
                     .withGetOperation(operationBuilder)
@@ -286,7 +286,7 @@ describe('request path', () => {
         it('should pass when the parameter is defined on the swagger object', async () => {
             const pactFile = pactBuilder.withInteraction(interactionBuilder.withRequestPath('/users/1')).build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/users/{userId}', pathBuilder
                     .withParameterReference('userId')
                     .withGetOperation(operationBuilder)
@@ -302,7 +302,7 @@ describe('request path', () => {
         it('should use the operation parameters when there are duplicate parameter definitions', async () => {
             const pactFile = pactBuilder.withInteraction(interactionBuilder.withRequestPath('/users/1')).build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/users/{userId}', pathBuilder
                     .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                     .withParameter(pathParameterBuilder.withBooleanNamed('userId'))
@@ -317,7 +317,7 @@ describe('request path', () => {
         it('should use path parameters when operation parameters are defined on a different method', async () => {
             const pactFile = pactBuilder.withInteraction(interactionBuilder.withRequestPath('/users/1')).build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/users/{userId}', pathBuilder
                     .withPostOperation(operationBuilder.withParameter(pathParameterBuilder.withBooleanNamed('userId')))
                     .withGetOperation(operationBuilder)
@@ -664,7 +664,7 @@ describe('request path', () => {
             const getUserIdPath = pathBuilder
                 .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                 .withParameter(accountIdParameter);
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/{accountId}/users/{userId}', getUserIdPath)
                 .build();
 
@@ -711,7 +711,7 @@ describe('request path', () => {
             const getUserIdPath = pathBuilder
                 .withGetOperation(operationBuilder.withParameter(pathParameterBuilder.withNumberNamed('userId')))
                 .withParameter(accountIdParameter);
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/{accountId}/users/{userId}', getUserIdPath)
                 .build();
 
@@ -771,7 +771,7 @@ describe('request path', () => {
 
             const getUserPath = pathBuilder.withGetOperation(operationBuilder);
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/users/{userId', getUserPath)
                 .build();
 
@@ -810,7 +810,7 @@ describe('request path', () => {
 
             const getUserPath = pathBuilder.withGetOperation(operationBuilder);
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/users/userId}', getUserPath)
                 .build();
 
@@ -846,7 +846,7 @@ describe('request path', () => {
                 .withInteraction(interactionBuilder.withRequestPath('/base/path/does/exist'))
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
                 .withBasePath('/base/path')
                 .build();
@@ -865,7 +865,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
                 .withBasePath('/base/path')
                 .build();
@@ -907,7 +907,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/path/{name}', pathBuilder
                     .withGetOperation(operationBuilder
                         .withParameter(pathParameterBuilder.withStringNamed('name'))
@@ -932,7 +932,7 @@ describe('request path', () => {
                 )
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/path/all', pathBuilder
                     .withGetOperation(operationBuilder)
                 )

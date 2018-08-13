@@ -6,8 +6,9 @@ import {Metadata} from '../../../lib/swagger-mock-validator/analytics/metadata';
 import {FileSystem} from '../../../lib/swagger-mock-validator/clients/file-system';
 import {HttpClient} from '../../../lib/swagger-mock-validator/clients/http-client';
 import {FileStore} from '../../../lib/swagger-mock-validator/file-store';
+import {Pact} from '../../../lib/swagger-mock-validator/mock-parser/pact/pact';
 import {ResourceLoader} from '../../../lib/swagger-mock-validator/resource-loader';
-import {Pact, Swagger} from '../../../lib/swagger-mock-validator/types';
+import {Swagger2} from '../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {UuidGenerator} from '../../../lib/swagger-mock-validator/uuid-generator';
 
 export interface MockFileSystemResponses {
@@ -90,7 +91,7 @@ export const swaggerMockValidatorLoader = {
 
         return mockUuidGenerator;
     },
-    invoke: (swaggerFile: Swagger, pactFile: Pact): Promise<ValidationOutcome> =>
+    invoke: (swaggerFile: Swagger2, pactFile: Pact): Promise<ValidationOutcome> =>
         swaggerMockValidatorLoader.invokeWithMocks({
             fileSystem: swaggerMockValidatorLoader.createMockFileSystem({
                 'pact.json': Promise.resolve(JSON.stringify(pactFile)),

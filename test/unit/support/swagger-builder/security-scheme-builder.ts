@@ -1,11 +1,11 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerSecurityScheme} from '../../../../lib/swagger-mock-validator/types';
+import {Swagger2SecurityScheme} from '../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 
 export interface SecuritySchemeBuilder {
-    build: () => SwaggerSecurityScheme;
+    build: () => Swagger2SecurityScheme;
 }
 
-const createSecuritySchemeBuilder = (securityScheme: SwaggerSecurityScheme) => ({
+const createSecuritySchemeBuilder = (securityScheme: Swagger2SecurityScheme) => ({
     build: () => cloneDeep(securityScheme),
     withTypeApiKeyInHeader: (name: string) => createSecuritySchemeBuilder({in: 'header', name, type: 'apiKey'}),
     withTypeApiKeyInQuery: (name: string) => createSecuritySchemeBuilder({in: 'query', name, type: 'apiKey'}),

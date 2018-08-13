@@ -1,6 +1,7 @@
 import * as Ajv from 'ajv';
 import * as _ from 'lodash';
-import {JsonSchema, JsonSchemaAllOf, JsonSchemaDefinitions, JsonSchemaProperties, JsonSchemaValue} from '../types';
+import {traverseJsonSchema} from '../common/traverse-json-schema';
+import {ParsedSpecJsonSchema, ParsedSpecJsonSchemaCore} from '../spec-parser/parsed-spec';
 import {isBinary} from './validate-json/binary';
 import {isByte} from './validate-json/byte';
 import {doubleAjvKeyword, formatForDoubleNumbers, isDouble} from './validate-json/double';
@@ -61,7 +62,10 @@ const nonSwaggerAjvFormats = [
     'relative-json-pointer',
     'time',
     'uri',
-    'uuid'
+    'uuid',
+    'url',
+    'uri-template',
+    'uri-reference'
 ];
 
 const alwaysTrue = () => true;
@@ -72,26 +76,13 @@ const removeNonSwaggerAjvFormats = (ajv: Ajv.Ajv) => {
     });
 };
 
-const changeTypeToKeywordForCustomFormats = (schema?: JsonSchema) => {
-    if (!schema) {
-        return;
-    }
-
-    _.each(schema.definitions as JsonSchemaDefinitions, changeTypeToKeywordForCustomFormats);
-    _.each((schema as JsonSchemaAllOf).allOf, changeTypeToKeywordForCustomFormats);
-
-    formatForDoubleNumbers(schema);
-    formatForFloatNumbers(schema);
-    formatForInt32Numbers(schema);
-    formatForInt64Numbers(schema);
-
-    _.each((schema as JsonSchemaValue).properties as JsonSchemaProperties, changeTypeToKeywordForCustomFormats);
-    changeTypeToKeywordForCustomFormats((schema as JsonSchemaValue).items);
-
-    const schemaAsJsonSchemaValue = schema as JsonSchemaValue;
-    if (typeof schemaAsJsonSchemaValue.additionalProperties === 'object') {
-        changeTypeToKeywordForCustomFormats(schemaAsJsonSchemaValue.additionalProperties);
-    }
+const changeTypeToKeywordForCustomFormats = (schema?: ParsedSpecJsonSchema) => {
+    traverseJsonSchema(schema, (mutableSchema: ParsedSpecJsonSchemaCore) => {
+        formatForDoubleNumbers(mutableSchema);
+        formatForFloatNumbers(mutableSchema);
+        formatForInt32Numbers(mutableSchema);
+        formatForInt64Numbers(mutableSchema);
+    });
 };
 
 const createAjvForDraft4 = (userOptions: Ajv.Options) => {
@@ -116,7 +107,7 @@ const createAjvForDraft4 = (userOptions: Ajv.Options) => {
     return ajv;
 };
 
-export const validateJson = (jsonSchema: JsonSchema, json: any, numbersSentAsStrings?: boolean) => {
+export const validateJson = (jsonSchema: ParsedSpecJsonSchema, json: any, numbersSentAsStrings?: boolean) => {
     const ajv = createAjvForDraft4({
         allErrors: true,
         coerceTypes: numbersSentAsStrings || false,
@@ -127,10 +118,7 @@ export const validateJson = (jsonSchema: JsonSchema, json: any, numbersSentAsStr
     removeNonSwaggerAjvFormats(ajv);
 
     const ajvCompatibleJsonSchema = _.cloneDeep(jsonSchema);
-
     changeTypeToKeywordForCustomFormats(ajvCompatibleJsonSchema);
-
     ajv.validate(ajvCompatibleJsonSchema, _.cloneDeep(json));
-
     return ajv.errors || [];
 };

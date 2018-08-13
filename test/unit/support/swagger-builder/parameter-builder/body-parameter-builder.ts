@@ -1,8 +1,8 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerBodyParameter} from '../../../../../lib/swagger-mock-validator/types';
+import {Swagger2BodyParameter} from '../../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {schemaBuilder, SchemaBuilder} from '../schema-builder';
 
-const createBodyParameterBuilder = (parameter: SwaggerBodyParameter) => {
+const createBodyParameterBuilder = (parameter: Swagger2BodyParameter) => {
     return {
         build: () => cloneDeep(parameter),
         withOptionalSchema: (schema: SchemaBuilder) => createBodyParameterBuilder({

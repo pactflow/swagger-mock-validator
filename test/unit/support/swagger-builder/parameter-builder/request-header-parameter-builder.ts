@@ -1,7 +1,7 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerRequestHeaderParameter} from '../../../../../lib/swagger-mock-validator/types';
+import {Swagger2RequestHeaderParameter} from '../../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 
-const createRequestHeaderParameterBuilder = (parameter: SwaggerRequestHeaderParameter) => {
+const createRequestHeaderParameterBuilder = (parameter: Swagger2RequestHeaderParameter) => {
     return {
         build: () => cloneDeep(parameter),
         withOptionalNumberNamed: (name: string) => createRequestHeaderParameterBuilder({

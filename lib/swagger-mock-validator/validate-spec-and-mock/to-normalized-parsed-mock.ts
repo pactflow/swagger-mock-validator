@@ -1,4 +1,4 @@
-import {ParsedMock, ParsedMockInteraction} from '../types';
+import {ParsedMock, ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {toMapWithLowerCaseKeys} from './to-map-with-lower-case-keys';
 
 const toParsedMockInteractionWithNormalizedHeaders = (

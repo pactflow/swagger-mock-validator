@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
+import {ParsedMockInteraction, ParsedMockValue} from '../mock-parser/parsed-mock';
 import {result} from '../result';
-import {ParsedMockInteraction, ParsedMockValue, ParsedSpecBody, ParsedSpecOperation} from '../types';
+import {ParsedSpecBody, ParsedSpecOperation} from '../spec-parser/parsed-spec';
 import {validateJson} from './validate-json';
 
 const validateRequestBodyAgainstSchema = (

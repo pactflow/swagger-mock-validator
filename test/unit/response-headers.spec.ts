@@ -2,12 +2,12 @@ import * as _ from 'lodash';
 import {ValidationResultCode, ValidationResultSource, ValidationResultType} from '../../lib/api-types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {responseBuilder, ResponseBuilder} from './support/swagger-builder/response-builder';
 import {responseHeaderBuilder} from './support/swagger-builder/response-header-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -37,7 +37,7 @@ describe('response headers', () => {
 
         const response = swaggerResponseBuilder || responseBuilder;
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder.withResponse(200, response)))
             .withProduces(['application/json'])
             .build();
@@ -246,7 +246,7 @@ describe('response headers', () => {
 
         const responseHeader = responseHeaderBuilder.withNumber();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder
                     .withDefaultResponse(responseBuilder.withHeader('x-custom-header', responseHeader))

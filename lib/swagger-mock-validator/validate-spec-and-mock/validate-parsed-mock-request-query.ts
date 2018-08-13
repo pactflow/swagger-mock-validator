@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
+import {ParsedMockInteraction, ParsedMockValue} from '../mock-parser/parsed-mock';
 import {result} from '../result';
-import {ParsedMockInteraction, ParsedMockValue, ParsedSpecOperation} from '../types';
+import {ParsedSpecOperation} from '../spec-parser/parsed-spec';
 import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 
 const queryUsedForSecurity = (queryName: string, parsedSpecOperation: ParsedSpecOperation) =>

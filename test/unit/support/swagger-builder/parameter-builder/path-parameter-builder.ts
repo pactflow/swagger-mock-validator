@@ -1,7 +1,7 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerPathParameter} from '../../../../../lib/swagger-mock-validator/types';
+import {Swagger2PathParameter} from '../../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 
-const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
+const createPathParameterBuilder = (parameter: Swagger2PathParameter) => {
     return {
         build: () => cloneDeep(parameter),
         withArrayOfArrayOfNumberTabAndCommaSeparatedNamed: (name: string) => createPathParameterBuilder({
@@ -250,7 +250,7 @@ const createPathParameterBuilder = (parameter: SwaggerPathParameter) => {
                 type: 'string'
             };
 
-            return createPathParameterBuilder(parameterWithUnknownFormat as SwaggerPathParameter);
+            return createPathParameterBuilder(parameterWithUnknownFormat as Swagger2PathParameter);
         }
     };
 };

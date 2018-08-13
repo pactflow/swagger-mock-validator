@@ -1,12 +1,12 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {definitionsBuilder, DefinitionsBuilder} from './support/swagger-builder/definitions-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {responseBuilder} from './support/swagger-builder/response-builder';
 import {schemaBuilder, SchemaBuilder} from './support/swagger-builder/schema-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -32,7 +32,7 @@ describe('response body', () => {
             ? responseBuilder.withSchema(swaggerBodySchema)
             : responseBuilder;
 
-        let swaggerWithBodySchemaBuilder = swaggerBuilder
+        let swaggerWithBodySchemaBuilder = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withResponse(200, swaggerResponseBuilder))
             );
@@ -338,7 +338,7 @@ describe('response body', () => {
         }]);
     });
 
-    it('should pass when no pact response body and a schema ', async () => {
+    it('should pass when no pact response body is specified and swagger defines a response body schema', async () => {
         const swaggerBodySchema = schemaBuilder
             .withTypeObject()
             .withRequiredProperty('id', schemaBuilder.withTypeNumber());
@@ -645,7 +645,7 @@ describe('response body', () => {
                 )
             );
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withGetOperation(operation))
             .build();
 

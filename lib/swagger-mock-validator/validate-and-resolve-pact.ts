@@ -1,5 +1,5 @@
+import {Pact} from './mock-parser/pact/pact';
 import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator-error-impl';
-import {Pact} from './types';
 
 export const validateAndResolvePact = (pactJson: any, mockPathOrUrl: string): Pact => {
     if (!pactJson.interactions) {

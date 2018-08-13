@@ -1,97 +1,58 @@
 import * as _ from 'lodash';
+import {createEmptyParentOperation} from '../common/create-empty-parent-operation';
+import {parsePathNameSegments} from '../common/parse-path-name-segments';
 import {
-    JsonSchema, JsonSchemaAllOf,
-    JsonSchemaDefinitions,
-    JsonSchemaProperties,
-    JsonSchemaValue,
     ParsedSpec,
     ParsedSpecBody,
+    ParsedSpecCredentialLocation,
     ParsedSpecOperation,
     ParsedSpecParameter,
     ParsedSpecParameterCollection,
-    ParsedSpecPathNameSegment,
     ParsedSpecResponses,
     ParsedSpecSecurityRequirements,
-    ParsedSpecValue,
-    Swagger,
-    SwaggerBodyParameter,
-    SwaggerItem,
-    SwaggerOperation,
-    SwaggerParameter,
-    SwaggerPath,
-    SwaggerPathParameter,
-    SwaggerQueryParameter,
-    SwaggerRequestHeaderParameter,
-    SwaggerResponseHeaderCollection,
-    SwaggerResponses,
-    SwaggerSecurityDefinitions,
-    SwaggerSecurityRequirement
-} from '../types';
-
-const removeRequiredPropertiesFromSchema = (schema?: JsonSchema) => {
-    if (schema) {
-        _.each((schema as JsonSchemaAllOf).allOf, removeRequiredPropertiesFromSchema);
-        delete (schema as JsonSchemaValue).required;
-        removeRequiredPropertiesFromSchema((schema as JsonSchemaValue).items);
-        _.each((schema as JsonSchemaValue).properties as JsonSchemaProperties, removeRequiredPropertiesFromSchema);
-    }
-};
-
-const addAdditionalPropertiesFalseToObjectSchema = (objectSchema: JsonSchemaValue): void => {
-    if (typeof objectSchema.additionalProperties !== 'object') {
-        objectSchema.additionalProperties = false;
-    }
-
-    _.each(objectSchema.properties as JsonSchemaProperties, addAdditionalPropertiesFalseToSchema);
-};
-
-const addAdditionalPropertiesFalseToSchema = (schema?: JsonSchema): void => {
-    if (!schema) {
-        return;
-    }
-
-    if ((schema as JsonSchemaValue).type === 'object') {
-        addAdditionalPropertiesFalseToObjectSchema(schema);
-    } else if ((schema as JsonSchemaValue).type === 'array') {
-        addAdditionalPropertiesFalseToSchema((schema as JsonSchemaValue).items);
-    }
-
-    return;
-};
-
-const modifySchemaForResponses = (schema: JsonSchema): JsonSchema => {
-    const modifiedSchema = _.cloneDeep(schema);
-
-    removeRequiredPropertiesFromSchema(modifiedSchema);
-
-    return modifiedSchema;
-};
-
-const parseDefinitionsForResponses = (definitions?: JsonSchemaDefinitions): JsonSchemaDefinitions => {
-    if (!definitions) {
-        return {};
-    }
-
-    return Object.keys(definitions).reduce<JsonSchemaDefinitions>((parsedDefinitions, definitionName) => {
-        const definitionSchema = definitions[definitionName];
-        parsedDefinitions[definitionName] = modifySchemaForResponses(definitionSchema);
-        return parsedDefinitions;
-    }, {});
-};
+    ParsedSpecValue
+} from '../parsed-spec';
+import {
+    Swagger2,
+    Swagger2BodyParameter,
+    Swagger2Item,
+    Swagger2JsonSchema,
+    Swagger2JsonSchemaDefinitions,
+    Swagger2Operation,
+    Swagger2Parameter,
+    Swagger2Path,
+    Swagger2PathParameter,
+    Swagger2QueryParameter,
+    Swagger2RequestHeaderParameter,
+    Swagger2ResponseHeaderCollection,
+    Swagger2SecurityDefinitions,
+    Swagger2SecurityRequirement
+} from './swagger2';
 
 const toParsedSpecValue = (
-    parameters: SwaggerParameter[] | undefined,
+    parameters: Swagger2Parameter[] | undefined,
     parentLocation: string,
     parentOperation: ParsedSpecOperation
-) => _.map(parameters as SwaggerParameter[], (parameter, index) => ({
+) => _.map(parameters as Swagger2Parameter[], (parameter, index) => ({
     location: `${parentLocation}.parameters[${index}]`,
     parentOperation,
     value: parameter
 }));
 
+const addDefinitionsToSchema = (
+    schema: Swagger2JsonSchema | undefined, spec: Swagger2
+): Swagger2JsonSchema | undefined => {
+    if (schema) {
+        const modifiedSchema = _.cloneDeep(schema);
+        modifiedSchema.definitions = spec.definitions;
+        return modifiedSchema;
+    }
+    return undefined;
+};
+
 const mergePathAndOperationParameters = (
-    pathParameters: Array<ParsedSpecValue<SwaggerParameter>>,
-    operationParameters: Array<ParsedSpecValue<SwaggerParameter>>
+    pathParameters: Array<ParsedSpecValue<Swagger2Parameter>>,
+    operationParameters: Array<ParsedSpecValue<Swagger2Parameter>>
 ) => {
     const mergedParameters = _.clone(pathParameters);
 
@@ -112,75 +73,41 @@ const mergePathAndOperationParameters = (
     return mergedParameters;
 };
 
-const parsePathNameSegments = (
-    pathName: string,
-    pathParameters: ParsedSpecParameter[],
-    parsedOperation: ParsedSpecOperation,
-    basePath?: string
-) => {
-    const path = (basePath) ? basePath + pathName : pathName;
-
-    return _(path.split('/'))
-        .filter((pathNameSegment) => pathNameSegment.length > 0)
-        .map((pathNameSegment) => {
-            let parsedPathNameSegment: ParsedSpecPathNameSegment;
-            const isParameter = pathNameSegment[0] === '{' && pathNameSegment[pathNameSegment.length - 1] === '}';
-
-            if (isParameter) {
-                const pathNameSegmentValue = pathNameSegment.substring(1, pathNameSegment.length - 1);
-
-                parsedPathNameSegment = {
-                    location: parsedOperation.location,
-                    parameter: _.find(pathParameters, {name: pathNameSegmentValue}) as ParsedSpecParameter,
-                    parentOperation: parsedOperation,
-                    validatorType: 'jsonSchema',
-                    value: pathNameSegmentValue
-                };
-            } else {
-                parsedPathNameSegment = {
-                    location: parsedOperation.location,
-                    parentOperation: parsedOperation,
-                    validatorType: 'equal',
-                    value: pathNameSegment
-                };
-            }
-
-            return parsedPathNameSegment;
-        })
-        .value();
-};
-
-type SwaggerHeaderPathOrQueryParameter = SwaggerRequestHeaderParameter | SwaggerPathParameter | SwaggerQueryParameter;
+type SwaggerHeaderPathOrQueryParameter = Swagger2RequestHeaderParameter |
+    Swagger2PathParameter |
+    Swagger2QueryParameter;
 
 const toParsedParameter = (
-    parameter: ParsedSpecValue<SwaggerItem>,
+    parameter: ParsedSpecValue<Swagger2Item>,
     name: string
 ): ParsedSpecParameter => ({
-    collectionFormat: parameter.value.collectionFormat,
-    enum: parameter.value.enum,
-    exclusiveMaximum: parameter.value.exclusiveMaximum,
-    exclusiveMinimum: parameter.value.exclusiveMinimum,
-    format: parameter.value.format,
-    items: parameter.value.items,
     location: parameter.location,
-    maxItems: parameter.value.maxItems,
-    maxLength: parameter.value.maxLength,
-    maximum: parameter.value.maximum,
-    minItems: parameter.value.minItems,
-    minLength: parameter.value.minLength,
-    minimum: parameter.value.minimum,
-    multipleOf: parameter.value.multipleOf,
     name,
     parentOperation: parameter.parentOperation,
-    pattern: parameter.value.pattern,
     required: (parameter.value as SwaggerHeaderPathOrQueryParameter).required || false,
-    type: parameter.value.type,
-    uniqueItems: parameter.value.uniqueItems,
+    schema: {
+        collectionFormat: parameter.value.collectionFormat,
+        enum: parameter.value.enum,
+        exclusiveMaximum: parameter.value.exclusiveMaximum,
+        exclusiveMinimum: parameter.value.exclusiveMinimum,
+        format: parameter.value.format,
+        items: parameter.value.items,
+        maxItems: parameter.value.maxItems,
+        maxLength: parameter.value.maxLength,
+        maximum: parameter.value.maximum,
+        minItems: parameter.value.minItems,
+        minLength: parameter.value.minLength,
+        minimum: parameter.value.minimum,
+        multipleOf: parameter.value.multipleOf,
+        pattern: parameter.value.pattern,
+        type: parameter.value.type,
+        uniqueItems: parameter.value.uniqueItems
+    },
     value: parameter.value
 });
 
 const parseResponseHeaders = (
-    headers: SwaggerResponseHeaderCollection | undefined,
+    headers: Swagger2ResponseHeaderCollection | undefined,
     responseLocation: string,
     parentOperation: ParsedSpecOperation
 ): ParsedSpecParameterCollection => {
@@ -203,10 +130,11 @@ const parseResponseHeaders = (
 };
 
 const parseResponses = (
-    responses: SwaggerResponses,
+    operation: Swagger2Operation,
     parentOperation: ParsedSpecOperation,
-    definitions?: JsonSchemaDefinitions
+    specJson: Swagger2
 ) => {
+    const responses = operation.responses;
     // tslint:disable:no-object-literal-type-assertion
     const parsedResponses = {
         location: `${parentOperation.location}.responses`,
@@ -214,17 +142,16 @@ const parseResponses = (
         value: responses
     } as ParsedSpecResponses;
 
-    const parsedDefinitions = parseDefinitionsForResponses(definitions);
+    const produces = parseMimeType({
+        mimeTypeName: 'produces',
+        operation,
+        parsedOperation: parentOperation,
+        specJson
+    });
 
     _.each(responses, (response, responseStatus) => {
         const responseLocation = `${parsedResponses.location}.${responseStatus}`;
         const originalSchema = response.schema;
-        let modifiedSchema: JsonSchema | undefined;
-
-        if (response.schema) {
-            modifiedSchema = modifySchemaForResponses(response.schema);
-            modifiedSchema.definitions = parsedDefinitions;
-        }
 
         parsedResponses[responseStatus as any] = {
             getFromSchema: (pathToGet) => ({
@@ -235,11 +162,11 @@ const parseResponses = (
             headers: parseResponseHeaders(response.headers, responseLocation, parentOperation),
             location: responseLocation,
             parentOperation,
-            schema: modifiedSchema,
+            produces,
+            schema: addDefinitionsToSchema(response.schema, specJson),
             value: response
         };
     });
-
     return parsedResponses;
 };
 
@@ -250,12 +177,12 @@ const toSpecParameterCollection = (parameters: ParsedSpecParameter[]) =>
     }, {});
 
 const toRequestBodyParameter = (
-    parameters: Array<ParsedSpecValue<SwaggerParameter>>,
-    definitions?: JsonSchemaDefinitions
+    parameters: Array<ParsedSpecValue<Swagger2Parameter>>,
+    definitions?: Swagger2JsonSchemaDefinitions
 ): ParsedSpecBody | undefined =>
     _(parameters)
         .filter((parameter) => parameter.value.in === 'body')
-        .map((parameter: ParsedSpecValue<SwaggerBodyParameter>) => {
+        .map((parameter: ParsedSpecValue<Swagger2BodyParameter>) => {
             const modifiedSchema = _.cloneDeep(parameter.value.schema);
             modifiedSchema.definitions = definitions;
 
@@ -277,7 +204,7 @@ const toRequestBodyParameter = (
 
 const toParsedParametersFor = (
     inValue: 'header' | 'path' | 'query',
-    parameters: Array<ParsedSpecValue<SwaggerParameter>>
+    parameters: Array<ParsedSpecValue<Swagger2Parameter>>
 ): ParsedSpecParameter[] =>
     _(parameters)
         .filter({value: {in: inValue}} as any)
@@ -286,10 +213,10 @@ const toParsedParametersFor = (
         .value();
 
 const parseParameters = (
-    path: SwaggerPath,
+    path: Swagger2Path,
     pathLocation: string,
     parsedOperation: ParsedSpecOperation,
-    definitions?: JsonSchemaDefinitions
+    definitions?: Swagger2JsonSchemaDefinitions
 ) => {
     const pathParameters = toParsedSpecValue(path.parameters, pathLocation, parsedOperation);
     const operationParameters = toParsedSpecValue(
@@ -309,9 +236,9 @@ const parseParameters = (
 
 const parseMimeType = (options: {
     mimeTypeName: 'consumes' | 'produces',
-    operation: SwaggerOperation,
+    operation: Swagger2Operation,
     parsedOperation: ParsedSpecOperation,
-    specJson: Swagger
+    specJson: Swagger2
 }) => {
     const operationValue = options.operation[options.mimeTypeName];
     const globalValue = options.specJson[options.mimeTypeName];
@@ -338,8 +265,8 @@ const parseMimeType = (options: {
 };
 
 const getSecurityRequirementsAndBaseLocation = (
-    operationSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
-    globalSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
+    operationSecurityRequirements: Swagger2SecurityRequirement[] | undefined,
+    globalSecurityRequirements: Swagger2SecurityRequirement[] | undefined,
     parsedOperation: ParsedSpecOperation
 ) => {
     if (operationSecurityRequirements && operationSecurityRequirements.length > 0) {
@@ -356,9 +283,9 @@ const getSecurityRequirementsAndBaseLocation = (
 };
 
 const parseSecurityRequirements = (
-    securityDefinitionsOrUndefined: SwaggerSecurityDefinitions | undefined,
-    operationSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
-    globalSecurityRequirements: SwaggerSecurityRequirement[] | undefined,
+    securityDefinitionsOrUndefined: Swagger2SecurityDefinitions | undefined,
+    operationSecurityRequirements: Swagger2SecurityRequirement[] | undefined,
+    globalSecurityRequirements: Swagger2SecurityRequirement[] | undefined,
     parsedOperation: ParsedSpecOperation
 ): ParsedSpecSecurityRequirements[] => {
     const securityDefinitions = securityDefinitionsOrUndefined || {};
@@ -373,7 +300,7 @@ const parseSecurityRequirements = (
             _.map(securityRequirement, (requirement: string[], requirementName: string) => {
                 const securityDefinition = securityDefinitions[requirementName];
                 let credentialKey = 'authorization';
-                let credentialLocation: 'header' | 'query' = 'header';
+                let credentialLocation: ParsedSpecCredentialLocation = 'header';
 
                 if (securityDefinition.type === 'apiKey') {
                     credentialKey = securityDefinition.name;
@@ -395,11 +322,11 @@ const parseSecurityRequirements = (
         .value();
 };
 
-const parseOperationFromPath = (path: SwaggerPath, pathName: string, specPathOrUrl: string, specJson: Swagger):
+const parseOperationFromPath = (path: Swagger2Path, pathName: string, specPathOrUrl: string, specJson: Swagger2):
     ParsedSpecOperation[] =>
     _(path)
         .omit(['parameters'])
-        .map((operation: SwaggerOperation, operationName: string) => {
+        .map((operation: Swagger2Operation, operationName: string) => {
             const pathLocation = `[swaggerRoot].paths.${pathName}`;
             const operationLocation = `${pathLocation}.${operationName}`;
             const parsedOperation = {
@@ -415,12 +342,7 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, specPathOrU
             parsedOperation.parentOperation = parsedOperation;
             parsedOperation.pathNameSegments =
                 parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, specJson.basePath);
-            parsedOperation.produces = parseMimeType({
-                mimeTypeName: 'produces',
-                operation,
-                parsedOperation,
-                specJson
-            });
+
             parsedOperation.consumes = parseMimeType({
                 mimeTypeName: 'consumes',
                 operation,
@@ -430,7 +352,8 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, specPathOrU
             parsedOperation.requestBodyParameter = parsedParameters.requestBody;
             parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
             parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
-            parsedOperation.responses = parseResponses(operation.responses, parsedOperation, specJson.definitions);
+
+            parsedOperation.responses = parseResponses(operation, parsedOperation, specJson);
             parsedOperation.securityRequirements = parseSecurityRequirements(
                 specJson.securityDefinitions,
                 operation.security,
@@ -442,46 +365,11 @@ const parseOperationFromPath = (path: SwaggerPath, pathName: string, specPathOrU
         })
         .value();
 
-const createEmptyParentOperation = (specPathOrUrl: string, location: string): ParsedSpecOperation => {
-    const emptyParentOperation = {
-        consumes: {
-            location,
-            parentOperation: undefined as any,
-            value: []
-        },
-        location,
-        method: null,
-        parentOperation: undefined as any,
-        pathName: null,
-        pathNameSegments: [],
-        produces: {
-            location,
-            parentOperation: undefined as any,
-            value: []
-        },
-        requestBodyParameter: undefined,
-        requestHeaderParameters: {},
-        requestQueryParameters: {},
-        responses: {
-            location,
-            parentOperation: undefined as any,
-            value: undefined
-        },
-        securityRequirements: [],
-        specFile: specPathOrUrl,
-        value: undefined
-    };
-    emptyParentOperation.parentOperation = emptyParentOperation;
-    emptyParentOperation.responses.parentOperation = emptyParentOperation;
-
-    return emptyParentOperation;
-};
-
-export const swaggerParser = {
-    parse: (specJson: Swagger, specPathOrUrl: string): ParsedSpec => ({
+export const swagger2Parser = {
+    parse: (specJson: Swagger2, specPathOrUrl: string): ParsedSpec => ({
         operations: _(specJson.paths)
             .map(
-                (path: SwaggerPath, pathName: string) =>
+                (path: Swagger2Path, pathName: string) =>
                     parseOperationFromPath(path, pathName, specPathOrUrl, specJson)
             )
             .flatten<ParsedSpecOperation>()

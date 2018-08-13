@@ -1,14 +1,9 @@
 import * as _ from 'lodash';
 import * as querystring from 'querystring';
 import {
-    MultiCollectionFormatSeparator,
-    Pact,
-    PactInteraction,
-    PactInteractionHeaders,
-    ParsedMock,
-    ParsedMockInteraction,
-    ParsedMockValueCollection
-} from '../types';
+    MultiCollectionFormatSeparator} from '../../types';
+import {ParsedMock, ParsedMockInteraction, ParsedMockValueCollection} from '../parsed-mock';
+import {Pact, PactInteraction, PactInteractionHeaders} from './pact';
 
 const parseRequestPathSegments = (requestPath: string, parentInteraction: ParsedMockInteraction) =>
     _(requestPath.split('/'))

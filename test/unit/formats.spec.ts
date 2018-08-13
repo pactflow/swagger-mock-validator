@@ -2,7 +2,6 @@ import * as _ from 'lodash';
 import {ValidationOutcome} from '../../lib/api-types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {definitionsBuilder} from './support/swagger-builder/definitions-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
@@ -11,6 +10,7 @@ import {responseBuilder} from './support/swagger-builder/response-builder';
 import {responseHeaderBuilder} from './support/swagger-builder/response-header-builder';
 import {schemaBuilder, SchemaBuilder} from './support/swagger-builder/schema-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -27,7 +27,7 @@ describe('formats', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/{value}', swaggerPath)
             .build();
 
@@ -47,7 +47,7 @@ describe('formats', () => {
             ? responseBuilder.withSchema(swaggerBodySchema)
             : responseBuilder;
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder.withResponse(200, swaggerResponseBuilder))
             )
@@ -1062,6 +1062,9 @@ describe('formats', () => {
             'relative-json-pointer': 'not-a-relative-json-pointer',
             'time': 'not-a-time',
             'uri': 'not-a-uri',
+            'uri-reference': 'not-a-uri-reference\n',
+            'uri-template': 'not-a-uri-template\n',
+            'url': 'not-a-url',
             'uuid': 'not-a-uuid'
         };
 
@@ -1092,7 +1095,7 @@ describe('formats', () => {
 
             const responseHeaderSpec = responseHeaderBuilder.withInt32();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder
                     .withGetOperation(operationBuilder
                         .withResponse(200, responseBuilder.withHeader('x-custom-header', responseHeaderSpec))
@@ -1142,7 +1145,7 @@ describe('formats', () => {
                 .withTypeObject()
                 .withAdditionalPropertiesSchema(schemaBuilder.withTypeInteger().withFormatInt32());
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder
                     .withGetOperation(operationBuilder
                         .withResponse(200, responseBuilder.withSchema(responseBodySchema))
@@ -1189,7 +1192,7 @@ describe('formats', () => {
                 )
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder
                     .withGetOperation(operationBuilder
                         .withResponse(200, responseBuilder.withSchema(
@@ -1244,7 +1247,7 @@ describe('formats', () => {
                 )
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder
                     .withGetOperation(operationBuilder.withResponse(200, responseBuilder.withSchema(schemaBuilder
                         .withAllOf([

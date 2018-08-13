@@ -1,36 +1,22 @@
 import * as _ from 'lodash';
+import {isObject} from 'util';
 import {ValidationResultCode} from '../../api-types';
+import {ParsedMockInteraction, ParsedMockValue} from '../mock-parser/parsed-mock';
 import {result} from '../result';
 import {
-    JsonSchema,
-    MultiCollectionFormatSeparator,
-    ParsedMockInteraction,
-    ParsedMockValue,
-    ParsedSpecItem,
-    ParsedSpecItemCollectionFormat,
-    ParsedSpecParameter} from '../types';
+    ParsedSpecCollectionFormat,
+    ParsedSpecJsonSchema,
+    ParsedSpecJsonSchemaCore,
+    ParsedSpecParameter
+} from '../spec-parser/parsed-spec';
+import {MultiCollectionFormatSeparator} from '../types';
 import {validateJson} from './validate-json';
 
-const toJsonSchema = (parsedSpecParameter: ParsedSpecParameter): JsonSchema => {
-    const schema: JsonSchema = {
+const toJsonSchema = (parsedSpecParameter: ParsedSpecParameter): ParsedSpecJsonSchema => {
+    const schema: ParsedSpecJsonSchema = {
+        definitions: parsedSpecParameter.schema.definitions,
         properties: {
-            value: {
-                enum: parsedSpecParameter.enum,
-                exclusiveMaximum: parsedSpecParameter.exclusiveMaximum,
-                exclusiveMinimum: parsedSpecParameter.exclusiveMinimum,
-                format: parsedSpecParameter.format as any,
-                items: parsedSpecParameter.items as any,
-                maxItems: parsedSpecParameter.maxItems,
-                maxLength: parsedSpecParameter.maxLength,
-                maximum: parsedSpecParameter.maximum,
-                minItems: parsedSpecParameter.minItems,
-                minLength: parsedSpecParameter.minLength,
-                minimum: parsedSpecParameter.minimum,
-                multipleOf: parsedSpecParameter.multipleOf,
-                pattern: parsedSpecParameter.pattern,
-                type: parsedSpecParameter.type,
-                uniqueItems: parsedSpecParameter.uniqueItems
-            }
+            value: parsedSpecParameter.schema
         },
         type: 'object'
     };
@@ -44,15 +30,15 @@ const toJsonSchema = (parsedSpecParameter: ParsedSpecParameter): JsonSchema => {
 
 const multiCollectionFormatSeparator: MultiCollectionFormatSeparator = '[multi-array-separator]';
 
-const getCollectionSeparator = (parsedSpecItemCollectionFormat?: ParsedSpecItemCollectionFormat) => {
+const getCollectionSeparator = (parsedSpecCollectionFormat?: ParsedSpecCollectionFormat) => {
     // tslint:disable:cyclomatic-complexity
-    if (parsedSpecItemCollectionFormat === 'ssv') {
+    if (parsedSpecCollectionFormat === 'ssv') {
         return ' ';
-    } else if (parsedSpecItemCollectionFormat === 'tsv') {
+    } else if (parsedSpecCollectionFormat === 'tsv') {
         return '\t';
-    } else if (parsedSpecItemCollectionFormat === 'pipes') {
+    } else if (parsedSpecCollectionFormat === 'pipes') {
         return '|';
-    } else if (parsedSpecItemCollectionFormat === 'multi') {
+    } else if (parsedSpecCollectionFormat === 'multi') {
         return multiCollectionFormatSeparator;
     }
 
@@ -60,10 +46,14 @@ const getCollectionSeparator = (parsedSpecItemCollectionFormat?: ParsedSpecItemC
     // tslint:enable:cyclomatic-complexity
 };
 
-const expandArrays = (parsedMockValue: string, parsedSpecItem: ParsedSpecItem): any => {
-    if (parsedSpecItem.type === 'array') {
-        const values = parsedMockValue.split(getCollectionSeparator(parsedSpecItem.collectionFormat));
-        return _.map(values, (value) => expandArrays(value, parsedSpecItem.items as ParsedSpecItem));
+const isParsedSpecJsonSchemaCore = (schema: ParsedSpecJsonSchema): schema is ParsedSpecJsonSchemaCore =>
+    isObject(schema);
+
+const expandArrays = (parsedMockValue: string, parsedSpecParameterSchema: ParsedSpecJsonSchema): any => {
+    if (isParsedSpecJsonSchemaCore(parsedSpecParameterSchema) && parsedSpecParameterSchema.type === 'array') {
+        const values = parsedMockValue.split(getCollectionSeparator(parsedSpecParameterSchema.collectionFormat));
+        return _.map(values, (value) =>
+            expandArrays(value, parsedSpecParameterSchema.items || {}));
     } else {
         return parsedMockValue;
     }
@@ -71,13 +61,13 @@ const expandArrays = (parsedMockValue: string, parsedSpecItem: ParsedSpecItem): 
 
 const toWrappedParsedMockValue = (
     parsedMockValue: ParsedMockValue<any>,
-    parsedSpecItem: ParsedSpecItem
+    parsedSpecParameter: ParsedSpecParameter
 ): {value: any} => {
     if (!parsedMockValue) {
         return {value: undefined};
     }
 
-    return {value: expandArrays(parsedMockValue.value, parsedSpecItem)};
+    return {value: expandArrays(parsedMockValue.value, parsedSpecParameter.schema)};
 };
 
 export const validateMockValueAgainstSpec = <T>(

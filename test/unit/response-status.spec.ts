@@ -1,10 +1,10 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder, OperationBuilder} from './support/swagger-builder/operation-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {responseBuilder} from './support/swagger-builder/response-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -24,7 +24,7 @@ describe('response status', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withGetOperation(swaggerOperation))
             .build();
 

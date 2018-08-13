@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {ParameterBuilder} from './support/swagger-builder/parameter-builder';
 import {
@@ -9,6 +8,7 @@ import {
 } from './support/swagger-builder/parameter-builder/request-header-parameter-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -44,7 +44,7 @@ describe('request headers', () => {
             ? defaultOperationBuilder.withParameter(swaggerHeaderParameter)
             : defaultOperationBuilder;
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder.withGetOperation(operation))
             .build();
 

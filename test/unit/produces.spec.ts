@@ -1,9 +1,10 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
+import {responseBuilder} from './support/swagger-builder/response-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -16,6 +17,29 @@ describe('produces', () => {
 
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
+    });
+
+    it('should return status unknown error, if pact response status does not match spec response status', async () => {
+        const interaction = defaultInteractionBuilder
+            .withResponseStatus(202)
+            .withRequestPath('/does/exist')
+            .withResponseHeader('Content-Type', 'application/json')
+            .withRequestHeader('Accept', 'application/json');
+        const pactFile = pactBuilder
+            .withInteraction(interaction).build();
+
+        const operation = operationBuilder
+            .withResponse(200, responseBuilder)
+            .withProduces(['application/json']);
+
+        const swaggerFile = swagger2Builder
+            .withPath('/does/exist', pathBuilder.withGetOperation(operation))
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result.errors.length).toBe(1);
+        expect(result.errors[0].code).toBe('response.status.unknown');
     });
 
     describe('request accepts', () => {
@@ -32,7 +56,7 @@ describe('produces', () => {
                 ? operationBuilder.withProduces(swaggerProduces)
                 : operationBuilder;
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder.withGetOperation(operation))
                 .build();
 
@@ -148,7 +172,7 @@ describe('produces', () => {
                 .withInteraction(defaultInteractionBuilder.withRequestHeader('Accept', 'application/json'))
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
                 .withProduces(['application/xml'])
                 .build();
@@ -184,7 +208,7 @@ describe('produces', () => {
                 .withInteraction(defaultInteractionBuilder.withRequestHeader('Accept', 'application/json'))
                 .build();
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder
                     .withGetOperation(operationBuilder.withProduces(['application/xml']))
                 )
@@ -232,7 +256,7 @@ describe('produces', () => {
                 ? operationBuilder.withProduces(swaggerProduces)
                 : operationBuilder;
 
-            const swaggerFile = swaggerBuilder
+            const swaggerFile = swagger2Builder
                 .withPath('/does/exist', pathBuilder.withPostOperation(operation))
                 .build();
 

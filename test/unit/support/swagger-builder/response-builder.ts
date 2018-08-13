@@ -1,14 +1,14 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerResponse} from '../../../../lib/swagger-mock-validator/types';
+import {Swagger2Response} from '../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {setValueOn} from '../builder-utilities';
 import {ResponseHeaderBuilder} from './response-header-builder';
 import {SchemaBuilder} from './schema-builder';
 
 export interface ResponseBuilder {
-    build: () => SwaggerResponse;
+    build: () => Swagger2Response;
 }
 
-const createResponseBuilder = (response: SwaggerResponse) => ({
+const createResponseBuilder = (response: Swagger2Response) => ({
     build: () => cloneDeep(response),
     withDescription: (description: string) => createResponseBuilder(setValueOn(response, 'description', description)),
     withHeader: (name: string, headerBuilder: ResponseHeaderBuilder) =>

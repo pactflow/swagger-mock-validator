@@ -1,8 +1,9 @@
 import * as _ from 'lodash';
 import Negotiator = require('negotiator');
 import {ValidationResult} from '../../api-types';
+import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
-import {ParsedMockInteraction, ParsedSpecOperation} from '../types';
+import {ParsedSpecOperation, ParsedSpecValue} from '../spec-parser/parsed-spec';
 
 const acceptHeaderName = 'accept';
 const contentTypeHeaderName = 'content-type';
@@ -12,7 +13,8 @@ const negotiateMediaType = (acceptableMediaTypes: string, availableMediaTypes: s
 
 const validateParsedMockRequestAcceptsHeader = (
     parsedMockInteraction: ParsedMockInteraction,
-    parsedSpecOperation: ParsedSpecOperation
+    parsedSpecOperation: ParsedSpecOperation,
+    responseProduces: ParsedSpecValue<string[]>
 ) => {
     const parsedMockAcceptRequestHeaderValue: string =
         _.get(parsedMockInteraction.requestHeaders[acceptHeaderName], 'value');
@@ -21,7 +23,7 @@ const validateParsedMockRequestAcceptsHeader = (
         return [];
     }
 
-    if (parsedSpecOperation.produces.value.length === 0) {
+    if (responseProduces.value.length === 0) {
         return [result.build({
             code: 'request.accept.unknown',
             message: 'Request Accept header is defined but there is no produces definition in the spec',
@@ -32,7 +34,7 @@ const validateParsedMockRequestAcceptsHeader = (
     }
 
     const matchingMediaTypes =
-        negotiateMediaType(parsedMockAcceptRequestHeaderValue, parsedSpecOperation.produces.value);
+        negotiateMediaType(parsedMockAcceptRequestHeaderValue, responseProduces.value);
 
     if (matchingMediaTypes.length === 0) {
         return [result.build({
@@ -40,7 +42,7 @@ const validateParsedMockRequestAcceptsHeader = (
             message: 'Request Accept header is incompatible with the produces mime type defined in the swagger file',
             mockSegment: parsedMockInteraction.requestHeaders[acceptHeaderName],
             source: 'spec-mock-validation',
-            specSegment: parsedSpecOperation.produces
+            specSegment: responseProduces
         })];
     }
 
@@ -49,16 +51,17 @@ const validateParsedMockRequestAcceptsHeader = (
 
 const validateParsedMockResponseContentTypeAndBody = (
     parsedMockInteraction: ParsedMockInteraction,
-    parsedSpecOperation: ParsedSpecOperation
+    parsedSpecOperation: ParsedSpecOperation,
+    responseProduces: ParsedSpecValue<string[]>
 ) => {
     const parsedMockResponseContentType: string =
-        _.get(parsedMockInteraction.responseHeaders[contentTypeHeaderName], `value`);
+        _.get(parsedMockInteraction.responseHeaders[contentTypeHeaderName], 'value');
 
     if (!parsedMockResponseContentType) {
         return [];
     }
 
-    if (parsedSpecOperation.produces.value.length === 0) {
+    if (responseProduces.value.length === 0) {
         return [result.build({
             code: 'response.content-type.unknown',
             message: 'Response Content-Type header is defined but there is no produces definition in the spec',
@@ -68,7 +71,7 @@ const validateParsedMockResponseContentTypeAndBody = (
         })];
     }
 
-    const matchingMediaTypes = negotiateMediaType(parsedMockResponseContentType, parsedSpecOperation.produces.value);
+    const matchingMediaTypes = negotiateMediaType(parsedMockResponseContentType, responseProduces.value);
 
     if (matchingMediaTypes.length === 0) {
         return [result.build({
@@ -77,19 +80,33 @@ const validateParsedMockResponseContentTypeAndBody = (
             'type defined in the swagger file',
             mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
             source: 'spec-mock-validation',
-            specSegment: parsedSpecOperation.produces
+            specSegment: responseProduces
         })];
     }
 
     return [];
 };
 
+const getResponseProduceMimeTypes = (
+    parsedMockInteraction: ParsedMockInteraction,
+    parsedSpecOperation: ParsedSpecOperation
+): ParsedSpecValue<string[]> | undefined => {
+    const response = parsedSpecOperation.responses[parsedMockInteraction.responseStatus.value];
+    return response
+        ? response.produces
+        : undefined;
+};
+
 export const validateParsedSpecProduces = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ): ValidationResult[] => {
+    const responseProduces = getResponseProduceMimeTypes(parsedMockInteraction, parsedSpecOperation);
+    if (!responseProduces) {
+        return [];
+    }
     return _.concat(
-        validateParsedMockRequestAcceptsHeader(parsedMockInteraction, parsedSpecOperation),
-        validateParsedMockResponseContentTypeAndBody(parsedMockInteraction, parsedSpecOperation)
+        validateParsedMockRequestAcceptsHeader(parsedMockInteraction, parsedSpecOperation, responseProduces),
+        validateParsedMockResponseContentTypeAndBody(parsedMockInteraction, parsedSpecOperation, responseProduces)
     );
 };

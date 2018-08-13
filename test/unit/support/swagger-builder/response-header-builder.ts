@@ -1,11 +1,11 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerResponseHeader} from '../../../../lib/swagger-mock-validator/types';
+import {Swagger2ResponseHeader} from '../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 
 export interface ResponseHeaderBuilder {
-    build: () => SwaggerResponseHeader;
+    build: () => Swagger2ResponseHeader;
 }
 
-const createResponseHeader = (responseHeader: SwaggerResponseHeader) => ({
+const createResponseHeader = (responseHeader: Swagger2ResponseHeader) => ({
     build: () => cloneDeep(responseHeader),
     withArrayOfNumber: () => createResponseHeader({
         items: {type: 'number'},

@@ -1,14 +1,14 @@
 import {cloneDeep} from 'lodash';
-import {SwaggerPath} from '../../../../lib/swagger-mock-validator/types';
+import {Swagger2Path} from '../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {addToArrayOn, setValueOn} from '../builder-utilities';
 import {OperationBuilder} from './operation-builder';
 import {ParameterBuilder} from './parameter-builder';
 
 export interface PathBuilder {
-    build: () => SwaggerPath;
+    build: () => Swagger2Path;
 }
 
-const createPathBuilder = (path: SwaggerPath) => ({
+const createPathBuilder = (path: Swagger2Path) => ({
     build: () => cloneDeep(path),
     withGetOperation: (operationBuilder: OperationBuilder) =>
         createPathBuilder(setValueOn(path, 'get', operationBuilder.build())),

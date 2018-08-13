@@ -5,10 +5,10 @@ import {expectToFail} from '../support/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder, providerPactsBuilder} from './support/pact-broker-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathBuilder} from './support/swagger-builder/path-builder';
 import {MockHttpClientResponses, swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -35,7 +35,7 @@ describe('reading urls', () => {
 
     describe('reading the swagger file', () => {
         it('should make a request for a http swagger url', async () => {
-            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
             await invokeValidate(
@@ -47,7 +47,7 @@ describe('reading urls', () => {
         });
 
         it('should make a request for a https swagger url', async () => {
-            mockUrls['https://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockUrls['https://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
             await invokeValidate(
@@ -89,7 +89,7 @@ describe('reading urls', () => {
 
     describe('reading the pact file', () => {
         it('should make a request for a http pact url', async () => {
-            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
             await invokeValidate(
@@ -101,7 +101,7 @@ describe('reading urls', () => {
         });
 
         it('should fail when reading the pact file fails', async () => {
-            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.reject(new Error('error-message'));
 
             const error = await expectToFail(invokeValidate(
@@ -116,7 +116,7 @@ describe('reading urls', () => {
         });
 
         it('should fail when the pact file cannot be parsed as json', async () => {
-            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve('');
 
             const error = await expectToFail(invokeValidate(
@@ -131,7 +131,7 @@ describe('reading urls', () => {
 
     describe('reading from the pact broker', () => {
         beforeEach(() => {
-            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder.build()));
+            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder.build()));
             mockUrls['http://default-pact-broker.com/provider-name/pacts'] = Promise.resolve(JSON.stringify(
                 providerPactsBuilder
@@ -263,7 +263,7 @@ describe('reading urls', () => {
         });
 
         it('should return all errors when the pact files are not compatible with the swagger spec', async () => {
-            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swaggerBuilder
+            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder
                 .withPath('/does/exist', pathBuilder.withGetOperation(operationBuilder))
                 .build()
             ));

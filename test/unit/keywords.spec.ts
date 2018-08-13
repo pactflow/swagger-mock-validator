@@ -1,12 +1,12 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {swaggerBuilder} from './support/swagger-builder';
 import {operationBuilder} from './support/swagger-builder/operation-builder';
 import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
 import {pathBuilder, PathBuilder} from './support/swagger-builder/path-builder';
 import {responseBuilder} from './support/swagger-builder/response-builder';
 import {responseHeaderBuilder, ResponseHeaderBuilder} from './support/swagger-builder/response-header-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
+import {swagger2Builder} from './support/swagger2-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -23,7 +23,7 @@ describe('keywords', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/{value}', swaggerPath)
             .build();
 
@@ -41,7 +41,7 @@ describe('keywords', () => {
             )
             .build();
 
-        const swaggerFile = swaggerBuilder
+        const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
                 .withGetOperation(operationBuilder
                     .withResponse(200, responseBuilder

@@ -1,28 +1,27 @@
 import * as _ from 'lodash';
 import {
-    SwaggerMockValidatorOptions, SwaggerMockValidatorOptionsMockType, SwaggerMockValidatorOptionsSpecType,
+    SwaggerMockValidatorOptions,
+    SwaggerMockValidatorOptionsMockType,
+    SwaggerMockValidatorOptionsSpecType,
     ValidationOutcome,
     ValidationResult
 } from './api-types';
 import {Analytics} from './swagger-mock-validator/analytics';
 import {FileStore} from './swagger-mock-validator/file-store';
 import {mockParser} from './swagger-mock-validator/mock-parser';
-import {validateAndResolveSwagger} from './swagger-mock-validator/resolve-swagger';
+import {ParsedMock} from './swagger-mock-validator/mock-parser/parsed-mock';
 import {ResourceLoader} from './swagger-mock-validator/resource-loader';
 import {specParser} from './swagger-mock-validator/spec-parser';
 import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator/swagger-mock-validator-error-impl';
-import {transformStringToObject} from './swagger-mock-validator/transform-string-to-object';
 import {
     MockSource,
     PactBroker,
     PactBrokerProviderPacts,
     PactBrokerProviderPactsLinksPact,
-    ParsedMock,
     ParsedSwaggerMockValidatorOptions,
     SpecSource,
     SwaggerMockValidatorInternalOptions
 } from './swagger-mock-validator/types';
-import {validateAndResolvePact} from './swagger-mock-validator/validate-and-resolve-pact';
 import {validateSpecAndMock} from './swagger-mock-validator/validate-spec-and-mock';
 
 const getMockSource = (mockPathOrUrl: string, providerName?: string): MockSource => {
@@ -75,14 +74,8 @@ export const validateSpecAndMockContent = async (
     const spec = options.spec;
     const mock = options.mock;
 
-    const specJson = transformStringToObject<object>(spec.content, spec.pathOrUrl);
-    const resolvedSpec = await validateAndResolveSwagger(specJson, spec.pathOrUrl);
-
-    const mockJson = transformStringToObject<object>(mock.content, mock.pathOrUrl);
-    const resolvedPact = validateAndResolvePact(mockJson, mock.pathOrUrl);
-
-    const parsedSpec = specParser.parseSwagger(resolvedSpec, spec.pathOrUrl);
-    const parsedMock = mockParser.parsePact(resolvedPact, mock.pathOrUrl);
+    const parsedSpec = await specParser.parseSpec(spec);
+    const parsedMock = mockParser.parseMock(mock);
     const validationOutcome = await validateSpecAndMock(parsedMock, parsedSpec);
 
     return {

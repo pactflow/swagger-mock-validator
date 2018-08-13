@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import {ValidationOutcome, ValidationResult} from '../api-types';
-import {ParsedMock, ParsedMockInteraction, ParsedSpec, ParsedSpecOperation} from './types';
+import {ParsedMock, ParsedMockInteraction} from './mock-parser/parsed-mock';
+import {ParsedSpec, ParsedSpecOperation} from './spec-parser/parsed-spec';
 import {getParsedSpecOperation} from './validate-spec-and-mock/get-parsed-spec-operation';
 import {getParsedSpecResponse} from './validate-spec-and-mock/get-parsed-spec-response';
 import {toNormalizedParsedMock} from './validate-spec-and-mock/to-normalized-parsed-mock';

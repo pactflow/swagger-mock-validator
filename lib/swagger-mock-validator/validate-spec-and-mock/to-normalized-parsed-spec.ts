@@ -4,7 +4,7 @@ import {
     ParsedSpecParameterCollection,
     ParsedSpecResponses,
     ParsedSpecSecurityRequirements
-} from '../types';
+} from '../spec-parser/parsed-spec';
 import {toMapWithLowerCaseKeys} from './to-map-with-lower-case-keys';
 
 const operationHasPathParameters = (operation: ParsedSpecOperation): boolean =>

@@ -1,5 +1,8 @@
 import * as _ from 'lodash';
-import {SwaggerOperation, SwaggerSecurityRequirement} from '../../../../lib/swagger-mock-validator/types';
+import {
+    Swagger2Operation,
+    Swagger2SecurityRequirement
+} from '../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {addToArrayOn, setValueOn} from '../builder-utilities';
 import {ParameterBuilder} from './parameter-builder';
 import {responseBuilder, ResponseBuilder} from './response-builder';
@@ -7,10 +10,10 @@ import {responseBuilder, ResponseBuilder} from './response-builder';
 const defaultResponseBuilder = responseBuilder;
 
 export interface OperationBuilder {
-    build: () => SwaggerOperation;
+    build: () => Swagger2Operation;
 }
 
-const createOperationBuilder = (operation: SwaggerOperation) => ({
+const createOperationBuilder = (operation: Swagger2Operation) => ({
     build: () => _.cloneDeep(operation),
     withConsumes: (consumes: string[]) => createOperationBuilder(setValueOn(operation, 'consumes', consumes)),
     withDefaultResponse: (builder: ResponseBuilder) => createOperationBuilder(
@@ -24,12 +27,12 @@ const createOperationBuilder = (operation: SwaggerOperation) => ({
         setValueOn(operation, `responses.${statusCode}`, builder.build())
     ),
     withSecurityRequirementNamed: (name: string, scopes?: string[]) => {
-        const securityRequirement: SwaggerSecurityRequirement = {};
+        const securityRequirement: Swagger2SecurityRequirement = {};
         securityRequirement[name] = scopes || [];
         return createOperationBuilder(addToArrayOn(operation, `security`, securityRequirement));
     },
     withSecurityRequirementsNamed: (names: string[]) => {
-        const securityRequirements: SwaggerSecurityRequirement = {};
+        const securityRequirements: Swagger2SecurityRequirement = {};
         _.each(names, (name) => securityRequirements[name] = []);
         return createOperationBuilder(addToArrayOn(operation, `security`, securityRequirements));
     }

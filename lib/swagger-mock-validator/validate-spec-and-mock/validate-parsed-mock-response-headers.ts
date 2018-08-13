@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 import {ValidationResult} from '../../api-types';
+import {ParsedMockInteraction, ParsedMockValue} from '../mock-parser/parsed-mock';
 import {result} from '../result';
-import {ParsedMockInteraction, ParsedMockValue, ParsedSpecParameter, ParsedSpecResponse} from '../types';
+import {ParsedSpecParameter, ParsedSpecResponse} from '../spec-parser/parsed-spec';
 import {validateMockValueAgainstSpec} from './validate-mock-value-against-spec';
 
 const ignoredHttpHeaders = [

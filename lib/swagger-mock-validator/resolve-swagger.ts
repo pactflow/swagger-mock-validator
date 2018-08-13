@@ -1,8 +1,10 @@
 import * as SwaggerParser from 'swagger-parser';
+import {Swagger2} from './spec-parser/swagger2/swagger2';
 import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator-error-impl';
-import {Swagger} from './types';
 
-export const validateAndResolveSwagger = async (document: any, pathOrUrl: string): Promise<Swagger> => {
+export const validateAndResolveSwagger = async (
+    document: any, pathOrUrl: string
+): Promise<Swagger2> => {
     try {
         return await SwaggerParser.validate(document, {
             dereference: {

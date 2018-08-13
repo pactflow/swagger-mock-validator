@@ -1,7 +1,6 @@
 import {ValidationResult, ValidationResultCode, ValidationResultSource, ValidationResultType} from '../api-types';
-import {
-ParsedMockValue,
-ParsedSpecValue} from './types';
+import {ParsedMockValue} from './mock-parser/parsed-mock';
+import {ParsedSpecValue} from './spec-parser/parsed-spec';
 
 interface ResultOptions {
     code: ValidationResultCode;

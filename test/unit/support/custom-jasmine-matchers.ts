@@ -46,7 +46,7 @@ const propertiesToCompare = [
     'specDetails.pathName',
     'specDetails.pathMethod',
     'specDetails.location',
-    'specDetails.swaggerFile',
+    'specDetails.specFile',
     'specDetails.value',
     'type'
 ];
