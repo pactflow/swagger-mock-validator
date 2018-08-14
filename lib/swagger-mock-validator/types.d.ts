@@ -1,4 +1,4 @@
-import {ValidationResult} from '../api-types';
+import {SwaggerMockValidatorOptionsMockType, SwaggerMockValidatorOptionsSpecType, ValidationResult} from '../api-types';
 
 export interface PactBroker {
     _links: PactBrokerLinks;
@@ -24,11 +24,30 @@ export interface PactBrokerProviderPactsLinksPact {
     href: string;
 }
 
-export interface SwaggerMockValidatorInternalOptions {
+export interface SwaggerMockValidatorUserOptions {
     analyticsUrl?: string;
     mockPathOrUrl: string;
     providerName?: string;
     specPathOrUrl: string;
+}
+
+export type AutoDetectFormat = 'auto-detect';
+
+export interface SerializedSpec {
+    content: string;
+    format: SwaggerMockValidatorOptionsSpecType | AutoDetectFormat;
+    pathOrUrl: string;
+}
+
+export interface SerializedMock {
+    content: string;
+    format: SwaggerMockValidatorOptionsMockType | AutoDetectFormat;
+    pathOrUrl: string;
+}
+
+export interface ValidateOptions {
+    mock: SerializedMock;
+    spec: SerializedSpec;
 }
 
 interface ParsedSwaggerMockValidatorOptions {

@@ -69,8 +69,9 @@ const createValidationOutcome = (
     const errors = _.filter(validationResults, (res) => res.type === 'error');
     const warnings = _.filter(validationResults, (res) => res.type === 'warning');
     const success = errors.length === 0;
-    const failureReason = success ? undefined : `Mock file "${mockPathOrUrl}" is not compatible ` +
-        `with swagger file "${specPathOrUrl}"`;
+    const failureReason = success
+        ? undefined
+        : `Mock file "${mockPathOrUrl}" is not compatible with spec file "${specPathOrUrl}"`;
 
     return {errors, failureReason, success, warnings};
 };

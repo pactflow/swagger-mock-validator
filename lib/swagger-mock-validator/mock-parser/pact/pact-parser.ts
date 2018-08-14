@@ -52,7 +52,7 @@ const parseInteraction = (
     // tslint:disable:no-object-literal-type-assertion
     const parsedInteraction = {
         description: interaction.description,
-        location: `[pactRoot].interactions[${interactionIndex}]`,
+        location: `[root].interactions[${interactionIndex}]`,
         mockFile: mockPathOrUrl,
         state: interaction.providerState || interaction.provider_state || '[none]',
         value: interaction

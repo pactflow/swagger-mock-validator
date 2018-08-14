@@ -1,0 +1,219 @@
+info:
+  title: User Service
+  version: 1.0.0
+openapi: "3.0.0"
+
+components:
+  parameters:
+    accountId:
+      name: accountId
+      schema:
+        type: integer
+      in: path
+      required: true
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    newUser:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+      required:
+      - firstName
+      - lastName
+      - email
+    user:
+      type: object
+      properties:
+        userId:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+      required:
+      - userId
+      - firstName
+      - lastName
+      - email
+
+paths:
+  '/{accountId}/users':
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/newUser'
+      parameters:
+      - $ref: '#/components/parameters/accountId'
+
+      responses:
+        '200':
+          description: Success
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/user'
+        '400':
+          description: Bad request
+        '404':
+          description: The accountId is not found
+        '500':
+          description: Internal server error
+
+  '/{accountId}/users/{userId}':
+    get:
+      summary: Get a user
+      parameters:
+      - $ref: '#/components/parameters/accountId'
+      - name: userId
+        in: path
+        description: The user id of the user to get
+        required: true
+        schema: {type: integer}
+      - name: x-version
+        in: header
+        schema: {type: number}
+      - name: x-client-id
+        in: header
+        schema: {type: integer, format: int64}
+      responses:
+        '200':
+          description: The user
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/user'
+        '400':
+          description: Bad request
+        '404':
+          description: The accountId or userId is not found
+        '500':
+          description: Internal server error
+  /test:
+    get:
+      summary: A test endpoint
+      parameters:
+      - name: x-enum-value
+        in: header
+        schema:
+          type: string
+          enum:
+          - value1
+          - value2
+      - name: x-maximum-value
+        in: header
+        schema:
+          type: integer
+          maximum: 100
+          exclusiveMaximum: true
+      - name: x-minimum-value
+        in: header
+        schema:
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+      - name: x-maxlength-value
+        in: header
+        schema:
+          type: string
+          maxLength: 3
+      - name: x-minlength-value
+        in: header
+        schema:
+          type: string
+          minLength: 3
+      - name: x-pattern-value
+        in: header
+        schema:
+          type: string
+          pattern: '^[a-f0-9]+$'
+      - name: x-multipleof-value
+        in: header
+        schema:
+          type: integer
+          multipleOf: 2
+      - name: x-array-value
+        in: header
+        schema:
+          type: array
+          items:
+            type: number
+      - name: x-maxitems-value
+        in: header
+        schema:
+          type: array
+          items:
+            type: number
+          maxItems: 2
+      - name: x-minitems-value
+        in: header
+        schema:
+          type: array
+          items:
+            type: number
+          minItems: 2
+      - name: x-uniqueitems-value
+        in: header
+        schema:
+          type: array
+          items:
+            type: number
+          uniqueItems: true
+      - name: query-value
+        in: query
+        schema:
+          type: number
+      responses:
+        '200':
+          description: The result
+  /accept-test:
+    get:
+      responses:
+        '200':
+          content:
+            'application/json': {}
+          description: The result
+  /request-content-type-test:
+    post:
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/newUser'
+      responses:
+        '200':
+          description: The result
+  /response-content-type-test:
+    post:
+      responses:
+        '200':
+          description: The result
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+  /authorization-test:
+    get:
+      responses:
+        '200':
+          description: The result
+      security:
+      - apiKey: []

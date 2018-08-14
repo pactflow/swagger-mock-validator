@@ -2,13 +2,11 @@ import {ValidationOutcome} from '../../lib/api-types';
 import {HttpClient} from '../../lib/swagger-mock-validator/clients/http-client';
 import {Pact} from '../../lib/swagger-mock-validator/mock-parser/pact/pact';
 import {Swagger2} from '../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
-import {SwaggerMockValidatorInternalOptions} from '../../lib/swagger-mock-validator/types';
+import {SwaggerMockValidatorUserOptions} from '../../lib/swagger-mock-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder} from './support/pact-broker-builder';
 import {providerPactsBuilder} from './support/pact-broker-builder/provider-pacts-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
 import {
     MockFileSystemResponses,
     MockHttpClientResponses,
@@ -17,6 +15,8 @@ import {
     swaggerMockValidatorLoader
 } from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -44,7 +44,7 @@ describe('analytics', () => {
         mockHttpClient = swaggerMockValidatorLoader.createMockHttpClient(mockUrls);
     });
 
-    const invokeValidation = (options: SwaggerMockValidatorInternalOptions) => {
+    const invokeValidation = (options: SwaggerMockValidatorUserOptions) => {
         mockUrls['http://analytics.com/event'] = Promise.resolve('');
 
         return swaggerMockValidatorLoader.invokeWithMocks({
@@ -135,8 +135,7 @@ describe('analytics', () => {
 
         expect(result.errors.length).toBe(1);
         expect(result.failureReason).toEqual(
-            'Mock file "http://domain.com/pact.json" is not compatible ' +
-            'with swagger file "http://domain.com/swagger.json"'
+            'Mock file "http://domain.com/pact.json" is not compatible with spec file "http://domain.com/swagger.json"'
         );
     });
 
@@ -155,9 +154,9 @@ describe('analytics', () => {
         expect(result.errors.length).toBe(2);
         expect(result.failureReason).toEqual(
             'Mock file "http://pact-broker.com/a-provider/consumer-1/pact" ' +
-            'is not compatible with swagger file "http://domain.com/swagger.json", ' +
+            'is not compatible with spec file "http://domain.com/swagger.json", ' +
             'Mock file "http://pact-broker.com/a-provider/consumer-2/pact" ' +
-            'is not compatible with swagger file "http://domain.com/swagger.json"'
+            'is not compatible with spec file "http://domain.com/swagger.json"'
         );
     });
 

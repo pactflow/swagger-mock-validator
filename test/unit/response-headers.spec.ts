@@ -2,17 +2,17 @@ import * as _ from 'lodash';
 import {ValidationResultCode, ValidationResultSource, ValidationResultType} from '../../lib/api-types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
-import {responseBuilder, ResponseBuilder} from './support/swagger-builder/response-builder';
-import {responseHeaderBuilder} from './support/swagger-builder/response-header-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {responseBuilder, ResponseBuilder} from './support/swagger2-builder/response-builder';
+import {responseHeaderBuilder} from './support/swagger2-builder/response-header-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('response headers', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
     const defaultInteractionBuilder = interactionBuilder
         .withDescription('interaction description')
         .withRequestPath('/does/exist')
@@ -63,20 +63,20 @@ describe('response headers', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'response.header.incompatible',
-            message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
+            message: 'Value is incompatible with the parameter defined in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                location: '[root].interactions[0].response.headers.x-custom-header',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-custom-header',
+                location: '[root].paths./does/exist.get.responses.200.headers.x-custom-header',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: responseHeaderSpec.build()
             },
             type: 'error'
@@ -94,20 +94,20 @@ describe('response headers', () => {
         expect(result).toContainErrors([{
             code: 'response.header.incompatible',
             message:
-                'Value is incompatible with the parameter defined in the swagger file: should be number',
+                'Value is incompatible with the parameter defined in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                location: '[root].interactions[0].response.headers.x-custom-header',
                 mockFile: 'pact.json',
                 value: '1,2,a'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-custom-header',
+                location: '[root].paths./does/exist.get.responses.200.headers.x-custom-header',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: responseHeaderSpec.build()
             },
             type: 'error'
@@ -129,20 +129,20 @@ describe('response headers', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'response.header.unknown',
-            message: 'Response header is not defined in the swagger file: x-custom-header',
+            message: 'Response header is not defined in the spec file: x-custom-header',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                location: '[root].interactions[0].response.headers.x-custom-header',
                 mockFile: 'pact.json',
                 value: 'value'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200',
+                location: '[root].paths./does/exist.get.responses.200',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: responseBuilder.build()
             },
             type: 'error'
@@ -197,20 +197,20 @@ describe('response headers', () => {
         const warnings = _.map(pactResponseHeaders, (headerValue: string, headerName: string) => ({
             code: 'response.header.undefined' as ValidationResultCode,
             message:
-                `Standard http response header is not defined in the swagger file: ${headerName.toLowerCase()}`,
+                `Standard http response header is not defined in the spec file: ${headerName.toLowerCase()}`,
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: `[pactRoot].interactions[0].response.headers.${headerName}`,
+                location: `[root].interactions[0].response.headers.${headerName}`,
                 mockFile: 'pact.json',
                 value: headerValue
             },
             source: 'spec-mock-validation' as ValidationResultSource,
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200',
+                location: '[root].paths./does/exist.get.responses.200',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: responseBuilder.build()
             },
             type: 'warning' as ValidationResultType
@@ -259,20 +259,20 @@ describe('response headers', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'response.header.incompatible',
-            message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
+            message: 'Value is incompatible with the parameter defined in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.headers.x-custom-header',
+                location: '[root].interactions[0].response.headers.x-custom-header',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.default.headers.x-custom-header',
+                location: '[root].paths./does/exist.get.responses.default.headers.x-custom-header',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: responseHeader.build()
             },
             type: 'error'

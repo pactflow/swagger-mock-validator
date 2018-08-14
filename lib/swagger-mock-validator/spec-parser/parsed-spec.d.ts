@@ -45,8 +45,6 @@ export type ParsedSpecJsonSchemaCore = ParsedSpecCustomSwaggerValue &
     ParsedSpecJsonSchemaReference &
     ParsedSpecJsonSchemaBooleanKeywords;
 
-export type ParsedSpecCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes' | 'multi';
-
 interface ParsedSpecJsonSchemaReference {
     $ref?: string;
 }
@@ -80,7 +78,6 @@ interface ParsedSpecJsonSchemaValue {
 }
 
 interface ParsedSpecCustomSwaggerValue {
-    collectionFormat?: ParsedSpecCollectionFormat;
     definitions?: {
         [name: string]: ParsedSpecJsonSchema;
     };
@@ -106,10 +103,13 @@ export interface ParsedSpecResponse extends ParsedSpecValue<any> {
     produces: ParsedSpecValue<string[]>;
 }
 
+export type ParsedSpecCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes' | 'multi';
+
 export interface ParsedSpecParameter extends ParsedSpecValue<any> {
     name: string;
     required: boolean;
     schema: ParsedSpecJsonSchemaCore;
+    collectionFormat?: ParsedSpecCollectionFormat;
 }
 
 export interface ParsedSpecBody {

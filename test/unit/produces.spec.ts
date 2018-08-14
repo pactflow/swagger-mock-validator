@@ -1,15 +1,15 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
-import {responseBuilder} from './support/swagger-builder/response-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {responseBuilder} from './support/swagger2-builder/response-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('produces', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
     const defaultInteractionBuilder = interactionBuilder
         .withDescription('interaction description')
         .withRequestPath('/does/exist')
@@ -93,20 +93,20 @@ describe('produces', () => {
             expect(result).toContainNoErrors();
             expect(result).toContainWarnings([{
                 code: 'request.accept.unknown',
-                message: 'Request Accept header is defined but there is no produces definition in the spec',
+                message: 'Request Accept header is defined but the spec does not specify any mime-types to produce',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.Accept',
+                    location: '[root].interactions[0].request.headers.Accept',
                     mockFile: 'pact.json',
                     value: 'application/json'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get',
+                    location: '[root].paths./does/exist.get',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: operationBuilder.build()
                 },
                 type: 'warning'
@@ -119,21 +119,20 @@ describe('produces', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.accept.incompatible',
-                message: 'Request Accept header is incompatible with the produces mime type ' +
-                'defined in the swagger file',
+                message: 'Request Accept header is incompatible with the mime-types the spec defines to produce',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.Accept',
+                    location: '[root].interactions[0].request.headers.Accept',
                     mockFile: 'pact.json',
                     value: 'application/json'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.produces',
+                    location: '[root].paths./does/exist.get.produces',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: ['application/xml']
                 },
                 type: 'error'
@@ -146,21 +145,20 @@ describe('produces', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.accept.incompatible',
-                message: 'Request Accept header is incompatible with the produces mime type ' +
-                'defined in the swagger file',
+                message: 'Request Accept header is incompatible with the mime-types the spec defines to produce',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.Accept',
+                    location: '[root].interactions[0].request.headers.Accept',
                     mockFile: 'pact.json',
                     value: 'application/json;charset=utf-8'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.produces',
+                    location: '[root].paths./does/exist.get.produces',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: ['application/json']
                 },
                 type: 'error'
@@ -182,21 +180,20 @@ describe('produces', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.accept.incompatible',
-                message: 'Request Accept header is incompatible with the produces mime type ' +
-                'defined in the swagger file',
+                message: 'Request Accept header is incompatible with the mime-types the spec defines to produce',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.Accept',
+                    location: '[root].interactions[0].request.headers.Accept',
                     mockFile: 'pact.json',
                     value: 'application/json'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].produces',
+                    location: '[root].produces',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: ['application/xml']
                 },
                 type: 'error'
@@ -220,21 +217,20 @@ describe('produces', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.accept.incompatible',
-                message: 'Request Accept header is incompatible with the produces mime type ' +
-                'defined in the swagger file',
+                message: 'Request Accept header is incompatible with the mime-types the spec defines to produce',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.headers.Accept',
+                    location: '[root].interactions[0].request.headers.Accept',
                     mockFile: 'pact.json',
                     value: 'application/json'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.produces',
+                    location: '[root].paths./does/exist.get.produces',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: ['application/xml']
                 },
                 type: 'error'
@@ -293,20 +289,21 @@ describe('produces', () => {
             expect(result).toContainNoErrors();
             expect(result).toContainWarnings([{
                 code: 'response.content-type.unknown',
-                message: 'Response Content-Type header is defined but there is no produces definition in the spec',
+                message: 'Response Content-Type header is defined but the spec does not specify any mime-types ' +
+                'to produce',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.Content-Type',
+                    location: '[root].interactions[0].response.headers.Content-Type',
                     mockFile: 'pact.json',
                     value: 'application/json'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.post',
+                    location: '[root].paths./does/exist.post',
                     pathMethod: 'post',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: operationBuilder.build()
                 },
                 type: 'warning'
@@ -319,21 +316,20 @@ describe('produces', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.content-type.incompatible',
-                message: 'Response Content-Type header is incompatible with the produces mime type defined ' +
-                'in the swagger file',
+                message: 'Response Content-Type header is incompatible with the mime-types the spec defines to produce',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.Content-Type',
+                    location: '[root].interactions[0].response.headers.Content-Type',
                     mockFile: 'pact.json',
                     value: 'application/json'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.post.produces',
+                    location: '[root].paths./does/exist.post.produces',
                     pathMethod: 'post',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: ['application/xml']
                 },
                 type: 'error'
@@ -346,21 +342,20 @@ describe('produces', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.content-type.incompatible',
-                message: 'Response Content-Type header is incompatible with the produces mime type defined ' +
-                'in the swagger file',
+                message: 'Response Content-Type header is incompatible with the mime-types the spec defines to produce',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.Content-Type',
+                    location: '[root].interactions[0].response.headers.Content-Type',
                     mockFile: 'pact.json',
                     value: 'application/json; charset=utf-8'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.post.produces',
+                    location: '[root].paths./does/exist.post.produces',
                     pathMethod: 'post',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: ['application/json']
                 },
                 type: 'error'

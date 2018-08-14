@@ -59,7 +59,7 @@ const createUndefinedHeaderValidationResult = (
 ): ValidationResult =>
     result.build({
         code: 'response.header.unknown',
-        message: `Response header is not defined in the swagger file: ${headerName}`,
+        message: `Response header is not defined in the spec file: ${headerName}`,
         mockSegment: mockHeader,
         source: 'spec-mock-validation',
         specSegment: parsedSpecResponse
@@ -72,7 +72,7 @@ const createUndefinedStandardHeaderValidationResult = (
 ): ValidationResult =>
     result.build({
         code: 'response.header.undefined',
-        message: `Standard http response header is not defined in the swagger file: ${headerName}`,
+        message: `Standard http response header is not defined in the spec file: ${headerName}`,
         mockSegment: mockHeader,
         source: 'spec-mock-validation',
         specSegment: parsedSpecResponse

@@ -1,6 +1,7 @@
 import {ParsedSpecOperation} from '../parsed-spec';
 
-export const createEmptyParentOperation = (specPathOrUrl: string, location: string): ParsedSpecOperation => {
+export const createEmptyParentOperation = (specPathOrUrl: string): ParsedSpecOperation => {
+    const location = '';
     const emptyParentOperation = {
         consumes: {
             location,

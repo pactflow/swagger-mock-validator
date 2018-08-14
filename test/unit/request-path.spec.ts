@@ -1,18 +1,18 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
-import {
-    requestHeaderParameterBuilder
-} from './support/swagger-builder/parameter-builder/request-header-parameter-builder';
-import {pathBuilder, PathBuilder} from './support/swagger-builder/path-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathParameterBuilder} from './support/swagger2-builder/parameter-builder/path-parameter-builder';
+import {
+    requestHeaderParameterBuilder
+} from './support/swagger2-builder/parameter-builder/request-header-parameter-builder';
+import {pathBuilder, PathBuilder} from './support/swagger2-builder/path-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('request path', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
 
     const defaultSwaggerPathBuilder = pathBuilder.withGetOperation(operationBuilder);
 
@@ -65,20 +65,20 @@ describe('request path', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.path-or-method.unknown',
-            message: 'Path or method not defined in swagger file: GET /does/not/exist',
+            message: 'Path or method not defined in spec file: GET /does/not/exist',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: 'a-state',
-                location: '[pactRoot].interactions[0].request.path',
+                location: '[root].interactions[0].request.path',
                 mockFile: 'pact.json',
                 value: '/does/not/exist'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths',
+                location: '[root].paths',
                 pathMethod: null,
                 pathName: null,
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: {}
             },
             type: 'error'
@@ -101,20 +101,20 @@ describe('request path', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.path-or-method.unknown',
-            message: 'Path or method not defined in swagger file: GET /does/not/exist',
+            message: 'Path or method not defined in spec file: GET /does/not/exist',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: 'a-state',
-                location: '[pactRoot].interactions[0].request.path',
+                location: '[root].interactions[0].request.path',
                 mockFile: 'pact.json',
                 value: '/does/not/exist'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths',
+                location: '[root].paths',
                 pathMethod: null,
                 pathName: null,
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: {}
             },
             type: 'error'
@@ -139,20 +139,20 @@ describe('request path', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /almost/matches',
+                message: 'Path or method not defined in spec file: GET /almost/matches',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/almost/matches'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/almost': {}}
                 },
                 type: 'error'
@@ -176,20 +176,20 @@ describe('request path', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /almost',
+                message: 'Path or method not defined in spec file: GET /almost',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/almost'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/almost/matches': {}}
                 },
                 type: 'error'
@@ -216,20 +216,20 @@ describe('request path', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /almost',
+                message: 'Path or method not defined in spec file: GET /almost',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/almost'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/almost/matches/{userId}': swaggerPathBuilder.build()}
                 },
                 type: 'error'
@@ -348,20 +348,20 @@ describe('request path', () => {
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
                     code: 'request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /foo',
+                    message: 'Path or method not defined in spec file: GET /foo',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
+                        location: '[root].interactions[0].request.path',
                         mockFile: 'pact.json',
                         value: '/foo'
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].paths',
+                        location: '[root].paths',
                         pathMethod: null,
                         pathName: null,
-                        specFile: 'swagger.json',
+                        specFile: 'spec.json',
                         value: {'/{value}': swaggerPathWithNumberParameterBuilder.build()}
                     },
                     type: 'error'
@@ -374,20 +374,20 @@ describe('request path', () => {
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
                     code: 'request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /',
+                    message: 'Path or method not defined in spec file: GET /',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
+                        location: '[root].interactions[0].request.path',
                         mockFile: 'pact.json',
                         value: '/'
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].paths',
+                        location: '[root].paths',
                         pathMethod: null,
                         pathName: null,
-                        specFile: 'swagger.json',
+                        specFile: 'spec.json',
                         value: {'/{value}': swaggerPathWithNumberParameterBuilder.build()}
                     },
                     type: 'error'
@@ -411,20 +411,20 @@ describe('request path', () => {
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
                     code: 'request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /on',
+                    message: 'Path or method not defined in spec file: GET /on',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
+                        location: '[root].interactions[0].request.path',
                         mockFile: 'pact.json',
                         value: '/on'
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].paths',
+                        location: '[root].paths',
                         pathMethod: null,
                         pathName: null,
-                        specFile: 'swagger.json',
+                        specFile: 'spec.json',
                         value: {'/{value}': swaggerPathWithBooleanParameterBuilder.build()}
                     },
                     type: 'error'
@@ -448,20 +448,20 @@ describe('request path', () => {
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
                     code: 'request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /',
+                    message: 'Path or method not defined in spec file: GET /',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
+                        location: '[root].interactions[0].request.path',
                         mockFile: 'pact.json',
                         value: '/'
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].paths',
+                        location: '[root].paths',
                         pathMethod: null,
                         pathName: null,
-                        specFile: 'swagger.json',
+                        specFile: 'spec.json',
                         value: {'/{value}': swaggerPathWithStringParameterBuilder.build()}
                     },
                     type: 'error'
@@ -485,20 +485,20 @@ describe('request path', () => {
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
                     code: 'request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /1.1',
+                    message: 'Path or method not defined in spec file: GET /1.1',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
+                        location: '[root].interactions[0].request.path',
                         mockFile: 'pact.json',
                         value: '/1.1'
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].paths',
+                        location: '[root].paths',
                         pathMethod: null,
                         pathName: null,
-                        specFile: 'swagger.json',
+                        specFile: 'spec.json',
                         value: {'/{value}': swaggerPathWithIntegerParameterBuilder.build()}
                     },
                     type: 'error'
@@ -511,20 +511,20 @@ describe('request path', () => {
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
                     code: 'request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /',
+                    message: 'Path or method not defined in spec file: GET /',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
+                        location: '[root].interactions[0].request.path',
                         mockFile: 'pact.json',
                         value: '/'
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].paths',
+                        location: '[root].paths',
                         pathMethod: null,
                         pathName: null,
-                        specFile: 'swagger.json',
+                        specFile: 'spec.json',
                         value: {'/{value}': swaggerPathWithIntegerParameterBuilder.build()}
                     },
                     type: 'error'
@@ -596,20 +596,20 @@ describe('request path', () => {
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
                     code: 'request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: GET /a,b,c',
+                    message: 'Path or method not defined in spec file: GET /a,b,c',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
+                        location: '[root].interactions[0].request.path',
                         mockFile: 'pact.json',
                         value: '/a,b,c'
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].paths',
+                        location: '[root].paths',
                         pathMethod: null,
                         pathName: null,
-                        specFile: 'swagger.json',
+                        specFile: 'spec.json',
                         value: {'/{value}': swaggerPathWithArrayOfNumbersParameter.build()}
                     },
                     type: 'error'
@@ -629,20 +629,20 @@ describe('request path', () => {
                 expect(result.failureReason).toEqual(expectedFailedValidationError);
                 expect(result).toContainErrors([{
                     code: 'request.path-or-method.unknown',
-                    message: `Path or method not defined in swagger file: GET /${pactValue}`,
+                    message: `Path or method not defined in spec file: GET /${pactValue}`,
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[pactRoot].interactions[0].request.path',
+                        location: '[root].interactions[0].request.path',
                         mockFile: 'pact.json',
                         value: `/${pactValue}`
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
-                        location: '[swaggerRoot].paths',
+                        location: '[root].paths',
                         pathMethod: null,
                         pathName: null,
-                        specFile: 'swagger.json',
+                        specFile: 'spec.json',
                         value: {'/{value}': swaggerPathWithArrayOfInt32Parameter.build()}
                     },
                     type: 'error'
@@ -673,20 +673,20 @@ describe('request path', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /1/users/a',
+                message: 'Path or method not defined in spec file: GET /1/users/a',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/1/users/a'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{accountId}/users/{userId}': getUserIdPath.build()}
                 },
                 type: 'error'
@@ -720,39 +720,39 @@ describe('request path', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /1/users/a',
+                message: 'Path or method not defined in spec file: GET /1/users/a',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/1/users/a'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{accountId}/users/{userId}': getUserIdPath.build()}
                 },
                 type: 'error'
             }, {
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /a/users/1',
+                message: 'Path or method not defined in spec file: GET /a/users/1',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[1].request.path',
+                    location: '[root].interactions[1].request.path',
                     mockFile: 'pact.json',
                     value: '/a/users/1'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{accountId}/users/{userId}': getUserIdPath.build()}
                 },
                 type: 'error'
@@ -780,20 +780,20 @@ describe('request path', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /users/1',
+                message: 'Path or method not defined in spec file: GET /users/1',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/users/1'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/users/{userId': getUserPath.build()}
                 },
                 type: 'error'
@@ -819,20 +819,20 @@ describe('request path', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /users/1',
+                message: 'Path or method not defined in spec file: GET /users/1',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/users/1'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/users/userId}': getUserPath.build()}
                 },
                 type: 'error'
@@ -875,20 +875,20 @@ describe('request path', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /wrong/base/does/exist',
+                message: 'Path or method not defined in spec file: GET /wrong/base/does/exist',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: 'a-state',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/wrong/base/does/exist'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {
                         '/does/exist': pathBuilder.withGetOperation(operationBuilder).build()
                     }

@@ -46,14 +46,17 @@ const getCollectionSeparator = (parsedSpecCollectionFormat?: ParsedSpecCollectio
     // tslint:enable:cyclomatic-complexity
 };
 
-const isParsedSpecJsonSchemaCore = (schema: ParsedSpecJsonSchema): schema is ParsedSpecJsonSchemaCore =>
+const isParsedSpecJsonSchemaCore = (schema?: ParsedSpecJsonSchema): schema is ParsedSpecJsonSchemaCore =>
     isObject(schema);
 
-const expandArrays = (parsedMockValue: string, parsedSpecParameterSchema: ParsedSpecJsonSchema): any => {
+const expandArrays = (
+    parsedMockValue: string,
+    parsedSpecParameterSchema: ParsedSpecJsonSchema | undefined,
+    parsedSpecCollectionFormat?: ParsedSpecCollectionFormat
+): any => {
     if (isParsedSpecJsonSchemaCore(parsedSpecParameterSchema) && parsedSpecParameterSchema.type === 'array') {
-        const values = parsedMockValue.split(getCollectionSeparator(parsedSpecParameterSchema.collectionFormat));
-        return _.map(values, (value) =>
-            expandArrays(value, parsedSpecParameterSchema.items || {}));
+        const values = parsedMockValue.split(getCollectionSeparator(parsedSpecCollectionFormat));
+        return _.map(values, (value) => expandArrays(value, parsedSpecParameterSchema.items));
     } else {
         return parsedMockValue;
     }
@@ -67,7 +70,9 @@ const toWrappedParsedMockValue = (
         return {value: undefined};
     }
 
-    return {value: expandArrays(parsedMockValue.value, parsedSpecParameter.schema)};
+    return {
+        value: expandArrays(parsedMockValue.value, parsedSpecParameter.schema, parsedSpecParameter.collectionFormat)
+    };
 };
 
 export const validateMockValueAgainstSpec = <T>(
@@ -84,8 +89,7 @@ export const validateMockValueAgainstSpec = <T>(
         match: errors.length === 0,
         results: _.map(errors, (error) => result.build({
             code: validationResultCode,
-            message: 'Value is incompatible with the parameter defined in the swagger file: ' +
-            error.message,
+            message: 'Value is incompatible with the parameter defined in the spec file: ' + error.message,
             mockSegment: parsedMockValue || parsedMockInteraction,
             source: 'spec-mock-validation',
             specSegment: parsedSpecParameter

@@ -1,17 +1,17 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathParameterBuilder} from './support/swagger-builder/parameter-builder/path-parameter-builder';
-import {pathBuilder, PathBuilder} from './support/swagger-builder/path-builder';
-import {responseBuilder} from './support/swagger-builder/response-builder';
-import {responseHeaderBuilder, ResponseHeaderBuilder} from './support/swagger-builder/response-header-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathParameterBuilder} from './support/swagger2-builder/parameter-builder/path-parameter-builder';
+import {pathBuilder, PathBuilder} from './support/swagger2-builder/path-builder';
+import {responseBuilder} from './support/swagger2-builder/response-builder';
+import {responseHeaderBuilder, ResponseHeaderBuilder} from './support/swagger2-builder/response-header-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('keywords', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
 
     const defaultSwaggerPathBuilder = pathBuilder.withGetOperation(operationBuilder);
 
@@ -74,20 +74,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /b',
+                message: 'Path or method not defined in spec file: GET /b',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/b'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithEnumBuilder.build()}
                 },
                 type: 'error'
@@ -101,21 +101,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should be equal to one of the allowed values',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: 'b'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithEnum.build()
                 },
                 type: 'error'
@@ -139,20 +139,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /101',
+                message: 'Path or method not defined in spec file: GET /101',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/101'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithMaximumBuilder.build()}
                 },
                 type: 'error'
@@ -167,20 +167,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /100',
+                message: 'Path or method not defined in spec file: GET /100',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/100'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithExclusiveMaximum.build()}
                 },
                 type: 'error'
@@ -194,21 +194,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should be < 100',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: '100'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithExclusiveMaximum.build()
                 },
                 type: 'error'
@@ -232,20 +232,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /99',
+                message: 'Path or method not defined in spec file: GET /99',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/99'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithMinimumBuilder.build()}
                 },
                 type: 'error'
@@ -260,20 +260,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /100',
+                message: 'Path or method not defined in spec file: GET /100',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/100'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithExclusiveMinimum.build()}
                 },
                 type: 'error'
@@ -287,21 +287,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should be > 100',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: '100'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithExclusiveMinimum.build()
                 },
                 type: 'error'
@@ -325,20 +325,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /abcd',
+                message: 'Path or method not defined in spec file: GET /abcd',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/abcd'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithMaxLengthBuilder.build()}
                 },
                 type: 'error'
@@ -352,21 +352,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should NOT be longer than 3 characters',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: 'abcd'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithMaxLength.build()
                 },
                 type: 'error'
@@ -390,20 +390,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /ab',
+                message: 'Path or method not defined in spec file: GET /ab',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/ab'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithMinLengthBuilder.build()}
                 },
                 type: 'error'
@@ -417,21 +417,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should NOT be shorter than 3 characters',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: 'ab'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithMinLength.build()
                 },
                 type: 'error'
@@ -455,20 +455,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /abcdefg',
+                message: 'Path or method not defined in spec file: GET /abcdefg',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/abcdefg'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithPatternBuilder.build()}
                 },
                 type: 'error'
@@ -482,21 +482,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should match pattern "^[a-f]+$"',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: 'abcdefg'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithPattern.build()
                 },
                 type: 'error'
@@ -520,20 +520,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /7',
+                message: 'Path or method not defined in spec file: GET /7',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/7'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithMultipleOfBuilder.build()}
                 },
                 type: 'error'
@@ -547,21 +547,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should be multiple of 3',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: '7'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithMultipleOf.build()
                 },
                 type: 'error'
@@ -585,20 +585,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /1,2,3,4',
+                message: 'Path or method not defined in spec file: GET /1,2,3,4',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/1,2,3,4'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithMaxItemsBuilder.build()}
                 },
                 type: 'error'
@@ -612,21 +612,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should NOT have more than 3 items',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: '1,2,3,4'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithMaxItems.build()
                 },
                 type: 'error'
@@ -650,20 +650,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /1,2',
+                message: 'Path or method not defined in spec file: GET /1,2',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/1,2'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithMinItemsBuilder.build()}
                 },
                 type: 'error'
@@ -677,21 +677,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should NOT have less than 3 items',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: '1,2'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithMinItems.build()
                 },
                 type: 'error'
@@ -715,20 +715,20 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /1,1',
+                message: 'Path or method not defined in spec file: GET /1,1',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'pact.json',
                     value: '/1,1'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: {'/{value}': swaggerPathWithUniqueItemsBuilder.build()}
                 },
                 type: 'error'
@@ -742,21 +742,21 @@ describe('keywords', () => {
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+                message: 'Value is incompatible with the parameter defined in the spec file: ' +
                 'should NOT have duplicate items (items ## 0 and 1 are identical)',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].response.headers.x-value',
+                    location: '[root].interactions[0].response.headers.x-value',
                     mockFile: 'pact.json',
                     value: '1,1'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths./does/exist.get.responses.200.headers.x-value',
+                    location: '[root].paths./does/exist.get.responses.200.headers.x-value',
                     pathMethod: 'get',
                     pathName: '/does/exist',
-                    specFile: 'swagger.json',
+                    specFile: 'spec.json',
                     value: responseHeaderWithUniqueItems.build()
                 },
                 type: 'error'

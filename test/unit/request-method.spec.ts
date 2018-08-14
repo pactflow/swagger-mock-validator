@@ -1,14 +1,14 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('request method', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
 
     const invokeSwaggerPactValidator = swaggerMockValidatorLoader.invoke;
 
@@ -54,20 +54,20 @@ describe('request method', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.path-or-method.unknown',
-            message: 'Path or method not defined in swagger file: POST /does/exist',
+            message: 'Path or method not defined in spec file: POST /does/exist',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.path',
+                location: '[root].interactions[0].request.path',
                 mockFile: 'pact.json',
                 value: '/does/exist'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths',
+                location: '[root].paths',
                 pathMethod: null,
                 pathName: null,
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: {'/does/exist': pathWithGetOperationBuilder.build()}
             },
             type: 'error'

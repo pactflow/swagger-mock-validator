@@ -1,14 +1,14 @@
 # Swagger Mock Validator
-> A CLI tool to validate mocks against swagger specs.
+> A CLI tool to validate mocks against swagger/OpenApi specs.
 
 ## What is Swagger Mock Validator
-- A command line tool that confirms mock request and responses conform to the schema specified in a swagger specification.
+- A command line tool that confirms mock request and responses conform to the schema specified in a Swagger 2 or OpenApi 3 specification.
 - Supports mocks in Pact format (1.0, 1.1 or 2.0) and the [Pact Broker](https://github.com/bethesque/pact_broker) (1.8.0 or higher)
 - Supports local files and urls
-- Supports swagger files in json or yaml format
+- Supports Swagger/OpenApi files in json or yaml format
 - Can be invoked from the command line in any language
 
-For a list of all the validation rules see [RULES.md](RULES.md).
+For a list of all the validation features see [FEATURES.md](docs/FEATURES.md).
 
 ## Requirements
 - nodejs 6.x or higher (tested using 6.x, 8.x and 10.x)
@@ -22,7 +22,7 @@ npm install --global swagger-mock-validator
 ```
 
 ## Usage
-Invoke the tool with a path or url to a swagger file and a path or url to a mock file. These files should be in json format.
+Invoke the tool with a path or url to a Swagger or OpenApi file and a path or url to a mock file. These files should be in json format.
 ```
 swagger-mock-validator /path/to/swagger.json /path/to/pact.json
 
@@ -31,7 +31,7 @@ swagger-mock-validator https://api.com/swagger.json https://pact-broker.com/pact
 swagger-mock-validator /path/to/swagger.json https://pact-broker.com/pact.json
 ```
 
-Invoking this command will confirm the swagger spec and mock are compatible with each other. [RULES.md](RULES.md) contains the details of what is verified.
+Invoking this command will confirm the Swagger/OpenApi spec and mock are compatible with each other. [FEATURES.md](docs/FEATURES.md) contains the details of what is verified.
 
 If the two files are compatible with each other an exit status of 0 is returned.
 
@@ -65,7 +65,7 @@ By default analytics are disabled. To protect your privacy this is an opt-in fea
 See [CHANGELOG.md](CHANGELOG.md)
 
 ## Contributing
-See [CONTRIBUTING.md](CONTRIBUTING.md)
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ## License
 See [LICENSE.txt](LICENSE.txt)

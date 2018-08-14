@@ -1,16 +1,16 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {bodyParameterBuilder} from './support/swagger-builder/parameter-builder/body-parameter-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
-import {schemaBuilder} from './support/swagger-builder/schema-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {bodyParameterBuilder} from './support/swagger2-builder/parameter-builder/body-parameter-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {schemaBuilder} from './support/swagger2-builder/schema-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('consumes', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
     const defaultInteractionBuilder = interactionBuilder
         .withDescription('interaction description')
         .withRequestPath('/does/exist')
@@ -104,20 +104,20 @@ describe('consumes', () => {
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
             code: 'request.content-type.missing',
-            message: 'Request content type header is not defined but there is consumes definition in the spec',
+            message: 'Request content type header is not defined but spec specifies mime-types to consume',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.withRequestBody({id: 1}).build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.post.consumes',
+                location: '[root].paths./does/exist.post.consumes',
                 pathMethod: 'post',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: ['application/json']
             },
             type: 'warning'
@@ -130,20 +130,20 @@ describe('consumes', () => {
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
             code: 'request.content-type.unknown',
-            message: 'Request content-type header is defined but there is no consumes definition in the spec',
+            message: 'Request content-type header is defined but the spec does not specify any mime-types to consume',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                location: '[root].interactions[0].request.headers.Content-Type',
                 mockFile: 'pact.json',
                 value: 'application/json'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.post',
+                location: '[root].paths./does/exist.post',
                 pathMethod: 'post',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: operationBuilder.withParameter(defaultSwaggerBodyParameter).build()
             },
             type: 'warning'
@@ -156,21 +156,20 @@ describe('consumes', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.content-type.incompatible',
-            message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
-            'in the swagger file',
+            message: 'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                location: '[root].interactions[0].request.headers.Content-Type',
                 mockFile: 'pact.json',
                 value: 'application/json'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.post.consumes',
+                location: '[root].paths./does/exist.post.consumes',
                 pathMethod: 'post',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: ['application/xml']
             },
             type: 'error'
@@ -183,21 +182,20 @@ describe('consumes', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.content-type.incompatible',
-            message: 'Request Content-Type header is incompatible with the consumes mime type defined ' +
-            'in the swagger file',
+            message: 'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                location: '[root].interactions[0].request.headers.Content-Type',
                 mockFile: 'pact.json',
                 value: 'application/json'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.post.consumes',
+                location: '[root].paths./does/exist.post.consumes',
                 pathMethod: 'post',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: ['application/json;charset=utf-8']
             },
             type: 'error'
@@ -219,21 +217,20 @@ describe('consumes', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.content-type.incompatible',
-            message: 'Request Content-Type header is incompatible with the consumes mime type defined in the ' +
-            'swagger file',
+            message: 'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                location: '[root].interactions[0].request.headers.Content-Type',
                 mockFile: 'pact.json',
                 value: 'application/json'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].consumes',
+                location: '[root].consumes',
                 pathMethod: 'post',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: ['application/xml']
             },
             type: 'error'
@@ -255,21 +252,20 @@ describe('consumes', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.content-type.incompatible',
-            message: 'Request Content-Type header is incompatible with the consumes mime ' +
-            'type defined in the swagger file',
+            message: 'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.headers.Content-Type',
+                location: '[root].interactions[0].request.headers.Content-Type',
                 mockFile: 'pact.json',
                 value: 'application/json'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.post.consumes',
+                location: '[root].paths./does/exist.post.consumes',
                 pathMethod: 'post',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: ['application/xml']
             },
             type: 'error'

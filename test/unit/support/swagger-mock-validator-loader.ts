@@ -8,6 +8,7 @@ import {HttpClient} from '../../../lib/swagger-mock-validator/clients/http-clien
 import {FileStore} from '../../../lib/swagger-mock-validator/file-store';
 import {Pact} from '../../../lib/swagger-mock-validator/mock-parser/pact/pact';
 import {ResourceLoader} from '../../../lib/swagger-mock-validator/resource-loader';
+import {Openapi3Schema} from '../../../lib/swagger-mock-validator/spec-parser/openapi3/openapi3';
 import {Swagger2} from '../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {UuidGenerator} from '../../../lib/swagger-mock-validator/uuid-generator';
 
@@ -91,14 +92,14 @@ export const swaggerMockValidatorLoader = {
 
         return mockUuidGenerator;
     },
-    invoke: (swaggerFile: Swagger2, pactFile: Pact): Promise<ValidationOutcome> =>
+    invoke: (swaggerFile: Swagger2 | Openapi3Schema, pactFile: Pact): Promise<ValidationOutcome> =>
         swaggerMockValidatorLoader.invokeWithMocks({
             fileSystem: swaggerMockValidatorLoader.createMockFileSystem({
                 'pact.json': Promise.resolve(JSON.stringify(pactFile)),
-                'swagger.json': Promise.resolve(JSON.stringify(swaggerFile))
+                'spec.json': Promise.resolve(JSON.stringify(swaggerFile))
             }),
             mockPathOrUrl: 'pact.json',
-            specPathOrUrl: 'swagger.json'
+            specPathOrUrl: 'spec.json'
         }),
     // tslint:disable:cyclomatic-complexity
     invokeWithMocks: (options: SwaggerMockValidatorLoaderInvokeWithMocksOptions): Promise<ValidationOutcome> => {

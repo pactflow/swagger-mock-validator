@@ -1,16 +1,16 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {ParameterBuilder} from './support/swagger-builder/parameter-builder';
-import {queryParameterBuilder} from './support/swagger-builder/parameter-builder/query-parameter-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {ParameterBuilder} from './support/swagger2-builder/parameter-builder';
+import {queryParameterBuilder} from './support/swagger2-builder/parameter-builder/query-parameter-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('request query', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
     const defaultInteractionBuilder = interactionBuilder
         .withDescription('interaction description')
         .withRequestPath('/does/exist')
@@ -69,20 +69,20 @@ describe('request query', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
-            message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
+            message: 'Value is incompatible with the parameter defined in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.query.value',
+                location: '[root].interactions[0].request.query.value',
                 mockFile: 'pact.json',
                 value: 'a'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                location: '[root].paths./does/exist.get.parameters[0]',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: queryParameter.build()
             },
             type: 'error'
@@ -97,21 +97,21 @@ describe('request query', () => {
 
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
-            message: 'Value is incompatible with the parameter defined in the swagger file: '
+            message: 'Value is incompatible with the parameter defined in the spec file: '
             + 'should have required property \'value\'',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.withRequestQuery(requestQuery).build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                location: '[root].paths./does/exist.get.parameters[0]',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: queryParameter.build()
             },
             type: 'error'
@@ -125,21 +125,21 @@ describe('request query', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
-            message: 'Value is incompatible with the parameter defined in the swagger file: ' +
+            message: 'Value is incompatible with the parameter defined in the spec file: ' +
             'should have required property \'value\'',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                location: '[root].paths./does/exist.get.parameters[0]',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: queryParameter.build()
             },
             type: 'error'
@@ -153,20 +153,20 @@ describe('request query', () => {
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
             code: 'request.query.unknown',
-            message: 'Query parameter is not defined in the swagger file: value',
+            message: 'Query parameter is not defined in the spec file: value',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.query.value',
+                location: '[root].interactions[0].request.query.value',
                 mockFile: 'pact.json',
                 value: 'a'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get',
+                location: '[root].paths./does/exist.get',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: operationBuilder.build()
             },
             type: 'warning'
@@ -182,20 +182,20 @@ describe('request query', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
-            message: 'Value is incompatible with the parameter defined in the swagger file: should be number',
+            message: 'Value is incompatible with the parameter defined in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.query.value',
+                location: '[root].interactions[0].request.query.value',
                 mockFile: 'pact.json',
                 value: '1[multi-array-separator]2'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0]',
+                location: '[root].paths./does/exist.get.parameters[0]',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: queryParameter.build()
             },
             type: 'error'

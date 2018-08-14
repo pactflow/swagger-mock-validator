@@ -74,14 +74,14 @@ describe('reading files', () => {
         });
 
         it('should return the error when the swagger file is not valid', async () => {
-            mockFiles['swagger.json'] = Promise.resolve('{}');
+            mockFiles['swagger.json'] = Promise.resolve('{"swagger": "invalid"}');
             mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
             const error = await expectToFail(invokeValidate('swagger.json', 'pact.json'));
 
             expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
                 'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR',
-                'Unable to parse "swagger.json": [object Object] is not a valid Openapi API definition'
+                'Unable to parse "swagger.json": [object Object] is not a valid Swagger API definition'
             ));
         });
     });

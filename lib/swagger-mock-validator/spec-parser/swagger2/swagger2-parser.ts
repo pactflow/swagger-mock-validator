@@ -82,12 +82,12 @@ const toParsedParameter = (
     parameter: ParsedSpecValue<Swagger2Item>,
     name: string
 ): ParsedSpecParameter => ({
+    collectionFormat: parameter.value.collectionFormat,
     location: parameter.location,
     name,
     parentOperation: parameter.parentOperation,
     required: (parameter.value as SwaggerHeaderPathOrQueryParameter).required || false,
     schema: {
-        collectionFormat: parameter.value.collectionFormat,
         enum: parameter.value.enum,
         exclusiveMaximum: parameter.value.exclusiveMaximum,
         exclusiveMinimum: parameter.value.exclusiveMinimum,
@@ -252,14 +252,14 @@ const parseMimeType = (options: {
         };
     } else if (globalValue) {
         return {
-            location: `[swaggerRoot].${options.mimeTypeName}`,
+            location: `[root].${options.mimeTypeName}`,
             parentOperation: options.parsedOperation,
             value: globalValue
         };
     }
 
     return {
-        location: `[swaggerRoot].${options.mimeTypeName}`,
+        location: `[root].${options.mimeTypeName}`,
         parentOperation: options.parsedOperation,
         value: []
     };
@@ -277,7 +277,7 @@ const getSecurityRequirementsAndBaseLocation = (
         };
     } else {
         return {
-            baseLocation: '[swaggerRoot]',
+            baseLocation: '[root]',
             securityRequirements: globalSecurityRequirements || []
         };
     }
@@ -338,7 +338,7 @@ const parseOperationFromPath = (path: Swagger2Path, pathName: string, specPathOr
             .filter(isHttpMethod)
             .map((operationName) => {
                 const operation = path[operationName] as Swagger2Operation;
-                const pathLocation = `[swaggerRoot].paths.${pathName}`;
+                const pathLocation = `[root].paths.${pathName}`;
                 const operationLocation = `${pathLocation}.${operationName}`;
                 const parsedOperation = {
                     location: operationLocation,
@@ -386,8 +386,8 @@ export const swagger2Parser = {
             .value(),
         pathOrUrl: specPathOrUrl,
         paths: {
-            location: '[swaggerRoot].paths',
-            parentOperation: createEmptyParentOperation(specPathOrUrl, '[swaggerRoot].paths'),
+            location: '[root].paths',
+            parentOperation: createEmptyParentOperation(specPathOrUrl),
             value: specJson.paths
         }
     })

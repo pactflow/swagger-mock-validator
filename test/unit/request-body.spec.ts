@@ -1,18 +1,18 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {definitionsBuilder, DefinitionsBuilder} from './support/swagger-builder/definitions-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {ParameterBuilder} from './support/swagger-builder/parameter-builder';
-import {bodyParameterBuilder} from './support/swagger-builder/parameter-builder/body-parameter-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
-import {schemaBuilder} from './support/swagger-builder/schema-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {definitionsBuilder, DefinitionsBuilder} from './support/swagger2-builder/definitions-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {ParameterBuilder} from './support/swagger2-builder/parameter-builder';
+import {bodyParameterBuilder} from './support/swagger2-builder/parameter-builder/body-parameter-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {schemaBuilder} from './support/swagger2-builder/schema-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('request body', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
 
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
@@ -69,21 +69,21 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: ' +
+            message: 'Request body is incompatible with the request body schema in the spec file: ' +
             'should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body.id',
+                location: '[root].interactions[0].request.body.id',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.properties.id.type',
+                location: '[root].paths./does/exist.get.parameters[0].schema.properties.id.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
@@ -103,20 +103,20 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: should be number',
+            message: 'Request body is incompatible with the request body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body.id',
+                location: '[root].interactions[0].request.body.id',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.properties.id.type',
+                location: '[root].paths./does/exist.get.parameters[0].schema.properties.id.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
@@ -139,20 +139,20 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: should be number',
+            message: 'Request body is incompatible with the request body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body.child.id',
+                location: '[root].interactions[0].request.body.child.id',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.properties.id.type',
+                location: '[root].paths./does/exist.get.parameters[0].schema.properties.id.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: undefined
             },
             type: 'error'
@@ -175,41 +175,41 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: ' +
+            message: 'Request body is incompatible with the request body schema in the spec file: ' +
             'should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body.value1',
+                location: '[root].interactions[0].request.body.value1',
                 mockFile: 'pact.json',
                 value: '1'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.properties.value1.type',
+                location: '[root].paths./does/exist.get.parameters[0].schema.properties.value1.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
         }, {
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: ' +
+            message: 'Request body is incompatible with the request body schema in the spec file: ' +
             'should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body.value2',
+                location: '[root].interactions[0].request.body.value2',
                 mockFile: 'pact.json',
                 value: '2'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.properties.value2.type',
+                location: '[root].paths./does/exist.get.parameters[0].schema.properties.value2.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
@@ -228,16 +228,16 @@ describe('request body', () => {
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body',
+                location: '[root].interactions[0].request.body',
                 mockFile: 'pact.json',
                 value: {id: 1}
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get',
+                location: '[root].paths./does/exist.get',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: operationBuilder.build()
             },
             type: 'warning'
@@ -255,21 +255,21 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: ' +
+            message: 'Request body is incompatible with the request body schema in the spec file: ' +
             'should be object',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body',
+                location: '[root].interactions[0].request.body',
                 mockFile: 'pact.json',
                 value: undefined
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.type',
+                location: '[root].paths./does/exist.get.parameters[0].schema.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'object'
             },
             type: 'error'
@@ -299,21 +299,21 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: ' +
+            message: 'Request body is incompatible with the request body schema in the spec file: ' +
             'should be object',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body',
+                location: '[root].interactions[0].request.body',
                 mockFile: 'pact.json',
                 value: 'a-string'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.type',
+                location: '[root].paths./does/exist.get.parameters[0].schema.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'object'
             },
             type: 'error'
@@ -333,21 +333,21 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: ' +
+            message: 'Request body is incompatible with the request body schema in the spec file: ' +
             'should NOT have additional properties',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body',
+                location: '[root].interactions[0].request.body',
                 mockFile: 'pact.json',
                 value: {a: 1}
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.additionalProperties',
+                location: '[root].paths./does/exist.get.parameters[0].schema.additionalProperties',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: false
             },
             type: 'error'
@@ -367,20 +367,20 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the swagger file: should be number',
+            message: 'Request body is incompatible with the request body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].request.body[\'a\']',
+                location: '[root].interactions[0].request.body[\'a\']',
                 mockFile: 'pact.json',
                 value: '1'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.parameters[0].schema.additionalProperties.type',
+                location: '[root].paths./does/exist.get.parameters[0].schema.additionalProperties.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'

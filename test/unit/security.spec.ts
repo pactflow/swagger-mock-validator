@@ -1,15 +1,15 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
-import {securitySchemeBuilder} from './support/swagger-builder/security-scheme-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {securitySchemeBuilder} from './support/swagger2-builder/security-scheme-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('security', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
     const defaultInteractionBuilder = interactionBuilder
         .withDescription('interaction description')
         .withRequestPath('/does/exist')
@@ -53,20 +53,20 @@ describe('security', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.authorization.missing',
-            message: 'Request Authorization header is missing but is required by the swagger file',
+            message: 'Request Authorization header is missing but is required by the spec file',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.security[0].basic',
+                location: '[root].paths./does/exist.get.security[0].basic',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: []
             },
             type: 'error'
@@ -126,20 +126,20 @@ describe('security', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.authorization.missing',
-            message: 'Request Authorization header is missing but is required by the swagger file',
+            message: 'Request Authorization header is missing but is required by the spec file',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKey',
+                location: '[root].paths./does/exist.get.security[0].apiKey',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: []
             },
             type: 'error'
@@ -184,20 +184,20 @@ describe('security', () => {
 
         expect(result).toContainErrors([{
             code: 'request.authorization.missing',
-            message: 'Request Authorization query is missing but is required by the swagger file',
+            message: 'Request Authorization query is missing but is required by the spec file',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: pactInteraction.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKey',
+                location: '[root].paths./does/exist.get.security[0].apiKey',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: []
             },
             type: 'error'
@@ -219,20 +219,20 @@ describe('security', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.authorization.missing',
-            message: 'Request Authorization query is missing but is required by the swagger file',
+            message: 'Request Authorization query is missing but is required by the spec file',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKey',
+                location: '[root].paths./does/exist.get.security[0].apiKey',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: []
             },
             type: 'error'
@@ -280,39 +280,39 @@ describe('security', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.authorization.missing',
-            message: 'Request Authorization header is missing but is required by the swagger file',
+            message: 'Request Authorization header is missing but is required by the spec file',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKeyHeader',
+                location: '[root].paths./does/exist.get.security[0].apiKeyHeader',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: []
             },
             type: 'error'
         }, {
             code: 'request.authorization.missing',
-            message: 'Request Authorization query is missing but is required by the swagger file',
+            message: 'Request Authorization query is missing but is required by the spec file',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.security[0].apiKeyQuery',
+                location: '[root].paths./does/exist.get.security[0].apiKeyQuery',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: []
             },
             type: 'error'
@@ -348,20 +348,20 @@ describe('security', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.authorization.missing',
-            message: 'Request Authorization query is missing but is required by the swagger file',
+            message: 'Request Authorization query is missing but is required by the spec file',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].security[0].apiKey',
+                location: '[root].security[0].apiKey',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: []
             },
             type: 'error'
@@ -385,20 +385,20 @@ describe('security', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.authorization.missing',
-            message: 'Request Authorization header is missing but is required by the swagger file',
+            message: 'Request Authorization header is missing but is required by the spec file',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0]',
+                location: '[root].interactions[0]',
                 mockFile: 'pact.json',
                 value: defaultInteractionBuilder.build()
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.security[0].header',
+                location: '[root].paths./does/exist.get.security[0].header',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: []
             },
             type: 'error'

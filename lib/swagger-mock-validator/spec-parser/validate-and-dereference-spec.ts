@@ -1,10 +1,11 @@
 import * as SwaggerParser from 'swagger-parser';
-import {Swagger2} from './spec-parser/swagger2/swagger2';
-import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator-error-impl';
+import {SwaggerMockValidatorErrorImpl} from '../swagger-mock-validator-error-impl';
+import {Openapi3Schema} from './openapi3/openapi3';
+import {Swagger2} from './swagger2/swagger2';
 
-export const validateAndResolveSwagger = async (
+export const validateAndDereferenceSpec = async <T extends Swagger2 | Openapi3Schema>(
     document: any, pathOrUrl: string
-): Promise<Swagger2> => {
+): Promise<T> => {
     try {
         return await SwaggerParser.validate(document, {
             dereference: {

@@ -15,7 +15,7 @@ const validateQueryRequirement = (
     if (!parsedMockInteraction.requestQuery[parsedSpecSecurityRequirement.credentialKey]) {
         return result.build({
             code: 'request.authorization.missing',
-            message: 'Request Authorization query is missing but is required by the swagger file',
+            message: 'Request Authorization query is missing but is required by the spec file',
             mockSegment: parsedMockInteraction,
             source: 'spec-mock-validation',
             specSegment: parsedSpecSecurityRequirement
@@ -32,7 +32,7 @@ const validateHeaderRequirement = (
     if (!parsedMockInteraction.requestHeaders[parsedSpecSecurityRequirement.credentialKey]) {
         return result.build({
             code: 'request.authorization.missing',
-            message: 'Request Authorization header is missing but is required by the swagger file',
+            message: 'Request Authorization header is missing but is required by the spec file',
             mockSegment: parsedMockInteraction,
             source: 'spec-mock-validation',
             specSegment: parsedSpecSecurityRequirement

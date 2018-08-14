@@ -1,17 +1,17 @@
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {definitionsBuilder, DefinitionsBuilder} from './support/swagger-builder/definitions-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
-import {responseBuilder} from './support/swagger-builder/response-builder';
-import {schemaBuilder, SchemaBuilder} from './support/swagger-builder/schema-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {definitionsBuilder, DefinitionsBuilder} from './support/swagger2-builder/definitions-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {responseBuilder} from './support/swagger2-builder/response-builder';
+import {schemaBuilder, SchemaBuilder} from './support/swagger2-builder/schema-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
 describe('response body', () => {
-    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with swagger file "swagger.json"';
+    const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
 
     beforeEach(() => {
         jasmine.addMatchers(customMatchers);
@@ -69,20 +69,20 @@ describe('response body', () => {
         expect(result).toContainErrors([{
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be number',
+                'Response body is incompatible with the response body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body.id',
+                location: '[root].interactions[0].response.body.id',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
+                location: '[root].paths./does/exist.get.responses.200.schema.properties.id.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
@@ -105,20 +105,20 @@ describe('response body', () => {
         expect(result).toContainErrors([{
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be number',
+                'Response body is incompatible with the response body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body.id',
+                location: '[root].interactions[0].response.body.id',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
+                location: '[root].paths./does/exist.get.responses.200.schema.properties.id.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
@@ -145,21 +145,21 @@ describe('response body', () => {
         expect(result).toContainErrors([{
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be number',
+                'Response body is incompatible with the response body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body.child.id',
+                location: '[root].interactions[0].response.body.child.id',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
                 location:
-                    '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
+                    '[root].paths./does/exist.get.responses.200.schema.properties.id.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: undefined
             },
             type: 'error'
@@ -188,21 +188,21 @@ describe('response body', () => {
         expect(result).toContainErrors([{
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be number',
+                'Response body is incompatible with the response body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body.children[0].id',
+                location: '[root].interactions[0].response.body.children[0].id',
                 mockFile: 'pact.json',
                 value: 'not-a-number'
             },
             source: 'spec-mock-validation',
             specDetails: {
                 location:
-                    '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.id.type',
+                    '[root].paths./does/exist.get.responses.200.schema.properties.id.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: undefined
             },
             type: 'error'
@@ -233,21 +233,21 @@ describe('response body', () => {
         expect(result).toContainErrors([{
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be string',
+                'Response body is incompatible with the response body schema in the spec file: should be string',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body[0].customer.last',
+                location: '[root].interactions[0].response.body[0].customer.last',
                 mockFile: 'pact.json',
                 value: 1
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200' +
+                location: '[root].paths./does/exist.get.responses.200' +
                 '.schema.items.properties.customer.properties.last.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'string'
             },
             type: 'error'
@@ -270,40 +270,40 @@ describe('response body', () => {
         expect(result).toContainErrors([{
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be number',
+                'Response body is incompatible with the response body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body.value1',
+                location: '[root].interactions[0].response.body.value1',
                 mockFile: 'pact.json',
                 value: '1'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.value1.type',
+                location: '[root].paths./does/exist.get.responses.200.schema.properties.value1.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
         }, {
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be number',
+                'Response body is incompatible with the response body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body.value2',
+                location: '[root].interactions[0].response.body.value2',
                 mockFile: 'pact.json',
                 value: '2'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.properties.value2.type',
+                location: '[root].paths./does/exist.get.responses.200.schema.properties.value2.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
@@ -322,16 +322,16 @@ describe('response body', () => {
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body',
+                location: '[root].interactions[0].response.body',
                 mockFile: 'pact.json',
                 value: {id: 1}
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200',
+                location: '[root].paths./does/exist.get.responses.200',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: {description: 'default-response'}
             },
             type: 'error'
@@ -490,20 +490,20 @@ describe('response body', () => {
         expect(result).toContainErrors([{
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be number',
+                'Response body is incompatible with the response body schema in the spec file: should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body[\'b\']',
+                location: '[root].interactions[0].response.body[\'b\']',
                 mockFile: 'pact.json',
                 value: '2'
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200.schema.additionalProperties.type',
+                location: '[root].paths./does/exist.get.responses.200.schema.additionalProperties.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'number'
             },
             type: 'error'
@@ -606,21 +606,21 @@ describe('response body', () => {
         expect(result).toContainErrors([{
             code: 'response.body.incompatible',
             message:
-                'Response body is incompatible with the response body schema in the swagger file: should be string',
+                'Response body is incompatible with the response body schema in the spec file: should be string',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.body.value.b',
+                location: '[root].interactions[0].response.body.value.b',
                 mockFile: 'pact.json',
                 value: 2
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses.200.' +
+                location: '[root].paths./does/exist.get.responses.200.' +
                 'schema.properties.value.allOf.1.properties.b.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: 'string'
             },
             type: 'error'
@@ -654,20 +654,20 @@ describe('response body', () => {
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
             code: 'response.status.default',
-            message: 'Response status code matched default response in swagger file: 202',
+            message: 'Response status code matched default response in spec file: 202',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[pactRoot].interactions[0].response.status',
+                location: '[root].interactions[0].response.status',
                 mockFile: 'pact.json',
                 value: 202
             },
             source: 'spec-mock-validation',
             specDetails: {
-                location: '[swaggerRoot].paths./does/exist.get.responses',
+                location: '[root].paths./does/exist.get.responses',
                 pathMethod: 'get',
                 pathName: '/does/exist',
-                specFile: 'swagger.json',
+                specFile: 'spec.json',
                 value: operation.build().responses
             },
             type: 'warning'

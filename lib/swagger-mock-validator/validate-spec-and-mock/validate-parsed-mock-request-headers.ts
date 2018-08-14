@@ -57,7 +57,7 @@ const getWarningForUndefinedHeader = (headerName: string,
 
     return [result.build({
         code: 'request.header.unknown',
-        message: `Request header is not defined in the swagger file: ${headerName}`,
+        message: `Request header is not defined in the spec file: ${headerName}`,
         mockSegment: parsedMockRequestHeader,
         source: 'spec-mock-validation',
         specSegment: parsedSpecOperation

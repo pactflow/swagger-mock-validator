@@ -118,7 +118,7 @@ export const getParsedSpecOperation = (
             results: [
                 result.build({
                     code: 'request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: ' +
+                    message: 'Path or method not defined in spec file: ' +
                         `${parsedMockInteraction.requestMethod.value.toUpperCase()} ` +
                         `${parsedMockInteraction.requestPath.value}`,
                     mockSegment: parsedMockInteraction.requestPath,

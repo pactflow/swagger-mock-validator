@@ -1,10 +1,10 @@
 import {cloneDeep} from 'lodash';
 import {Swagger2, Swagger2SecurityRequirement} from '../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {addToArrayOn, setValueOn} from './builder-utilities';
-import {DefinitionsBuilder} from './swagger-builder/definitions-builder';
-import {ParameterBuilder} from './swagger-builder/parameter-builder';
-import {PathBuilder} from './swagger-builder/path-builder';
-import {SecuritySchemeBuilder} from './swagger-builder/security-scheme-builder';
+import {DefinitionsBuilder} from './swagger2-builder/definitions-builder';
+import {ParameterBuilder} from './swagger2-builder/parameter-builder';
+import {PathBuilder} from './swagger2-builder/path-builder';
+import {SecuritySchemeBuilder} from './swagger2-builder/security-scheme-builder';
 
 const createSwagger2Builder = (swagger: Swagger2) => ({
     build: () => cloneDeep(swagger),

@@ -26,7 +26,7 @@ const validateParsedMockRequestAcceptsHeader = (
     if (responseProduces.value.length === 0) {
         return [result.build({
             code: 'request.accept.unknown',
-            message: 'Request Accept header is defined but there is no produces definition in the spec',
+            message: 'Request Accept header is defined but the spec does not specify any mime-types to produce',
             mockSegment: parsedMockInteraction.requestHeaders[acceptHeaderName],
             source: 'spec-mock-validation',
             specSegment: parsedSpecOperation
@@ -39,7 +39,7 @@ const validateParsedMockRequestAcceptsHeader = (
     if (matchingMediaTypes.length === 0) {
         return [result.build({
             code: 'request.accept.incompatible',
-            message: 'Request Accept header is incompatible with the produces mime type defined in the swagger file',
+            message: 'Request Accept header is incompatible with the mime-types the spec defines to produce',
             mockSegment: parsedMockInteraction.requestHeaders[acceptHeaderName],
             source: 'spec-mock-validation',
             specSegment: responseProduces
@@ -64,7 +64,7 @@ const validateParsedMockResponseContentTypeAndBody = (
     if (responseProduces.value.length === 0) {
         return [result.build({
             code: 'response.content-type.unknown',
-            message: 'Response Content-Type header is defined but there is no produces definition in the spec',
+            message: 'Response Content-Type header is defined but the spec does not specify any mime-types to produce',
             mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
             source: 'spec-mock-validation',
             specSegment: parsedSpecOperation
@@ -76,8 +76,7 @@ const validateParsedMockResponseContentTypeAndBody = (
     if (matchingMediaTypes.length === 0) {
         return [result.build({
             code: 'response.content-type.incompatible',
-            message: 'Response Content-Type header is incompatible with the produces mime ' +
-            'type defined in the swagger file',
+            message: 'Response Content-Type header is incompatible with the mime-types the spec defines to produce',
             mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
             source: 'spec-mock-validation',
             specSegment: responseProduces

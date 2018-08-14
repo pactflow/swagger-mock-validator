@@ -5,10 +5,10 @@ import {expectToFail} from '../support/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerBuilder, providerPactsBuilder} from './support/pact-broker-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
-import {operationBuilder} from './support/swagger-builder/operation-builder';
-import {pathBuilder} from './support/swagger-builder/path-builder';
 import {MockHttpClientResponses, swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
 import {swagger2Builder} from './support/swagger2-builder';
+import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {pathBuilder} from './support/swagger2-builder/path-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -299,23 +299,23 @@ describe('reading urls', () => {
 
             expect(result.failureReason).toEqual(
                 'Mock file "http://pact-broker.com/provider-name/consumer-2/pact" ' +
-                'is not compatible with swagger file "http://domain.com/swagger.json", ' +
+                'is not compatible with spec file "http://domain.com/swagger.json", ' +
                 'Mock file "http://pact-broker.com/provider-name/consumer-3/pact" ' +
-                'is not compatible with swagger file "http://domain.com/swagger.json"'
+                'is not compatible with spec file "http://domain.com/swagger.json"'
             );
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /does/not/exist',
+                message: 'Path or method not defined in spec file: GET /does/not/exist',
                 mockDetails: {
                     interactionDescription: 'default-description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'http://pact-broker.com/provider-name/consumer-2/pact',
                     value: '/does/not/exist'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
                     specFile: 'http://domain.com/swagger.json',
@@ -324,17 +324,17 @@ describe('reading urls', () => {
                 type: 'error'
             }, {
                 code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in swagger file: GET /doesnt/exist',
+                message: 'Path or method not defined in spec file: GET /doesnt/exist',
                 mockDetails: {
                     interactionDescription: 'default-description',
                     interactionState: '[none]',
-                    location: '[pactRoot].interactions[0].request.path',
+                    location: '[root].interactions[0].request.path',
                     mockFile: 'http://pact-broker.com/provider-name/consumer-3/pact',
                     value: '/doesnt/exist'
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[swaggerRoot].paths',
+                    location: '[root].paths',
                     pathMethod: null,
                     pathName: null,
                     specFile: 'http://domain.com/swagger.json',
@@ -345,7 +345,7 @@ describe('reading urls', () => {
         });
 
         it('should not report on the same validation error twice', async () => {
-            mockUrls['http://url.com/swagger.json'] = Promise.resolve('{}');
+            mockUrls['http://url.com/swagger.json'] = Promise.resolve('{"swagger": "invalid"}');
             mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/{provider}/pacts')
                 .build()
@@ -366,7 +366,7 @@ describe('reading urls', () => {
 
             expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
                 'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR',
-                'Unable to parse "http://url.com/swagger.json": [object Object] is not a valid Openapi API definition'
+                'Unable to parse "http://url.com/swagger.json": [object Object] is not a valid Swagger API definition'
             ));
         });
     });

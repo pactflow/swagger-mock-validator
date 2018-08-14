@@ -60,7 +60,7 @@ declare namespace SwaggerMockValidator {
         warnings: ValidationResult[];
     }
 
-    export type SwaggerMockValidatorOptionsSpecType = 'swagger2';
+    export type SwaggerMockValidatorOptionsSpecType = 'swagger2' | 'openapi3';
     export type SwaggerMockValidatorOptionsMockType = 'pact';
 
     export interface SwaggerMockValidatorOptionsSpec {

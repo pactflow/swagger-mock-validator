@@ -20,7 +20,7 @@ const getWarningForUndefinedQueryParameter = (queryName: string,
 
     return [result.build({
         code: 'request.query.unknown',
-        message: `Query parameter is not defined in the swagger file: ${queryName}`,
+        message: `Query parameter is not defined in the spec file: ${queryName}`,
         mockSegment: parsedMockRequestQuery,
         source: 'spec-mock-validation',
         specSegment: parsedSpecOperation

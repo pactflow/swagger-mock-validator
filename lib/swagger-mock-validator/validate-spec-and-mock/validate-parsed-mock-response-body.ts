@@ -48,7 +48,7 @@ export const validateParsedMockResponseBody = (parsedMockInteraction: ParsedMock
 
         return result.build({
             code: 'response.body.incompatible',
-            message: `Response body is incompatible with the response body schema in the swagger file: ${message}`,
+            message: `Response body is incompatible with the response body schema in the spec file: ${message}`,
             mockSegment: parsedMockInteraction.getResponseBodyPath(error.dataPath),
             source: 'spec-mock-validation',
             specSegment: parsedSpecResponse.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2))
