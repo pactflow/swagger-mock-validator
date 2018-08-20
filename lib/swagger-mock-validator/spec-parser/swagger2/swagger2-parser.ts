@@ -15,6 +15,7 @@ import {
 import {
     Swagger2,
     Swagger2BodyParameter,
+    Swagger2HttpMethod,
     Swagger2Item,
     Swagger2JsonSchema,
     Swagger2JsonSchemaDefinitions,
@@ -322,48 +323,57 @@ const parseSecurityRequirements = (
         .value();
 };
 
+const typeSafeHttpMethods: {[method in Swagger2HttpMethod]: null} = {
+    delete: null, get: null, head: null, options: null, patch: null, post: null, put: null
+};
+
+const supportedHttpMethods = Object.keys(typeSafeHttpMethods);
+
+const isHttpMethod = (value: string): value is Swagger2HttpMethod =>
+    supportedHttpMethods.indexOf(value) >= 0;
+
 const parseOperationFromPath = (path: Swagger2Path, pathName: string, specPathOrUrl: string, specJson: Swagger2):
     ParsedSpecOperation[] =>
-    _(path)
-        .omit(['parameters'])
-        .map((operation: Swagger2Operation, operationName: string) => {
-            const pathLocation = `[swaggerRoot].paths.${pathName}`;
-            const operationLocation = `${pathLocation}.${operationName}`;
-            const parsedOperation = {
-                location: operationLocation,
-                method: operationName,
-                pathName,
-                specFile: specPathOrUrl,
-                value: operation
-            } as ParsedSpecOperation;
+        Object.keys(path)
+            .filter(isHttpMethod)
+            .map((operationName) => {
+                const operation = path[operationName] as Swagger2Operation;
+                const pathLocation = `[swaggerRoot].paths.${pathName}`;
+                const operationLocation = `${pathLocation}.${operationName}`;
+                const parsedOperation = {
+                    location: operationLocation,
+                    method: operationName,
+                    pathName,
+                    specFile: specPathOrUrl,
+                    value: operation
+                } as ParsedSpecOperation;
 
-            const parsedParameters = parseParameters(path, pathLocation, parsedOperation, specJson.definitions);
+                const parsedParameters = parseParameters(path, pathLocation, parsedOperation, specJson.definitions);
 
-            parsedOperation.parentOperation = parsedOperation;
-            parsedOperation.pathNameSegments =
-                parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, specJson.basePath);
+                parsedOperation.parentOperation = parsedOperation;
+                parsedOperation.pathNameSegments =
+                    parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, specJson.basePath);
 
-            parsedOperation.consumes = parseMimeType({
-                mimeTypeName: 'consumes',
-                operation,
-                parsedOperation,
-                specJson
+                parsedOperation.consumes = parseMimeType({
+                    mimeTypeName: 'consumes',
+                    operation,
+                    parsedOperation,
+                    specJson
+                });
+                parsedOperation.requestBodyParameter = parsedParameters.requestBody;
+                parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
+                parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
+
+                parsedOperation.responses = parseResponses(operation, parsedOperation, specJson);
+                parsedOperation.securityRequirements = parseSecurityRequirements(
+                    specJson.securityDefinitions,
+                    operation.security,
+                    specJson.security,
+                    parsedOperation
+                );
+
+                return parsedOperation;
             });
-            parsedOperation.requestBodyParameter = parsedParameters.requestBody;
-            parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
-            parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
-
-            parsedOperation.responses = parseResponses(operation, parsedOperation, specJson);
-            parsedOperation.securityRequirements = parseSecurityRequirements(
-                specJson.securityDefinitions,
-                operation.security,
-                specJson.security,
-                parsedOperation
-            );
-
-            return parsedOperation;
-        })
-        .value();
 
 export const swagger2Parser = {
     parse: (specJson: Swagger2, specPathOrUrl: string): ParsedSpec => ({
