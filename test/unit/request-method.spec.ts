@@ -73,4 +73,22 @@ describe('request method', () => {
             type: 'error'
         }]);
     });
+
+    it('should not try to parse non-method properties as operations', async () => {
+        const pactFile = pactBuilder
+            .withInteraction(interactionBuilder
+                .withRequestPath('/does/exist')
+                .withRequestMethodGet())
+            .build();
+
+        const swaggerFile = swagger2Builder
+            .withPath('/does/exist', pathBuilder
+                .withGetOperation(operationBuilder)
+                .withXProperty())
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result).toContainNoWarningsOrErrors();
+    });
 });

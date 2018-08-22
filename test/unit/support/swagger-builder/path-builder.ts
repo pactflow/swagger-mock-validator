@@ -18,7 +18,9 @@ const createPathBuilder = (path: Swagger2Path) => ({
         addToArrayOn(path, 'parameters', {$ref: `#/parameters/${name}`})
     ),
     withPostOperation: (operationBuilder: OperationBuilder) =>
-        createPathBuilder(setValueOn(path, 'post', operationBuilder.build()))
+        createPathBuilder(setValueOn(path, 'post', operationBuilder.build())),
+    withXProperty: () =>
+        createPathBuilder(setValueOn(path, 'x-custom-property', 'custom value'))
 });
 
 export const pathBuilder = createPathBuilder({});

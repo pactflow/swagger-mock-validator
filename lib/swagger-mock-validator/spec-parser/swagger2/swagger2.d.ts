@@ -53,16 +53,13 @@ export interface Swagger2SecuritySchemeOAuth2 {
     type: 'oauth2';
 }
 
-export interface Swagger2Path {
-    get?: Swagger2Operation;
-    put?: Swagger2Operation;
-    post?: Swagger2Operation;
-    'delete'?: Swagger2Operation;
-    options?: Swagger2Operation;
-    head?: Swagger2Operation;
-    patch?: Swagger2Operation;
-    parameters?: Swagger2Parameter[];
-}
+export type Swagger2HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch';
+
+export type Swagger2Path = {
+    [method in Swagger2HttpMethod]?: Swagger2Operation
+} & {
+    parameters?: Swagger2Parameter[]
+};
 
 export interface Swagger2Operation {
     produces?: string[];
