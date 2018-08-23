@@ -44,23 +44,26 @@ const getWarningForUndefinedHeader = (headerName, parsedMockRequestHeader, parse
         return [];
     }
     return [result_1.result.build({
-            code: 'spv.request.header.unknown',
-            message: `Request header is not defined in the swagger file: ${headerName}`,
+            code: 'request.header.unknown',
+            message: `Request header is not defined in the spec file: ${headerName}`,
             mockSegment: parsedMockRequestHeader,
             source: 'spec-mock-validation',
             specSegment: parsedSpecOperation
         })];
 };
-exports.validateParsedMockRequestHeaders = (parsedMockInteraction, parsedSpecOperation) => _(_.keys(parsedMockInteraction.requestHeaders))
-    .union(_.keys(parsedSpecOperation.requestHeaderParameters))
-    .map((headerName) => {
-    const parsedMockRequestHeader = parsedMockInteraction.requestHeaders[headerName];
-    const parsedSpecRequestHeader = parsedSpecOperation.requestHeaderParameters[headerName];
-    if (!parsedSpecRequestHeader && parsedMockRequestHeader) {
-        return getWarningForUndefinedHeader(headerName, parsedMockRequestHeader, parsedSpecOperation);
+const validateParsedMockRequestHeader = (parsedMockInteraction, parsedSpecOperation, headerName, mockHeader, specHeader) => {
+    if (!specHeader && mockHeader) {
+        return getWarningForUndefinedHeader(headerName, mockHeader, parsedSpecOperation);
     }
-    const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecRequestHeader, parsedMockRequestHeader, parsedMockInteraction, 'spv.request.header.incompatible');
+    const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(specHeader, mockHeader, parsedMockInteraction, 'request.header.incompatible');
     return validationResult.results;
-})
-    .flatten()
-    .value();
+};
+exports.validateParsedMockRequestHeaders = (parsedMockInteraction, parsedSpecOperation) => {
+    const mockRequestHeaders = parsedMockInteraction.requestHeaders;
+    const specRequestHeaders = parsedSpecOperation.requestHeaderParameters;
+    return _(_.keys(mockRequestHeaders))
+        .union(_.keys(specRequestHeaders))
+        .map((headerName) => validateParsedMockRequestHeader(parsedMockInteraction, parsedSpecOperation, headerName, mockRequestHeaders[headerName], specRequestHeaders[headerName]))
+        .flatten()
+        .value();
+};

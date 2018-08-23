@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
-exports.defaultFileSystem = {
-    readFile: (fileName) => {
+class FileSystem {
+    readFile(fileName) {
         return new Promise((resolve, reject) => {
             fs.readFile(fileName, (error, file) => {
                 if (error) {
@@ -14,4 +14,5 @@ exports.defaultFileSystem = {
             });
         });
     }
-};
+}
+exports.FileSystem = FileSystem;

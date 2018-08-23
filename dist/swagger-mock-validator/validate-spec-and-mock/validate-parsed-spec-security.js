@@ -5,8 +5,8 @@ const result_1 = require("../result");
 const validateQueryRequirement = (parsedSpecSecurityRequirement, parsedMockInteraction) => {
     if (!parsedMockInteraction.requestQuery[parsedSpecSecurityRequirement.credentialKey]) {
         return result_1.result.build({
-            code: 'spv.request.authorization.missing',
-            message: 'Request Authorization query is missing but is required by the swagger file',
+            code: 'request.authorization.missing',
+            message: 'Request Authorization query is missing but is required by the spec file',
             mockSegment: parsedMockInteraction,
             source: 'spec-mock-validation',
             specSegment: parsedSpecSecurityRequirement
@@ -17,8 +17,8 @@ const validateQueryRequirement = (parsedSpecSecurityRequirement, parsedMockInter
 const validateHeaderRequirement = (parsedSpecSecurityRequirement, parsedMockInteraction) => {
     if (!parsedMockInteraction.requestHeaders[parsedSpecSecurityRequirement.credentialKey]) {
         return result_1.result.build({
-            code: 'spv.request.authorization.missing',
-            message: 'Request Authorization header is missing but is required by the swagger file',
+            code: 'request.authorization.missing',
+            message: 'Request Authorization header is missing but is required by the spec file',
             mockSegment: parsedMockInteraction,
             source: 'spec-mock-validation',
             specSegment: parsedSpecSecurityRequirement

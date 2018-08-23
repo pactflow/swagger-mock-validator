@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Ajv = require("ajv");
 const _ = require("lodash");
+const traverse_json_schema_1 = require("../common/traverse-json-schema");
 const binary_1 = require("./validate-json/binary");
 const byte_1 = require("./validate-json/byte");
 const double_1 = require("./validate-json/double");
@@ -12,6 +13,7 @@ const password_1 = require("./validate-json/password");
 // tslint:disable:no-var-requires
 // tslint:disable:no-submodule-imports
 const draft4MetaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
+const getRawValueFromJson = (rawJson, dataPath) => dataPath ? _.get(rawJson, dataPath.substring(1)) : rawJson;
 const addSwaggerFormatsAndKeywords = (ajv, rawJson) => {
     ajv.addFormat('binary', binary_1.isBinary);
     ajv.addFormat('byte', byte_1.isByte);
@@ -20,28 +22,28 @@ const addSwaggerFormatsAndKeywords = (ajv, rawJson) => {
     ajv.addKeyword(double_1.doubleAjvKeyword, {
         type: 'number',
         validate: (_schema, _data, _parentSchema, dataPath) => {
-            const rawValue = _.get(rawJson, dataPath.substring(1));
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
             return double_1.isDouble(rawValue);
         }
     });
     ajv.addKeyword(float_1.floatAjvKeyword, {
         type: 'number',
         validate: (_schema, _data, _parentSchema, dataPath) => {
-            const rawValue = _.get(rawJson, dataPath.substring(1));
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
             return float_1.isFloat(rawValue);
         }
     });
     ajv.addKeyword(int32_1.int32AjvKeyword, {
         type: 'integer',
         validate: (_schema, _data, _parentSchema, dataPath) => {
-            const rawValue = _.get(rawJson, dataPath.substring(1));
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
             return int32_1.isInt32(rawValue);
         }
     });
     ajv.addKeyword(int64_1.int64AjvKeyword, {
         type: 'integer',
         validate: (_schema, _data, _parentSchema, dataPath) => {
-            const rawValue = _.get(rawJson, dataPath.substring(1));
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
             return int64_1.isInt64(rawValue);
         }
     });
@@ -56,7 +58,10 @@ const nonSwaggerAjvFormats = [
     'relative-json-pointer',
     'time',
     'uri',
-    'uuid'
+    'uuid',
+    'url',
+    'uri-template',
+    'uri-reference'
 ];
 const alwaysTrue = () => true;
 const removeNonSwaggerAjvFormats = (ajv) => {
@@ -65,21 +70,12 @@ const removeNonSwaggerAjvFormats = (ajv) => {
     });
 };
 const changeTypeToKeywordForCustomFormats = (schema) => {
-    if (!schema) {
-        return;
-    }
-    _.each(schema.definitions, changeTypeToKeywordForCustomFormats);
-    _.each(schema.allOf, changeTypeToKeywordForCustomFormats);
-    double_1.formatForDoubleNumbers(schema);
-    float_1.formatForFloatNumbers(schema);
-    int32_1.formatForInt32Numbers(schema);
-    int64_1.formatForInt64Numbers(schema);
-    _.each(schema.properties, changeTypeToKeywordForCustomFormats);
-    changeTypeToKeywordForCustomFormats(schema.items);
-    const schemaAsJsonSchemaValue = schema;
-    if (typeof schemaAsJsonSchemaValue.additionalProperties === 'object') {
-        changeTypeToKeywordForCustomFormats(schemaAsJsonSchemaValue.additionalProperties);
-    }
+    traverse_json_schema_1.traverseJsonSchema(schema, (mutableSchema) => {
+        double_1.formatForDoubleNumbers(mutableSchema);
+        float_1.formatForFloatNumbers(mutableSchema);
+        int32_1.formatForInt32Numbers(mutableSchema);
+        int64_1.formatForInt64Numbers(mutableSchema);
+    });
 };
 const createAjvForDraft4 = (userOptions) => {
     // see ajv migration guide for ajv v4 -> ajv v5 for details on what all these settings do

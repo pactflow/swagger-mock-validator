@@ -1,19 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const errorCodes = [
-    'spv.request.accept.incompatible',
-    'spv.request.authorization.missing',
-    'spv.request.body.incompatible',
-    'spv.request.content-type.incompatible',
-    'spv.request.header.incompatible',
-    'spv.request.path-or-method.unknown',
-    'spv.request.query.incompatible',
-    'spv.response.body.incompatible',
-    'spv.response.body.unknown',
-    'spv.response.content-type.incompatible',
-    'spv.response.header.incompatible',
-    'spv.response.header.unknown',
-    'spv.response.status.unknown'
+    'request.accept.incompatible',
+    'request.authorization.missing',
+    'request.body.incompatible',
+    'request.content-type.incompatible',
+    'request.header.incompatible',
+    'request.path-or-method.unknown',
+    'request.query.incompatible',
+    'response.body.incompatible',
+    'response.body.unknown',
+    'response.content-type.incompatible',
+    'response.header.incompatible',
+    'response.header.unknown',
+    'response.status.unknown'
 ];
 const codeToType = (code) => (errorCodes.indexOf(code) > -1) ? 'error' : 'warning';
 exports.result = {

@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const request = require("request");
 const hasHttp2xxStatusCode = (response) => response.statusCode && response.statusCode >= 200 && response.statusCode <= 299;
-exports.defaultHttpClient = {
-    get: (url) => {
+class HttpClient {
+    get(url) {
         const requestOptions = {
             timeout: 30000,
             url
@@ -21,8 +21,8 @@ exports.defaultHttpClient = {
                 }
             });
         });
-    },
-    post: (url, body) => {
+    }
+    post(url, body) {
         const requestOptions = {
             body,
             json: true,
@@ -44,4 +44,5 @@ exports.defaultHttpClient = {
             });
         });
     }
-};
+}
+exports.HttpClient = HttpClient;

@@ -8,16 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const transform_string_to_object_1 = require("./transform-string-to-object");
-class ResourceLoader {
-    constructor(fileStore) {
-        this.fileStore = fileStore;
-    }
-    load(pathOrUrl) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const content = yield this.fileStore.loadFile(pathOrUrl);
-            return transform_string_to_object_1.transformStringToObject(content, pathOrUrl);
+const SwaggerParser = require("swagger-parser");
+const swagger_mock_validator_error_impl_1 = require("../swagger-mock-validator-error-impl");
+exports.validateAndDereferenceSpec = (document, pathOrUrl) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        return yield SwaggerParser.validate(document, {
+            dereference: {
+                circular: 'ignore'
+            }
         });
     }
-}
-exports.ResourceLoader = ResourceLoader;
+    catch (error) {
+        throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `Unable to parse "${pathOrUrl}"`, error);
+    }
+});

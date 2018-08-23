@@ -7,8 +7,8 @@ const contentTypeHeaderName = 'content-type';
 const validateHasNoConsumesValue = (parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue) => {
     return parsedMockContentTypeRequestHeaderValue
         ? [result_1.result.build({
-                code: 'spv.request.content-type.unknown',
-                message: 'Request content-type header is defined but there is no consumes definition in the spec',
+                code: 'request.content-type.unknown',
+                message: 'Request content-type header is defined but the spec does not specify any mime-types to consume',
                 mockSegment: parsedMockInteraction.requestHeaders[contentTypeHeaderName],
                 source: 'spec-mock-validation',
                 specSegment: parsedSpecOperation
@@ -18,8 +18,8 @@ const validateHasNoConsumesValue = (parsedMockInteraction, parsedSpecOperation, 
 const validateHasNoContentTypeHeader = (parsedMockInteraction, parsedSpecOperation) => {
     return parsedMockInteraction.requestBody.value
         ? [result_1.result.build({
-                code: 'spv.request.content-type.missing',
-                message: 'Request content type header is not defined but there is consumes definition in the spec',
+                code: 'request.content-type.missing',
+                message: 'Request content type header is not defined but spec specifies mime-types to consume',
                 mockSegment: parsedMockInteraction,
                 source: 'spec-mock-validation',
                 specSegment: parsedSpecOperation.consumes
@@ -44,8 +44,8 @@ const validateParsedMockContentTypeAgainstParsedSpecConsumes = (parsedMockIntera
     const foundMatches = negotiateMediaTypes(parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value);
     if (!foundMatches) {
         return [result_1.result.build({
-                code: 'spv.request.content-type.incompatible',
-                message: 'Request Content-Type header is incompatible with the consumes mime type defined in the swagger file',
+                code: 'request.content-type.incompatible',
+                message: 'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
                 mockSegment: parsedMockInteraction.requestHeaders[contentTypeHeaderName],
                 source: 'spec-mock-validation',
                 specSegment: parsedSpecOperation.consumes

@@ -1,28 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
+const util_1 = require("util");
 const result_1 = require("../result");
 const validate_json_1 = require("./validate-json");
 const toJsonSchema = (parsedSpecParameter) => {
     const schema = {
+        definitions: parsedSpecParameter.schema.definitions,
         properties: {
-            value: {
-                enum: parsedSpecParameter.enum,
-                exclusiveMaximum: parsedSpecParameter.exclusiveMaximum,
-                exclusiveMinimum: parsedSpecParameter.exclusiveMinimum,
-                format: parsedSpecParameter.format,
-                items: parsedSpecParameter.items,
-                maxItems: parsedSpecParameter.maxItems,
-                maxLength: parsedSpecParameter.maxLength,
-                maximum: parsedSpecParameter.maximum,
-                minItems: parsedSpecParameter.minItems,
-                minLength: parsedSpecParameter.minLength,
-                minimum: parsedSpecParameter.minimum,
-                multipleOf: parsedSpecParameter.multipleOf,
-                pattern: parsedSpecParameter.pattern,
-                type: parsedSpecParameter.type,
-                uniqueItems: parsedSpecParameter.uniqueItems
-            }
+            value: parsedSpecParameter.schema
         },
         type: 'object'
     };
@@ -32,37 +18,40 @@ const toJsonSchema = (parsedSpecParameter) => {
     return schema;
 };
 const multiCollectionFormatSeparator = '[multi-array-separator]';
-const getCollectionSeparator = (parsedSpecItemCollectionFormat) => {
+const getCollectionSeparator = (parsedSpecCollectionFormat) => {
     // tslint:disable:cyclomatic-complexity
-    if (parsedSpecItemCollectionFormat === 'ssv') {
+    if (parsedSpecCollectionFormat === 'ssv') {
         return ' ';
     }
-    else if (parsedSpecItemCollectionFormat === 'tsv') {
+    else if (parsedSpecCollectionFormat === 'tsv') {
         return '\t';
     }
-    else if (parsedSpecItemCollectionFormat === 'pipes') {
+    else if (parsedSpecCollectionFormat === 'pipes') {
         return '|';
     }
-    else if (parsedSpecItemCollectionFormat === 'multi') {
+    else if (parsedSpecCollectionFormat === 'multi') {
         return multiCollectionFormatSeparator;
     }
     return ',';
     // tslint:enable:cyclomatic-complexity
 };
-const expandArrays = (parsedMockValue, parsedSpecItem) => {
-    if (parsedSpecItem.type === 'array') {
-        const values = parsedMockValue.split(getCollectionSeparator(parsedSpecItem.collectionFormat));
-        return _.map(values, (value) => expandArrays(value, parsedSpecItem.items));
+const isParsedSpecJsonSchemaCore = (schema) => util_1.isObject(schema);
+const expandArrays = (parsedMockValue, parsedSpecParameterSchema, parsedSpecCollectionFormat) => {
+    if (isParsedSpecJsonSchemaCore(parsedSpecParameterSchema) && parsedSpecParameterSchema.type === 'array') {
+        const values = parsedMockValue.split(getCollectionSeparator(parsedSpecCollectionFormat));
+        return _.map(values, (value) => expandArrays(value, parsedSpecParameterSchema.items));
     }
     else {
         return parsedMockValue;
     }
 };
-const toWrappedParsedMockValue = (parsedMockValue, parsedSpecItem) => {
+const toWrappedParsedMockValue = (parsedMockValue, parsedSpecParameter) => {
     if (!parsedMockValue) {
         return { value: undefined };
     }
-    return { value: expandArrays(parsedMockValue.value, parsedSpecItem) };
+    return {
+        value: expandArrays(parsedMockValue.value, parsedSpecParameter.schema, parsedSpecParameter.collectionFormat)
+    };
 };
 exports.validateMockValueAgainstSpec = (parsedSpecParameter, parsedMockValue, parsedMockInteraction, validationResultCode) => {
     const schema = toJsonSchema(parsedSpecParameter);
@@ -72,8 +61,7 @@ exports.validateMockValueAgainstSpec = (parsedSpecParameter, parsedMockValue, pa
         match: errors.length === 0,
         results: _.map(errors, (error) => result_1.result.build({
             code: validationResultCode,
-            message: 'Value is incompatible with the parameter defined in the swagger file: ' +
-                error.message,
+            message: 'Value is incompatible with the parameter defined in the spec file: ' + error.message,
             mockSegment: parsedMockValue || parsedMockInteraction,
             source: 'spec-mock-validation',
             specSegment: parsedSpecParameter

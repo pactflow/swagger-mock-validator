@@ -7,7 +7,7 @@ const equalsTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegmen
     const match = parsedSpecPathNameSegment.value === parsedMockPathNameSegment.value;
     return { match, results: [] };
 };
-const jsonSchemaTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegment) => validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecPathNameSegment.parameter, parsedMockPathNameSegment, parsedMockPathNameSegment.parentInteraction, 'spv.request.path-or-method.unknown');
+const jsonSchemaTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegment) => validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecPathNameSegment.parameter, parsedMockPathNameSegment, parsedMockPathNameSegment.parentInteraction, 'request.path-or-method.unknown');
 const doInteractionAndOperationMatchPaths = (parsedMockInteraction, parsedSpecOperation) => {
     const parsedSpecPathNameSegments = parsedSpecOperation.pathNameSegments;
     if (parsedMockInteraction.requestPathSegments.length !== parsedSpecPathNameSegments.length) {
@@ -52,8 +52,8 @@ const doInteractionAndOperationMatch = (parsedMockInteraction, parsedSpecOperati
     };
 };
 const isGetSwaggerValueSuccessResult = (res) => res.found;
-exports.getParsedSpecOperation = (parsedMockInteraction, parsedSpecWithSortedOperations) => {
-    const match = parsedSpecWithSortedOperations.operations
+exports.getParsedSpecOperation = (parsedMockInteraction, normalizedParsedSpec) => {
+    const match = normalizedParsedSpec.operations
         .map((parsedSpecOperation) => doInteractionAndOperationMatch(parsedMockInteraction, parsedSpecOperation))
         .find(isGetSwaggerValueSuccessResult);
     if (!match) {
@@ -61,13 +61,13 @@ exports.getParsedSpecOperation = (parsedMockInteraction, parsedSpecWithSortedOpe
             found: false,
             results: [
                 result_1.result.build({
-                    code: 'spv.request.path-or-method.unknown',
-                    message: 'Path or method not defined in swagger file: ' +
+                    code: 'request.path-or-method.unknown',
+                    message: 'Path or method not defined in spec file: ' +
                         `${parsedMockInteraction.requestMethod.value.toUpperCase()} ` +
                         `${parsedMockInteraction.requestPath.value}`,
                     mockSegment: parsedMockInteraction.requestPath,
                     source: 'spec-mock-validation',
-                    specSegment: parsedSpecWithSortedOperations.paths
+                    specSegment: normalizedParsedSpec.paths
                 })
             ]
         };

@@ -1,52 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
-const removeRequiredPropertiesFromSchema = (schema) => {
-    if (schema) {
-        _.each(schema.allOf, removeRequiredPropertiesFromSchema);
-        delete schema.required;
-        removeRequiredPropertiesFromSchema(schema.items);
-        _.each(schema.properties, removeRequiredPropertiesFromSchema);
-    }
-};
-const addAdditionalPropertiesFalseToObjectSchema = (objectSchema) => {
-    if (typeof objectSchema.additionalProperties !== 'object') {
-        objectSchema.additionalProperties = false;
-    }
-    _.each(objectSchema.properties, addAdditionalPropertiesFalseToSchema);
-};
-const addAdditionalPropertiesFalseToSchema = (schema) => {
-    if (!schema) {
-        return;
-    }
-    if (schema.type === 'object') {
-        addAdditionalPropertiesFalseToObjectSchema(schema);
-    }
-    else if (schema.type === 'array') {
-        addAdditionalPropertiesFalseToSchema(schema.items);
-    }
-    return;
-};
-const modifySchemaForResponses = (schema) => {
-    const modifiedSchema = _.cloneDeep(schema);
-    removeRequiredPropertiesFromSchema(modifiedSchema);
-    return modifiedSchema;
-};
-const parseDefinitionsForResponses = (definitions) => {
-    if (!definitions) {
-        return {};
-    }
-    return Object.keys(definitions).reduce((parsedDefinitions, definitionName) => {
-        const definitionSchema = definitions[definitionName];
-        parsedDefinitions[definitionName] = modifySchemaForResponses(definitionSchema);
-        return parsedDefinitions;
-    }, {});
-};
+const create_empty_parent_operation_1 = require("../common/create-empty-parent-operation");
+const parse_path_name_segments_1 = require("../common/parse-path-name-segments");
 const toParsedSpecValue = (parameters, parentLocation, parentOperation) => _.map(parameters, (parameter, index) => ({
     location: `${parentLocation}.parameters[${index}]`,
     parentOperation,
     value: parameter
 }));
+const addDefinitionsToSchema = (schema, spec) => {
+    if (schema) {
+        const modifiedSchema = _.cloneDeep(schema);
+        modifiedSchema.definitions = spec.definitions;
+        return modifiedSchema;
+    }
+    return undefined;
+};
 const mergePathAndOperationParameters = (pathParameters, operationParameters) => {
     const mergedParameters = _.clone(pathParameters);
     for (const operationParameter of operationParameters) {
@@ -61,56 +30,29 @@ const mergePathAndOperationParameters = (pathParameters, operationParameters) =>
     }
     return mergedParameters;
 };
-const parsePathNameSegments = (pathName, pathParameters, parsedOperation, basePath) => {
-    const path = (basePath) ? basePath + pathName : pathName;
-    return _(path.split('/'))
-        .filter((pathNameSegment) => pathNameSegment.length > 0)
-        .map((pathNameSegment) => {
-        let parsedPathNameSegment;
-        const isParameter = pathNameSegment[0] === '{' && pathNameSegment[pathNameSegment.length - 1] === '}';
-        if (isParameter) {
-            const pathNameSegmentValue = pathNameSegment.substring(1, pathNameSegment.length - 1);
-            parsedPathNameSegment = {
-                location: parsedOperation.location,
-                parameter: _.find(pathParameters, { name: pathNameSegmentValue }),
-                parentOperation: parsedOperation,
-                validatorType: 'jsonSchema',
-                value: pathNameSegmentValue
-            };
-        }
-        else {
-            parsedPathNameSegment = {
-                location: parsedOperation.location,
-                parentOperation: parsedOperation,
-                validatorType: 'equal',
-                value: pathNameSegment
-            };
-        }
-        return parsedPathNameSegment;
-    })
-        .value();
-};
 const toParsedParameter = (parameter, name) => ({
     collectionFormat: parameter.value.collectionFormat,
-    enum: parameter.value.enum,
-    exclusiveMaximum: parameter.value.exclusiveMaximum,
-    exclusiveMinimum: parameter.value.exclusiveMinimum,
-    format: parameter.value.format,
-    items: parameter.value.items,
     location: parameter.location,
-    maxItems: parameter.value.maxItems,
-    maxLength: parameter.value.maxLength,
-    maximum: parameter.value.maximum,
-    minItems: parameter.value.minItems,
-    minLength: parameter.value.minLength,
-    minimum: parameter.value.minimum,
-    multipleOf: parameter.value.multipleOf,
     name,
     parentOperation: parameter.parentOperation,
-    pattern: parameter.value.pattern,
     required: parameter.value.required || false,
-    type: parameter.value.type,
-    uniqueItems: parameter.value.uniqueItems,
+    schema: {
+        enum: parameter.value.enum,
+        exclusiveMaximum: parameter.value.exclusiveMaximum,
+        exclusiveMinimum: parameter.value.exclusiveMinimum,
+        format: parameter.value.format,
+        items: parameter.value.items,
+        maxItems: parameter.value.maxItems,
+        maxLength: parameter.value.maxLength,
+        maximum: parameter.value.maximum,
+        minItems: parameter.value.minItems,
+        minLength: parameter.value.minLength,
+        minimum: parameter.value.minimum,
+        multipleOf: parameter.value.multipleOf,
+        pattern: parameter.value.pattern,
+        type: parameter.value.type,
+        uniqueItems: parameter.value.uniqueItems
+    },
     value: parameter.value
 });
 const parseResponseHeaders = (headers, responseLocation, parentOperation) => {
@@ -124,26 +66,27 @@ const parseResponseHeaders = (headers, responseLocation, parentOperation) => {
             parentOperation,
             value: header
         };
-        result[headerName.toLowerCase()] = toParsedParameter(value, headerName);
+        result[headerName] = toParsedParameter(value, headerName);
         return result;
     }, {});
 };
-const parseResponses = (responses, parentOperation, definitions) => {
+const parseResponses = (operation, parentOperation, specJson) => {
+    const responses = operation.responses;
     // tslint:disable:no-object-literal-type-assertion
     const parsedResponses = {
         location: `${parentOperation.location}.responses`,
         parentOperation,
         value: responses
     };
-    const parsedDefinitions = parseDefinitionsForResponses(definitions);
+    const produces = parseMimeType({
+        mimeTypeName: 'produces',
+        operation,
+        parsedOperation: parentOperation,
+        specJson
+    });
     _.each(responses, (response, responseStatus) => {
         const responseLocation = `${parsedResponses.location}.${responseStatus}`;
         const originalSchema = response.schema;
-        let modifiedSchema;
-        if (response.schema) {
-            modifiedSchema = modifySchemaForResponses(response.schema);
-            modifiedSchema.definitions = parsedDefinitions;
-        }
         parsedResponses[responseStatus] = {
             getFromSchema: (pathToGet) => ({
                 location: `${responseLocation}.schema.${pathToGet}`,
@@ -153,14 +96,15 @@ const parseResponses = (responses, parentOperation, definitions) => {
             headers: parseResponseHeaders(response.headers, responseLocation, parentOperation),
             location: responseLocation,
             parentOperation,
-            schema: modifiedSchema,
+            produces,
+            schema: addDefinitionsToSchema(response.schema, specJson),
             value: response
         };
     });
     return parsedResponses;
 };
 const toSpecParameterCollection = (parameters) => _.reduce(parameters, (result, parameter) => {
-    result[parameter.name.toLowerCase()] = parameter;
+    result[parameter.name] = parameter;
     return result;
 }, {});
 const toRequestBodyParameter = (parameters, definitions) => _(parameters)
@@ -210,13 +154,13 @@ const parseMimeType = (options) => {
     }
     else if (globalValue) {
         return {
-            location: `[swaggerRoot].${options.mimeTypeName}`,
+            location: `[root].${options.mimeTypeName}`,
             parentOperation: options.parsedOperation,
             value: globalValue
         };
     }
     return {
-        location: `[swaggerRoot].${options.mimeTypeName}`,
+        location: `[root].${options.mimeTypeName}`,
         parentOperation: options.parsedOperation,
         value: []
     };
@@ -230,7 +174,7 @@ const getSecurityRequirementsAndBaseLocation = (operationSecurityRequirements, g
     }
     else {
         return {
-            baseLocation: '[swaggerRoot]',
+            baseLocation: '[root]',
             securityRequirements: globalSecurityRequirements || []
         };
     }
@@ -244,7 +188,7 @@ const parseSecurityRequirements = (securityDefinitionsOrUndefined, operationSecu
         let credentialKey = 'authorization';
         let credentialLocation = 'header';
         if (securityDefinition.type === 'apiKey') {
-            credentialKey = securityDefinition.name.toLowerCase();
+            credentialKey = securityDefinition.name;
             credentialLocation = securityDefinition.in;
         }
         return {
@@ -259,10 +203,16 @@ const parseSecurityRequirements = (securityDefinitionsOrUndefined, operationSecu
         .reject((requirements) => _.some(requirements, (requirement) => requirement.type === 'oauth2'))
         .value();
 };
-const parseOperationFromPath = (path, pathName, specPathOrUrl, specJson) => _(path)
-    .omit(['parameters'])
-    .map((operation, operationName) => {
-    const pathLocation = `[swaggerRoot].paths.${pathName}`;
+const typeSafeHttpMethods = {
+    delete: null, get: null, head: null, options: null, patch: null, post: null, put: null
+};
+const supportedHttpMethods = Object.keys(typeSafeHttpMethods);
+const isHttpMethod = (value) => supportedHttpMethods.indexOf(value) >= 0;
+const parseOperationFromPath = (path, pathName, specPathOrUrl, specJson) => Object.keys(path)
+    .filter(isHttpMethod)
+    .map((operationName) => {
+    const operation = path[operationName];
+    const pathLocation = `[root].paths.${pathName}`;
     const operationLocation = `${pathLocation}.${operationName}`;
     const parsedOperation = {
         location: operationLocation,
@@ -274,13 +224,7 @@ const parseOperationFromPath = (path, pathName, specPathOrUrl, specJson) => _(pa
     const parsedParameters = parseParameters(path, pathLocation, parsedOperation, specJson.definitions);
     parsedOperation.parentOperation = parsedOperation;
     parsedOperation.pathNameSegments =
-        parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, specJson.basePath);
-    parsedOperation.produces = parseMimeType({
-        mimeTypeName: 'produces',
-        operation,
-        parsedOperation,
-        specJson
-    });
+        parse_path_name_segments_1.parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, specJson.basePath);
     parsedOperation.consumes = parseMimeType({
         mimeTypeName: 'consumes',
         operation,
@@ -290,45 +234,11 @@ const parseOperationFromPath = (path, pathName, specPathOrUrl, specJson) => _(pa
     parsedOperation.requestBodyParameter = parsedParameters.requestBody;
     parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
     parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
-    parsedOperation.responses = parseResponses(operation.responses, parsedOperation, specJson.definitions);
+    parsedOperation.responses = parseResponses(operation, parsedOperation, specJson);
     parsedOperation.securityRequirements = parseSecurityRequirements(specJson.securityDefinitions, operation.security, specJson.security, parsedOperation);
     return parsedOperation;
-})
-    .value();
-const createEmptyParentOperation = (specPathOrUrl, location) => {
-    const emptyParentOperation = {
-        consumes: {
-            location,
-            parentOperation: undefined,
-            value: []
-        },
-        location,
-        method: null,
-        parentOperation: undefined,
-        pathName: null,
-        pathNameSegments: [],
-        produces: {
-            location,
-            parentOperation: undefined,
-            value: []
-        },
-        requestBodyParameter: undefined,
-        requestHeaderParameters: {},
-        requestQueryParameters: {},
-        responses: {
-            location,
-            parentOperation: undefined,
-            value: undefined
-        },
-        securityRequirements: [],
-        specFile: specPathOrUrl,
-        value: undefined
-    };
-    emptyParentOperation.parentOperation = emptyParentOperation;
-    emptyParentOperation.responses.parentOperation = emptyParentOperation;
-    return emptyParentOperation;
-};
-exports.swaggerParser = {
+});
+exports.swagger2Parser = {
     parse: (specJson, specPathOrUrl) => ({
         operations: _(specJson.paths)
             .map((path, pathName) => parseOperationFromPath(path, pathName, specPathOrUrl, specJson))
@@ -336,8 +246,8 @@ exports.swaggerParser = {
             .value(),
         pathOrUrl: specPathOrUrl,
         paths: {
-            location: '[swaggerRoot].paths',
-            parentOperation: createEmptyParentOperation(specPathOrUrl, '[swaggerRoot].paths'),
+            location: '[root].paths',
+            parentOperation: create_empty_parent_operation_1.createEmptyParentOperation(specPathOrUrl),
             value: specJson.paths
         }
     })

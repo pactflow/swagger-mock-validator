@@ -1,3 +1,32 @@
+<a name="5.0.0"></a>
+# [5.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/4.0.1...5.0.0) (2018-08-23)
+
+
+### Bug Fixes
+
+* do not crash if path-item contains an ^x- property ([d57f887](https://bitbucket.org/atlassian/swagger-mock-validator/commits/d57f887))
+* fixed issue with format not being validated for bodies containing primitive values ([dca4654](https://bitbucket.org/atlassian/swagger-mock-validator/commits/dca4654))
+* use case-sensitive matching for query string parameters ([f269cd9](https://bitbucket.org/atlassian/swagger-mock-validator/commits/f269cd9))
+
+
+### Chores
+
+* removed support for node version 4.x and added build test for node version 10.x ([52c4963](https://bitbucket.org/atlassian/swagger-mock-validator/commits/52c4963))
+
+
+### Features
+
+* add support for OpenApi 3 specs ([19deb93](https://bitbucket.org/atlassian/swagger-mock-validator/commits/19deb93))
+* removed swagger warnings from validation results ([9a3b757](https://bitbucket.org/atlassian/swagger-mock-validator/commits/9a3b757))
+
+
+### BREAKING CHANGES
+
+* Removed support for node 4.x. Migrate to node 6.x or higher.
+* Prior to this change swagger-mock-validator would return any pact/swagger warnings or errors as part of the validation result. Now when a validation error is encountered with a swagger or pact file the tool will fail with an error. Warnings are no longer reported at all. The list of validation result codes returned by the programatic API have been updated to reflect this change.
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/4.0.0...4.0.1) (2018-07-05)
 

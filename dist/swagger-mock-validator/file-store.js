@@ -8,11 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const VError = require("verror");
+const swagger_mock_validator_error_impl_1 = require("./swagger-mock-validator-error-impl");
 class FileStore {
     constructor(fileSystem, httpClient) {
-        this.fileSystem = fileSystem;
-        this.httpClient = httpClient;
         this.fileSystem = fileSystem;
         this.httpClient = httpClient;
     }
@@ -25,7 +23,7 @@ class FileStore {
                 return yield this.loadPathOrUrl(pathOrUrl);
             }
             catch (error) {
-                throw new VError(error, `Unable to read "${pathOrUrl}"`);
+                throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_READ_ERROR', `Unable to read "${pathOrUrl}"`, error);
             }
         });
     }

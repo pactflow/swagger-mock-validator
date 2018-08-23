@@ -12,9 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const commander = require("commander");
 const _ = require("lodash");
 const util = require("util");
-const swagger_mock_validator_1 = require("./swagger-mock-validator");
+const swagger_mock_validator_factory_1 = require("./swagger-mock-validator-factory");
 // tslint:disable:no-var-requires
 const packageJson = require('../package.json');
+const swaggerMockValidator = swagger_mock_validator_factory_1.SwaggerMockValidatorFactory.create();
 const displaySummaryForValidationResults = (name, resultsOrNone) => {
     const results = resultsOrNone || [];
     const summary = results.reduce((partialSummary, result) => {
@@ -62,7 +63,7 @@ the specified provider name. The <swagger> argument should be the path or url to
 json file.`)
     .action((swagger, mock, options) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const result = yield swagger_mock_validator_1.swaggerMockValidator.validate({
+        const result = yield swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,
             mockPathOrUrl: mock,
             providerName: options.provider,

@@ -9,8 +9,8 @@ exports.getParsedSpecResponse = (parsedMockInteraction, parsedSpecOperation) => 
             found: false,
             results: [
                 result_1.result.build({
-                    code: 'spv.response.status.unknown',
-                    message: 'Response status code not defined in swagger file: ' +
+                    code: 'response.status.unknown',
+                    message: 'Response status code not defined in spec file: ' +
                         `${parsedMockInteraction.responseStatus.value}`,
                     mockSegment: parsedMockInteraction.responseStatus,
                     source: 'spec-mock-validation',
@@ -24,8 +24,8 @@ exports.getParsedSpecResponse = (parsedMockInteraction, parsedSpecOperation) => 
             found: true,
             results: [
                 result_1.result.build({
-                    code: 'spv.response.status.default',
-                    message: 'Response status code matched default response in swagger file: ' +
+                    code: 'response.status.default',
+                    message: 'Response status code matched default response in spec file: ' +
                         `${parsedMockInteraction.responseStatus.value}`,
                     mockSegment: parsedMockInteraction.responseStatus,
                     source: 'spec-mock-validation',

@@ -12,7 +12,7 @@ const parseRequestPathSegments = (requestPath, parentInteraction) => _(requestPa
     .value();
 const parseValues = (values, location, parentInteraction) => {
     return _.reduce(values, (result, value, name) => {
-        result[name.toLowerCase()] = {
+        result[name] = {
             location: `${location}.${name}`,
             parentInteraction,
             value
@@ -34,7 +34,7 @@ const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
     // tslint:disable:no-object-literal-type-assertion
     const parsedInteraction = {
         description: interaction.description,
-        location: `[pactRoot].interactions[${interactionIndex}]`,
+        location: `[root].interactions[${interactionIndex}]`,
         mockFile: mockPathOrUrl,
         state: interaction.providerState || interaction.provider_state || '[none]',
         value: interaction

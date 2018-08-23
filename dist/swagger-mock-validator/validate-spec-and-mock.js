@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
 const get_parsed_spec_operation_1 = require("./validate-spec-and-mock/get-parsed-spec-operation");
 const get_parsed_spec_response_1 = require("./validate-spec-and-mock/get-parsed-spec-response");
-const to_parsed_spec_with_sorted_operations_1 = require("./validate-spec-and-mock/to-parsed-spec-with-sorted-operations");
+const to_normalized_parsed_mock_1 = require("./validate-spec-and-mock/to-normalized-parsed-mock");
+const to_normalized_parsed_spec_1 = require("./validate-spec-and-mock/to-normalized-parsed-spec");
 const validate_parsed_mock_request_body_1 = require("./validate-spec-and-mock/validate-parsed-mock-request-body");
 const validate_parsed_mock_request_headers_1 = require("./validate-spec-and-mock/validate-parsed-mock-request-headers");
 const validate_parsed_mock_request_query_1 = require("./validate-spec-and-mock/validate-parsed-mock-request-query");
@@ -20,23 +21,28 @@ const validateMockInteractionResponse = (parsedMockInteraction, parsedSpecOperat
     }
     return _.concat(parsedSpecResponseResult.results, validate_parsed_mock_response_body_1.validateParsedMockResponseBody(parsedMockInteraction, parsedSpecResponseResult.value), validate_parsed_mock_response_headers_1.validateParsedMockResponseHeaders(parsedMockInteraction, parsedSpecResponseResult.value));
 };
-const validateMockInteraction = (parsedMockInteraction, parsedSpecWithSortedOperations) => {
-    const getParsedSpecOperationResult = get_parsed_spec_operation_1.getParsedSpecOperation(parsedMockInteraction, parsedSpecWithSortedOperations);
+const validateMockInteraction = (parsedMockInteraction, normalizedParsedSpec) => {
+    const getParsedSpecOperationResult = get_parsed_spec_operation_1.getParsedSpecOperation(parsedMockInteraction, normalizedParsedSpec);
     if (!getParsedSpecOperationResult.found) {
         return getParsedSpecOperationResult.results;
     }
     return _.concat(getParsedSpecOperationResult.results, validateMockInteractionRequest(parsedMockInteraction, getParsedSpecOperationResult.value), validateMockInteractionResponse(parsedMockInteraction, getParsedSpecOperationResult.value));
 };
-exports.validateSpecAndMock = (parsedMock, parsedSpec) => {
-    const parsedSpecWithSortedOperations = to_parsed_spec_with_sorted_operations_1.toParsedSpecWithSortedOperations(parsedSpec);
-    const validationResults = _(parsedMock.interactions)
-        .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, parsedSpecWithSortedOperations))
-        .flatten()
-        .value();
+const createValidationOutcome = (validationResults, mockPathOrUrl, specPathOrUrl) => {
     const errors = _.filter(validationResults, (res) => res.type === 'error');
     const warnings = _.filter(validationResults, (res) => res.type === 'warning');
     const success = errors.length === 0;
-    const failureReason = success ? undefined : `Mock file "${parsedMock.pathOrUrl}" is not compatible ` +
-        `with swagger file "${parsedSpec.pathOrUrl}"`;
-    return Promise.resolve({ errors, failureReason, success, warnings });
+    const failureReason = success
+        ? undefined
+        : `Mock file "${mockPathOrUrl}" is not compatible with spec file "${specPathOrUrl}"`;
+    return { errors, failureReason, success, warnings };
+};
+exports.validateSpecAndMock = (parsedMock, parsedSpec) => {
+    const normalizedParsedSpec = to_normalized_parsed_spec_1.toNormalizedParsedSpec(parsedSpec);
+    const normalizedParsedMock = to_normalized_parsed_mock_1.toNormalizedParsedMock(parsedMock);
+    const validationResults = _(normalizedParsedMock.interactions)
+        .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, normalizedParsedSpec))
+        .flatten()
+        .value();
+    return Promise.resolve(createValidationOutcome(validationResults, parsedMock.pathOrUrl, parsedSpec.pathOrUrl));
 };
