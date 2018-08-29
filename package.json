@@ -67,7 +67,7 @@
     "lodash": "^4.17.10",
     "negotiator": "^0.6.1",
     "request": "^2.87.0",
-    "swagger-parser": "^5.0.0",
+    "swagger-parser": "5.0.2",
     "uuidjs": "^4.0.3",
     "validator": "^9.0.0",
     "verror": "^1.8.1"
