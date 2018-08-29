@@ -1,3 +1,13 @@
+<a name="5.0.1"></a>
+## [5.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.0.0...5.0.1) (2018-08-29)
+
+
+### Bug Fixes
+
+* pin swagger-parser to avoid breaking changes when validation logic is changed ([ab6c04c](https://bitbucket.org/atlassian/swagger-mock-validator/commits/ab6c04c))
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/4.0.1...5.0.0) (2018-08-23)
 
