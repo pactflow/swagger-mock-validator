@@ -37,6 +37,7 @@ export interface SwaggerMockValidatorLoaderInvokeWithMocksOptions {
     mockPathOrUrl: string;
     providerName?: string;
     specPathOrUrl: string;
+    tag?: string;
     uuidGenerator?: UuidGenerator;
 }
 
@@ -117,7 +118,8 @@ export const swaggerMockValidatorLoader = {
             analyticsUrl: options.analyticsUrl,
             mockPathOrUrl: options.mockPathOrUrl,
             providerName: options.providerName,
-            specPathOrUrl: options.specPathOrUrl
+            specPathOrUrl: options.specPathOrUrl,
+            tag: options.tag
         });
     }
 };

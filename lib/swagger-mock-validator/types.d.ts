@@ -6,6 +6,7 @@ export interface PactBroker {
 
 interface PactBrokerLinks {
     'pb:latest-provider-pacts': PactBrokerLinksLatestProviderPacts;
+    'pb:latest-provider-pacts-with-tag': PactBrokerLinksLatestProviderPacts;
 }
 
 interface PactBrokerLinksLatestProviderPacts {
@@ -29,6 +30,13 @@ export interface SwaggerMockValidatorUserOptions {
     mockPathOrUrl: string;
     providerName?: string;
     specPathOrUrl: string;
+    tag?: string;
+}
+
+export interface PactBrokerUserOptions {
+    pactBrokerUrl: string;
+    providerName: string;
+    tag?: string;
 }
 
 export type AutoDetectFormat = 'auto-detect';
@@ -57,6 +65,7 @@ interface ParsedSwaggerMockValidatorOptions {
     providerName?: string;
     specPathOrUrl: string;
     specSource: SpecSource;
+    tag?: string;
 }
 
 export type MockSource = 'pactBroker' | 'path' | 'url';

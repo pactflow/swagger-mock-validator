@@ -10,6 +10,7 @@ interface InvokeCommandOptions {
     mock: string;
     providerName?: string;
     swagger: string;
+    tag?: string;
 }
 
 const execute = (command: string): Promise<string> => {
@@ -29,6 +30,10 @@ const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
 
     if (options.providerName) {
         command += ` --provider ${options.providerName}`;
+    }
+
+    if (options.tag) {
+        command += ` --tag ${options.tag}`;
     }
 
     if (options.analyticsUrl) {
@@ -294,6 +299,15 @@ describe('swagger-mock-validator/cli', () => {
             mock: urlTo('test/e2e/fixtures/pact-broker.json'),
             providerName: 'provider-1',
             swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+    }, 30000);
+
+    it('should succeed when a pact broker url with tag and a swagger url are compatible', async () => {
+        await invokeCommand({
+            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
+            providerName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json'),
+            tag: 'production'
         });
     }, 30000);
 

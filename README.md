@@ -49,6 +49,11 @@ Provider services can easily verify all the consumer pact files uploaded to a Pa
 swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name
 ```
 
+Additionally, provide a Pact Broker version tag alongside the name of the provider service to filter the retrieved consumer pacts for the provider by the given tag.
+```
+swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name --tag production
+```
+
 ### Analytics (Opt-In)
 
 The tool can be configured to send analytics events to a server of your choosing. Use the `--analyticsUrl` flag to pass a url that the tool should post the event to. The tool will send this event via a http post request and will timeout after 5 seconds. See [analytics.ts](lib/swagger-mock-validator/analytics.ts) for the post body schema.

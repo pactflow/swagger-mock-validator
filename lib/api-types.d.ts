@@ -1,10 +1,15 @@
 // tslint:disable:no-namespace
 declare namespace SwaggerMockValidator {
-    export type ValidationResultSource = 'pact-validation' | 'swagger-validation' | 'spec-mock-validation';
+    export type ValidationResultSource =
+        'pact-broker' |
+        'pact-validation' |
+        'swagger-validation' |
+        'spec-mock-validation';
 
     export type ValidationResultType = 'error' | 'warning';
 
     export type ValidationResultCode =
+        'pact-broker.no-pacts-found' |
         'request.accept.incompatible' |
         'request.accept.unknown' |
         'request.authorization.missing' |

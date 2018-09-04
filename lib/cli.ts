@@ -48,6 +48,7 @@ commander
     .version(packageJson.version)
     .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
+    .option('-t, --tag [string]', 'The tag to filter pacts retrieved from the broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
     .description(
 `Confirms the swagger spec and mock are compatible with each other.
@@ -63,7 +64,8 @@ For providers using the pact broker the <mock> argument should be the url to the
 pact broker and the provider name should be passed using the --provider option. This will
 automatically find the latest versions of the consumer pact file(s) uploaded to the broker for
 the specified provider name. The <swagger> argument should be the path or url to the swagger
-json file.`
+json file. Optionally, pass a --tag option alongside a --provider option to filter the retrieved
+pacts from the broker by Pact Broker version tags`
     )
     .action(async (swagger, mock, options) => {
         try {
@@ -71,7 +73,8 @@ json file.`
                 analyticsUrl: options.analyticsUrl,
                 mockPathOrUrl: mock,
                 providerName: options.provider,
-                specPathOrUrl: swagger
+                specPathOrUrl: swagger,
+                tag: options.tag
             });
 
             displaySummary(result);

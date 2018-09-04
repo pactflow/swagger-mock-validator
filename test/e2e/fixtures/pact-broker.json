@@ -4,6 +4,11 @@
       "href": "http://localhost:8000/test/e2e/fixtures/pact-broker-pacts-for-{provider}.json",
       "title": "Latest pacts by provider",
       "templated": true
+    },
+    "pb:latest-provider-pacts-with-tag": {
+      "href": "http://localhost:8000/test/e2e/fixtures/pact-broker-pacts-for-{provider}-and-tag-{tag}.json",
+      "title": "Latest pacts by provider with the specified tag",
+      "templated": true
     }
   }
 }

@@ -25,12 +25,14 @@ describe('reading urls', () => {
 
     const invokeValidate = (specPathOrUrl: string,
                             mockPathOrUrl: string,
-                            providerName?: string): Promise<ValidationOutcome> =>
+                            providerName?: string,
+                            tag?: string): Promise<ValidationOutcome> =>
         swaggerMockValidatorLoader.invokeWithMocks({
             httpClient: mockHttpClient,
             mockPathOrUrl,
             providerName,
-            specPathOrUrl
+            specPathOrUrl,
+            tag
         });
 
     describe('reading the swagger file', () => {
@@ -205,7 +207,7 @@ describe('reading urls', () => {
             ));
         });
 
-        it('should pass when there are no provider pact files', async () => {
+        it('should pass but display a warning when there are no provider pact files', async () => {
             mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/{provider}/pacts')
                 .build()
@@ -215,7 +217,13 @@ describe('reading urls', () => {
 
             const result = await invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name');
 
-            expect(result).toContainNoWarningsOrErrors();
+            expect(result).toContainNoErrors();
+            expect(result).toContainWarnings([{
+                code: 'pact-broker.no-pacts-found',
+                message: 'No consumer pacts found in Pact Broker',
+                source: 'pact-broker',
+                type: 'warning'
+            }]);
         });
 
         it('should make a request for all the provider pact files', async () => {
@@ -368,6 +376,96 @@ describe('reading urls', () => {
                 'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR',
                 'Unable to parse "http://url.com/swagger.json": [object Object] is not a valid Swagger API definition'
             ));
+        });
+
+        it('should encode the provider name when constructing the URL', async () => {
+            mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder
+                .withLatestProviderPactsLink('http://pact-broker.com/{provider}/pacts')
+                .build()
+            ));
+            mockUrls['http://pact-broker.com/provider%2Fname/pacts'] =
+                Promise.resolve(JSON.stringify(providerPactsBuilder.build()));
+
+            await invokeValidateWithPactBroker('http://pact-broker.com', 'provider/name');
+
+            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com/provider%2Fname/pacts');
+        });
+    });
+
+    describe('reading from the pact broker with tag', () => {
+        beforeEach(() => {
+            mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
+        });
+
+        const invokeValidateWithPactBrokerAndTag = (pactBrokerUrl: string, providerName: string, tag: string) => {
+            return invokeValidate('http://domain.com/swagger.json', pactBrokerUrl, providerName, tag);
+        };
+
+        it('should fail when no url for latest pact files with tag is in the pact root response', async () => {
+            mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder
+                .withNoLatestProviderPactsWithTagLink()
+                .build()
+            ));
+
+            const error = await expectToFail(
+                invokeValidateWithPactBrokerAndTag('http://pact-broker.com', 'provider-name', 'tag')
+            );
+
+            expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
+                'Unable to read "http://pact-broker.com": No latest pact file url found for tag'
+            ));
+        });
+
+        it('should make a request for the latest pact files for the given provider and tag', async () => {
+            mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder
+                .withLatestProviderPactsWithTagLink('http://pact-broker.com/{provider}/latest/{tag}')
+                .build()
+            ));
+            mockUrls['http://pact-broker.com/provider-name/latest/sample-tag'] =
+                Promise.resolve(JSON.stringify(providerPactsBuilder.build()));
+
+            await invokeValidateWithPactBrokerAndTag('http://pact-broker.com', 'provider-name', 'sample-tag');
+
+            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com/provider-name/latest/sample-tag');
+        });
+
+        it('should pass but display a warning when there are no provider pact files for the given tag', async () => {
+            mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder
+                .withLatestProviderPactsWithTagLink('http://pact-broker.com/{provider}/latest/{tag}')
+                .build()
+            ));
+
+            mockUrls['http://pact-broker.com/provider-name/latest/unknown-tag'] =
+                Promise.resolve(JSON.stringify(providerPactsBuilder.build()));
+
+            const result = await invokeValidateWithPactBrokerAndTag(
+                'http://pact-broker.com',
+                'provider-name',
+                'unknown-tag'
+            );
+
+            expect(result).toContainNoErrors();
+            expect(result).toContainWarnings([{
+                code: 'pact-broker.no-pacts-found',
+                message: 'No consumer pacts found in Pact Broker',
+                source: 'pact-broker',
+                type: 'warning'
+            }]);
+        });
+
+        it('should encode the tag when constructing the URL', async () => {
+            mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(pactBrokerBuilder
+                .withLatestProviderPactsWithTagLink('http://pact-broker.com/{provider}/latest/{tag}')
+                .build()
+            ));
+            mockUrls['http://pact-broker.com/provider-name/latest/sample%2Ftag'] =
+                Promise.resolve(JSON.stringify(providerPactsBuilder.build()));
+
+            await invokeValidateWithPactBrokerAndTag('http://pact-broker.com', 'provider-name', 'sample/tag');
+
+            expect(mockHttpClient.get)
+                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/latest/sample%2Ftag');
         });
     });
 });
