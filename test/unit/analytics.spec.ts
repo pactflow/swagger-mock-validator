@@ -4,8 +4,8 @@ import {Pact} from '../../lib/swagger-mock-validator/mock-parser/pact/pact';
 import {Swagger2} from '../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {SwaggerMockValidatorUserOptions} from '../../lib/swagger-mock-validator/types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
-import {pactBrokerBuilder} from './support/pact-broker-builder';
-import {providerPactsBuilder} from './support/pact-broker-builder/provider-pacts-builder';
+import {pactBrokerResponseBuilder} from './support/pact-broker-response-builder';
+import {providerPactsBuilder} from './support/pact-broker-response-builder/provider-pacts-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {
     MockFileSystemResponses,
@@ -85,7 +85,7 @@ describe('analytics', () => {
                                             consumer2PactFile?: Pact,
                                             swaggerFile?: Swagger2): Promise<ValidationOutcome> => {
         mockUrls['http://pact-broker.com'] = Promise.resolve(JSON.stringify(
-            pactBrokerBuilder
+            pactBrokerResponseBuilder
                 .withLatestProviderPactsLink('http://pact-broker.com/a-provider/pacts')
                 .build()
         ));

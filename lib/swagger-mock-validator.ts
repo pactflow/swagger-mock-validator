@@ -7,16 +7,13 @@ import {Analytics} from './swagger-mock-validator/analytics';
 import {FileStore} from './swagger-mock-validator/file-store';
 import {MockParser} from './swagger-mock-validator/mock-parser';
 import {ParsedMock} from './swagger-mock-validator/mock-parser/parsed-mock';
-import {ResourceLoader} from './swagger-mock-validator/resource-loader';
+import {PactBroker} from './swagger-mock-validator/pact-broker';
 import {SpecParser} from './swagger-mock-validator/spec-parser';
-import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator/swagger-mock-validator-error-impl';
 import {
     MockSource,
-    PactBroker,
-    PactBrokerProviderPacts,
-    PactBrokerProviderPactsLinksPact, PactBrokerUserOptions,
     ParsedSwaggerMockValidatorOptions,
-    SerializedMock, SerializedSpec,
+    SerializedMock,
+    SerializedSpec,
     SpecSource,
     SwaggerMockValidatorUserOptions,
     ValidateOptions
@@ -35,15 +32,10 @@ const getMockSource = (mockPathOrUrl: string, providerName?: string): MockSource
 
 const getSpecSource = (specPathOrUrl: string): SpecSource => FileStore.isUrl(specPathOrUrl) ? 'url' : 'path';
 
-// tslint:disable:cyclomatic-complexity
 const parseUserOptions = (userOptions: SwaggerMockValidatorUserOptions): ParsedSwaggerMockValidatorOptions => ({
-    analyticsUrl: userOptions.analyticsUrl,
-    mockPathOrUrl: userOptions.mockPathOrUrl,
+    ...userOptions,
     mockSource: getMockSource(userOptions.mockPathOrUrl, userOptions.providerName),
-    providerName: userOptions.providerName,
-    specPathOrUrl: userOptions.specPathOrUrl,
-    specSource: getSpecSource(userOptions.specPathOrUrl),
-    tag: userOptions.tag
+    specSource: getSpecSource(userOptions.specPathOrUrl)
 });
 
 const combineValidationResults = (validationResults: ValidationResult[][]): ValidationResult[] => {
@@ -99,13 +91,9 @@ export class SwaggerMockValidator {
         return [noMocksValidationOutcome];
     }
 
-    private static getProviderTemplateUrl(pactBrokerRootResponse: PactBroker, template: string): string {
-        return _.get(pactBrokerRootResponse, template);
-    }
-
     public constructor(
         private readonly fileStore: FileStore,
-        private readonly resourceLoader: ResourceLoader,
+        private readonly pactBroker: PactBroker,
         private readonly analytics: Analytics) {
     }
 
@@ -121,31 +109,37 @@ export class SwaggerMockValidator {
     private async loadSpecAndMocks(
         options: ParsedSwaggerMockValidatorOptions
     ): Promise<{ spec: SerializedSpec, mocks: SerializedMock[] }> {
-        const whenSpecContent = this.fileStore.loadFile(options.specPathOrUrl);
+        const whenSpecContent = this.getSpecFromFileOrUrl(options.specPathOrUrl);
 
-        const mockPathsOrUrls = options.providerName
-            ? await this.getPactUrlsFromBroker({
+        const whenMocks = options.providerName ?
+            this.pactBroker.loadPacts({
                 pactBrokerUrl: options.mockPathOrUrl,
                 providerName: options.providerName,
                 tag: options.tag
-            }) : [options.mockPathOrUrl];
+            }) : this.getPactFromFileOrUrl(options.mockPathOrUrl);
 
-        const whenMocks = Promise.all(
-            mockPathsOrUrls.map(async (mockPathOrUrl): Promise<SerializedMock> => ({
-                content: await this.fileStore.loadFile(mockPathOrUrl),
-                format: 'auto-detect',
-                pathOrUrl: mockPathOrUrl
-            }))
-        );
-
-        const [specContent, mocks] = await Promise.all([whenSpecContent, whenMocks]);
-
-        const spec: SerializedSpec = {
-            content: specContent,
-            format: 'auto-detect',
-            pathOrUrl: options.specPathOrUrl
-        };
+        const [spec, mocks] = await Promise.all([whenSpecContent, whenMocks]);
         return {spec, mocks};
+    }
+
+    private async getSpecFromFileOrUrl(specPathOrUrl: string): Promise<SerializedSpec> {
+        const content = await this.fileStore.loadFile(specPathOrUrl);
+
+        return {
+            content,
+            format: 'auto-detect',
+            pathOrUrl: specPathOrUrl
+        };
+    }
+
+    private async getPactFromFileOrUrl(mockPathOrUrl: string): Promise<SerializedMock[]> {
+        const content = await this.fileStore.loadFile(mockPathOrUrl);
+
+        return [{
+            content,
+            format: 'auto-detect',
+            pathOrUrl: mockPathOrUrl
+        }];
     }
 
     private async getValidationOutcomes(
@@ -193,78 +187,5 @@ export class SwaggerMockValidator {
                 // do not fail tool on analytics errors
             }
         }
-    }
-
-    private async getPactUrlsFromBroker(options: PactBrokerUserOptions): Promise<string[]> {
-        const pactBrokerRootResponse = await this.resourceLoader.load<PactBroker>(options.pactBrokerUrl);
-        const providerPactsUrl = this.getUrlForProviderPacts(pactBrokerRootResponse, options);
-
-        return this.getPactUrls(providerPactsUrl);
-    }
-
-    private getUrlForProviderPacts(pactBrokerRootResponse: PactBroker, options: PactBrokerUserOptions): string {
-        return options.tag
-            ? this.getUrlForProviderPactsByTag(pactBrokerRootResponse, {
-                pactBrokerUrl: options.pactBrokerUrl,
-                providerName: options.providerName,
-                tag: options.tag
-            })
-            : this.getUrlForAllProviderPacts(pactBrokerRootResponse, options);
-    }
-
-    private getUrlForProviderPactsByTag(pactBrokerRootResponse: PactBroker,
-                                        options: Required<PactBrokerUserOptions>): string {
-        const providerTemplateUrl = SwaggerMockValidator.getProviderTemplateUrl(
-            pactBrokerRootResponse,
-            '_links.pb:latest-provider-pacts-with-tag.href'
-        );
-
-        if (!providerTemplateUrl) {
-            throw new SwaggerMockValidatorErrorImpl(
-                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
-                `Unable to read "${options.pactBrokerUrl}": No latest pact file url found for tag`
-            );
-        }
-
-        return this.getSpecificUrlFromTemplate(
-            providerTemplateUrl, {provider: options.providerName, tag: options.tag}
-        );
-    }
-
-    private getUrlForAllProviderPacts(pactBrokerRootResponse: PactBroker, options: PactBrokerUserOptions): string {
-        const providerTemplateUrl = SwaggerMockValidator.getProviderTemplateUrl(
-            pactBrokerRootResponse,
-            '_links.pb:latest-provider-pacts.href'
-        );
-
-        if (!providerTemplateUrl) {
-            throw new SwaggerMockValidatorErrorImpl(
-                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
-                `Unable to read "${options.pactBrokerUrl}": No latest pact file url found`
-            );
-        }
-
-        return this.getSpecificUrlFromTemplate(
-            providerTemplateUrl, {provider: options.providerName}
-        );
-    }
-
-    private getSpecificUrlFromTemplate(
-        providerTemplateUrl: string, parameters: { [key: string]: string }
-    ): string {
-        let specificUrl = providerTemplateUrl;
-        Object.keys(parameters).forEach((key) => {
-            const encodedParameterValue = encodeURIComponent(parameters[key]);
-            specificUrl = specificUrl.replace(`{${key}}`, encodedParameterValue);
-        });
-
-        return specificUrl;
-    }
-
-    private async getPactUrls(providerPactsUrl: string): Promise<string[]> {
-        const providerUrlResponse = await this.resourceLoader.load<PactBrokerProviderPacts>(providerPactsUrl);
-        const providerPactEntries: PactBrokerProviderPactsLinksPact[] = _.get(providerUrlResponse, '_links.pacts', []);
-
-        return _.map(providerPactEntries, (providerPact) => providerPact.href);
     }
 }

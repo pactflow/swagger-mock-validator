@@ -5,9 +5,10 @@ import {Analytics} from '../../../lib/swagger-mock-validator/analytics';
 import {Metadata} from '../../../lib/swagger-mock-validator/analytics/metadata';
 import {FileSystem} from '../../../lib/swagger-mock-validator/clients/file-system';
 import {HttpClient} from '../../../lib/swagger-mock-validator/clients/http-client';
+import {PactBrokerClient} from '../../../lib/swagger-mock-validator/clients/pact-broker-client';
 import {FileStore} from '../../../lib/swagger-mock-validator/file-store';
 import {Pact} from '../../../lib/swagger-mock-validator/mock-parser/pact/pact';
-import {ResourceLoader} from '../../../lib/swagger-mock-validator/resource-loader';
+import {PactBroker} from '../../../lib/swagger-mock-validator/pact-broker';
 import {Openapi3Schema} from '../../../lib/swagger-mock-validator/spec-parser/openapi3/openapi3';
 import {Swagger2} from '../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {UuidGenerator} from '../../../lib/swagger-mock-validator/uuid-generator';
@@ -31,6 +32,7 @@ export type MockUuidGeneratorResponses = string[];
 
 export interface SwaggerMockValidatorLoaderInvokeWithMocksOptions {
     analyticsUrl?: string;
+    auth?: string;
     fileSystem?: FileSystem;
     httpClient?: HttpClient;
     metadata?: Metadata;
@@ -110,9 +112,10 @@ export const swaggerMockValidatorLoader = {
         const mockMetadata = options.metadata || swaggerMockValidatorLoader.createMockMetadata({});
 
         const fileStore = new FileStore(mockFileSystem, mockHttpClient);
-        const resourceLoader = new ResourceLoader(fileStore);
+        const pactBrokerClient = new PactBrokerClient(mockHttpClient, options.auth);
+        const pactBroker = new PactBroker(pactBrokerClient);
         const analytics = new Analytics(mockHttpClient, mockUuidGenerator, mockMetadata);
-        const swaggerMockValidator = new SwaggerMockValidator(fileStore, resourceLoader, analytics);
+        const swaggerMockValidator = new SwaggerMockValidator(fileStore, pactBroker, analytics);
 
         return swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,

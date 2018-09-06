@@ -1,6 +1,6 @@
 import {SwaggerMockValidatorOptionsMockType, SwaggerMockValidatorOptionsSpecType, ValidationResult} from '../api-types';
 
-export interface PactBroker {
+export interface PactBrokerRootResponse {
     _links: PactBrokerLinks;
 }
 
@@ -38,6 +38,10 @@ export interface PactBrokerUserOptions {
     providerName: string;
     tag?: string;
 }
+
+export type PactBrokerUserOptionsWithTag = PactBrokerUserOptions & {
+    tag: string;
+};
 
 export type AutoDetectFormat = 'auto-detect';
 

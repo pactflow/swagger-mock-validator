@@ -54,6 +54,11 @@ Additionally, provide a Pact Broker version tag alongside the name of the provid
 swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name --tag production
 ```
 
+If the Pact Broker is behind basic auth, you can pass credentials with the -u / --user option while invoking the tool.
+```
+swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name --user BASIC_AUTH_USER:BASIC_AUTH_PASSWORD
+```
+
 ### Analytics (Opt-In)
 
 The tool can be configured to send analytics events to a server of your choosing. Use the `--analyticsUrl` flag to pass a url that the tool should post the event to. The tool will send this event via a http post request and will timeout after 5 seconds. See [analytics.ts](lib/swagger-mock-validator/analytics.ts) for the post body schema.

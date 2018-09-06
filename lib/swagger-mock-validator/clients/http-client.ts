@@ -1,16 +1,29 @@
 import * as request from 'request';
 
+type RequestOptions = request.Options;
+
 const hasHttp2xxStatusCode = (response: request.RequestResponse) =>
     response.statusCode && response.statusCode >= 200 && response.statusCode <= 299;
 
 export class HttpClient {
-    public get(url: string): Promise<string> {
-        const requestOptions = {
+    private static getRequestOptions(url: string, auth?: string): RequestOptions {
+        let requestOptions: RequestOptions = {
             timeout: 30000,
             url
         };
+        if (auth) {
+            requestOptions = {...requestOptions, headers: {
+                authorization: 'Basic ' + Buffer.from(auth).toString('base64')
+            }};
+        }
 
+        return requestOptions;
+    }
+
+    public get(url: string, auth?: string): Promise<string> {
         return new Promise((resolve, reject) => {
+            const requestOptions = HttpClient.getRequestOptions(url, auth);
+
             request(requestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);

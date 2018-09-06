@@ -7,6 +7,7 @@ import {expectToFail} from '../support/expect-to-fail';
 
 interface InvokeCommandOptions {
     analyticsUrl?: string;
+    auth?: string;
     mock: string;
     providerName?: string;
     swagger: string;
@@ -25,6 +26,7 @@ const execute = (command: string): Promise<string> => {
     });
 };
 
+// tslint:disable-next-line:cyclomatic-complexity
 const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
     let command = `./bin/swagger-mock-validator-local ${options.swagger} ${options.mock}`;
 
@@ -40,6 +42,9 @@ const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
         command += ` --analyticsUrl ${options.analyticsUrl}`;
     }
 
+    if (options.auth) {
+        command += ` --user ${options.auth}`;
+    }
     return execute(command);
 };
 
@@ -48,23 +53,31 @@ const urlTo = (path: string) => `http://localhost:${serverPort}/${path}`;
 
 describe('swagger-mock-validator/cli', () => {
     let mockServer: Server;
-    let mockAnalytics: jasmine.SpyObj<{post: (body: string) => void}>;
+    let mockPactBroker: jasmine.SpyObj<{ get: (requestHeaders: object, requestUrl: string) => void }>;
+    let mockAnalytics: jasmine.SpyObj<{ post: (body: string) => void }>;
 
     beforeAll((done) => {
+        mockPactBroker = jasmine.createSpyObj('mockPactBroker', ['get']);
         mockAnalytics = jasmine.createSpyObj('mockAnalytics', ['post']);
 
         const expressApp = express();
 
+        expressApp.get('/*', (request, _, next) => {
+            mockPactBroker.get(request.headers, request.url);
+            next();
+        });
         expressApp.post('/analytics', bodyParser.json(), (request, response) => {
             mockAnalytics.post(request.body);
             response.status(201).end();
         });
         expressApp.use(express.static('.'));
+
         mockServer = expressApp.listen(serverPort, done);
     });
 
     beforeEach(() => {
         mockAnalytics.post.calls.reset();
+        mockPactBroker.get.calls.reset();
     });
 
     afterAll((done) => mockServer.close(done));
@@ -360,6 +373,22 @@ describe('swagger-mock-validator/cli', () => {
         expect(result).toEqual(jasmine.stringMatching('2 warning'));
         expect(result).toEqual(
             jasmine.stringMatching('Request header is not defined in the spec file: x-unknown-header')
+        );
+    }, 30000);
+
+    it('should make an authenticated request to the provided pact broker url when asked to do so', async () => {
+        const auth = 'user:pass';
+
+        await invokeCommand({
+            auth,
+            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
+            providerName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+
+        expect(mockPactBroker.get).toHaveBeenCalledWith(
+            jasmine.objectContaining({authorization: 'Basic dXNlcjpwYXNz'}),
+            jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
         );
     }, 30000);
 });
