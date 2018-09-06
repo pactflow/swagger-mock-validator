@@ -1,3 +1,13 @@
+<a name="5.1.0"></a>
+# [5.1.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.0.1...5.1.0) (2018-09-06)
+
+
+### Features
+
+* support tagging when using Pact Broker ([f2ca58b](https://bitbucket.org/atlassian/swagger-mock-validator/commits/f2ca58b)), closes [#71](https://bitbucket.org/atlassian/swagger-mock-validator/issue/71)
+
+
+
 <a name="5.0.1"></a>
 ## [5.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.0.0...5.0.1) (2018-08-29)
 
