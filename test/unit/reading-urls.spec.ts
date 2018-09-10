@@ -12,6 +12,13 @@ import {pathBuilder} from './support/swagger2-builder/path-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
+interface InvokeValidateOptions {
+    specPathOrUrl: string;
+    mockPathOrUrl: string;
+    providerName?: string;
+    tag?: string;
+}
+
 describe('reading urls', () => {
     let mockHttpClient: HttpClient;
     let mockUrls: MockHttpClientResponses;
@@ -23,27 +30,18 @@ describe('reading urls', () => {
         mockHttpClient = swaggerMockValidatorLoader.createMockHttpClient(mockUrls);
     });
 
-    const invokeValidate = (specPathOrUrl: string,
-                            mockPathOrUrl: string,
-                            providerName?: string,
-                            tag?: string): Promise<ValidationOutcome> =>
-        swaggerMockValidatorLoader.invokeWithMocks({
-            httpClient: mockHttpClient,
-            mockPathOrUrl,
-            providerName,
-            specPathOrUrl,
-            tag
-        });
+    const invokeValidate = (invokeValidateOptions: InvokeValidateOptions): Promise<ValidationOutcome> =>
+        swaggerMockValidatorLoader.invokeWithMocks({...invokeValidateOptions, httpClient: mockHttpClient});
 
     describe('reading the swagger file', () => {
         it('should make a request for a http swagger url', async () => {
             mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            await invokeValidate(
-                'http://domain.com/swagger.json',
-                'http://domain.com/pact.json'
-            );
+            await invokeValidate({
+                mockPathOrUrl: 'http://domain.com/pact.json',
+                specPathOrUrl: 'http://domain.com/swagger.json'
+            });
 
             expect(mockHttpClient.get).toHaveBeenCalledWith('http://domain.com/swagger.json');
         });
@@ -52,10 +50,10 @@ describe('reading urls', () => {
             mockUrls['https://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            await invokeValidate(
-                'https://domain.com/swagger.json',
-                'http://domain.com/pact.json'
-            );
+            await invokeValidate({
+                mockPathOrUrl: 'http://domain.com/pact.json',
+                specPathOrUrl: 'https://domain.com/swagger.json'
+            });
 
             expect(mockHttpClient.get).toHaveBeenCalledWith('https://domain.com/swagger.json');
         });
@@ -64,10 +62,10 @@ describe('reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = Promise.reject(new Error('error-message'));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            const error = await expectToFail(invokeValidate(
-                'http://domain.com/swagger.json',
-                'http://domain.com/pact.json'
-            ));
+            const error = await expectToFail(invokeValidate({
+                mockPathOrUrl: 'http://domain.com/pact.json',
+                specPathOrUrl: 'http://domain.com/swagger.json'
+            }));
 
             expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
                 'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
@@ -79,10 +77,10 @@ describe('reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = Promise.resolve('');
             mockUrls['http://domain.com/pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            const error = await expectToFail(invokeValidate(
-                'http://domain.com/swagger.json',
-                'http://domain.com/pact.json'
-            )) as SwaggerMockValidatorErrorImpl;
+            const error = await expectToFail(invokeValidate({
+                mockPathOrUrl: 'http://domain.com/pact.json',
+                specPathOrUrl: 'http://domain.com/swagger.json'
+            })) as SwaggerMockValidatorErrorImpl;
 
             expect(error.code).toEqual('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR');
             expect(error.message).toEqual(jasmine.stringMatching('Unable to parse "http://domain.com/swagger.json":'));
@@ -94,10 +92,10 @@ describe('reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            await invokeValidate(
-                'http://domain.com/swagger.json',
-                'http://domain.com/pact.json'
-            );
+            await invokeValidate({
+                mockPathOrUrl: 'http://domain.com/pact.json',
+                specPathOrUrl: 'http://domain.com/swagger.json'
+            });
 
             expect(mockHttpClient.get).toHaveBeenCalledWith('http://domain.com/pact.json');
         });
@@ -106,10 +104,10 @@ describe('reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.reject(new Error('error-message'));
 
-            const error = await expectToFail(invokeValidate(
-                'http://domain.com/swagger.json',
-                'http://domain.com/pact.json'
-            ));
+            const error = await expectToFail(invokeValidate({
+                mockPathOrUrl: 'http://domain.com/pact.json',
+                specPathOrUrl: 'http://domain.com/swagger.json'
+            }));
 
             expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
                 'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
@@ -121,10 +119,10 @@ describe('reading urls', () => {
             mockUrls['http://domain.com/swagger.json'] = Promise.resolve(JSON.stringify(swagger2Builder.build()));
             mockUrls['http://domain.com/pact.json'] = Promise.resolve('');
 
-            const error = await expectToFail(invokeValidate(
-                'http://domain.com/swagger.json',
-                'http://domain.com/pact.json'
-            )) as SwaggerMockValidatorErrorImpl;
+            const error = await expectToFail(invokeValidate({
+                mockPathOrUrl: 'http://domain.com/pact.json',
+                specPathOrUrl: 'http://domain.com/swagger.json'
+            })) as SwaggerMockValidatorErrorImpl;
 
             expect(error.code).toEqual('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR');
             expect(error.message).toEqual(jasmine.stringMatching('Unable to parse "http://domain.com/pact.json":'));
@@ -145,7 +143,11 @@ describe('reading urls', () => {
         });
 
         const invokeValidateWithPactBroker = (pactBrokerUrl: string, providerName: string) => {
-            return invokeValidate('http://domain.com/swagger.json', pactBrokerUrl, providerName);
+            return invokeValidate({
+                mockPathOrUrl: pactBrokerUrl,
+                providerName,
+                specPathOrUrl: 'http://domain.com/swagger.json'
+            });
         };
 
         it('should make a request to the root of the pact broker', async () => {
@@ -301,9 +303,11 @@ describe('reading urls', () => {
                     .build()
             ));
 
-            const result = await invokeValidate('http://domain.com/swagger.json',
-                'http://pact-broker.com',
-                'provider-name');
+            const result = await invokeValidate({
+                mockPathOrUrl: 'http://pact-broker.com',
+                providerName: 'provider-name',
+                specPathOrUrl: 'http://domain.com/swagger.json'
+            });
 
             expect(result.failureReason).toEqual(
                 'Mock file "http://pact-broker.com/provider-name/consumer-2/pact" ' +
@@ -368,9 +372,11 @@ describe('reading urls', () => {
             mockUrls['http://pact-broker.com/provider-name/consumer-2/pact'] =
                 Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            const error = await expectToFail(invokeValidate('http://url.com/swagger.json',
-                'http://pact-broker.com',
-                'provider-name'));
+            const error = await expectToFail(invokeValidate({
+                mockPathOrUrl: 'http://pact-broker.com',
+                providerName: 'provider-name',
+                specPathOrUrl: 'http://url.com/swagger.json'
+            }));
 
             expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
                 'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR',
@@ -398,7 +404,12 @@ describe('reading urls', () => {
         });
 
         const invokeValidateWithPactBrokerAndTag = (pactBrokerUrl: string, providerName: string, tag: string) => {
-            return invokeValidate('http://domain.com/swagger.json', pactBrokerUrl, providerName, tag);
+            return invokeValidate({
+                mockPathOrUrl: pactBrokerUrl,
+                providerName,
+                specPathOrUrl: 'http://domain.com/swagger.json',
+                tag
+            });
         };
 
         it('should fail when no url for latest pact files with tag is in the pact root response', async () => {
