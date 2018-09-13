@@ -15,7 +15,6 @@ const util = require("util");
 const swagger_mock_validator_factory_1 = require("./swagger-mock-validator-factory");
 // tslint:disable:no-var-requires
 const packageJson = require('../package.json');
-const swaggerMockValidator = swagger_mock_validator_factory_1.SwaggerMockValidatorFactory.create();
 const displaySummaryForValidationResults = (name, resultsOrNone) => {
     const results = resultsOrNone || [];
     const summary = results.reduce((partialSummary, result) => {
@@ -46,7 +45,8 @@ commander
     .version(packageJson.version)
     .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
-    .option('-t, --tag [string]', 'The tag to filter pacts retrieved from the broker')
+    .option('-t, --tag [string]', 'The tag to filter pacts retrieved from the pact broker')
+    .option('-u, --user [USERNAME:PASSWORD]', 'The basic auth username and password to access the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
     .description(`Confirms the swagger spec and mock are compatible with each other.
 
@@ -62,9 +62,13 @@ pact broker and the provider name should be passed using the --provider option. 
 automatically find the latest versions of the consumer pact file(s) uploaded to the broker for
 the specified provider name. The <swagger> argument should be the path or url to the swagger
 json file. Optionally, pass a --tag option alongside a --provider option to filter the retrieved
-pacts from the broker by Pact Broker version tags`)
+pacts from the broker by Pact Broker version tags.
+
+If the pact broker has basic auth enabled, pass a --user option with username and password joined by a colon
+(i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.`)
     .action((swagger, mock, options) => __awaiter(this, void 0, void 0, function* () {
     try {
+        const swaggerMockValidator = swagger_mock_validator_factory_1.SwaggerMockValidatorFactory.create(options.user);
         const result = yield swaggerMockValidator.validate({
             analyticsUrl: options.analyticsUrl,
             mockPathOrUrl: mock,

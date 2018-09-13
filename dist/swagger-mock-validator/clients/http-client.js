@@ -3,12 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const request = require("request");
 const hasHttp2xxStatusCode = (response) => response.statusCode && response.statusCode >= 200 && response.statusCode <= 299;
 class HttpClient {
-    get(url) {
-        const requestOptions = {
+    static getRequestOptions(url, auth) {
+        let requestOptions = {
             timeout: 30000,
             url
         };
+        if (auth) {
+            requestOptions = Object.assign({}, requestOptions, { headers: {
+                    authorization: 'Basic ' + Buffer.from(auth).toString('base64')
+                } });
+        }
+        return requestOptions;
+    }
+    get(url, auth) {
         return new Promise((resolve, reject) => {
+            const requestOptions = HttpClient.getRequestOptions(url, auth);
             request(requestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);

@@ -1,3 +1,13 @@
+<a name="5.2.0"></a>
+# [5.2.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.1.0...5.2.0) (2018-09-13)
+
+
+### Features
+
+* support basic auth when using Pact Broker ([be5e106](https://bitbucket.org/atlassian/swagger-mock-validator/commits/be5e106)), closes [#72](https://bitbucket.org/atlassian/swagger-mock-validator/issue/72)
+
+
+
 <a name="5.1.0"></a>
 # [5.1.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.0.1...5.1.0) (2018-09-06)
 
