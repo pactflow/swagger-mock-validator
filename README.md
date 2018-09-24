@@ -35,7 +35,12 @@ Invoking this command will confirm the Swagger/OpenApi spec and mock are compati
 
 If the two files are compatible with each other an exit status of 0 is returned.
 
-If the two files are not compatible with each other an exit status of 1 is returned, along with a message containing the reason why the two files are not compatible.
+If the two files are not compatible with each other an exit status of 1 is returned, along with a message containing the reason why the two files are not compatible. The depth of the objects in the output can be modified by using `-o --outputDepth` flag, default depth is 4.
+
+```
+swagger-mock-validator spec.json mock.json --outputDepth 5
+```
+
 
 For more options on how to use the command run the command with the help flag.
 ```
