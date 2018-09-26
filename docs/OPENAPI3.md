@@ -92,7 +92,7 @@ This is a list of all the relevant field names in OpenApi 3 and if the validatio
 
 | Field Name | Supported |
 | --- | --- |
-| content | partially (yes for application/json, no for all other mime types)
+| content | partial (body validation for application/json, header-only validation for other mime types. Parameters, e.g. charset, will be disregarded)
 | required | yes |
 
 ## Media Type Object
@@ -116,7 +116,7 @@ This is a list of all the relevant field names in OpenApi 3 and if the validatio
 
 | Field Name | Supported |
 | --- | --- |
-| {http status code} | partially (yes for specific status codes, no for ranges) |
+| {http status code} | partial (yes for specific status codes, no for ranges) |
 | default | yes |
 
 ## Response Object
@@ -124,7 +124,7 @@ This is a list of all the relevant field names in OpenApi 3 and if the validatio
 | Field Name | Supported |
 | --- | --- |
 | headers | yes |
-| content | partially (yes for application/json, no for all other mime types)
+| content | partial (body validation for application/json, header-only validation for other mime types. Parameters, e.g. charset, will be disregarded)
 | links | no |
 
 ## Callback Object

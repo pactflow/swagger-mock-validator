@@ -9,6 +9,12 @@ import {schemaBuilder} from './support/swagger2-builder/schema-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
+interface ValidationOptions {
+    swaggerConsumes?: string[];
+    pactRequestContentTypeHeaderValue?: string;
+    pactRequestBody?: any;
+}
+
 describe('consumes', () => {
     const expectedFailedValidationError = 'Mock file "pact.json" is not compatible with spec file "spec.json"';
     const defaultInteractionBuilder = interactionBuilder
@@ -25,25 +31,21 @@ describe('consumes', () => {
         jasmine.addMatchers(customMatchers);
     });
 
-    const validateRequestContentTypeHeader = (
-        swaggerConsumes?: string[],
-        pactRequestContentTypeHeaderValue?: string,
-        pactRequestBody?: any
-    ) => {
+    const validateRequestContentTypeHeader = (options: ValidationOptions) => {
         let interaction = defaultInteractionBuilder;
 
-        if (pactRequestBody) {
-            interaction = interaction.withRequestBody(pactRequestBody);
+        if (options.pactRequestBody) {
+            interaction = interaction.withRequestBody(options.pactRequestBody);
         }
 
-        if (pactRequestContentTypeHeaderValue) {
-            interaction = interaction.withRequestHeader('Content-Type', pactRequestContentTypeHeaderValue);
+        if (options.pactRequestContentTypeHeaderValue) {
+            interaction = interaction.withRequestHeader('Content-Type', options.pactRequestContentTypeHeaderValue);
         }
 
         const pactFile = pactBuilder.withInteraction(interaction).build();
 
-        const operation = swaggerConsumes
-            ? operationBuilder.withConsumes(swaggerConsumes)
+        const operation = options.swaggerConsumes
+            ? operationBuilder.withConsumes(options.swaggerConsumes)
             : operationBuilder;
 
         const swaggerFile = swagger2Builder
@@ -55,51 +57,47 @@ describe('consumes', () => {
     };
 
     it('should pass when the pact request content-type header matches the spec', async () => {
-        const result = await validateRequestContentTypeHeader(['application/json'], 'application/json', {id: 1});
+        const result = await validateRequestContentTypeHeader({
+            pactRequestBody: {id: 1},
+            pactRequestContentTypeHeaderValue: 'application/json',
+            swaggerConsumes: ['application/json']
+        });
 
         expect(result).toContainNoWarningsOrErrors();
     });
 
     it('should pass when the pact request has no body and content-type header matches the spec', async () => {
-        const result = await validateRequestContentTypeHeader(['application/json'], 'application/json');
-
-        expect(result).toContainNoWarningsOrErrors();
-    });
-
-    it('should pass when the pact request has additional charset defined', async () => {
-        const result = await validateRequestContentTypeHeader(['application/json'], 'application/json;charset=utf-8');
-
-        expect(result).toContainNoWarningsOrErrors();
-    });
-
-    it('should pass when the spec has multiple consumes mine types', async () => {
-        const result = await validateRequestContentTypeHeader(
-            ['application/xml', 'application/json'], 'application/json'
-        );
+        const result = await validateRequestContentTypeHeader({
+            pactRequestContentTypeHeaderValue: 'application/json; charset=utf-8',
+            swaggerConsumes: ['application/xml', 'application/json']
+        });
 
         expect(result).toContainNoWarningsOrErrors();
     });
 
     it('should pass when no pact request content-type and no body are defined', async () => {
-        const result = await validateRequestContentTypeHeader(['application/json']);
+        const result = await validateRequestContentTypeHeader({swaggerConsumes: ['application/json']});
 
         expect(result).toContainNoWarningsOrErrors();
     });
 
     it('should pass when no pact request content-type and no spec consumes are defined', async () => {
-        const result = await validateRequestContentTypeHeader();
+        const result = await validateRequestContentTypeHeader({});
 
         expect(result).toContainNoWarningsOrErrors();
     });
 
     it('should pass for request with body and no content-type and when no spec consumes is defined', async () => {
-        const result = await validateRequestContentTypeHeader(undefined, undefined, {id: 2});
+        const result = await validateRequestContentTypeHeader({pactRequestBody: {id: 2}});
 
         expect(result).toContainNoWarningsOrErrors();
     });
 
     it('should return warning when request content-type header is not defined and spec consumes is', async () => {
-        const result = await validateRequestContentTypeHeader(['application/json'], undefined, {id: 1});
+        const result = await validateRequestContentTypeHeader({
+            pactRequestBody: {id: 1},
+            swaggerConsumes: ['application/json']
+        });
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
@@ -125,7 +123,10 @@ describe('consumes', () => {
     });
 
     it('should return warning when request content-type header is defined and spec consumes is not', async () => {
-        const result = await validateRequestContentTypeHeader(undefined, 'application/json', {id: 1});
+        const result = await validateRequestContentTypeHeader({
+            pactRequestBody: {id: 1},
+            pactRequestContentTypeHeaderValue: 'application/json'
+        });
 
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
@@ -151,7 +152,11 @@ describe('consumes', () => {
     });
 
     it('should return error when pact request content-type header does not match the spec', async () => {
-        const result = await validateRequestContentTypeHeader(['application/xml'], 'application/json', {id: 1});
+        const result = await validateRequestContentTypeHeader({
+            pactRequestBody: {id: 1},
+            pactRequestContentTypeHeaderValue: 'application/json',
+            swaggerConsumes: ['application/xml']
+        });
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
@@ -171,32 +176,6 @@ describe('consumes', () => {
                 pathName: '/does/exist',
                 specFile: 'spec.json',
                 value: ['application/xml']
-            },
-            type: 'error'
-        }]);
-    });
-
-    it('should return error when request content-type does not comply with the charset of the spec', async () => {
-        const result = await validateRequestContentTypeHeader(['application/json;charset=utf-8'], 'application/json');
-
-        expect(result.failureReason).toEqual(expectedFailedValidationError);
-        expect(result).toContainErrors([{
-            code: 'request.content-type.incompatible',
-            message: 'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
-            mockDetails: {
-                interactionDescription: 'interaction description',
-                interactionState: '[none]',
-                location: '[root].interactions[0].request.headers.Content-Type',
-                mockFile: 'pact.json',
-                value: 'application/json'
-            },
-            source: 'spec-mock-validation',
-            specDetails: {
-                location: '[root].paths./does/exist.post.consumes',
-                pathMethod: 'post',
-                pathName: '/does/exist',
-                specFile: 'spec.json',
-                value: ['application/json;charset=utf-8']
             },
             type: 'error'
         }]);

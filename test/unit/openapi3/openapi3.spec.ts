@@ -172,8 +172,8 @@ describe('openapi3/parser', () => {
                     .withGetOperation(openApi3OperationBuilder
                         .withRequestBody(openApi3RequestBodyBuilder
                             .withContent(openApi3ContentBuilder
-                                .withXmlContent(openApi3SchemaBuilder)
-                                .withUtf8JsonContent(openApi3SchemaBuilder))
+                                .withMimeTypeContent('image/png', openApi3SchemaBuilder)
+                                .withMimeTypeContent('text/html', openApi3SchemaBuilder))
                         )
                     )
                 )
@@ -197,48 +197,48 @@ describe('openapi3/parser', () => {
                     pathMethod: 'get',
                     pathName: defaultPath,
                     specFile: 'spec.json',
-                    value: ['application/xml', 'application/json;charset=utf-8']
+                    value: ['image/png', 'text/html']
                 },
                 type: 'error'
             }]);
         });
 
         it('should return warning when request content-type is defined and openapi3 requestBody is not', async () => {
-                const pactFile = pactBuilder
-                    .withInteraction(defaultInteractionBuilder
-                        .withRequestHeader('Content-Type', 'application/json'))
-                    .build();
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('Content-Type', 'application/json'))
+                .build();
 
-                const specFile = openApi3Builder
-                    .withPath(defaultPath, openApi3PathItemBuilder
-                        .withGetOperation(openApi3OperationBuilder))
-                    .build();
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder
+                    .withGetOperation(openApi3OperationBuilder))
+                .build();
 
-                const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
 
-                expect(result).toContainNoErrors();
-                expect(result).toContainWarnings([{
-                    code: 'request.content-type.unknown',
-                    message: 'Request content-type header is defined but the spec does not specify any mime-types ' +
+            expect(result).toContainNoErrors();
+            expect(result).toContainWarnings([{
+                code: 'request.content-type.unknown',
+                message: 'Request content-type header is defined but the spec does not specify any mime-types ' +
                     'to consume',
-                    mockDetails: {
-                        interactionDescription: defaultInteractionDescription,
-                        interactionState: '[none]',
-                        location: '[root].interactions[0].request.headers.Content-Type',
-                        mockFile: 'pact.json',
-                        value: 'application/json'
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: `[root].paths.${defaultPath}.get`,
-                        pathMethod: 'get',
-                        pathName: defaultPath,
-                        specFile: 'spec.json',
-                        value: openApi3OperationBuilder.build()
-                    },
-                    type: 'warning'
-                }]);
-            });
+                mockDetails: {
+                    interactionDescription: defaultInteractionDescription,
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].request.headers.Content-Type',
+                    mockFile: 'pact.json',
+                    value: 'application/json'
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: `[root].paths.${defaultPath}.get`,
+                    pathMethod: 'get',
+                    pathName: defaultPath,
+                    specFile: 'spec.json',
+                    value: openApi3OperationBuilder.build()
+                },
+                type: 'warning'
+            }]);
+        });
     });
 
     describe('request body', () => {
@@ -670,7 +670,7 @@ describe('openapi3/parser', () => {
                     pathMethod: 'get',
                     pathName: defaultPath,
                     specFile: 'spec.json',
-                    value: { in: 'query', name: 'name', required: true, schema: { type: 'number' } }
+                    value: {in: 'query', name: 'name', required: true, schema: {type: 'number'}}
                 },
                 type: 'error'
             }]);
@@ -986,45 +986,45 @@ describe('openapi3/parser', () => {
         });
 
         it('should return error when pact response body is passed and openapi3 has unsupported mime type', async () => {
-                const pactFile = pactBuilder
-                    .withInteraction(defaultInteractionBuilder
-                        .withResponseHeader('Content-Type', 'application/xml')
-                        .withResponseBody(1))
-                    .build();
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder
+                    .withResponseHeader('Content-Type', 'application/xml')
+                    .withResponseBody(1))
+                .build();
 
-                const operationBuilder = openApi3OperationBuilder
-                    .withResponse(200, openApi3ResponseBuilder
-                        .withContent(
-                            openApi3ContentBuilder.withXmlContent(openApi3SchemaBuilder.withTypeNumber()))
-                    );
+            const operationBuilder = openApi3OperationBuilder
+                .withResponse(200, openApi3ResponseBuilder
+                    .withContent(
+                        openApi3ContentBuilder.withXmlContent(openApi3SchemaBuilder.withTypeNumber()))
+                );
 
-                const specFile = openApi3Builder
-                    .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
-                    .build();
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
+                .build();
 
-                const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
 
-                expect(result).toContainErrors([{
-                    code: 'response.body.unknown',
-                    message: 'No schema found for response body',
-                    mockDetails: {
-                        interactionDescription: defaultInteractionDescription,
-                        interactionState: '[none]',
-                        location: '[root].interactions[0].response.body',
-                        mockFile: 'pact.json',
-                        value: 1
-                    },
-                    source: 'spec-mock-validation',
-                    specDetails: {
-                        location: `[root].paths.${defaultPath}.get.responses.200`,
-                        pathMethod: 'get',
-                        pathName: defaultPath,
-                        specFile: 'spec.json',
-                        value: operationBuilder.build().responses[200]
-                    },
-                    type: 'error'
-                }]);
-            });
+            expect(result).toContainErrors([{
+                code: 'response.body.unknown',
+                message: 'No schema found for response body',
+                mockDetails: {
+                    interactionDescription: defaultInteractionDescription,
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].response.body',
+                    mockFile: 'pact.json',
+                    value: 1
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: `[root].paths.${defaultPath}.get.responses.200`,
+                    pathMethod: 'get',
+                    pathName: defaultPath,
+                    specFile: 'spec.json',
+                    value: operationBuilder.build().responses[200]
+                },
+                type: 'error'
+            }]);
+        });
 
         it('should return error if pact not compatible with application/json response with charset', async () => {
             const pactFile = pactBuilder
@@ -1246,7 +1246,7 @@ describe('openapi3/parser', () => {
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should pass when the pact request has the required http auth header', async  () => {
+        it('should pass when the pact request has the required http auth header', async () => {
             const pactFile = pactBuilder
                 .withInteraction(defaultInteractionBuilder
                     .withRequestHeader('Authorization', 'Basic user:pwd'))

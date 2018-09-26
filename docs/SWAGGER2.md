@@ -7,8 +7,8 @@ This is a list of all the relevant field names in Swagger 2 and if the validatio
 | Field Name | Supported |
 | --- | --- |
 | basePath | yes |
-| consumes | yes |
-| produces | yes |
+| consumes | partial (mime types only, parameters, e.g. charset, will be disregarded) |
+| produces | partial (mime types only, parameters, e.g. charset, will be disregarded) |
 | paths | yes |
 | definitions | yes |
 | parameters | yes |
@@ -34,8 +34,8 @@ This is a list of all the relevant field names in Swagger 2 and if the validatio
 
 | Field Name | Supported |
 | --- | --- |
-| consumes | yes |
-| produces | yes |
+| consumes | partial (mime types only, parameters not supported) |
+| produces | partial (mime types only, parameters not supported) |
 | parameters | yes |
 | responses | yes |
 | deprecated | no |

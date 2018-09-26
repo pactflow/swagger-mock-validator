@@ -64,13 +64,9 @@ describe('produces', () => {
         };
 
         it('should pass when the pact request accept header matches the spec', async () => {
-            const result = await validateRequestAcceptHeader(['application/json'], 'application/json');
-
-            expect(result).toContainNoWarningsOrErrors();
-        });
-
-        it('should pass when the pact request accept header is more generous then the spec', async () => {
-            const result = await validateRequestAcceptHeader(['application/json;charset=utf-8'], 'application/json');
+            const result = await validateRequestAcceptHeader(
+                ['text/html', 'application/json;charset=utf-8'], 'application/json'
+            );
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -83,6 +79,14 @@ describe('produces', () => {
 
         it('should pass when neither pact request header, nor spec produces is defined', async () => {
             const result = await validateRequestAcceptHeader();
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
+        it('should pass when the accept header has multiple types and at least one matches the spec', async () => {
+            const result = await validateRequestAcceptHeader(
+                ['text/html', 'application/json;charset=utf-8'], 'image/png, application/json'
+            );
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -134,32 +138,6 @@ describe('produces', () => {
                     pathName: '/does/exist',
                     specFile: 'spec.json',
                     value: ['application/xml']
-                },
-                type: 'error'
-            }]);
-        });
-
-        it('should return an error when pact request accept header is more restrictive then the spec', async () => {
-            const result = await validateRequestAcceptHeader(['application/json'], 'application/json;charset=utf-8');
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'request.accept.incompatible',
-                message: 'Request Accept header is incompatible with the mime-types the spec defines to produce',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].request.headers.Accept',
-                    mockFile: 'pact.json',
-                    value: 'application/json;charset=utf-8'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[root].paths./does/exist.get.produces',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'spec.json',
-                    value: ['application/json']
                 },
                 type: 'error'
             }]);
@@ -260,7 +238,9 @@ describe('produces', () => {
         };
 
         it('should pass when the pact response content type header matches the spec', async () => {
-            const result = await validateResponseContentType(['application/json'], 'application/json');
+            const result = await validateResponseContentType(
+                ['text/html', 'application/json; charset=utf-8'], 'application/json'
+            );
 
             expect(result).toContainNoWarningsOrErrors();
         });
@@ -271,19 +251,13 @@ describe('produces', () => {
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should pass when the response content type can be negotiated', async () => {
-            const result = await validateResponseContentType(['application/json; charset=utf-8'], 'application/json');
-
-            expect(result).toContainNoWarningsOrErrors();
-        });
-
         it('should pass when there is no pact response content type and no produces', async () => {
             const result = await validateResponseContentType();
 
             expect(result).toContainNoWarningsOrErrors();
         });
 
-        it('should return a warning when there is no produces and a content type', async () => {
+        it('should return a warning when there is no produces and content type is defined', async () => {
             const result = await validateResponseContentType(undefined, 'application/json');
 
             expect(result).toContainNoErrors();
@@ -331,32 +305,6 @@ describe('produces', () => {
                     pathName: '/does/exist',
                     specFile: 'spec.json',
                     value: ['application/xml']
-                },
-                type: 'error'
-            }]);
-        });
-
-        it('should return the error when the response content-type cannot be negotiated', async () => {
-            const result = await validateResponseContentType(['application/json'], 'application/json; charset=utf-8');
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'response.content-type.incompatible',
-                message: 'Response Content-Type header is incompatible with the mime-types the spec defines to produce',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].response.headers.Content-Type',
-                    mockFile: 'pact.json',
-                    value: 'application/json; charset=utf-8'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[root].paths./does/exist.post.produces',
-                    pathMethod: 'post',
-                    pathName: '/does/exist',
-                    specFile: 'spec.json',
-                    value: ['application/json']
                 },
                 type: 'error'
             }]);

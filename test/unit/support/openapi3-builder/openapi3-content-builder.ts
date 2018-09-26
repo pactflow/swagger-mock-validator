@@ -21,10 +21,6 @@ const createOpenApi3ContentBuilder = (openApi3Content: Content) => ({
         createOpenApi3ContentBuilder(
             setValueOn(openApi3Content, `${mimeType}.schema`, schemaBuilder.build())
         ),
-    withUtf8JsonContent: (schemaBuilder: OpenApi3SchemaBuilder) =>
-        createOpenApi3ContentBuilder(
-            setValueOn(openApi3Content, 'application/json;charset=utf-8.schema', schemaBuilder.build())
-        ),
     withXmlContent: (schemaBuilder: OpenApi3SchemaBuilder) =>
         createOpenApi3ContentBuilder(
             setValueOn(openApi3Content, 'application/xml.schema', schemaBuilder.build())

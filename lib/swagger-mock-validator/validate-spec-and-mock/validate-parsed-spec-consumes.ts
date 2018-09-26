@@ -1,25 +1,32 @@
 import * as _ from 'lodash';
-import Negotiator = require('negotiator');
 import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
 import {ParsedSpecOperation} from '../spec-parser/parsed-spec';
+import {isMediaTypeSupported} from './content-negotiation';
 
 const contentTypeHeaderName = 'content-type';
 
-const validateHasNoConsumesValue = (
+const validateParsedMockContentTypeAgainstParsedSpecConsumes = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation,
     parsedMockContentTypeRequestHeaderValue: string
 ) => {
-    return parsedMockContentTypeRequestHeaderValue
-        ? [result.build({
-            code: 'request.content-type.unknown',
-            message: 'Request content-type header is defined but the spec does not specify any mime-types to consume',
+    const areMediaTypesCompatible = isMediaTypeSupported(
+        parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value
+    );
+
+    if (!areMediaTypesCompatible) {
+        return [result.build({
+            code: 'request.content-type.incompatible',
+            message:
+                'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
             mockSegment: parsedMockInteraction.requestHeaders[contentTypeHeaderName],
             source: 'spec-mock-validation',
-            specSegment: parsedSpecOperation
-        })]
-        : [];
+            specSegment: parsedSpecOperation.consumes
+        })];
+    }
+
+    return [];
 };
 
 const validateHasNoContentTypeHeader = (
@@ -37,45 +44,20 @@ const validateHasNoContentTypeHeader = (
         : [];
 };
 
-const newNegotiator = (acceptHeaderValue: string) => {
-    return new Negotiator({
-        headers: {
-            accept: acceptHeaderValue
-        }
-    });
-};
-
-const negotiateMediaTypes = (
-    parsedMockContentTypeRequestHeaderValue: string, parsedSpecConsumesValues: string[]
-): boolean => {
-    return parsedSpecConsumesValues.some((consumesValue) => {
-        const foundMatches = newNegotiator(consumesValue)
-            .mediaTypes([parsedMockContentTypeRequestHeaderValue]);
-        return foundMatches.length > 0;
-    });
-};
-
-const validateParsedMockContentTypeAgainstParsedSpecConsumes = (
+const validateHasNoConsumesValue = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation,
     parsedMockContentTypeRequestHeaderValue: string
 ) => {
-    const foundMatches = negotiateMediaTypes(
-        parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value
-    );
-
-    if (!foundMatches) {
-        return [result.build({
-            code: 'request.content-type.incompatible',
-            message:
-                'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
+    return parsedMockContentTypeRequestHeaderValue
+        ? [result.build({
+            code: 'request.content-type.unknown',
+            message: 'Request content-type header is defined but the spec does not specify any mime-types to consume',
             mockSegment: parsedMockInteraction.requestHeaders[contentTypeHeaderName],
             source: 'spec-mock-validation',
-            specSegment: parsedSpecOperation.consumes
-        })];
-    }
-
-    return [];
+            specSegment: parsedSpecOperation
+        })]
+        : [];
 };
 
 export const validateParsedSpecConsumes = (parsedMockInteraction: ParsedMockInteraction,

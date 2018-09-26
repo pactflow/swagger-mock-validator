@@ -1,42 +1,86 @@
 import * as _ from 'lodash';
-import Negotiator = require('negotiator');
 import {ValidationResult} from '../../api-types';
 import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
 import {ParsedSpecOperation, ParsedSpecValue} from '../spec-parser/parsed-spec';
+import {isMediaTypeSupported} from './content-negotiation';
 
 const acceptHeaderName = 'accept';
 const contentTypeHeaderName = 'content-type';
 
-const negotiateMediaType = (acceptableMediaTypes: string, availableMediaTypes: string[]) =>
-    new Negotiator({headers: {accept: acceptableMediaTypes}}).mediaTypes(availableMediaTypes);
+const validateResponseContentType = (
+    parsedMockInteraction: ParsedMockInteraction,
+    parsedMockResponseContentType: string,
+    responseProduces: ParsedSpecValue<string[]>
+) => {
+    const areMediaTypesCompatible = isMediaTypeSupported(parsedMockResponseContentType, responseProduces.value);
 
-const validateParsedMockRequestAcceptsHeader = (
+    if (!areMediaTypesCompatible) {
+        return [result.build({
+            code: 'response.content-type.incompatible',
+            message: 'Response Content-Type header is incompatible with the mime-types the spec defines to produce',
+            mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
+            source: 'spec-mock-validation',
+            specSegment: responseProduces
+        })];
+    }
+
+    return [];
+};
+
+const validateResponseContentTypeWhenNoProducesSection = (
+    parsedMockInteraction: ParsedMockInteraction, parsedSpecOperation: ParsedSpecOperation
+) => {
+    return [result.build({
+        code: 'response.content-type.unknown',
+        message: 'Response Content-Type header is defined but the spec does not specify any mime-types to produce',
+        mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
+        source: 'spec-mock-validation',
+        specSegment: parsedSpecOperation
+    })];
+};
+
+const validateResponseContentTypeWhenUnavailable = () => [];
+
+const validateParsedMockResponseContentType = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation,
     responseProduces: ParsedSpecValue<string[]>
 ) => {
-    const parsedMockAcceptRequestHeaderValue: string =
-        _.get(parsedMockInteraction.requestHeaders[acceptHeaderName], 'value');
+    const parsedMockResponseContentType: string =
+        _.get(parsedMockInteraction.responseHeaders[contentTypeHeaderName], 'value');
 
-    if (!parsedMockAcceptRequestHeaderValue) {
-        return [];
+    if (!parsedMockResponseContentType) {
+        return validateResponseContentTypeWhenUnavailable();
     }
 
     if (responseProduces.value.length === 0) {
-        return [result.build({
-            code: 'request.accept.unknown',
-            message: 'Request Accept header is defined but the spec does not specify any mime-types to produce',
-            mockSegment: parsedMockInteraction.requestHeaders[acceptHeaderName],
-            source: 'spec-mock-validation',
-            specSegment: parsedSpecOperation
-        })];
+        return validateResponseContentTypeWhenNoProducesSection(parsedMockInteraction, parsedSpecOperation);
     }
 
-    const matchingMediaTypes =
-        negotiateMediaType(parsedMockAcceptRequestHeaderValue, responseProduces.value);
+    return validateResponseContentType(parsedMockInteraction, parsedMockResponseContentType, responseProduces);
+};
 
-    if (matchingMediaTypes.length === 0) {
+const checkAcceptsHeaderCompatibility = (
+    parsedMockAcceptRequestHeaderValue: string,
+    responseProduces: ParsedSpecValue<string[]>
+) => {
+    const acceptedMediaTypes = parsedMockAcceptRequestHeaderValue.split(',');
+
+    return acceptedMediaTypes.some((acceptedMediaType) => {
+        return isMediaTypeSupported(acceptedMediaType, responseProduces.value);
+    });
+};
+
+const validateAcceptsHeader = (
+    parsedMockInteraction: ParsedMockInteraction,
+    parsedMockAcceptRequestHeaderValue: string,
+    responseProduces: ParsedSpecValue<string[]>
+) => {
+    const areMediaTypesCompatible =
+        checkAcceptsHeaderCompatibility(parsedMockAcceptRequestHeaderValue, responseProduces);
+
+    if (!areMediaTypesCompatible) {
         return [result.build({
             code: 'request.accept.incompatible',
             message: 'Request Accept header is incompatible with the mime-types the spec defines to produce',
@@ -49,41 +93,37 @@ const validateParsedMockRequestAcceptsHeader = (
     return [];
 };
 
-const validateParsedMockResponseContentTypeAndBody = (
+const validateAcceptsHeaderWhenNoProducesSection = (
+    parsedMockInteraction: ParsedMockInteraction, parsedSpecOperation: ParsedSpecOperation
+) => {
+    return [result.build({
+        code: 'request.accept.unknown',
+        message: 'Request Accept header is defined but the spec does not specify any mime-types to produce',
+        mockSegment: parsedMockInteraction.requestHeaders[acceptHeaderName],
+        source: 'spec-mock-validation',
+        specSegment: parsedSpecOperation
+    })];
+};
+
+const validateAcceptsHeaderWhenNoHeaderValue = () => [];
+
+const validateParsedMockRequestAcceptsHeader = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation,
     responseProduces: ParsedSpecValue<string[]>
 ) => {
-    const parsedMockResponseContentType: string =
-        _.get(parsedMockInteraction.responseHeaders[contentTypeHeaderName], 'value');
+    const parsedMockAcceptRequestHeaderValue: string =
+        _.get(parsedMockInteraction.requestHeaders[acceptHeaderName], 'value');
 
-    if (!parsedMockResponseContentType) {
-        return [];
+    if (!parsedMockAcceptRequestHeaderValue) {
+        return validateAcceptsHeaderWhenNoHeaderValue();
     }
 
     if (responseProduces.value.length === 0) {
-        return [result.build({
-            code: 'response.content-type.unknown',
-            message: 'Response Content-Type header is defined but the spec does not specify any mime-types to produce',
-            mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
-            source: 'spec-mock-validation',
-            specSegment: parsedSpecOperation
-        })];
+        return validateAcceptsHeaderWhenNoProducesSection(parsedMockInteraction, parsedSpecOperation);
     }
 
-    const matchingMediaTypes = negotiateMediaType(parsedMockResponseContentType, responseProduces.value);
-
-    if (matchingMediaTypes.length === 0) {
-        return [result.build({
-            code: 'response.content-type.incompatible',
-            message: 'Response Content-Type header is incompatible with the mime-types the spec defines to produce',
-            mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
-            source: 'spec-mock-validation',
-            specSegment: responseProduces
-        })];
-    }
-
-    return [];
+    return validateAcceptsHeader(parsedMockInteraction, parsedMockAcceptRequestHeaderValue, responseProduces);
 };
 
 const getResponseProduceMimeTypes = (
@@ -106,6 +146,6 @@ export const validateParsedSpecProduces = (
     }
     return _.concat(
         validateParsedMockRequestAcceptsHeader(parsedMockInteraction, parsedSpecOperation, responseProduces),
-        validateParsedMockResponseContentTypeAndBody(parsedMockInteraction, parsedSpecOperation, responseProduces)
+        validateParsedMockResponseContentType(parsedMockInteraction, parsedSpecOperation, responseProduces)
     );
 };
