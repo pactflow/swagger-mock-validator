@@ -1,3 +1,13 @@
+<a name="5.2.1"></a>
+## [5.2.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.2.0...5.2.1) (2018-10-02)
+
+
+### Bug Fixes
+
+* validate wildcards for media types, drop buggy support for media type parameters ([602abbd](https://bitbucket.org/atlassian/swagger-mock-validator/commits/602abbd))
+
+
+
 <a name="5.2.0"></a>
 # [5.2.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.1.0...5.2.0) (2018-09-13)
 
