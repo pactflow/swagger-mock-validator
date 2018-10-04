@@ -26,7 +26,7 @@ const displaySummaryForValidationResults = (name: string, resultsOrNone?: Valida
     _.each(summary, (count, resultCode) => console.log(`\t${resultCode}: ${count}`));
 };
 
-const displaySummary = (result: ValidationOutcome) => {
+const displaySummary = (result: ValidationOutcome, depth: number) => {
     if (result.failureReason) {
         console.log(result.failureReason);
     }
@@ -34,7 +34,7 @@ const displaySummary = (result: ValidationOutcome) => {
     displaySummaryForValidationResults('warning', result.warnings);
 
     if (result.warnings.length > 0 || result.errors.length > 0) {
-        console.log(`${util.inspect({warnings: result.warnings, errors: result.errors}, {depth: 4})}\n`);
+        console.log(`${util.inspect({warnings: result.warnings, errors: result.errors}, {depth})}\n`);
     }
 };
 
@@ -50,6 +50,9 @@ commander
     .option('-t, --tag [string]', 'The tag to filter pacts retrieved from the pact broker')
     .option('-u, --user [USERNAME:PASSWORD]', 'The basic auth username and password to access the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
+    .option('-o, --outputDepth [integer]', 'Specifies the number of times to recurse ' +
+        'while formatting the output objects. ' +
+        'This is useful in case of large complicated objects or schemas.', parseInt, 4)
     .description(
 `Confirms the swagger spec and mock are compatible with each other.
 
@@ -82,7 +85,7 @@ If the pact broker has basic auth enabled, pass a --user option with username an
                 tag: options.tag
             });
 
-            displaySummary(result);
+            displaySummary(result, options.outputDepth);
 
             if (!result.success) {
                 logErrorAndExitProcess(new Error(result.failureReason));

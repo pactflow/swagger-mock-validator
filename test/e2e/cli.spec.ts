@@ -12,6 +12,7 @@ interface InvokeCommandOptions {
     providerName?: string;
     swagger: string;
     tag?: string;
+    outputDepth?: string;
 }
 
 const execute = (command: string): Promise<string> => {
@@ -45,6 +46,11 @@ const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
     if (options.auth) {
         command += ` --user ${options.auth}`;
     }
+
+    if (options.outputDepth) {
+        command += ` --outputDepth ${options.outputDepth}`;
+    }
+
     return execute(command);
 };
 
@@ -391,4 +397,13 @@ describe('swagger-mock-validator/cli', () => {
             jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
         );
     }, 30000);
+
+    it('should format output objects to depth 0', async () => {
+        const result = await invokeCommand({
+            mock: 'test/e2e/fixtures/pact-working-consumer.json',
+            outputDepth: '0',
+            swagger: 'test/e2e/fixtures/openapi3-provider.yaml'
+        });
+        expect(result).toEqual(jasmine.stringMatching('warnings: \\[Object|Array\\]'));
+    });
 });
