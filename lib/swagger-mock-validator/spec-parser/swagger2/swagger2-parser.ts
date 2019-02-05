@@ -134,7 +134,7 @@ const parseResponses = (
     operation: Swagger2Operation,
     parentOperation: ParsedSpecOperation,
     specJson: Swagger2
-) => {
+): ParsedSpecResponses => {
     const responses = operation.responses;
     // tslint:disable:no-object-literal-type-assertion
     const parsedResponses = {

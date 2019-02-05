@@ -284,7 +284,7 @@ describe('openapi3/parser', () => {
             }]);
         });
 
-        it('should warn when a pact has a request body and an openapi3 has an unsupported mime type', async () => {
+        it('should pass when request body has an unsupported mimetype (unsupported feature)', async () => {
             const pactFile = pactBuilder
                 .withInteraction(defaultInteractionBuilder
                     .withRequestHeader('Content-Type', 'application/xml')
@@ -302,27 +302,7 @@ describe('openapi3/parser', () => {
 
             const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
 
-            expect(result).toContainNoErrors();
-            expect(result).toContainWarnings([{
-                code: 'request.body.unknown',
-                message: 'No schema found for request body',
-                mockDetails: {
-                    interactionDescription: defaultInteractionDescription,
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].request.body',
-                    mockFile: 'pact.json',
-                    value: 1
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: `[root].paths.${defaultPath}.get`,
-                    pathMethod: 'get',
-                    pathName: defaultPath,
-                    specFile: 'spec.json',
-                    value: operationBuilder.build()
-                },
-                type: 'warning'
-            }]);
+            expect(result).toContainNoWarningsOrErrors();
         });
 
         it('should return error if pact not compatible with application/json request with charset', async () => {
@@ -985,7 +965,7 @@ describe('openapi3/parser', () => {
             }]);
         });
 
-        it('should return error when pact response body is passed and openapi3 has unsupported mime type', async () => {
+        it('should pass when response body has an unsupported mime type (unsupported feature)', async () => {
             const pactFile = pactBuilder
                 .withInteraction(defaultInteractionBuilder
                     .withResponseHeader('Content-Type', 'application/xml')
@@ -1004,26 +984,7 @@ describe('openapi3/parser', () => {
 
             const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
 
-            expect(result).toContainErrors([{
-                code: 'response.body.unknown',
-                message: 'No schema found for response body',
-                mockDetails: {
-                    interactionDescription: defaultInteractionDescription,
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].response.body',
-                    mockFile: 'pact.json',
-                    value: 1
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: `[root].paths.${defaultPath}.get.responses.200`,
-                    pathMethod: 'get',
-                    pathName: defaultPath,
-                    specFile: 'spec.json',
-                    value: operationBuilder.build().responses[200]
-                },
-                type: 'error'
-            }]);
+            expect(result).toContainNoWarningsOrErrors();
         });
 
         it('should return error if pact not compatible with application/json response with charset', async () => {

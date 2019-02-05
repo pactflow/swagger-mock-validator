@@ -4,6 +4,7 @@ import {traverseJsonSchema} from '../common/traverse-json-schema';
 import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
 import {ParsedSpecJsonSchema, ParsedSpecResponse} from '../spec-parser/parsed-spec';
+import {isMediaTypeSupported} from './content-negotiation';
 import {validateJson} from './validate-json';
 
 const removeRequiredPropertiesFromSchema = (schema: ParsedSpecJsonSchema): ParsedSpecJsonSchema => {
@@ -16,9 +17,19 @@ const removeRequiredPropertiesFromSchema = (schema: ParsedSpecJsonSchema): Parse
     return modifiedSchema;
 };
 
+const isMockInteractionWithoutResponseBody = (parsedMockInteraction: ParsedMockInteraction) =>
+    !parsedMockInteraction.responseBody.value;
+
+const isNotSupportedMediaType = (parsedSpecResponse: ParsedSpecResponse) =>
+    parsedSpecResponse.produces.value.length > 0 &&
+    !isMediaTypeSupported('application/json', parsedSpecResponse.produces.value);
+
+const shouldSkipValidation = (parsedMockInteraction: ParsedMockInteraction, parsedSpecResponse: ParsedSpecResponse) =>
+    isMockInteractionWithoutResponseBody(parsedMockInteraction) || isNotSupportedMediaType(parsedSpecResponse);
+
 export const validateParsedMockResponseBody = (parsedMockInteraction: ParsedMockInteraction,
                                                parsedSpecResponse: ParsedSpecResponse) => {
-    if (!parsedMockInteraction.responseBody.value) {
+    if (shouldSkipValidation(parsedMockInteraction, parsedSpecResponse)) {
         return [];
     }
 

@@ -39,8 +39,7 @@ const parseOperations = (
     specJson: Openapi3Schema, rootLocation: string, specPathOrUrl: string
 ): ParsedSpecOperation[] => {
     return Object.keys(specJson.paths)
-        .map((pathName) =>
-            parsePathOperations(pathName, specJson, rootLocation, specPathOrUrl))
+        .map((pathName) => parsePathOperations(pathName, specJson, rootLocation, specPathOrUrl))
         .reduce<ParsedSpecOperation[]>((accumulator, nextOperations) => [...accumulator, ...nextOperations], []);
 };
 
