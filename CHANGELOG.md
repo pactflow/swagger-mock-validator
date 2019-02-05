@@ -1,3 +1,23 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.2.1...6.0.0) (2019-02-05)
+
+
+### Bug Fixes
+
+* skip request and response body validation when the content-type is unknown ([d400a1e](https://bitbucket.org/atlassian/swagger-mock-validator/commits/d400a1e))
+
+
+### Features
+
+* add configurable object depth output to CLI ([ecfa0c0](https://bitbucket.org/atlassian/swagger-mock-validator/commits/ecfa0c0))
+
+
+### BREAKING CHANGES
+
+* Prior to this change the tool used to fail when a pact response body was validated against an unsupported swagger mime type. Now when an unsupported mime type is encountered request body validation is skipped. It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
+
+
+
 <a name="5.2.1"></a>
 ## [5.2.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.2.0...5.2.1) (2018-10-02)
 
