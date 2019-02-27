@@ -14,7 +14,6 @@ import {validateJson} from './validate-json';
 
 const toJsonSchema = (parsedSpecParameter: ParsedSpecParameter): ParsedSpecJsonSchema => {
     const schema: ParsedSpecJsonSchema = {
-        definitions: parsedSpecParameter.schema.definitions,
         properties: {
             value: parsedSpecParameter.schema
         },
@@ -24,7 +23,6 @@ const toJsonSchema = (parsedSpecParameter: ParsedSpecParameter): ParsedSpecJsonS
     if (parsedSpecParameter.required) {
         schema.required = ['value'];
     }
-
     return schema;
 };
 

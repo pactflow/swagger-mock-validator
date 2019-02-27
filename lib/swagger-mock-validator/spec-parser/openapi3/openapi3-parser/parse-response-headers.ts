@@ -16,7 +16,7 @@ const parseHeader = (
 ): ParsedSpecParameter => {
     const dereferencedHeader = dereferenceComponent(header, spec);
     const location = `${headersRootLocation}.${name}`;
-    return toParsedSpecParameter({parameter: dereferencedHeader, name, parentOperation, location, spec});
+    return toParsedSpecParameter({parameter: dereferencedHeader, name, parentOperation, location});
 };
 
 const doParseResponseHeaders = (

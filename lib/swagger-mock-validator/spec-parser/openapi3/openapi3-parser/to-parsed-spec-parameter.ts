@@ -1,37 +1,33 @@
 import {ParsedSpecJsonSchemaCore, ParsedSpecOperation, ParsedSpecParameter} from '../../parsed-spec';
-import {Header, Openapi3Schema, Parameter} from '../openapi3';
-import {getSchemaWithSpecDefinitions} from './get-schema-with-spec-definitions';
+import {Header, Parameter} from '../openapi3';
 
 interface ToParsedSpecParameterOptions {
     parameter: Header | Parameter;
     name: string;
     parentOperation: ParsedSpecOperation;
     location: string;
-    spec: Openapi3Schema;
 }
+
+const isParameterSchemaUndefined = (schema?: ParsedSpecJsonSchemaCore): schema is undefined =>
+    schema === undefined;
 
 const isParameterSchemaUnsupported = (schema: ParsedSpecJsonSchemaCore): boolean =>
     schema.type === 'object' || schema.type === 'array';
 
-const prepareParameterSchema = (schema: ParsedSpecJsonSchemaCore, spec: Openapi3Schema): ParsedSpecJsonSchemaCore =>
-    isParameterSchemaUnsupported(schema)
-        ? {}
-        : getSchemaWithSpecDefinitions(schema, spec);
-
-const getParameterSchema = (parameter: Header | Parameter, spec: Openapi3Schema): ParsedSpecJsonSchemaCore =>
-    parameter.schema
-        ? prepareParameterSchema(parameter.schema, spec)
-        : {};
+const getParameterSchema = (parameter: Header | Parameter): ParsedSpecJsonSchemaCore =>
+    isParameterSchemaUndefined(parameter.schema) || isParameterSchemaUnsupported(parameter.schema)
+    ? {}
+    : parameter.schema;
 
 export const toParsedSpecParameter = (
-    {parameter, name, parentOperation, location, spec}: ToParsedSpecParameterOptions
+    {parameter, name, parentOperation, location}: ToParsedSpecParameterOptions
 ): ParsedSpecParameter => {
     return {
         location,
         name,
         parentOperation,
         required: parameter.required || false,
-        schema: getParameterSchema(parameter, spec),
+        schema: getParameterSchema(parameter),
         value: parameter
     };
 };

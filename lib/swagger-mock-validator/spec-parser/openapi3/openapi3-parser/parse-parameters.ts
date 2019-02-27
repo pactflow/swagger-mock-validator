@@ -42,7 +42,7 @@ const toParsedSpecParameters = (
         .map((parameterOrReference, index) => {
             const parameter = dereferenceComponent(parameterOrReference, spec);
             const location = `${parentOperation.location}.parameters[${index}]`;
-            return toParsedSpecParameter({parameter, name: parameter.name, parentOperation, location, spec});
+            return toParsedSpecParameter({parameter, name: parameter.name, parentOperation, location});
         });
 
 const doParseParameters = (
