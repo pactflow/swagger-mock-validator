@@ -6,7 +6,6 @@ const result_1 = require("../result");
 const validate_json_1 = require("./validate-json");
 const toJsonSchema = (parsedSpecParameter) => {
     const schema = {
-        definitions: parsedSpecParameter.schema.definitions,
         properties: {
             value: parsedSpecParameter.schema
         },

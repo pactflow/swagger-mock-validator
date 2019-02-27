@@ -1,20 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const get_schema_with_spec_definitions_1 = require("./get-schema-with-spec-definitions");
+const isParameterSchemaUndefined = (schema) => schema === undefined;
 const isParameterSchemaUnsupported = (schema) => schema.type === 'object' || schema.type === 'array';
-const prepareParameterSchema = (schema, spec) => isParameterSchemaUnsupported(schema)
+const getParameterSchema = (parameter) => isParameterSchemaUndefined(parameter.schema) || isParameterSchemaUnsupported(parameter.schema)
     ? {}
-    : get_schema_with_spec_definitions_1.getSchemaWithSpecDefinitions(schema, spec);
-const getParameterSchema = (parameter, spec) => parameter.schema
-    ? prepareParameterSchema(parameter.schema, spec)
-    : {};
-exports.toParsedSpecParameter = ({ parameter, name, parentOperation, location, spec }) => {
+    : parameter.schema;
+exports.toParsedSpecParameter = ({ parameter, name, parentOperation, location }) => {
     return {
         location,
         name,
         parentOperation,
         required: parameter.required || false,
-        schema: getParameterSchema(parameter, spec),
+        schema: getParameterSchema(parameter),
         value: parameter
     };
 };

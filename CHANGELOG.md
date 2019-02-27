@@ -1,3 +1,13 @@
+<a name="6.0.1"></a>
+## [6.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/6.0.0...6.0.1) (2019-02-27)
+
+
+### Bug Fixes
+
+* definitions no needed for parameter schema validation ([4a693d6](https://bitbucket.org/atlassian/swagger-mock-validator/commits/4a693d6))
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/5.2.1...6.0.0) (2019-02-05)
 
