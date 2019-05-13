@@ -931,7 +931,7 @@ describe('formats', () => {
             .withParameter(pathParameterBuilder.withByteNamed('value'));
 
         it('should pass when the pact path contains a value with base64 encoded data', async () => {
-            const value = new Buffer('base-64-encoded').toString('base64');
+            const value = Buffer.from('base-64-encoded').toString('base64');
 
             const result = await invokeValidatorWithPath(swaggerPathWithByteParameter, value);
 
