@@ -678,7 +678,7 @@ describe('keywords', () => {
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the spec file: ' +
-                'should NOT have less than 3 items',
+                'should NOT have fewer than 3 items',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -743,7 +743,7 @@ describe('keywords', () => {
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the spec file: ' +
-                'should NOT have duplicate items (items ## 0 and 1 are identical)',
+                'should NOT have duplicate items (items ## 1 and 0 are identical)',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',

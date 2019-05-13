@@ -236,7 +236,7 @@ describe('swagger-mock-validator/cli', () => {
             /\[root].interactions\[16]\.request\.headers\.x-minitems-value/
         ));
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should NOT have less than 2 items'
+            'Value is incompatible with the parameter defined in the spec file: should NOT have fewer than 2 items'
         ));
 
         // uniqueitems invalid

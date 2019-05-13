@@ -59,7 +59,7 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
-    "ajv": "^5.2.3",
+    "ajv": "^6.10.0",
     "commander": "^2.16.0",
     "decimal.js": "^10.2.0",
     "js-yaml": "^3.12.0",
