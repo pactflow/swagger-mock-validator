@@ -4,148 +4,162 @@ const gulp = require('gulp');
 
 const bump = require('gulp-bump');
 const clean = require('gulp-clean');
+const colors = require('ansi-colors');
 const conventionalChangelog = require('gulp-conventional-changelog');
-const exec = require('./gulp/exec');
+const exec = require('child_process').exec;
+const filter = require('gulp-filter');
 const git = require('gulp-git');
 const fs = require('fs');
 const jasmine = require('gulp-jasmine');
 const minimist = require('minimist');
-const runSequence = require('run-sequence');
 const ts = require('gulp-typescript');
 const tslint = require('gulp-tslint');
 
-const getVersion = () => JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-
 const options = minimist(process.argv.slice(2), {strings: ['type']});
+const tsProjectBuildOutput = ts.createProject('tsconfig.json', {noEmit: false});
+const specHelperPath = 'build-output/test/support/spec-helper.js';
+const tests = 'build-output/test/**/*.spec.js';
+const unitTests = 'build-output/test/unit/**/*.spec.js';
+const e2eTests = 'build-output/test/e2e/**/*.spec.js';
 
-const getBumpType = () => {
-    const validTypes = ['major', 'minor', 'patch', 'prerelease'];
-
-    if (validTypes.indexOf(options.type) === -1) {
-        throw new Error(
-            `You must specify a release type as one of (${validTypes.join(', ')}), e.g. "--type minor"`
-        );
+const utilities = {
+    compileBuildOutput: () => {
+        const tsResult = tsProjectBuildOutput.src().pipe(tsProjectBuildOutput());
+        return tsResult.js.pipe(gulp.dest('build-output'));
+    },
+    exec: (command) => {
+        return new Promise((resolve, reject) => {
+            console.log(`Executing command '${colors.yellow(command)}'`);
+            const childProcess = exec(command, (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve();
+                }
+            });
+            childProcess.stdout.pipe(process.stdout);
+            childProcess.stderr.pipe(process.stderr);
+        })
+    },
+    getBumpType: () => {
+        const validTypes = ['major', 'minor', 'patch', 'prerelease'];
+        if (validTypes.indexOf(options.type) === -1) {
+            throw new Error(
+                `You must specify a release type as one of (${validTypes.join(', ')}), e.g. "--type minor"`
+            );
+        }
+        return options.type;
+    },
+    getPackageJsonVersion: () => {
+        return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
     }
-
-    return options.type;
 };
 
-const tsProjectBuildOutput = ts.createProject('tsconfig.json', {noEmit: false});
-
-gulp.task('bump-version', () =>
-    gulp.src(['./package.json'])
-        .pipe(bump({type: getBumpType()}))
+const bumpVersion = () => {
+    return gulp.src(['./package.json'])
+        .pipe(bump({type: utilities.getBumpType()}))
         .pipe(gulp.dest('./'))
-);
+};
 
-gulp.task('clean-build-output', () =>
-    gulp.src('build-output', {force: true, read: false}).pipe(clean())
-);
-
-gulp.task('clean-dist', () =>
-    gulp.src('dist', {force: true, read: false}).pipe(clean())
-);
-
-gulp.task('changelog', () =>
-    gulp.src('CHANGELOG.md', {buffer: false})
+const changelog = () => {
+    return gulp.src('CHANGELOG.md')
         .pipe(conventionalChangelog({preset: 'angular'}))
-        .pipe(gulp.dest('./'))
-);
+        .pipe(gulp.dest('./'));
+};
 
-gulp.task('commit-changes', () =>
-    gulp.src('.')
+const cleanBuildOutput = () => {
+    return gulp.src('build-output', {force: true, read: false, allowEmpty: true}).pipe(clean());
+};
+
+const cleanDist = () => {
+    return gulp.src('dist', {force: true, read: false, allowEmpty: true}).pipe(clean());
+};
+
+const commitChanges = () => {
+    return gulp.src('.')
         .pipe(git.add())
-        .pipe(git.commit(`chore: release ${getVersion()}`))
-);
+        .pipe(git.commit(`chore: release ${utilities.getPackageJsonVersion()}`));
+};
 
-gulp.task('clean-copy-and-compile-build-output', (callback) => {
-    runSequence(
-        'clean-build-output',
-        ['copy-build-output-package-json', 'compile-build-output'],
-        callback
-    )
-});
+const compileAndUnitTest = () => {
+    return utilities.compileBuildOutput()
+        .pipe(filter([specHelperPath, unitTests]))
+        .pipe(jasmine({includeStackTrace: true}));
+};
 
-gulp.task('compile-build-output', () => {
-    const tsResult = tsProjectBuildOutput.src().pipe(tsProjectBuildOutput());
-    return tsResult.js.pipe(gulp.dest('build-output'));
-});
+const compileBuildOutput = () => utilities.compileBuildOutput();
 
-gulp.task('compile-dist', () => {
+const compileDist = () => {
     const tsProjectDist = ts.createProject('tsconfig.json', {noEmit: false});
     const tsResult = gulp.src('lib/**/*.ts').pipe(tsProjectDist());
     return tsResult.js.pipe(gulp.dest('dist'));
-});
+};
 
-gulp.task('copy-build-output-package-json', () =>
-    gulp.src('package.json').pipe(gulp.dest('build-output'))
-);
+const copyBuildOutputPackageJson = () => {
+    return gulp.src('package.json').pipe(gulp.dest('build-output'));
+};
 
-gulp.task('create-new-tag', (callback) => {
-    const version = getVersion();
-
+const createNewTag = (callback) => {
+    const version = utilities.getPackageJsonVersion();
     git.tag(version, `Created Tag for version: ${version}`, callback);
-});
+};
 
-gulp.task('lint', ['lint-typescript', 'lint-commits']);
+const lintCommits = () =>
+    utilities.exec('./node_modules/.bin/conventional-changelog-lint --from=HEAD~20 --preset angular');
 
-gulp.task('lint-commits', () =>
-    exec('./node_modules/.bin/conventional-changelog-lint --from=HEAD~20 --preset angular')
-);
+const lintTypescript = () => {
+    return tsProjectBuildOutput.src()
+        .pipe(tslint({formatter: "verbose"}))
+        .pipe(tslint.report())
+};
 
-gulp.task('lint-typescript', () => tsProjectBuildOutput.src()
-    .pipe(tslint({formatter: "verbose"}))
-    .pipe(tslint.report())
-);
+const npmPublish = () => utilities.exec('npm publish');
 
-gulp.task('npm-publish', () => exec('npm publish'));
-
-gulp.task('push-changes', (callback) => {
+const pushChanges = (callback) => {
     git.push('origin', 'master', {args: '--tags'}, callback);
-});
+};
 
-gulp.task('release', (callback) => {
-    runSequence(
-        'default',
-        'clean-dist',
-        'compile-dist',
-        'bump-version',
-        'changelog',
-        'commit-changes',
-        'create-new-tag',
-        'push-changes',
-        'npm-publish',
-        callback
-    );
-});
+const e2eTest = () => {
+    return gulp.src([specHelperPath, e2eTests]).pipe(jasmine({includeStackTrace: true}))
+};
 
-const specHelperPath = 'build-output/test/support/spec-helper.js';
+const test = () => {
+    return gulp.src([specHelperPath, tests]).pipe(jasmine({includeStackTrace: true}))
+};
 
-gulp.task('test', () =>
-    gulp.src([specHelperPath, 'build-output/test/**/*.spec.js']).pipe(jasmine({includeStackTrace: true}))
+const watchAndRunE2eTests = () => {
+    gulp.watch(['build-output/lib/**/*', 'build-output/test/e2e/**/*', 'test/e2e/**/*.json'], gulp.series(e2eTest));
+};
+
+const watchAndRunUnitTests = () => {
+    gulp.watch(['lib/**/*.ts', 'test/**/*.ts'], gulp.series(compileAndUnitTest));
+};
+
+const cleanCopyAndCompileBuildOutput = gulp.series(
+    cleanBuildOutput,
+    gulp.parallel(copyBuildOutputPackageJson, compileBuildOutput)
 );
 
-gulp.task('unit-test', () =>
-    gulp.src([specHelperPath, 'build-output/test/unit/**/*.spec.js']).pipe(jasmine({includeStackTrace: true}))
+exports.default = gulp.series(
+    gulp.parallel(cleanCopyAndCompileBuildOutput, lintCommits),
+    gulp.parallel(lintTypescript, test)
 );
 
-gulp.task('e2e-test', () =>
-    gulp.src([specHelperPath, 'build-output/test/e2e/**/*.spec.js']).pipe(jasmine({includeStackTrace: true}))
+exports.release = gulp.series(
+    exports.default,
+    cleanDist,
+    compileDist,
+    bumpVersion,
+    changelog,
+    commitChanges,
+    createNewTag,
+    pushChanges,
+    npmPublish
 );
 
-gulp.task('watch', ['clean-copy-and-compile-build-output'], () => {
-    gulp.watch(['lib/**/*.ts', 'test/**/*.ts'], ['compile-build-output']);
-    gulp.watch(['build-output/lib/**/*', 'build-output/test/unit/**/*'], ['unit-test']);
-});
+exports.watch = gulp.series(
+    cleanCopyAndCompileBuildOutput,
+    watchAndRunUnitTests
+);
 
-gulp.task('watch-e2e', () => {
-    gulp.watch(['build-output/lib/**/*', 'build-output/test/e2e/**/*', 'test/e2e/**/*.json'], ['e2e-test']);
-});
-
-gulp.task('default', (callback) => {
-    runSequence(
-        ['clean-copy-and-compile-build-output', 'lint-commits'],
-        ['lint-typescript', 'test'],
-        callback
-    );
-});
+exports.watchE2e = watchAndRunE2eTests;
