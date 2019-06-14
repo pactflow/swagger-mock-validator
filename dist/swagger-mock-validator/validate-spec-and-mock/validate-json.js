@@ -69,6 +69,9 @@ const removeNonSwaggerAjvFormats = (ajv) => {
         ajv.addFormat(formatName, alwaysTrue);
     });
 };
+const updateSchemaPropertyToDraft4 = (schema) => {
+    schema.$schema = 'http://json-schema.org/draft-04/schema';
+};
 const changeTypeToKeywordForCustomFormats = (schema) => {
     traverse_json_schema_1.traverseJsonSchema(schema, (mutableSchema) => {
         double_1.formatForDoubleNumbers(mutableSchema);
@@ -78,20 +81,13 @@ const changeTypeToKeywordForCustomFormats = (schema) => {
     });
 };
 const createAjvForDraft4 = (userOptions) => {
-    // see ajv migration guide for ajv v4 -> ajv v5 for details on what all these settings do
     const optionsRequiredForDraft4 = {
-        extendRefs: true,
-        meta: true,
-        unknownFormats: 'ignore'
+        logger: false,
+        schemaId: 'id'
     };
     const options = _.defaultsDeep({}, userOptions, optionsRequiredForDraft4);
     const ajv = new Ajv(options);
     ajv.addMetaSchema(draft4MetaSchema);
-    ajv._opts.defaultMeta = draft4MetaSchema.id;
-    ajv._refs['http://json-schema.org/schema'] = 'http://json-schema.org/draft-04/schema';
-    ajv.removeKeyword('propertyNames');
-    ajv.removeKeyword('contains');
-    ajv.removeKeyword('const');
     return ajv;
 };
 exports.validateJson = (jsonSchema, json, numbersSentAsStrings) => {
@@ -104,6 +100,7 @@ exports.validateJson = (jsonSchema, json, numbersSentAsStrings) => {
     removeNonSwaggerAjvFormats(ajv);
     const ajvCompatibleJsonSchema = _.cloneDeep(jsonSchema);
     changeTypeToKeywordForCustomFormats(ajvCompatibleJsonSchema);
+    updateSchemaPropertyToDraft4(ajvCompatibleJsonSchema);
     ajv.validate(ajvCompatibleJsonSchema, _.cloneDeep(json));
     return ajv.errors || [];
 };

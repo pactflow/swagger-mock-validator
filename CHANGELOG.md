@@ -1,3 +1,7 @@
+## [6.0.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/6.0.1...6.0.2) (2019-06-14)
+
+
+
 <a name="6.0.1"></a>
 ## [6.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/6.0.0...6.0.1) (2019-02-27)
 
