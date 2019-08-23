@@ -4,11 +4,11 @@ import {parsePathNameSegments} from '../common/parse-path-name-segments';
 import {
     ParsedSpec,
     ParsedSpecBody,
-    ParsedSpecCredentialLocation,
     ParsedSpecOperation,
     ParsedSpecParameter,
     ParsedSpecParameterCollection,
     ParsedSpecResponses,
+    ParsedSpecSecurityRequirementCredential,
     ParsedSpecSecurityRequirements,
     ParsedSpecValue
 } from '../parsed-spec';
@@ -27,7 +27,8 @@ import {
     Swagger2RequestHeaderParameter,
     Swagger2ResponseHeaderCollection,
     Swagger2SecurityDefinitions,
-    Swagger2SecurityRequirement
+    Swagger2SecurityRequirement,
+    Swagger2SecurityScheme
 } from './swagger2';
 
 const toParsedSpecValue = (
@@ -283,6 +284,17 @@ const getSecurityRequirementsAndBaseLocation = (
     }
 };
 
+const getCredentialKeyAndLocation = (scheme: Swagger2SecurityScheme): ParsedSpecSecurityRequirementCredential => {
+    switch (scheme.type) {
+        case 'apiKey':
+            return {credentialKey: scheme.name, credentialLocation: scheme.in};
+        case 'basic':
+            return {credentialKey: 'authorization', credentialLocation: 'header'};
+        default:
+            return {credentialKey: 'unknown', credentialLocation: 'unsupported'};
+    }
+};
+
 const parseSecurityRequirements = (
     securityDefinitionsOrUndefined: Swagger2SecurityDefinitions | undefined,
     operationSecurityRequirements: Swagger2SecurityRequirement[] | undefined,
@@ -299,27 +311,19 @@ const parseSecurityRequirements = (
     return _(securityRequirementsAndBaseLocation.securityRequirements)
         .map((securityRequirement, index) =>
             _.map(securityRequirement, (requirement: string[], requirementName: string) => {
-                const securityDefinition = securityDefinitions[requirementName];
-                let credentialKey = 'authorization';
-                let credentialLocation: ParsedSpecCredentialLocation = 'header';
-
-                if (securityDefinition.type === 'apiKey') {
-                    credentialKey = securityDefinition.name;
-                    credentialLocation = securityDefinition.in;
-                }
+                const securityScheme = securityDefinitions[requirementName];
+                const credential = getCredentialKeyAndLocation(securityScheme);
 
                 return {
-                    credentialKey,
-                    credentialLocation,
+                    ...credential,
                     location:
                         `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`,
                     parentOperation: parsedOperation,
-                    type: securityDefinition.type,
+                    type: securityScheme.type,
                     value: requirement
                 };
             })
         )
-        .reject((requirements) => _.some(requirements, (requirement) => requirement.type === 'oauth2'))
         .value();
 };
 

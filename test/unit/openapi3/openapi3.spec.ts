@@ -1256,6 +1256,24 @@ describe('openapi3/parser', () => {
             expect(result).toContainNoWarningsOrErrors();
         });
 
+        it('should pass if pact doesnt match supported requirements but spec contains an unsupported one', async () => {
+            const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
+
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder
+                    .withGetOperation(openApi3OperationBuilder
+                        .withSecurityRequirementNamed('oauth')
+                        .withSecurityRequirementNamed('basicAuth')
+                    ))
+                .withSecuritySchemeComponent('oauth', openApi3SecuritySchemeBuilder.withTypeOAuth2())
+                .withSecuritySchemeComponent('basicAuth', openApi3SecuritySchemeBuilder.withTypeBasic())
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
         it('should use operation security definitions over globally defined ones', async () => {
             const pactFile = pactBuilder
                 .withInteraction(defaultInteractionBuilder)

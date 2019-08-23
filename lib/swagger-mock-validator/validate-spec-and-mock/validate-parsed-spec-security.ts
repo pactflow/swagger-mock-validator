@@ -44,16 +44,25 @@ const validateHeaderRequirement = (
 
 const validateRequirement = (
     parsedMockInteraction: ParsedMockInteraction,
+    parsedSpecSecurityRequirement: ParsedSpecSecurityRequirement
+): ValidationResult => {
+    switch (parsedSpecSecurityRequirement.credentialLocation) {
+        case 'header':
+            return validateHeaderRequirement(parsedSpecSecurityRequirement, parsedMockInteraction);
+        case 'query':
+            return validateQueryRequirement(parsedSpecSecurityRequirement, parsedMockInteraction);
+        case 'unsupported':
+            return undefined as any;
+    }
+};
+
+const validateRequirements = (
+    parsedMockInteraction: ParsedMockInteraction,
     parsedSpecSecurityRequirements: ParsedSpecSecurityRequirements
 ): ValidationResult[] => {
     return _(parsedSpecSecurityRequirements)
-        .map((parsedSpecSecurityRequirement) => {
-            if (parsedSpecSecurityRequirement.credentialLocation === 'query') {
-                return validateQueryRequirement(parsedSpecSecurityRequirement, parsedMockInteraction);
-            }
-
-            return validateHeaderRequirement(parsedSpecSecurityRequirement, parsedMockInteraction);
-        })
+        .map((parsedSpecSecurityRequirement) =>
+            validateRequirement(parsedMockInteraction, parsedSpecSecurityRequirement))
         .compact()
         .value();
 };
@@ -63,9 +72,7 @@ export const validateParsedSpecSecurity = (
     parsedSpecOperation: ParsedSpecOperation
 ): ValidationResult[] => {
     const validationResultsPerRequirement = _(parsedSpecOperation.securityRequirements)
-        .map((requirements) => {
-            return validateRequirement(parsedMockInteraction, requirements);
-        });
+        .map((requirements) => validateRequirements(parsedMockInteraction, requirements));
 
     const anySecurityRequirementsMet = validationResultsPerRequirement
         .some((validationResults: ValidationResult[]) => validationResults.length === 0);

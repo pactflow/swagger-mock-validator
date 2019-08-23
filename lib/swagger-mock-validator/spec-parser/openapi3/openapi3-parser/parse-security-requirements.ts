@@ -2,6 +2,7 @@ import {
     ParsedSpecCredentialLocation,
     ParsedSpecOperation,
     ParsedSpecSecurityRequirement,
+    ParsedSpecSecurityRequirementCredential,
     ParsedSpecSecurityRequirements
 } from '../../parsed-spec';
 import {
@@ -58,14 +59,24 @@ const getCredentialLocation = (securityScheme: SupportedSecurityScheme): ParsedS
 const getCredentialKey = (securityScheme: SecurityScheme): string =>
     securityScheme.type === 'apiKey' ? securityScheme.name : 'authorization';
 
+const getCredential = (requirementDefinition: RequirementDefinition): ParsedSpecSecurityRequirementCredential =>
+    isSupportedRequirementDefinition(requirementDefinition)
+        ? {
+            credentialKey: getCredentialKey(requirementDefinition.scheme),
+            credentialLocation: getCredentialLocation(requirementDefinition.scheme)
+        }
+        : {
+            credentialKey: 'unknown',
+            credentialLocation: 'unsupported'
+        };
+
 const toParsedSpecSecurityRequirement = (
-    requirementDefinition: SupportedRequirementDefinition,
+    requirementDefinition: RequirementDefinition,
     baseLocation: string,
     parentOperation: ParsedSpecOperation
 ): ParsedSpecSecurityRequirement => (
     {
-        credentialKey: getCredentialKey(requirementDefinition.scheme),
-        credentialLocation: getCredentialLocation(requirementDefinition.scheme),
+        ...getCredential(requirementDefinition),
         location: `${baseLocation}.${requirementDefinition.name}`,
         parentOperation,
         value: requirementDefinition.value
@@ -101,7 +112,6 @@ const parseSecurityRequirementGroup = (
     Object.keys(securityRequirement)
         .map((securityRequirementName) =>
             toRequirementDefinition(securityRequirementName, securitySchemes, securityRequirement))
-        .filter(isSupportedRequirementDefinition)
         .map((requirementDefinition): ParsedSpecSecurityRequirement =>
             toParsedSpecSecurityRequirement(requirementDefinition, baseLocation, parentOperation));
 

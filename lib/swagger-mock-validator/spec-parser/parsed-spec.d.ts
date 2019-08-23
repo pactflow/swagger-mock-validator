@@ -127,9 +127,12 @@ export interface ParsedSpecValue<T> {
 
 export type ParsedSpecSecurityRequirements = ParsedSpecSecurityRequirement[];
 
-export type ParsedSpecCredentialLocation = 'header' | 'query';
+export type ParsedSpecCredentialLocation = 'header' | 'query' | 'unsupported';
 
-export interface ParsedSpecSecurityRequirement extends ParsedSpecValue<string[]> {
+export interface ParsedSpecSecurityRequirementCredential {
     credentialKey: string;
     credentialLocation: ParsedSpecCredentialLocation;
 }
+
+export type ParsedSpecSecurityRequirement =
+    ParsedSpecValue<string[]> & ParsedSpecSecurityRequirementCredential;

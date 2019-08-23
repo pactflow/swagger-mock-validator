@@ -239,7 +239,7 @@ describe('security', () => {
         }]);
     });
 
-    it('should pass when the pact request has one of the required apiKey query or header', async () => {
+    it('should pass when the pact request has one of the security requirements', async () => {
         const pactFile = pactBuilder
             .withInteraction(defaultInteractionBuilder.withRequestHeader('x-api-key-header', 'Bearer a-token'))
             .build();
@@ -249,12 +249,13 @@ describe('security', () => {
                 .withGetOperation(operationBuilder
                     .withSecurityRequirementNamed('apiKeyQuery')
                     .withSecurityRequirementNamed('apiKeyHeader')
+                    .withSecurityRequirementNamed('basic')
                 )
             )
             .withSecurityDefinitionNamed('apiKeyHeader', securitySchemeBuilder
-                .withTypeApiKeyInHeader('x-api-key-header')
-            )
+                .withTypeApiKeyInHeader('x-api-key-header'))
             .withSecurityDefinitionNamed('apiKeyQuery', securitySchemeBuilder.withTypeApiKeyInQuery('apiKey'))
+            .withSecurityDefinitionNamed('basic', securitySchemeBuilder.withTypeBasic())
             .build();
 
         const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
@@ -331,6 +332,25 @@ describe('security', () => {
 
         const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
 
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should pass when pact does not match supported requirements but spec contains an unsupported one', async () => {
+        const pactFile = pactBuilder
+            .withInteraction(defaultInteractionBuilder).build();
+
+        const swaggerFile = swagger2Builder
+            .withPath('/does/exist', pathBuilder
+                .withGetOperation(operationBuilder
+                    .withSecurityRequirementNamed('oauth', ['write'])
+                    .withSecurityRequirementNamed('basic')
+                )
+            )
+            .withSecurityDefinitionNamed('basic', securitySchemeBuilder.withTypeBasic())
+            .withSecurityDefinitionNamed('oauth', securitySchemeBuilder.withTypeOAuth2())
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
         expect(result).toContainNoWarningsOrErrors();
     });
 

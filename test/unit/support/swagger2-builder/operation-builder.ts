@@ -33,7 +33,7 @@ const createOperationBuilder = (operation: Swagger2Operation) => ({
     },
     withSecurityRequirementsNamed: (names: string[]) => {
         const securityRequirements: Swagger2SecurityRequirement = {};
-        _.each(names, (name) => securityRequirements[name] = []);
+        names.forEach((name) => securityRequirements[name] = []);
         return createOperationBuilder(addToArrayOn(operation, `security`, securityRequirements));
     }
 });
