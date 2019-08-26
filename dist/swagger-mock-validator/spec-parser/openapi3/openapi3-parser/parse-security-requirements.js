@@ -8,20 +8,22 @@ const dereferenceSecuritySchemes = (securitySchemes, spec) => Object.keys(securi
 }, {});
 const getCredentialLocation = (securityScheme) => securityScheme.type === 'apiKey' ? securityScheme.in : 'header';
 const getCredentialKey = (securityScheme) => securityScheme.type === 'apiKey' ? securityScheme.name : 'authorization';
-const toParsedSpecSecurityRequirement = (requirementDefinition, baseLocation, parentOperation) => ({
-    credentialKey: getCredentialKey(requirementDefinition.scheme),
-    credentialLocation: getCredentialLocation(requirementDefinition.scheme),
-    location: `${baseLocation}.${requirementDefinition.name}`,
-    parentOperation,
-    value: requirementDefinition.value
-});
+const getCredential = (requirementDefinition) => isSupportedRequirementDefinition(requirementDefinition)
+    ? {
+        credentialKey: getCredentialKey(requirementDefinition.scheme),
+        credentialLocation: getCredentialLocation(requirementDefinition.scheme)
+    }
+    : {
+        credentialKey: 'unknown',
+        credentialLocation: 'unsupported'
+    };
+const toParsedSpecSecurityRequirement = (requirementDefinition, baseLocation, parentOperation) => (Object.assign({}, getCredential(requirementDefinition), { location: `${baseLocation}.${requirementDefinition.name}`, parentOperation, value: requirementDefinition.value }));
 const isApiKeySecuritySchemeInHeaderOrQuery = (scheme) => scheme.type === 'apiKey' && (scheme.in === 'header' || scheme.in === 'query');
 const isHttpSecurityScheme = (scheme) => scheme.type === 'http';
 const isSupportedRequirementDefinition = (requirement) => isApiKeySecuritySchemeInHeaderOrQuery(requirement.scheme) || isHttpSecurityScheme(requirement.scheme);
 const toRequirementDefinition = (name, securitySchemes, securityRequirement) => ({ name, scheme: securitySchemes[name], value: securityRequirement[name] });
 const parseSecurityRequirementGroup = (securityRequirement, securitySchemes, baseLocation, parentOperation) => Object.keys(securityRequirement)
     .map((securityRequirementName) => toRequirementDefinition(securityRequirementName, securitySchemes, securityRequirement))
-    .filter(isSupportedRequirementDefinition)
     .map((requirementDefinition) => toParsedSpecSecurityRequirement(requirementDefinition, baseLocation, parentOperation));
 const parseAllSecurityRequirements = (securityRequirementsAndBaseLocation, securitySchemes, parentOperation) => securityRequirementsAndBaseLocation.securityRequirements
     .map((securityRequirement, index) => parseSecurityRequirementGroup(securityRequirement, securitySchemes, `${securityRequirementsAndBaseLocation.location}[${index}]`, parentOperation))

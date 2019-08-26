@@ -1,3 +1,17 @@
+# [7.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/6.0.2...7.0.0) (2019-08-26)
+
+
+### Bug Fixes
+
+* do not fail if the spec defines unsupported security requirements ([004729a](https://bitbucket.org/atlassian/swagger-mock-validator/commits/004729a))
+
+
+### BREAKING CHANGES
+
+* Prior to this change the tool used to fail when a pact request with no apparent auth was validated against a swagger operation containing security requirements both supported and unsupported by the tool (e.g. basic auth and OAuth2). Now if at least one unsupported security requirement is defined in the swagger operation the validation will pass. It is recommended that consumers and providers coordinate upgrading to this release so that both sides agree on what is considered valid vs invalid.
+
+
+
 ## [6.0.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/6.0.1...6.0.2) (2019-06-14)
 
 

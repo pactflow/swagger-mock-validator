@@ -179,28 +179,25 @@ const getSecurityRequirementsAndBaseLocation = (operationSecurityRequirements, g
         };
     }
 };
+const getCredentialKeyAndLocation = (scheme) => {
+    switch (scheme.type) {
+        case 'apiKey':
+            return { credentialKey: scheme.name, credentialLocation: scheme.in };
+        case 'basic':
+            return { credentialKey: 'authorization', credentialLocation: 'header' };
+        default:
+            return { credentialKey: 'unknown', credentialLocation: 'unsupported' };
+    }
+};
 const parseSecurityRequirements = (securityDefinitionsOrUndefined, operationSecurityRequirements, globalSecurityRequirements, parsedOperation) => {
     const securityDefinitions = securityDefinitionsOrUndefined || {};
     const securityRequirementsAndBaseLocation = getSecurityRequirementsAndBaseLocation(operationSecurityRequirements, globalSecurityRequirements, parsedOperation);
     return _(securityRequirementsAndBaseLocation.securityRequirements)
         .map((securityRequirement, index) => _.map(securityRequirement, (requirement, requirementName) => {
-        const securityDefinition = securityDefinitions[requirementName];
-        let credentialKey = 'authorization';
-        let credentialLocation = 'header';
-        if (securityDefinition.type === 'apiKey') {
-            credentialKey = securityDefinition.name;
-            credentialLocation = securityDefinition.in;
-        }
-        return {
-            credentialKey,
-            credentialLocation,
-            location: `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`,
-            parentOperation: parsedOperation,
-            type: securityDefinition.type,
-            value: requirement
-        };
+        const securityScheme = securityDefinitions[requirementName];
+        const credential = getCredentialKeyAndLocation(securityScheme);
+        return Object.assign({}, credential, { location: `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`, parentOperation: parsedOperation, type: securityScheme.type, value: requirement });
     }))
-        .reject((requirements) => _.some(requirements, (requirement) => requirement.type === 'oauth2'))
         .value();
 };
 const typeSafeHttpMethods = {
