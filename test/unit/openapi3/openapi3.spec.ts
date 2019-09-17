@@ -1274,6 +1274,23 @@ describe('openapi3/parser', () => {
             expect(result).toContainNoWarningsOrErrors();
         });
 
+        it('should pass if pact does not have auth but the spec contains an empty security requirement', async () => {
+            const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
+
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder
+                    .withGetOperation(openApi3OperationBuilder
+                        .withEmptySecurityRequirement()
+                        .withSecurityRequirementNamed('basicAuth')
+                    ))
+                .withSecuritySchemeComponent('basicAuth', openApi3SecuritySchemeBuilder.withTypeBasic())
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
         it('should use operation security definitions over globally defined ones', async () => {
             const pactFile = pactBuilder
                 .withInteraction(defaultInteractionBuilder)

@@ -336,8 +336,7 @@ describe('security', () => {
     });
 
     it('should pass when pact does not match supported requirements but spec contains an unsupported one', async () => {
-        const pactFile = pactBuilder
-            .withInteraction(defaultInteractionBuilder).build();
+        const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
 
         const swaggerFile = swagger2Builder
             .withPath('/does/exist', pathBuilder
@@ -350,6 +349,21 @@ describe('security', () => {
             .withSecurityDefinitionNamed('oauth', securitySchemeBuilder.withTypeOAuth2())
             .build();
 
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+        expect(result).toContainNoWarningsOrErrors();
+    });
+
+    it('should pass if pact does not have auth but the spec contains an empty security requirement', async () => {
+        const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder).build();
+
+        const swaggerFile = swagger2Builder
+            .withPath('/does/exist', pathBuilder
+                .withGetOperation(operationBuilder
+                    .withEmptySecurityRequirement()
+                    .withSecurityRequirementNamed('basic')
+                ))
+            .withSecurityDefinitionNamed('basic', securitySchemeBuilder.withTypeBasic())
+            .build();
         const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
         expect(result).toContainNoWarningsOrErrors();
     });

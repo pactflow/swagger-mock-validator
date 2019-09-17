@@ -128,8 +128,7 @@ const parseAllSecurityRequirements = (
                 securitySchemes,
                 `${securityRequirementsAndBaseLocation.location}[${index}]`,
                 parentOperation
-            ))
-        .filter((securityRequirementGroup) => securityRequirementGroup.length > 0);
+            ));
 
 const getSecuritySchemes = (spec: Openapi3Schema): DereferencedSecuritySchemes => {
     if (spec.components && spec.components.securitySchemes) {

@@ -14,6 +14,8 @@ export interface OpenApi3OperationBuilder {
 
 const createOpenApi3OperationBuilder = (openApi3Operation: Operation) => ({
     build: () => cloneDeep(openApi3Operation),
+    withEmptySecurityRequirement: () =>
+        createOpenApi3OperationBuilder(addToArrayOn(openApi3Operation, 'security', {})),
     withParameter: (parameterBuilder: OpenApi3ParameterBuilder) =>
         createOpenApi3OperationBuilder(addToArrayOn(openApi3Operation, 'parameters', parameterBuilder.build())),
     withParameterRef: (referenceName: string) =>
@@ -30,7 +32,7 @@ const createOpenApi3OperationBuilder = (openApi3Operation: Operation) => ({
     withSecurityRequirementNamed: (name: string) => {
         const securityRequirement: SecurityRequirement = {};
         securityRequirement[name] = [];
-        return createOpenApi3OperationBuilder(addToArrayOn(openApi3Operation, `security`, securityRequirement));
+        return createOpenApi3OperationBuilder(addToArrayOn(openApi3Operation, 'security', securityRequirement));
     }
 });
 

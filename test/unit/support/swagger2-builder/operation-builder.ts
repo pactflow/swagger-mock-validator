@@ -19,6 +19,7 @@ const createOperationBuilder = (operation: Swagger2Operation) => ({
     withDefaultResponse: (builder: ResponseBuilder) => createOperationBuilder(
         setValueOn(operation, 'responses.default', builder.build())
     ),
+    withEmptySecurityRequirement: () => createOperationBuilder(addToArrayOn(operation, 'security', {})),
     withParameter: (parameterBuilder: ParameterBuilder) => createOperationBuilder(
         addToArrayOn(operation, 'parameters', parameterBuilder.build())
     ),
@@ -29,12 +30,12 @@ const createOperationBuilder = (operation: Swagger2Operation) => ({
     withSecurityRequirementNamed: (name: string, scopes?: string[]) => {
         const securityRequirement: Swagger2SecurityRequirement = {};
         securityRequirement[name] = scopes || [];
-        return createOperationBuilder(addToArrayOn(operation, `security`, securityRequirement));
+        return createOperationBuilder(addToArrayOn(operation, 'security', securityRequirement));
     },
     withSecurityRequirementsNamed: (names: string[]) => {
         const securityRequirements: Swagger2SecurityRequirement = {};
         names.forEach((name) => securityRequirements[name] = []);
-        return createOperationBuilder(addToArrayOn(operation, `security`, securityRequirements));
+        return createOperationBuilder(addToArrayOn(operation, 'security', securityRequirements));
     }
 });
 
