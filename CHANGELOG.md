@@ -1,3 +1,17 @@
+# [8.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/7.0.0...8.0.0) (2019-09-18)
+
+
+### Bug Fixes
+
+* do not fail if an OpenApi 3 spec defines an empty security requirement ([f42ceb1](https://bitbucket.org/atlassian/swagger-mock-validator/commits/f42ceb1))
+
+
+### BREAKING CHANGES
+
+* Prior to this change the tool used to fail when a pact request with no auth was validated against an OpenApi 3 operation containing a security requirement (e.g. basic auth) plus an empty security requirement (which is normally used to represent that auth is optional). Now empty security requirements are considered for OpenApi3 specs hence not failing when the request lacks auth attributes.
+
+
+
 # [7.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/6.0.2...7.0.0) (2019-08-26)
 
 

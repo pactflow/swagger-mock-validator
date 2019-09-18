@@ -26,8 +26,7 @@ const parseSecurityRequirementGroup = (securityRequirement, securitySchemes, bas
     .map((securityRequirementName) => toRequirementDefinition(securityRequirementName, securitySchemes, securityRequirement))
     .map((requirementDefinition) => toParsedSpecSecurityRequirement(requirementDefinition, baseLocation, parentOperation));
 const parseAllSecurityRequirements = (securityRequirementsAndBaseLocation, securitySchemes, parentOperation) => securityRequirementsAndBaseLocation.securityRequirements
-    .map((securityRequirement, index) => parseSecurityRequirementGroup(securityRequirement, securitySchemes, `${securityRequirementsAndBaseLocation.location}[${index}]`, parentOperation))
-    .filter((securityRequirementGroup) => securityRequirementGroup.length > 0);
+    .map((securityRequirement, index) => parseSecurityRequirementGroup(securityRequirement, securitySchemes, `${securityRequirementsAndBaseLocation.location}[${index}]`, parentOperation));
 const getSecuritySchemes = (spec) => {
     if (spec.components && spec.components.securitySchemes) {
         return dereferenceSecuritySchemes(spec.components.securitySchemes, spec);
