@@ -7,7 +7,7 @@ import {ValidationResult} from '../../../lib/api-types';
 
 interface CompareResultCollectionOptions<T> {
     actualResults: T[];
-    customEqualityTesters: CustomEqualityTester[];
+    customEqualityTesters: ReadonlyArray<CustomEqualityTester>;
     expectedResults: T[];
     type: string;
     utilities: MatchersUtil;
@@ -15,7 +15,7 @@ interface CompareResultCollectionOptions<T> {
 
 interface CompareResultOptions<T> {
     actualResult: T;
-    customEqualityTesters: CustomEqualityTester[];
+    customEqualityTesters: ReadonlyArray<CustomEqualityTester>;
     expectedResult: T;
     index: number;
     type: string;
@@ -24,7 +24,7 @@ interface CompareResultOptions<T> {
 
 interface ComparePropertyOptions<T> {
     actualResult: T;
-    customEqualityTesters: CustomEqualityTester[];
+    customEqualityTesters: ReadonlyArray<CustomEqualityTester>;
     expectedResult: T;
     index: number;
     property: string;
