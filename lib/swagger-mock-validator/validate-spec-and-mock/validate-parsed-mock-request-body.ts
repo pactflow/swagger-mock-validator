@@ -23,7 +23,7 @@ const validateRequestBodyAgainstSchema = (
 
 const isOptionalRequestBodyMissing = (
     parsedMockInteraction: ParsedMockInteraction, parsedSpecOperation: ParsedSpecOperation
-) => !parsedMockInteraction.requestBody.value &&
+) => parsedMockInteraction.requestBody.value === undefined &&
     !(parsedSpecOperation.requestBodyParameter && parsedSpecOperation.requestBodyParameter.required);
 
 const specAndMockHaveNoBody = (parsedMockInteraction: ParsedMockInteraction,

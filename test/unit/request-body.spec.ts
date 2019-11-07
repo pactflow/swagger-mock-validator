@@ -25,7 +25,7 @@ describe('request body', () => {
     const validateRequestBody = (pactRequestBody?: any,
                                  swaggerBodyParameter?: ParameterBuilder,
                                  swaggerDefinitions?: DefinitionsBuilder) => {
-        const interactionWithRequestBodyBuilder = pactRequestBody
+        const interactionWithRequestBodyBuilder = pactRequestBody !== undefined
             ? defaultInteractionBuilder.withRequestBody(pactRequestBody)
             : defaultInteractionBuilder;
 
@@ -250,13 +250,13 @@ describe('request body', () => {
             .withRequiredProperty('id', schemaBuilder.withTypeNumber())
         );
 
-        const result = await validateRequestBody(null, swaggerBodyParameter);
+        const result = await validateRequestBody(undefined, swaggerBodyParameter);
 
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-            'should be object',
+                'should be object',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -282,7 +282,7 @@ describe('request body', () => {
             .withOptionalProperty('id', schemaBuilder.withTypeNumber())
         );
 
-        const result = await validateRequestBody(null, swaggerBodyParameter);
+        const result = await validateRequestBody(undefined, swaggerBodyParameter);
 
         expect(result).toContainNoWarningsOrErrors();
     });
@@ -378,6 +378,36 @@ describe('request body', () => {
             source: 'spec-mock-validation',
             specDetails: {
                 location: '[root].paths./does/exist.get.parameters[0].schema.additionalProperties.type',
+                pathMethod: 'get',
+                pathName: '/does/exist',
+                specFile: 'spec.json',
+                value: 'number'
+            },
+            type: 'error'
+        }]);
+    });
+
+    it('should return the error when pact request body is a JSON null value and not matching the schema', async () => {
+        const pactRequestBody = null;
+
+        const swaggerBodyParameter = bodyParameterBuilder.withOptionalSchema(schemaBuilder.withTypeNumber());
+
+        const result = await validateRequestBody(pactRequestBody, swaggerBodyParameter);
+        expect(result.failureReason).toEqual(expectedFailedValidationError);
+
+        expect(result).toContainErrors([{
+            code: 'request.body.incompatible',
+            message: 'Request body is incompatible with the request body schema in the spec file: should be number',
+            mockDetails: {
+                interactionDescription: 'interaction description',
+                interactionState: '[none]',
+                location: '[root].interactions[0].request.body',
+                mockFile: 'pact.json',
+                value: null
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[root].paths./does/exist.get.parameters[0].schema.type',
                 pathMethod: 'get',
                 pathName: '/does/exist',
                 specFile: 'spec.json',
