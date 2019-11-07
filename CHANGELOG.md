@@ -1,3 +1,22 @@
+# [9.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/8.0.0...9.0.0) (2019-11-07)
+
+
+### Bug Fixes
+
+* correctly validate request bodies containing a JSON null or false value ([79fae8c](https://bitbucket.org/atlassian/swagger-mock-validator/commits/79fae8c1cd2175f04070e4980120a699eeb87dff))
+
+
+### Features
+
+* support the nullable attribute for data types ([d3c13cc](https://bitbucket.org/atlassian/swagger-mock-validator/commits/d3c13cc2f50c7f749a86d2ffa0f09e4bf6d4d6d2))
+
+
+### BREAKING CHANGES
+
+* Prior to this change the tool used to succeed when a pact request specified a request body containing solely the JSON literals ‘null' or 'false’, regardless of what the spec accepted. Now, request bodies with such values will only pass validation if the spec is okay with them.
+
+
+
 # [8.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/7.0.0...8.0.0) (2019-09-18)
 
 

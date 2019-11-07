@@ -14,7 +14,7 @@ const validateRequestBodyAgainstSchema = (parsedMockRequestBody, parsedSpecReque
         specSegment: parsedSpecRequestBody.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2))
     }));
 };
-const isOptionalRequestBodyMissing = (parsedMockInteraction, parsedSpecOperation) => !parsedMockInteraction.requestBody.value &&
+const isOptionalRequestBodyMissing = (parsedMockInteraction, parsedSpecOperation) => parsedMockInteraction.requestBody.value === undefined &&
     !(parsedSpecOperation.requestBodyParameter && parsedSpecOperation.requestBodyParameter.required);
 const specAndMockHaveNoBody = (parsedMockInteraction, parsedSpecOperation) => !parsedSpecOperation.requestBodyParameter && !parsedMockInteraction.requestBody.value;
 const isNotSupportedMediaType = (parsedSpecOperation) => parsedSpecOperation.consumes.value.length > 0 &&
