@@ -63,6 +63,116 @@ describe('openapi3/parser', () => {
                 `Unable to resolve circular reference "${reference}"`
             ));
         });
+
+        it('should support the nullable schema keyword in an object property', async () => {
+            const pactRequestBody = {
+                name: null
+            };
+
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('Content-Type', 'application/json')
+                    .withRequestBody(pactRequestBody))
+                .build();
+
+            const operationBuilder = openApi3OperationBuilder
+                .withRequestBody(openApi3RequestBodyBuilder
+                    .withContent(openApi3ContentBuilder
+                        .withJsonContent(openApi3SchemaBuilder
+                            .withTypeObject()
+                            .withOptionalProperty('name', openApi3SchemaBuilder
+                                .withTypeNumber()
+                                .withNullable(true))))
+                );
+
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
+        it('should fail with a null request body when nullable is explicitly set to false', async () => {
+            const pactRequestBody = {
+                name: null
+            };
+
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('Content-Type', 'application/json')
+                    .withRequestBody(pactRequestBody))
+                .build();
+
+            const operationBuilder = openApi3OperationBuilder
+                .withRequestBody(openApi3RequestBodyBuilder
+                    .withContent(openApi3ContentBuilder
+                        .withJsonContent(openApi3SchemaBuilder
+                            .withTypeObject()
+                            .withOptionalProperty('name', openApi3SchemaBuilder
+                                .withTypeNumber()
+                                .withNullable(false))))
+                );
+
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainErrors([{
+                code: 'request.body.incompatible',
+                message: 'Request body is incompatible with the request body schema in the spec file: ' +
+                    'should be number',
+                mockDetails: {
+                    interactionDescription: defaultInteractionDescription,
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].request.body.name',
+                    mockFile: 'pact.json',
+                    value: null
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: `[root].paths.${defaultPath}.get.requestBody.content.application/` +
+                        'json.schema.properties.name.type',
+                    pathMethod: 'get',
+                    pathName: defaultPath,
+                    specFile: 'spec.json',
+                    value: 'number'
+                },
+                type: 'error'
+            }]);
+        });
+
+        it('should support the nullable schema keyword in an object property without type', async () => {
+            const pactRequestBody = {
+                name: null
+            };
+
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('Content-Type', 'application/json')
+                    .withRequestBody(pactRequestBody))
+                .build();
+
+            const operationBuilder = openApi3OperationBuilder
+                .withRequestBody(openApi3RequestBodyBuilder
+                    .withContent(openApi3ContentBuilder
+                        .withJsonContent(openApi3SchemaBuilder
+                            .withTypeObject()
+                            .withOptionalProperty('name', openApi3SchemaBuilder
+                                .withNullable(true))))
+                );
+
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
     });
 
     describe('paths', () => {

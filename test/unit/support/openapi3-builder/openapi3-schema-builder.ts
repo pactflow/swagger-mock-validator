@@ -16,6 +16,7 @@ const createOpenApi3SchemaBuilder = (openApi3Schema: Schema) => ({
         createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'items', items.build())),
     withNot: (schemaBuilder: OpenApi3SchemaBuilder) =>
         createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, `not`, schemaBuilder.build())),
+    withNullable: (value: boolean) => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'nullable', value)),
     withOneOf: (schemaBuilders: OpenApi3SchemaBuilder[]) =>
         createOpenApi3SchemaBuilder(
             setValueOn(openApi3Schema, `oneOf`, schemaBuilders.map((builder) => builder.build()))),

@@ -73,7 +73,7 @@ interface ParsedSpecJsonSchemaValue {
     pattern?: string;
     properties?: ParsedSpecJsonSchemaProperties;
     required?: string[];
-    type?: ParsedSpecJsonSchemaType;
+    type?: ParsedSpecJsonSchemaType | ParsedSpecJsonSchemaType[];
     uniqueItems?: boolean;
 }
 

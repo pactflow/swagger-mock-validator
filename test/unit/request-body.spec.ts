@@ -70,7 +70,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-            'should be number',
+                'should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -176,7 +176,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-            'should be number',
+                'should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -196,7 +196,7 @@ describe('request body', () => {
         }, {
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-            'should be number',
+                'should be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -300,7 +300,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-            'should be object',
+                'should be object',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -334,7 +334,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-            'should NOT have additional properties',
+                'should NOT have additional properties',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',

@@ -184,7 +184,7 @@ Not supported
 | properties | yes |
 | additionalProperties | yes |
 | format | yes |
-| nullable | no |
+| nullable | yes |
 | discriminator | no |
 | readOnly | no |
 | writeOnly | no |
