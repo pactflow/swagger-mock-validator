@@ -1,6 +1,6 @@
 import {parsePathNameSegments} from '../../common/parse-path-name-segments';
 import {ParsedSpecOperation} from '../../parsed-spec';
-import {Openapi3Schema, Operation, Parameter, Reference} from '../openapi3';
+import {Openapi3Schema, Operation, ParameterOrReference} from '../openapi3';
 import {parseParameters} from './parse-parameters';
 import {getParsedRequestBodyValues} from './parse-request-body';
 import {parseResponses} from './parse-responses';
@@ -12,7 +12,7 @@ export interface ParseOperationOptions {
     operationName: string;
     pathName: string;
     pathLocation: string;
-    pathItemParameters: Array<Parameter | Reference> | undefined;
+    pathItemParameters: ParameterOrReference[] | undefined;
     spec: Openapi3Schema;
     specPathOrUrl: string;
 }

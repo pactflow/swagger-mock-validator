@@ -60,7 +60,7 @@ const urlTo = (path: string) => `http://localhost:${serverPort}/${path}`;
 describe('swagger-mock-validator/cli', () => {
     let mockServer: Server;
     let mockPactBroker: jasmine.SpyObj<{ get: (requestHeaders: object, requestUrl: string) => void }>;
-    let mockAnalytics: jasmine.SpyObj<{ post: (body: string) => void }>;
+    let mockAnalytics: jasmine.SpyObj<{ post: (body: object) => void }>;
 
     beforeAll((done) => {
         mockPactBroker = jasmine.createSpyObj('mockPactBroker', ['get']);

@@ -15,7 +15,7 @@ const createOpenApi3ResponseHeaderBuilder = (header: OpenApi3ResponseHeader) => 
         build: () => cloneDeep(header),
         withContent: (contentBuilder: OpenApi3ContentBuilder) => {
             const parameterWithContent = setValueOn(header, 'content', contentBuilder.build());
-            delete parameterWithContent.schema;
+            delete (parameterWithContent as Partial<OpenApi3ResponseHeader>).schema;
             return createOpenApi3ResponseHeaderBuilder(parameterWithContent);
         },
         withRequired: () =>

@@ -82,7 +82,7 @@ export const validateSpecAndMock = (parsedMock: ParsedMock, parsedSpec: ParsedSp
 
     const validationResults = _(normalizedParsedMock.interactions)
         .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, normalizedParsedSpec))
-        .flatten<ValidationResult>()
+        .flatten()
         .value();
 
     return Promise.resolve(createValidationOutcome(validationResults, parsedMock.pathOrUrl, parsedSpec.pathOrUrl));

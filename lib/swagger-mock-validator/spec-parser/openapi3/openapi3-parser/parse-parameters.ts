@@ -9,6 +9,8 @@ import {toParsedSpecParameter} from './to-parsed-spec-parameter';
 
 type ParameterInValue = 'query' | 'header' | 'path';
 
+type ParameterOrReference = Parameter | Reference;
+
 interface ParsedParameters {
     query: ParsedSpecParameterCollection;
     header: ParsedSpecParameterCollection;
@@ -16,8 +18,8 @@ interface ParsedParameters {
 }
 
 interface ParseParametersOptions {
-    pathItemParameters: Array<Parameter | Reference> | undefined;
-    operationParameters: Array<Parameter | Reference> | undefined;
+    pathItemParameters: ParameterOrReference[] | undefined;
+    operationParameters: ParameterOrReference[] | undefined;
     parentOperation: ParsedSpecOperation;
     spec: Openapi3Schema;
 }
@@ -34,7 +36,7 @@ const filterByParameterType = (
     parsedSpecParameters.filter((parameter) => parameter.value.in === inValue);
 
 const toParsedSpecParameters = (
-    parameters: Array<Parameter | Reference>,
+    parameters: ParameterOrReference[],
     parentOperation: ParsedSpecOperation,
     spec: Openapi3Schema
 ): ParsedSpecParameter[] =>
@@ -46,7 +48,7 @@ const toParsedSpecParameters = (
         });
 
 const doParseParameters = (
-    parameters: Array<Parameter | Reference>,
+    parameters: ParameterOrReference[],
     parentOperation: ParsedSpecOperation,
     spec: Openapi3Schema
 ): ParsedParameters => {
@@ -63,7 +65,7 @@ const defaultParsedParameters = (): ParsedParameters =>
     ({header: {}, query: {}, path: {}});
 
 const toParsedParameters = (
-    parameters: Array<Parameter | Reference> | undefined,
+    parameters: ParameterOrReference[] | undefined,
     parentOperation: ParsedSpecOperation,
     spec: Openapi3Schema
 ): ParsedParameters =>

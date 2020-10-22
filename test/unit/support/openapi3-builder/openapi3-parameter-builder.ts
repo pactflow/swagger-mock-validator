@@ -20,7 +20,7 @@ const createOpenApi3ParameterBuilder = (parameter: OpenApi3Parameter) => {
         build: () => cloneDeep(parameter),
         withContent: (contentBuilder: OpenApi3ContentBuilder) => {
             const parameterWithContent = setValueOn(parameter, 'content', contentBuilder.build());
-            delete parameterWithContent.schema;
+            delete (parameterWithContent as Partial<OpenApi3Parameter>).schema;
             return createOpenApi3ParameterBuilder(parameterWithContent);
         },
         withName: (name: string) =>

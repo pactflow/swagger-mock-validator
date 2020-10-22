@@ -30,6 +30,10 @@ export type HttpSecurityScheme = NonBearerHttpSecurityScheme | BearerHttpSecurit
 
 export type HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch' | 'trace';
 
+export type ParameterOrReference = Parameter | Reference;
+
+type SchemaOrReference = Schema | Reference;
+
 type Openapi3CustomFormat = 'int32' | 'int64' | 'float' | 'double' | 'byte' | 'binary' | 'date' | 'date-time' |
     'password';
 
@@ -148,7 +152,7 @@ export interface PathItem {
   patch?: Operation;
   trace?: Operation;
   servers?: Server[];
-  parameters?: Array<Parameter | Reference>;
+  parameters?: ParameterOrReference[];
   /**
    * This interface was referenced by `PathItem`'s JSON-Schema definition
    * via the `patternProperty` "^x-".
@@ -161,7 +165,7 @@ export interface Operation {
   description?: string;
   externalDocs?: ExternalDocumentation;
   operationId?: string;
-  parameters?: Array<Parameter | Reference>;
+  parameters?: ParameterOrReference[];
   requestBody?: RequestBody | Reference;
   responses: Responses;
   callbacks?: {
@@ -186,7 +190,7 @@ export interface ParameterWithSchemaWithExampleInPath {
   style?: 'matrix' | 'label' | 'simple';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   example?: any;
   /**
    * This interface was referenced by `ParameterWithSchemaWithExampleInPath`'s JSON-Schema definition
@@ -212,15 +216,15 @@ export interface Schema {
   required?: string[];
   enum?: any[];
   type?: 'array' | 'boolean' | 'integer' | 'number' | 'object' | 'string';
-  not?: Schema | Reference;
-  allOf?: Array<Schema | Reference>;
-  oneOf?: Array<Schema | Reference>;
-  anyOf?: Array<Schema | Reference>;
-  items?: Schema | Reference;
+  not?: SchemaOrReference;
+  allOf?: SchemaOrReference[];
+  oneOf?: SchemaOrReference[];
+  anyOf?: SchemaOrReference[];
+  items?: SchemaOrReference;
   properties?: {
-    [k: string]: Schema | Reference;
+    [k: string]: SchemaOrReference;
   };
-  additionalProperties?: Schema | Reference | boolean;
+  additionalProperties?: SchemaOrReference | boolean;
   description?: string;
   format?: Format;
   default?: any;
@@ -271,7 +275,7 @@ export interface ParameterWithSchemaWithExampleInQuery {
   style?: 'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   example?: any;
   /**
    * This interface was referenced by `ParameterWithSchemaWithExampleInQuery`'s JSON-Schema definition
@@ -289,7 +293,7 @@ export interface ParameterWithSchemaWithExampleInHeader {
   style?: 'simple';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   example?: any;
   /**
    * This interface was referenced by `ParameterWithSchemaWithExampleInHeader`'s JSON-Schema definition
@@ -307,7 +311,7 @@ export interface ParameterWithSchemaWithExampleInCookie {
   style?: 'form';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   example?: any;
   /**
    * This interface was referenced by `ParameterWithSchemaWithExampleInCookie`'s JSON-Schema definition
@@ -325,7 +329,7 @@ export interface ParameterWithSchemaWithExamplesInPath {
   style?: 'matrix' | 'label' | 'simple';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   examples: {
     [k: string]: Example | Reference;
   };
@@ -356,7 +360,7 @@ export interface ParameterWithSchemaWithExamplesInQuery {
   style?: 'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   examples: {
     [k: string]: Example | Reference;
   };
@@ -376,7 +380,7 @@ export interface ParameterWithSchemaWithExamplesInHeader {
   style?: 'simple';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   examples: {
     [k: string]: Example | Reference;
   };
@@ -396,7 +400,7 @@ export interface ParameterWithSchemaWithExamplesInCookie {
   style?: 'form';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   examples: {
     [k: string]: Example | Reference;
   };
@@ -423,7 +427,7 @@ export interface ParameterWithContentInPath {
   [k: string]: any;
 }
 export interface MediaTypeWithExample {
-  schema?: Schema | Reference;
+  schema?: SchemaOrReference;
   example?: any;
   encoding?: {
     [k: string]: Encoding;
@@ -451,7 +455,7 @@ export interface HeaderWithSchemaWithExample {
   style?: 'simple';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   example?: any;
   /**
    * This interface was referenced by `HeaderWithSchemaWithExample`'s JSON-Schema definition
@@ -467,7 +471,7 @@ export interface HeaderWithSchemaWithExamples {
   style?: 'simple';
   explode?: boolean;
   allowReserved?: boolean;
-  schema: Schema | Reference;
+  schema: SchemaOrReference;
   examples: {
     [k: string]: Example | Reference;
   };
@@ -492,7 +496,7 @@ export interface HeaderWithContent {
   [k: string]: any;
 }
 export interface MediaTypeWithExamples {
-  schema?: Schema | Reference;
+  schema?: SchemaOrReference;
   examples: {
     [k: string]: Example | Reference;
   };

@@ -30,7 +30,7 @@ const parseYaml = <T>(pathOrUrl: string, rawString: string): T => {
         throw new SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `Unable to parse "${pathOrUrl}"`);
     }
 
-    return parsedYaml;
+    return parsedYaml as any;
 };
 
 export function transformStringToObject<T>(rawString: string, pathOrUrl: string): T {

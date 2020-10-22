@@ -1,5 +1,5 @@
-import {isBase64} from 'validator';
+import validator from 'validator';
 
 export const isByte = (rawValue: string) => {
-    return isBase64(rawValue);
+    return validator.isBase64(rawValue);
 };

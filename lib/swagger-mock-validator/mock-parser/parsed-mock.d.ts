@@ -13,7 +13,7 @@ export interface ParsedMockInteraction extends ParsedMockValue<any> {
     requestHeaders: ParsedMockValueCollection;
     requestMethod: ParsedMockValue<string>;
     requestPath: ParsedMockValue<string>;
-    requestPathSegments: Array<ParsedMockValue<string>>;
+    requestPathSegments: ParsedMockValue<string>[];
     requestQuery: ParsedMockValueCollection;
     responseBody: ParsedMockValue<any>;
     responseHeaders: ParsedMockValueCollection;

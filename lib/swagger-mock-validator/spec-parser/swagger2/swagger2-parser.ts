@@ -53,8 +53,8 @@ const addDefinitionsToSchema = (
 };
 
 const mergePathAndOperationParameters = (
-    pathParameters: Array<ParsedSpecValue<Swagger2Parameter>>,
-    operationParameters: Array<ParsedSpecValue<Swagger2Parameter>>
+    pathParameters: ParsedSpecValue<Swagger2Parameter>[],
+    operationParameters: ParsedSpecValue<Swagger2Parameter>[]
 ) => {
     const mergedParameters = _.clone(pathParameters);
 
@@ -179,7 +179,7 @@ const toSpecParameterCollection = (parameters: ParsedSpecParameter[]) =>
     }, {});
 
 const toRequestBodyParameter = (
-    parameters: Array<ParsedSpecValue<Swagger2Parameter>>,
+    parameters: ParsedSpecValue<Swagger2Parameter>[],
     definitions?: Swagger2JsonSchemaDefinitions
 ): ParsedSpecBody | undefined =>
     _(parameters)
@@ -206,7 +206,7 @@ const toRequestBodyParameter = (
 
 const toParsedParametersFor = (
     inValue: 'header' | 'path' | 'query',
-    parameters: Array<ParsedSpecValue<Swagger2Parameter>>
+    parameters: ParsedSpecValue<Swagger2Parameter>[]
 ): ParsedSpecParameter[] =>
     _(parameters)
         .filter({value: {in: inValue}} as any)
@@ -386,7 +386,7 @@ export const swagger2Parser = {
                 (path: Swagger2Path, pathName: string) =>
                     parseOperationFromPath(path, pathName, specPathOrUrl, specJson)
             )
-            .flatten<ParsedSpecOperation>()
+            .flatten()
             .value(),
         pathOrUrl: specPathOrUrl,
         paths: {
