@@ -57,7 +57,11 @@ const compareProperties = <T>(options: ComparePropertyOptions<T>) => {
     const expectedProperty = _.get(options.expectedResult, options.property);
     const expectedPropertyAsString = valueToString(expectedProperty);
 
-    const pass = options.utilities.equals(actualProperty, expectedProperty, options.customEqualityTesters);
+    const pass = options.utilities.equals(
+        actualProperty,
+        expectedProperty,
+        options.customEqualityTesters as CustomEqualityTester[]
+    );
 
     const message = pass
         ? `Expected '${actualPropertyAsString}' not to be '${expectedPropertyAsString}' ` +

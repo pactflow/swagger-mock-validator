@@ -13,7 +13,7 @@ import {openApi3PathItemBuilder} from '../support/openapi3-builder/openapi3-path
 import {openApi3RequestBodyBuilder} from '../support/openapi3-builder/openapi3-request-body-builder';
 import {openApi3ResponseBuilder} from '../support/openapi3-builder/openapi3-response-builder';
 import {openApi3ResponseHeaderBuilder} from '../support/openapi3-builder/openapi3-response-header-builder';
-import {openApi3SchemaBuilder} from '../support/openapi3-builder/openapi3-schema-builder';
+import {OpenApi3SchemaBuilder, openApi3SchemaBuilder} from '../support/openapi3-builder/openapi3-schema-builder';
 import {openApi3SecuritySchemeBuilder} from '../support/openapi3-builder/openapi3-security-scheme-builder';
 import {interactionBuilder, pactBuilder} from '../support/pact-builder';
 import {swaggerMockValidatorLoader} from '../support/swagger-mock-validator-loader';
@@ -172,6 +172,80 @@ describe('openapi3/parser', () => {
             const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
 
             expect(result).toContainNoWarningsOrErrors();
+        });
+
+        describe('nullable and schemas with swagger custom formats', async () => {
+            const whenValidatingNullMockPropertyAgainstSpecPropertySchema = (
+                specPropertySchema: OpenApi3SchemaBuilder
+            ) => {
+                const pactRequestBody = {
+                    name: null
+                };
+
+                const pactFile = pactBuilder
+                    .withInteraction(defaultInteractionBuilder
+                        .withRequestHeader('Content-Type', 'application/json')
+                        .withRequestBody(pactRequestBody))
+                    .build();
+
+                const operationBuilder = openApi3OperationBuilder
+                    .withRequestBody(openApi3RequestBodyBuilder
+                        .withContent(openApi3ContentBuilder
+                            .withJsonContent(openApi3SchemaBuilder
+                                .withTypeObject()
+                                .withOptionalProperty('name', specPropertySchema)))
+                    );
+
+                const specFile = openApi3Builder
+                    .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
+                    .build();
+
+                return  swaggerMockValidatorLoader.invoke(specFile, pactFile);
+            };
+
+            it('should support nullable for an integer schema with int32 format', async () => {
+                const result = await whenValidatingNullMockPropertyAgainstSpecPropertySchema(
+                    openApi3SchemaBuilder
+                        .withFormatInt32()
+                        .withTypeInteger()
+                        .withNullable(true)
+                );
+
+                expect(result).toContainNoWarningsOrErrors();
+            });
+
+            it('should support nullable for an integer schema with int64 format', async () => {
+                const result = await whenValidatingNullMockPropertyAgainstSpecPropertySchema(
+                    openApi3SchemaBuilder
+                        .withFormatInt64()
+                        .withTypeInteger()
+                        .withNullable(true)
+                );
+
+                expect(result).toContainNoWarningsOrErrors();
+            });
+
+            it('should support nullable for an number schema with float format', async () => {
+                const result = await whenValidatingNullMockPropertyAgainstSpecPropertySchema(
+                    openApi3SchemaBuilder
+                        .withFormatFloat()
+                        .withTypeNumber()
+                        .withNullable(true)
+                );
+
+                expect(result).toContainNoWarningsOrErrors();
+            });
+
+            it('should support nullable for an number schema with double format', async () => {
+                const result = await whenValidatingNullMockPropertyAgainstSpecPropertySchema(
+                    openApi3SchemaBuilder
+                        .withFormatDouble()
+                        .withTypeNumber()
+                        .withNullable(true)
+                );
+
+                expect(result).toContainNoWarningsOrErrors();
+            });
         });
     });
 

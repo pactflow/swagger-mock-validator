@@ -11,7 +11,10 @@ const createOpenApi3SchemaBuilder = (openApi3Schema: Schema) => ({
     withAnyOf: (schemaBuilders: OpenApi3SchemaBuilder[]) =>
         createOpenApi3SchemaBuilder(
             setValueOn(openApi3Schema, `anyOf`, schemaBuilders.map((builder) => builder.build()))),
+    withFormatDouble: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'format', 'double')),
+    withFormatFloat: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'format', 'float')),
     withFormatInt32: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'format', 'int32')),
+    withFormatInt64: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'format', 'int64')),
     withItems: (items: OpenApi3SchemaBuilder) =>
         createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'items', items.build())),
     withNot: (schemaBuilder: OpenApi3SchemaBuilder) =>
