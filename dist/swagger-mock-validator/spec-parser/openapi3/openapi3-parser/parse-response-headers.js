@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseResponseHeaders = void 0;
 const dereference_component_1 = require("./dereference-component");
 const to_parsed_spec_parameter_1 = require("./to-parsed-spec-parameter");
 const parseHeader = (header, name, parentOperation, headersRootLocation, spec) => {

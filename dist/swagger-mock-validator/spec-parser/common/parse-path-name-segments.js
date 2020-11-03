@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.parsePathNameSegments = void 0;
 const _ = require("lodash");
 const parseParameterSegment = (pathNameSegment, parsedOperation, pathParameters) => {
     const pathNameSegmentValue = pathNameSegment.substring(1, pathNameSegment.length - 1);

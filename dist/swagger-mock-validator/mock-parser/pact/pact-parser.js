@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.pactParser = void 0;
 const _ = require("lodash");
 const querystring = require("querystring");
 const parseRequestPathSegments = (requestPath, parentInteraction) => _(requestPath.split('/'))

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.dereferenceComponent = exports.doDereferenceComponent = void 0;
 const jsonpointer = require("jsonpointer");
 const swagger_mock_validator_error_impl_1 = require("../../../swagger-mock-validator-error-impl");
 const isReference = (value) => Boolean(value.$ref);

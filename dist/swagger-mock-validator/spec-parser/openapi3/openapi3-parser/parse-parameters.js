@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseParameters = void 0;
 const dereference_component_1 = require("./dereference-component");
 const to_parsed_spec_parameter_1 = require("./to-parsed-spec-parameter");
 const toParsedSpecParameterCollection = (parameters) => parameters.reduce((collection, parameter) => {
@@ -26,8 +27,8 @@ const toParsedParameters = (parameters, parentOperation, spec) => parameters
     ? doParseParameters(parameters, parentOperation, spec)
     : defaultParsedParameters();
 const mergePathItemAndOperationParameters = (pathItemParameters, operationParameters) => ({
-    header: Object.assign({}, pathItemParameters.header, operationParameters.header),
-    path: Object.assign({}, pathItemParameters.path, operationParameters.path),
-    query: Object.assign({}, pathItemParameters.query, operationParameters.query)
+    header: Object.assign(Object.assign({}, pathItemParameters.header), operationParameters.header),
+    path: Object.assign(Object.assign({}, pathItemParameters.path), operationParameters.path),
+    query: Object.assign(Object.assign({}, pathItemParameters.query), operationParameters.query)
 });
 exports.parseParameters = ({ pathItemParameters, operationParameters, parentOperation, spec }) => mergePathItemAndOperationParameters(toParsedParameters(pathItemParameters, parentOperation, spec), toParsedParameters(operationParameters, parentOperation, spec));

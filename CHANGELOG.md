@@ -1,3 +1,22 @@
+# [10.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/9.0.0...10.0.0) (2020-11-03)
+
+
+### Bug Fixes
+
+* fix bug when both nullable and swagger custom formats are defined ([ed4acf9](https://bitbucket.org/atlassian/swagger-mock-validator/commits/ed4acf97bd42f68e7cf799f4d2b85e6696ccee23))
+
+
+### chore
+
+* bump dependencies ([9b959be](https://bitbucket.org/atlassian/swagger-mock-validator/commits/9b959beabd7d96051c83d241dbc7073a00f3504a))
+
+
+### BREAKING CHANGES
+
+* Dropped support for NodeJS v6 and v8. Migrate to NodeJS v10 or above.
+
+
+
 # [9.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/8.0.0...9.0.0) (2019-11-07)
 
 

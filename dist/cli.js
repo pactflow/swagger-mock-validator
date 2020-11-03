@@ -1,10 +1,11 @@
 #! /usr/bin/env node
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -69,7 +70,7 @@ pacts from the broker by Pact Broker version tags.
 
 If the pact broker has basic auth enabled, pass a --user option with username and password joined by a colon
 (i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.`)
-    .action((swagger, mock, options) => __awaiter(this, void 0, void 0, function* () {
+    .action((swagger, mock, options) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const swaggerMockValidator = swagger_mock_validator_factory_1.SwaggerMockValidatorFactory.create(options.user);
         const result = yield swaggerMockValidator.validate({

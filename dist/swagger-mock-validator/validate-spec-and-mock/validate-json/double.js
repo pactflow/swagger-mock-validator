@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isDouble = exports.formatForDoubleNumbers = exports.doubleAjvKeyword = void 0;
 const decimal_js_1 = require("decimal.js");
+const is_type_supported_1 = require("./is-type-supported");
 exports.doubleAjvKeyword = 'formatDouble';
 exports.formatForDoubleNumbers = (schema) => {
-    if (schema.type === 'number' && schema.format === 'double') {
+    if (is_type_supported_1.isTypeSupported('number', schema.type) && schema.format === 'double') {
         delete schema.format;
         schema[exports.doubleAjvKeyword] = true;
     }

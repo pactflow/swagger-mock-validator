@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getSchemaWithSpecDefinitions = void 0;
 const _ = require("lodash");
 const traverse_json_schema_1 = require("../../../common/traverse-json-schema");
 const isSingleTypeDefinition = (typeDefinition) => typeDefinition !== undefined && !Array.isArray(typeDefinition);

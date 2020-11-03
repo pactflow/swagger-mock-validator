@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.transformStringToObject = void 0;
 const yaml = require("js-yaml");
 const swagger_mock_validator_error_impl_1 = require("./swagger-mock-validator-error-impl");
 const parseJson = (pathOrUrl, rawString) => {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseOperation = void 0;
 const parse_path_name_segments_1 = require("../../common/parse-path-name-segments");
 const parse_parameters_1 = require("./parse-parameters");
 const parse_request_body_1 = require("./parse-request-body");

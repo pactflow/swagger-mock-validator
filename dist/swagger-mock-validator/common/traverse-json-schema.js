@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.traverseJsonSchema = void 0;
 const _ = require("lodash");
 const util_1 = require("util");
 exports.traverseJsonSchema = (mutableSchema, visitor) => {

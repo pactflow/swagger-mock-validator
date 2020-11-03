@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SwaggerMockValidatorErrorImpl = void 0;
 const VError = require("verror");
 class SwaggerMockValidatorErrorImpl extends VError {
     constructor(code, message, cause) {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.openApi3Parser = void 0;
 const create_empty_parent_operation_1 = require("../common/create-empty-parent-operation");
 const parse_operation_1 = require("./openapi3-parser/parse-operation");
 const typeSafeHttpMethods = {

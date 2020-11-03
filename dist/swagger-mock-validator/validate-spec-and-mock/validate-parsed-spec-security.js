@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateParsedSpecSecurity = void 0;
 const _ = require("lodash");
 const result_1 = require("../result");
 const validateQueryRequirement = (parsedSpecSecurityRequirement, parsedMockInteraction) => {

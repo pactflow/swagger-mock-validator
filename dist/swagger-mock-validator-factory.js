@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SwaggerMockValidatorFactory = void 0;
 const swagger_mock_validator_1 = require("./swagger-mock-validator");
 const analytics_1 = require("./swagger-mock-validator/analytics");
 const metadata_1 = require("./swagger-mock-validator/analytics/metadata");

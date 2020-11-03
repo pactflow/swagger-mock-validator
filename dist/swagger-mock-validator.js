@@ -1,13 +1,15 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SwaggerMockValidator = exports.validateSpecAndMockContent = void 0;
 const _ = require("lodash");
 const file_store_1 = require("./swagger-mock-validator/file-store");
 const mock_parser_1 = require("./swagger-mock-validator/mock-parser");
@@ -23,7 +25,7 @@ const getMockSource = (mockPathOrUrl, providerName) => {
     return 'path';
 };
 const getSpecSource = (specPathOrUrl) => file_store_1.FileStore.isUrl(specPathOrUrl) ? 'url' : 'path';
-const parseUserOptions = (userOptions) => (Object.assign({}, userOptions, { mockSource: getMockSource(userOptions.mockPathOrUrl, userOptions.providerName), specSource: getSpecSource(userOptions.specPathOrUrl) }));
+const parseUserOptions = (userOptions) => (Object.assign(Object.assign({}, userOptions), { mockSource: getMockSource(userOptions.mockPathOrUrl, userOptions.providerName), specSource: getSpecSource(userOptions.specPathOrUrl) }));
 const combineValidationResults = (validationResults) => {
     const flattenedValidationResults = _.flatten(validationResults);
     return _.uniqWith(flattenedValidationResults, _.isEqual);
@@ -39,7 +41,7 @@ const combineValidationOutcomes = (validationOutcomes) => {
         warnings: combineValidationResults(validationOutcomes.map((validationOutcome) => validationOutcome.warnings))
     };
 };
-exports.validateSpecAndMockContent = (options) => __awaiter(this, void 0, void 0, function* () {
+exports.validateSpecAndMockContent = (options) => __awaiter(void 0, void 0, void 0, function* () {
     const spec = options.spec;
     const mock = options.mock;
     const parsedSpec = yield spec_parser_1.SpecParser.parse(spec);

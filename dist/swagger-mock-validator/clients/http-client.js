@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HttpClient = void 0;
 const request = require("request");
 const hasHttp2xxStatusCode = (response) => response.statusCode && response.statusCode >= 200 && response.statusCode <= 299;
 class HttpClient {
@@ -9,7 +10,7 @@ class HttpClient {
             url
         };
         if (auth) {
-            requestOptions = Object.assign({}, requestOptions, { headers: {
+            requestOptions = Object.assign(Object.assign({}, requestOptions), { headers: {
                     authorization: 'Basic ' + Buffer.from(auth).toString('base64')
                 } });
         }

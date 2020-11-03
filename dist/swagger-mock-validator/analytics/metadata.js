@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Metadata = void 0;
 const os = require("os");
 // tslint:disable:no-var-requires
 const packageJson = require('../../../package.json');

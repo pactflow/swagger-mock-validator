@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getContentSchema = void 0;
 const get_schema_with_spec_definitions_1 = require("./get-schema-with-spec-definitions");
 const defaultMediaType = 'application/json';
 const findApplicationJsonMediaType = (content) => Object.keys(content).find((mediaType) => mediaType.indexOf('application/json') === 0)

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getParsedSpecResponse = void 0;
 const result_1 = require("../result");
 exports.getParsedSpecResponse = (parsedMockInteraction, parsedSpecOperation) => {
     const parsedSpecResponse = parsedSpecOperation.responses[parsedMockInteraction.responseStatus.value];

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateJson = void 0;
 const Ajv = require("ajv");
 const _ = require("lodash");
 const traverse_json_schema_1 = require("../common/traverse-json-schema");

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createEmptyParentOperation = void 0;
 exports.createEmptyParentOperation = (specPathOrUrl) => {
     const location = '';
     const emptyParentOperation = {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateSpecAndMock = void 0;
 const _ = require("lodash");
 const get_parsed_spec_operation_1 = require("./validate-spec-and-mock/get-parsed-spec-operation");
 const get_parsed_spec_response_1 = require("./validate-spec-and-mock/get-parsed-spec-response");

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isMediaTypeSupported = void 0;
 const PARAMETER_SEPARATOR = ';';
 const WILDCARD = '*';
 const TYPE_SUBTYPE_SEPARATOR = '/';

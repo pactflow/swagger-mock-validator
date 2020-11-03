@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseSecurityRequirements = void 0;
 const dereference_component_1 = require("./dereference-component");
 const dereferenceSecuritySchemes = (securitySchemes, spec) => Object.keys(securitySchemes)
     .reduce((dereferencedSchemes, schemeName) => {
@@ -17,7 +18,7 @@ const getCredential = (requirementDefinition) => isSupportedRequirementDefinitio
         credentialKey: 'unknown',
         credentialLocation: 'unsupported'
     };
-const toParsedSpecSecurityRequirement = (requirementDefinition, baseLocation, parentOperation) => (Object.assign({}, getCredential(requirementDefinition), { location: `${baseLocation}.${requirementDefinition.name}`, parentOperation, value: requirementDefinition.value }));
+const toParsedSpecSecurityRequirement = (requirementDefinition, baseLocation, parentOperation) => (Object.assign(Object.assign({}, getCredential(requirementDefinition)), { location: `${baseLocation}.${requirementDefinition.name}`, parentOperation, value: requirementDefinition.value }));
 const isApiKeySecuritySchemeInHeaderOrQuery = (scheme) => scheme.type === 'apiKey' && (scheme.in === 'header' || scheme.in === 'query');
 const isHttpSecurityScheme = (scheme) => scheme.type === 'http';
 const isSupportedRequirementDefinition = (requirement) => isApiKeySecuritySchemeInHeaderOrQuery(requirement.scheme) || isHttpSecurityScheme(requirement.scheme);

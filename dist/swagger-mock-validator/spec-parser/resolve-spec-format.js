@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.resolveSpecFormat = void 0;
 const swagger_mock_validator_error_impl_1 = require("../swagger-mock-validator-error-impl");
 const is_swagger2_content_1 = require("./swagger2/is-swagger2-content");
 const detectContentFormat = (specContent) => is_swagger2_content_1.isSwagger2Content(specContent) ? 'swagger2' : 'openapi3';

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Analytics = void 0;
 const generateResultSummary = (results) => {
     const summary = results.reduce((partialSummary, result) => {
         if (!partialSummary[result.code]) {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MockParser = void 0;
 const pact_parser_1 = require("./mock-parser/pact/pact-parser");
 const transform_string_to_object_1 = require("./transform-string-to-object");
 const validate_and_resolve_pact_1 = require("./validate-and-resolve-pact");

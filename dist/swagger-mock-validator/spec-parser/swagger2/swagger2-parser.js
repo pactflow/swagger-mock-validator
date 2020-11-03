@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.swagger2Parser = void 0;
 const _ = require("lodash");
 const create_empty_parent_operation_1 = require("../common/create-empty-parent-operation");
 const parse_path_name_segments_1 = require("../common/parse-path-name-segments");
@@ -196,7 +197,7 @@ const parseSecurityRequirements = (securityDefinitionsOrUndefined, operationSecu
         .map((securityRequirement, index) => _.map(securityRequirement, (requirement, requirementName) => {
         const securityScheme = securityDefinitions[requirementName];
         const credential = getCredentialKeyAndLocation(securityScheme);
-        return Object.assign({}, credential, { location: `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`, parentOperation: parsedOperation, type: securityScheme.type, value: requirement });
+        return Object.assign(Object.assign({}, credential), { location: `${securityRequirementsAndBaseLocation.baseLocation}.security[${index}].${requirementName}`, parentOperation: parsedOperation, type: securityScheme.type, value: requirement });
     }))
         .value();
 };
