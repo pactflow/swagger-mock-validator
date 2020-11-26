@@ -76,6 +76,9 @@ Any errors sending the analytic events are ignored and do not impact the validat
 
 By default analytics are disabled. To protect your privacy this is an opt-in feature.
 
+## Frequently Asked Questions
+See [FAQ.md](FAQ.md)
+
 ## Changelog
 See [CHANGELOG.md](CHANGELOG.md)
 
