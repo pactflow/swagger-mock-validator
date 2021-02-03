@@ -39,7 +39,7 @@ describe('reading files', () => {
         });
 
         it('should read the yaml swagger file from the file system', async () => {
-            mockFiles['swagger.yaml'] = Promise.resolve(yaml.safeDump(swagger2Builder.build()));
+            mockFiles['swagger.yaml'] = Promise.resolve(yaml.dump(swagger2Builder.build()));
             mockFiles['pact.json'] = Promise.resolve(JSON.stringify(pactBuilder.build()));
 
             await invokeValidate('swagger.yaml', 'pact.json');

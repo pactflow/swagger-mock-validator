@@ -17,7 +17,7 @@ const parseYaml = <T>(pathOrUrl: string, rawString: string): T => {
     let parsedYaml;
 
     try {
-        parsedYaml = yaml.safeLoad(rawString);
+        parsedYaml = yaml.load(rawString);
     } catch (error) {
         throw new SwaggerMockValidatorErrorImpl(
             'SWAGGER_MOCK_VALIDATOR_PARSE_ERROR',

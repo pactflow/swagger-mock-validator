@@ -5,16 +5,16 @@ pipelines:
     - parallel:
       - step:
           name: 'Node 10.x'
-          image: node:10.22.1
+          image: node:10.23.2
           script:
                 - ./bin/build.sh
       - step:
           name: 'Node 12.x'
-          image: node:12.19.0
+          image: node:12.20.1
           script:
             - ./bin/build.sh
       - step:
           name: 'Node 14.x'
-          image: node:14.14.0
+          image: node:14.15.4
           script:
             - ./bin/build.sh
