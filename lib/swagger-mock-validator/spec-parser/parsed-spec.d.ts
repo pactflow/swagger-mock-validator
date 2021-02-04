@@ -9,6 +9,7 @@ export interface ParsedSpecOperation extends ParsedSpecValue<any> {
     pathName: string | null;
     pathNameSegments: ParsedSpecPathNameSegment[];
     consumes: ParsedSpecValue<string[]>;
+    produces: ParsedSpecValue<string[]>;
     requestBodyParameter?: ParsedSpecBody;
     requestHeaderParameters: ParsedSpecParameterCollection;
     requestQueryParameters: ParsedSpecParameterCollection;

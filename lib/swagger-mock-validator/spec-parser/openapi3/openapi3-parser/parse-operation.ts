@@ -1,5 +1,5 @@
 import {parsePathNameSegments} from '../../common/parse-path-name-segments';
-import {ParsedSpecOperation} from '../../parsed-spec';
+import {ParsedSpecOperation, ParsedSpecResponse, ParsedSpecResponses, ParsedSpecValue} from '../../parsed-spec';
 import {Openapi3Schema, Operation, ParameterOrReference} from '../openapi3';
 import {parseParameters} from './parse-parameters';
 import {getParsedRequestBodyValues} from './parse-request-body';
@@ -15,6 +15,18 @@ export interface ParseOperationOptions {
     pathItemParameters: ParameterOrReference[] | undefined;
     spec: Openapi3Schema;
     specPathOrUrl: string;
+}
+
+const getAllProducedMimeTypes = (
+    parentOperation: ParsedSpecOperation,
+    responses: ParsedSpecResponses
+): ParsedSpecValue<string[]> => {
+    const value = Object.values(responses)
+        .reduce((allMimeTypes: string[], response: ParsedSpecResponse) =>
+            response.produces ? [...allMimeTypes,  ...response.produces.value] : allMimeTypes,
+            []);
+
+    return {value, location: parentOperation.location, parentOperation}
 }
 
 export const parseOperation = ({
@@ -57,6 +69,7 @@ export const parseOperation = ({
     parsedOperation.requestBodyParameter = parsedRequestBodyProperties.requestBodyParameter;
 
     parsedOperation.responses = parseResponses(operation, parsedOperation, spec);
+    parsedOperation.produces = getAllProducedMimeTypes(parsedOperation, parsedOperation.responses)
 
     return parsedOperation;
 };

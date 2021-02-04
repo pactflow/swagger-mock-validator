@@ -1085,7 +1085,7 @@ describe('openapi3/parser', () => {
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: `[root].paths.${defaultPath}.get.responses.200.content`,
+                    location: `[root].paths.${defaultPath}.get`,
                     pathMethod: 'get',
                     pathName: defaultPath,
                     specFile: 'spec.json',
@@ -1093,6 +1093,70 @@ describe('openapi3/parser', () => {
                 },
                 type: 'error'
             }]);
+        });
+
+        it('should return warning if pact accept header defined but no mime types declared in responses', async () => {
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder.withRequestHeader('Accept', 'application/json'))
+                .build();
+
+            const responseStatusWithNoContent = openApi3ResponseBuilder
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder
+                    .withGetOperation(openApi3OperationBuilder
+                        .withResponse(200, responseStatusWithNoContent)
+                        .withResponse(204, responseStatusWithNoContent)
+                    )
+                )
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainWarnings([{
+                code: 'request.accept.unknown',
+                message: 'Request Accept header is defined but the spec does not specify any mime-types to produce',
+                mockDetails: {
+                    interactionDescription: defaultInteractionDescription,
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].request.headers.Accept',
+                    mockFile: 'pact.json',
+                    value: 'application/json'
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: `[root].paths.${defaultPath}.get`,
+                    pathMethod: 'get',
+                    pathName: defaultPath,
+                    specFile: 'spec.json',
+                    value: specFile.paths[defaultPath].get
+                },
+                type: 'warning'
+            }]);
+        });
+
+        it('should pass if pact request accept header matches mime type of any response in the spec', async () => {
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('Accept', '*/*')
+                    .withResponseStatus(204))
+                .build();
+
+            const responseStatusWithContentMatchingAcceptHeader = openApi3ResponseBuilder
+                .withContent(openApi3ContentBuilder.withJsonContent(openApi3SchemaBuilder.withTypeObject()))
+            const responseStatusWithNoContent = openApi3ResponseBuilder
+
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder
+                    .withGetOperation(openApi3OperationBuilder
+                        .withResponse(404, responseStatusWithContentMatchingAcceptHeader)
+                        .withResponse(204, responseStatusWithNoContent)
+                    )
+                )
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainNoWarningsOrErrors();
         });
     });
 

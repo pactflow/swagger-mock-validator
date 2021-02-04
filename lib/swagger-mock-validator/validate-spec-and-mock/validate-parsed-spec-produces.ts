@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import {ValidationResult} from '../../api-types';
 import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
@@ -42,23 +41,27 @@ const validateResponseContentTypeWhenNoProducesSection = (
 
 const validateResponseContentTypeWhenUnavailable = () => [];
 
+const validateResponseContentTypeWhenNoResponseFound = () => [];
+
 const validateParsedMockResponseContentType = (
     parsedMockInteraction: ParsedMockInteraction,
-    parsedSpecOperation: ParsedSpecOperation,
-    responseProduces: ParsedSpecValue<string[]>
+    parsedSpecOperation: ParsedSpecOperation
 ) => {
-    const parsedMockResponseContentType: string =
-        _.get(parsedMockInteraction.responseHeaders[contentTypeHeaderName], 'value');
+    const response = parsedSpecOperation.responses[parsedMockInteraction.responseStatus.value];
+    if (!response) {
+        return  validateResponseContentTypeWhenNoResponseFound();
+    }
 
+    const parsedMockResponseContentType = parsedMockInteraction.responseHeaders[contentTypeHeaderName]?.value;
     if (!parsedMockResponseContentType) {
         return validateResponseContentTypeWhenUnavailable();
     }
 
-    if (responseProduces.value.length === 0) {
+    if (response.produces.value.length === 0) {
         return validateResponseContentTypeWhenNoProducesSection(parsedMockInteraction, parsedSpecOperation);
     }
 
-    return validateResponseContentType(parsedMockInteraction, parsedMockResponseContentType, responseProduces);
+    return validateResponseContentType(parsedMockInteraction, parsedMockResponseContentType, response.produces);
 };
 
 const checkAcceptsHeaderCompatibility = (
@@ -109,43 +112,29 @@ const validateAcceptsHeaderWhenNoHeaderValue = () => [];
 
 const validateParsedMockRequestAcceptsHeader = (
     parsedMockInteraction: ParsedMockInteraction,
-    parsedSpecOperation: ParsedSpecOperation,
-    responseProduces: ParsedSpecValue<string[]>
+    parsedSpecOperation: ParsedSpecOperation
 ) => {
-    const parsedMockAcceptRequestHeaderValue: string =
-        _.get(parsedMockInteraction.requestHeaders[acceptHeaderName], 'value');
+    const parsedMockAcceptRequestHeaderValue = parsedMockInteraction.requestHeaders[acceptHeaderName]?.value;
 
     if (!parsedMockAcceptRequestHeaderValue) {
         return validateAcceptsHeaderWhenNoHeaderValue();
     }
 
-    if (responseProduces.value.length === 0) {
+    if (parsedSpecOperation.produces.value.length === 0) {
         return validateAcceptsHeaderWhenNoProducesSection(parsedMockInteraction, parsedSpecOperation);
     }
 
-    return validateAcceptsHeader(parsedMockInteraction, parsedMockAcceptRequestHeaderValue, responseProduces);
-};
-
-const getResponseProduceMimeTypes = (
-    parsedMockInteraction: ParsedMockInteraction,
-    parsedSpecOperation: ParsedSpecOperation
-): ParsedSpecValue<string[]> | undefined => {
-    const response = parsedSpecOperation.responses[parsedMockInteraction.responseStatus.value];
-    return response
-        ? response.produces
-        : undefined;
+    return validateAcceptsHeader(
+        parsedMockInteraction,
+        parsedMockAcceptRequestHeaderValue,
+        parsedSpecOperation.produces);
 };
 
 export const validateParsedSpecProduces = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
-): ValidationResult[] => {
-    const responseProduces = getResponseProduceMimeTypes(parsedMockInteraction, parsedSpecOperation);
-    if (!responseProduces) {
-        return [];
-    }
-    return _.concat(
-        validateParsedMockRequestAcceptsHeader(parsedMockInteraction, parsedSpecOperation, responseProduces),
-        validateParsedMockResponseContentType(parsedMockInteraction, parsedSpecOperation, responseProduces)
-    );
-};
+): ValidationResult[] =>
+    [
+        ...validateParsedMockRequestAcceptsHeader(parsedMockInteraction, parsedSpecOperation),
+        ...validateParsedMockResponseContentType(parsedMockInteraction, parsedSpecOperation)
+    ];

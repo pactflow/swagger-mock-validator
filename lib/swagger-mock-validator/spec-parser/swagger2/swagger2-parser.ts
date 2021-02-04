@@ -364,6 +364,14 @@ const parseOperationFromPath = (path: Swagger2Path, pathName: string, specPathOr
                     parsedOperation,
                     specJson
                 });
+
+                parsedOperation.produces = parseMimeType({
+                    mimeTypeName: 'produces',
+                    operation,
+                    parsedOperation,
+                    specJson
+                });
+
                 parsedOperation.requestBodyParameter = parsedParameters.requestBody;
                 parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
                 parsedOperation.requestQueryParameters = parsedParameters.requestQuery;
