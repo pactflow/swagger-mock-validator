@@ -1,7 +1,7 @@
 import {ValidationResult} from '../../api-types';
 import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
-import {ParsedSpecOperation, ParsedSpecValue} from '../spec-parser/parsed-spec';
+import {ParsedSpecOperation, ParsedSpecResponse, ParsedSpecValue} from '../spec-parser/parsed-spec';
 import {isMediaTypeSupported} from './content-negotiation';
 
 const acceptHeaderName = 'accept';
@@ -43,11 +43,17 @@ const validateResponseContentTypeWhenUnavailable = () => [];
 
 const validateResponseContentTypeWhenNoResponseFound = () => [];
 
+const getMatchingResponse = (
+    parsedMockInteraction: ParsedMockInteraction,
+    parsedSpecOperation: ParsedSpecOperation
+): ParsedSpecResponse | undefined =>
+    parsedSpecOperation.responses[parsedMockInteraction.responseStatus.value] || parsedSpecOperation.responses.default;
+
 const validateParsedMockResponseContentType = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ) => {
-    const response = parsedSpecOperation.responses[parsedMockInteraction.responseStatus.value];
+    const response = getMatchingResponse(parsedMockInteraction, parsedSpecOperation);
     if (!response) {
         return  validateResponseContentTypeWhenNoResponseFound();
     }

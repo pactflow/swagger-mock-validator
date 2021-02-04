@@ -309,5 +309,45 @@ describe('produces', () => {
                 type: 'error'
             }]);
         });
+
+        it('should return the error if response content-type does not match a spec with default response', async () => {
+            const interactionMatchingDefaultResponse = defaultInteractionBuilder
+                            .withRequestPath('/does/exist')
+                            .withRequestMethodPost()
+                            .withResponseStatus(404)
+                            .withResponseHeader('Content-Type', 'application/json');
+            const pactFile = pactBuilder.withInteraction(interactionMatchingDefaultResponse).build();
+
+            const operationWithDefaultResponse = operationBuilder
+                .withProduces(['application/xml'])
+                .withDefaultResponse(responseBuilder);
+            const swaggerFile = swagger2Builder
+                .withPath('/does/exist', pathBuilder.withPostOperation(operationWithDefaultResponse))
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+            expect(result.failureReason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
+                code: 'response.content-type.incompatible',
+                message: 'Response Content-Type header is incompatible with the mime-types the spec defines to produce',
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].response.headers.Content-Type',
+                    mockFile: 'pact.json',
+                    value: 'application/json'
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[root].paths./does/exist.post.produces',
+                    pathMethod: 'post',
+                    pathName: '/does/exist',
+                    specFile: 'spec.json',
+                    value: ['application/xml']
+                },
+                type: 'error'
+            }]);
+        });
     });
 });
