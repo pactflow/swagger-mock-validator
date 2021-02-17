@@ -1,7 +1,7 @@
 export interface Pact {
     consumer: { name: string };
     interactions: PactInteraction[];
-    metadata: { pactSpecificationVersion: string };
+    metadata?: { pactSpecification?: {version?: string }};
     provider: { name: string };
 }
 
@@ -13,12 +13,15 @@ export interface PactInteraction {
     provider_state?: string;
 }
 
+export type PactV1RequestQuery = string
+export type PactV3RequestQuery = {[name: string]: string[]}
+
 export interface PactInteractionRequest {
     headers?: PactInteractionHeaders;
     body?: any;
     method: string;
     path: string;
-    query?: string;
+    query?: PactV1RequestQuery | PactV3RequestQuery;
 }
 
 export interface PactInteractionResponse {

@@ -3,7 +3,7 @@ import * as querystring from 'querystring';
 import {
     MultiCollectionFormatSeparator} from '../../types';
 import {ParsedMock, ParsedMockInteraction, ParsedMockValueCollection} from '../parsed-mock';
-import {Pact, PactInteraction, PactInteractionHeaders} from './pact';
+import {Pact, PactInteraction, PactInteractionHeaders, PactV1RequestQuery, PactV3RequestQuery} from './pact';
 
 const parseRequestPathSegments = (requestPath: string, parentInteraction: ParsedMockInteraction) =>
     _(requestPath.split('/'))
@@ -34,8 +34,11 @@ const parseValues = (
     );
 };
 
-const parseRequestQuery = (requestQuery: string | undefined): {[name: string]: string} => {
-    const parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery || '');
+const isPactV1RequestQuery = (query: PactV1RequestQuery | PactV3RequestQuery): query is PactV1RequestQuery =>
+    typeof query === 'string'
+
+const parseAsPactV1RequestQuery = (requestQuery: PactV1RequestQuery): {[name: string]: string} => {
+    const parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery);
     const separator: MultiCollectionFormatSeparator = '[multi-array-separator]';
 
     return Object.keys(parsedQueryAsStringsOrArrayOfStrings)
@@ -44,6 +47,25 @@ const parseRequestQuery = (requestQuery: string | undefined): {[name: string]: s
             accumulator[queryName] = (queryValue instanceof Array) ? queryValue.join(separator) : queryValue;
             return accumulator;
         }, {});
+};
+
+const parseAsPactV3RequestQuery = (requestQuery: PactV3RequestQuery): {[name: string]: string} => {
+    const separator: MultiCollectionFormatSeparator = '[multi-array-separator]';
+    return Object.keys(requestQuery)
+        .reduce<{[name: string]: string}>((accumulator, queryName) => {
+            accumulator[queryName] = requestQuery[queryName].join(separator);
+            return accumulator;
+        }, {});
+};
+
+const parseRequestQuery = (
+    requestQuery: PactV1RequestQuery | PactV3RequestQuery | undefined
+): {[name: string]: string} => {
+    requestQuery = requestQuery || ''
+
+    return isPactV1RequestQuery(requestQuery)
+        ? parseAsPactV1RequestQuery(requestQuery)
+        : parseAsPactV3RequestQuery(requestQuery)
 };
 
 const parseInteraction = (

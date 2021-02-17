@@ -1,5 +1,6 @@
 # Pact Support
 
+Pact v1, v2, and v3 specifications are supported.
 This is a list of all the relevant field names in Pact and if the validation supports them.
 
 ## Pact Object

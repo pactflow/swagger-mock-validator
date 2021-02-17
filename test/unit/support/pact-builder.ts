@@ -15,7 +15,7 @@ const createPactBuilder = (pact: Pact) => ({
 export const pactBuilder = createPactBuilder({
     consumer: {name: 'default-consumer-name'},
     interactions: [],
-    metadata: {pactSpecificationVersion: '1.0.0'},
+    metadata: {pactSpecification: {version: '1.0.0'}},
     provider: {name: 'default-provider-name'}
 });
 

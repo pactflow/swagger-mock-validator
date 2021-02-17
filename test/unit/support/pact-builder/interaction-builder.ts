@@ -1,6 +1,10 @@
 import {cloneDeep} from 'lodash';
-import {PactInteraction} from '../../../../lib/swagger-mock-validator/mock-parser/pact/pact';
-import {removeValueOn, setValueOn} from '../builder-utilities';
+import {
+    PactInteraction,
+    PactV1RequestQuery,
+    PactV3RequestQuery
+} from '../../../../lib/swagger-mock-validator/mock-parser/pact/pact';
+import {setValueOn} from '../builder-utilities';
 
 export interface InteractionBuilder {
     build: () => PactInteraction;
@@ -10,14 +14,14 @@ const createInteractionBuilder = (interaction: PactInteraction) => ({
     build: () => cloneDeep(interaction),
     withDescription: (description: string) =>
         createInteractionBuilder(setValueOn(interaction, 'description', description)),
-    withMissingRequest: () => createInteractionBuilder(removeValueOn(interaction, 'request')),
     withRequestBody: (body: any) => createInteractionBuilder(setValueOn(interaction, 'request.body', body)),
     withRequestHeader: (name: string, value: string) =>
         createInteractionBuilder(setValueOn(interaction, `request.headers.${name}`, value)),
     withRequestMethodGet: () => createInteractionBuilder(setValueOn(interaction, 'request.method', 'GET')),
     withRequestMethodPost: () => createInteractionBuilder(setValueOn(interaction, 'request.method', 'POST')),
     withRequestPath: (path: string) => createInteractionBuilder(setValueOn(interaction, 'request.path', path)),
-    withRequestQuery: (query: string) => createInteractionBuilder(setValueOn(interaction, 'request.query', query)),
+    withRequestQuery: (query: PactV1RequestQuery | PactV3RequestQuery) =>
+        createInteractionBuilder(setValueOn(interaction, 'request.query', query)),
     withResponseBody: (body: any) => createInteractionBuilder(setValueOn(interaction, 'response.body', body)),
     withResponseHeader: (name: string, value: string) =>
         createInteractionBuilder(setValueOn(interaction, `response.headers.${name}`, value)),
