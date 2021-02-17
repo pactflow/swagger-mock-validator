@@ -91,7 +91,7 @@ const createAjvForDraft4 = (userOptions) => {
     ajv.addMetaSchema(draft4MetaSchema);
     return ajv;
 };
-exports.validateJson = (jsonSchema, json, numbersSentAsStrings) => {
+const validateJson = (jsonSchema, json, numbersSentAsStrings) => {
     const ajv = createAjvForDraft4({
         allErrors: true,
         coerceTypes: numbersSentAsStrings || false,
@@ -105,3 +105,4 @@ exports.validateJson = (jsonSchema, json, numbersSentAsStrings) => {
     ajv.validate(ajvCompatibleJsonSchema, _.cloneDeep(json));
     return ajv.errors || [];
 };
+exports.validateJson = validateJson;

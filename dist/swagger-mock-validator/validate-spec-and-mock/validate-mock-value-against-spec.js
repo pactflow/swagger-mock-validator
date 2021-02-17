@@ -53,7 +53,7 @@ const toWrappedParsedMockValue = (parsedMockValue, parsedSpecParameter) => {
         value: expandArrays(parsedMockValue.value, parsedSpecParameter.schema, parsedSpecParameter.collectionFormat)
     };
 };
-exports.validateMockValueAgainstSpec = (parsedSpecParameter, parsedMockValue, parsedMockInteraction, validationResultCode) => {
+const validateMockValueAgainstSpec = (parsedSpecParameter, parsedMockValue, parsedMockInteraction, validationResultCode) => {
     const schema = toJsonSchema(parsedSpecParameter);
     const wrappedParsedMockValue = toWrappedParsedMockValue(parsedMockValue, parsedSpecParameter);
     const errors = validate_json_1.validateJson(schema, wrappedParsedMockValue, true);
@@ -68,3 +68,4 @@ exports.validateMockValueAgainstSpec = (parsedSpecParameter, parsedMockValue, pa
         }))
     };
 };
+exports.validateMockValueAgainstSpec = validateMockValueAgainstSpec;

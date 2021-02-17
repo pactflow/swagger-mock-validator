@@ -38,7 +38,7 @@ const createValidationOutcome = (validationResults, mockPathOrUrl, specPathOrUrl
         : `Mock file "${mockPathOrUrl}" is not compatible with spec file "${specPathOrUrl}"`;
     return { errors, failureReason, success, warnings };
 };
-exports.validateSpecAndMock = (parsedMock, parsedSpec) => {
+const validateSpecAndMock = (parsedMock, parsedSpec) => {
     const normalizedParsedSpec = to_normalized_parsed_spec_1.toNormalizedParsedSpec(parsedSpec);
     const normalizedParsedMock = to_normalized_parsed_mock_1.toNormalizedParsedMock(parsedMock);
     const validationResults = _(normalizedParsedMock.interactions)
@@ -47,3 +47,4 @@ exports.validateSpecAndMock = (parsedMock, parsedSpec) => {
         .value();
     return Promise.resolve(createValidationOutcome(validationResults, parsedMock.pathOrUrl, parsedSpec.pathOrUrl));
 };
+exports.validateSpecAndMock = validateSpecAndMock;

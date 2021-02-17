@@ -17,7 +17,7 @@ const isMockInteractionWithoutResponseBody = (parsedMockInteraction) => !parsedM
 const isNotSupportedMediaType = (parsedSpecResponse) => parsedSpecResponse.produces.value.length > 0 &&
     !content_negotiation_1.isMediaTypeSupported('application/json', parsedSpecResponse.produces.value);
 const shouldSkipValidation = (parsedMockInteraction, parsedSpecResponse) => isMockInteractionWithoutResponseBody(parsedMockInteraction) || isNotSupportedMediaType(parsedSpecResponse);
-exports.validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecResponse) => {
+const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecResponse) => {
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecResponse)) {
         return [];
     }
@@ -47,3 +47,4 @@ exports.validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecRespo
         });
     });
 };
+exports.validateParsedMockResponseBody = validateParsedMockResponseBody;

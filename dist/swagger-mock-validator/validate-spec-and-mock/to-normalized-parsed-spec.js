@@ -33,4 +33,5 @@ const toParsedSpecOperationWithNormalizedHeaders = (parsedSpecOperation) => (Obj
 const toNormalizedParsedSpecOperations = (operations) => operations
     .map(toParsedSpecOperationWithNormalizedHeaders)
     .sort(operationComparator);
-exports.toNormalizedParsedSpec = (parsedSpec) => (Object.assign(Object.assign({}, parsedSpec), { operations: toNormalizedParsedSpecOperations(parsedSpec.operations) }));
+const toNormalizedParsedSpec = (parsedSpec) => (Object.assign(Object.assign({}, parsedSpec), { operations: toNormalizedParsedSpecOperations(parsedSpec.operations) }));
+exports.toNormalizedParsedSpec = toNormalizedParsedSpec;

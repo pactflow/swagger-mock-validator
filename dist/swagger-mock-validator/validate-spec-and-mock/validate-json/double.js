@@ -4,13 +4,14 @@ exports.isDouble = exports.formatForDoubleNumbers = exports.doubleAjvKeyword = v
 const decimal_js_1 = require("decimal.js");
 const is_type_supported_1 = require("./is-type-supported");
 exports.doubleAjvKeyword = 'formatDouble';
-exports.formatForDoubleNumbers = (schema) => {
+const formatForDoubleNumbers = (schema) => {
     if (is_type_supported_1.isTypeSupported('number', schema.type) && schema.format === 'double') {
         delete schema.format;
         schema[exports.doubleAjvKeyword] = true;
     }
 };
-exports.isDouble = (rawValue) => {
+exports.formatForDoubleNumbers = formatForDoubleNumbers;
+const isDouble = (rawValue) => {
     try {
         const fullPrecisionValue = new decimal_js_1.Decimal(rawValue);
         const doublePrecisionValue = new decimal_js_1.Decimal(fullPrecisionValue.toNumber());
@@ -20,3 +21,4 @@ exports.isDouble = (rawValue) => {
         return false;
     }
 };
+exports.isDouble = isDouble;

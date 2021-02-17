@@ -23,9 +23,10 @@ const parsePathNameSegment = (pathNameSegment, parsedOperation, pathParameters) 
     ? parseParameterSegment(pathNameSegment, parsedOperation, pathParameters)
     : parseNonParameterSegment(parsedOperation, pathNameSegment);
 const getFullPath = (pathName, basePath) => basePath ? basePath + pathName : pathName;
-exports.parsePathNameSegments = (pathName, pathParameters, parsedOperation, basePath) => {
+const parsePathNameSegments = (pathName, pathParameters, parsedOperation, basePath) => {
     const path = getFullPath(pathName, basePath);
     return path.split('/')
         .filter((pathNameSegment) => pathNameSegment.length > 0)
         .map((pathNameSegment) => parsePathNameSegment(pathNameSegment, parsedOperation, pathParameters));
 };
+exports.parsePathNameSegments = parsePathNameSegments;

@@ -43,9 +43,10 @@ const getSecurityRequirementsAndBaseLocation = (parentOperation, globalSecurityR
     }
     return undefined;
 };
-exports.parseSecurityRequirements = (globalSecurityRequirements, operationSecurityRequirements, parentOperation, spec) => {
+const parseSecurityRequirements = (globalSecurityRequirements, operationSecurityRequirements, parentOperation, spec) => {
     const securityRequirementsAndBaseLocation = getSecurityRequirementsAndBaseLocation(parentOperation, globalSecurityRequirements, operationSecurityRequirements);
     return securityRequirementsAndBaseLocation
         ? parseAllSecurityRequirements(securityRequirementsAndBaseLocation, getSecuritySchemes(spec), parentOperation)
         : [];
 };
+exports.parseSecurityRequirements = parseSecurityRequirements;

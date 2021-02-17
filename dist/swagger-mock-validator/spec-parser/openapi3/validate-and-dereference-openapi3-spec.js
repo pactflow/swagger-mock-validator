@@ -9,7 +9,8 @@ const validateSpecFormat = (content, pathOrUrl) => {
         throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `"${pathOrUrl}" is not a "openapi3" spec`);
     }
 };
-exports.validateAndDereferenceOpenApi3Spec = (content, pathOrUrl) => {
+const validateAndDereferenceOpenApi3Spec = (content, pathOrUrl) => {
     validateSpecFormat(content, pathOrUrl);
     return validate_and_dereference_spec_1.validateAndDereferenceSpec(content, pathOrUrl);
 };
+exports.validateAndDereferenceOpenApi3Spec = validateAndDereferenceOpenApi3Spec;

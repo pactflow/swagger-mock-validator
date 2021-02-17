@@ -17,7 +17,7 @@ const getWarningForUndefinedQueryParameter = (queryName, parsedMockRequestQuery,
             specSegment: parsedSpecOperation
         })];
 };
-exports.validateParsedMockRequestQuery = (parsedMockInteraction, parsedSpecOperation) => {
+const validateParsedMockRequestQuery = (parsedMockInteraction, parsedSpecOperation) => {
     return _(_.keys(parsedMockInteraction.requestQuery))
         .union(_.keys(parsedSpecOperation.requestQueryParameters))
         .map((queryName) => {
@@ -32,3 +32,4 @@ exports.validateParsedMockRequestQuery = (parsedMockInteraction, parsedSpecOpera
         .flatten()
         .value();
 };
+exports.validateParsedMockRequestQuery = validateParsedMockRequestQuery;

@@ -13,6 +13,7 @@ const getApplicationJsonContentSchema = (content, spec) => {
         ? { schema: get_schema_with_spec_definitions_1.getSchemaWithSpecDefinitions(jsonSchema, spec), mediaType: jsonMediaType }
         : { mediaType: jsonMediaType };
 };
-exports.getContentSchema = (content, spec) => content
+const getContentSchema = (content, spec) => content
     ? getApplicationJsonContentSchema(content, spec)
     : { mediaType: defaultMediaType };
+exports.getContentSchema = getContentSchema;

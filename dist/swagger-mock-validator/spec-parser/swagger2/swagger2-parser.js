@@ -229,6 +229,12 @@ const parseOperationFromPath = (path, pathName, specPathOrUrl, specJson) => Obje
         parsedOperation,
         specJson
     });
+    parsedOperation.produces = parseMimeType({
+        mimeTypeName: 'produces',
+        operation,
+        parsedOperation,
+        specJson
+    });
     parsedOperation.requestBodyParameter = parsedParameters.requestBody;
     parsedOperation.requestHeaderParameters = parsedParameters.requestHeaders;
     parsedOperation.requestQueryParameters = parsedParameters.requestQuery;

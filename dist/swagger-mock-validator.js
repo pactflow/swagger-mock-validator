@@ -41,7 +41,7 @@ const combineValidationOutcomes = (validationOutcomes) => {
         warnings: combineValidationResults(validationOutcomes.map((validationOutcome) => validationOutcome.warnings))
     };
 };
-exports.validateSpecAndMockContent = (options) => __awaiter(void 0, void 0, void 0, function* () {
+const validateSpecAndMockContent = (options) => __awaiter(void 0, void 0, void 0, function* () {
     const spec = options.spec;
     const mock = options.mock;
     const parsedSpec = yield spec_parser_1.SpecParser.parse(spec);
@@ -52,6 +52,7 @@ exports.validateSpecAndMockContent = (options) => __awaiter(void 0, void 0, void
         validationOutcome
     };
 });
+exports.validateSpecAndMockContent = validateSpecAndMockContent;
 class SwaggerMockValidator {
     constructor(fileStore, pactBroker, analytics) {
         this.fileStore = fileStore;

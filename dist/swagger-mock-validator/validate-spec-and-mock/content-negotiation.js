@@ -26,10 +26,11 @@ const normalizeMediaType = (mediaType) => {
         .toLowerCase()
         .trim();
 };
-exports.isMediaTypeSupported = (actualMediaType, supportedMediaTypes) => {
+const isMediaTypeSupported = (actualMediaType, supportedMediaTypes) => {
     const normalizedActualMediaType = normalizeMediaType(actualMediaType);
     return supportedMediaTypes.some((supportedMediaType) => {
         const normalizedSupportedMediaType = normalizeMediaType(supportedMediaType);
         return areMediaTypesCompatible(normalizedActualMediaType, normalizedSupportedMediaType);
     });
 };
+exports.isMediaTypeSupported = isMediaTypeSupported;

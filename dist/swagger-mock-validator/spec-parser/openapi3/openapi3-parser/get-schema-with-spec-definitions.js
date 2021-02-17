@@ -23,9 +23,10 @@ const prepareOpenApi3SchemaForValidation = (schema) => {
     return schema;
 };
 const getOpenApi3SchemaComponents = (spec) => (spec.components || {}).schemas;
-exports.getSchemaWithSpecDefinitions = (schema, spec) => {
+const getSchemaWithSpecDefinitions = (schema, spec) => {
     const modifiedSchema = _.cloneDeep(schema);
     const schemaComponents = getOpenApi3SchemaComponents(spec);
     modifiedSchema.definitions = schemaComponents;
     return prepareOpenApi3SchemaForValidation(modifiedSchema);
 };
+exports.getSchemaWithSpecDefinitions = getSchemaWithSpecDefinitions;

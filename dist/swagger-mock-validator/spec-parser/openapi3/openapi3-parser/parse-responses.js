@@ -29,7 +29,7 @@ const parseResponse = ({ response, parentOperation, responseLocation, spec }) =>
         value: response
     };
 };
-exports.parseResponses = (operation, parentOperation, spec) => {
+const parseResponses = (operation, parentOperation, spec) => {
     const responsesLocation = `${parentOperation.location}.responses`;
     const parsedResponses = Object.keys(operation.responses)
         .reduce((allParsedResponses, responseStatus) => {
@@ -44,3 +44,4 @@ exports.parseResponses = (operation, parentOperation, spec) => {
     }, {});
     return Object.assign({ location: responsesLocation, parentOperation, value: operation.responses }, parsedResponses);
 };
+exports.parseResponses = parseResponses;

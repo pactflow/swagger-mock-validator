@@ -14,7 +14,7 @@ const parseJson = (pathOrUrl, rawString) => {
 const parseYaml = (pathOrUrl, rawString) => {
     let parsedYaml;
     try {
-        parsedYaml = yaml.safeLoad(rawString);
+        parsedYaml = yaml.load(rawString);
     }
     catch (error) {
         throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `Unable to parse "${pathOrUrl}"`, error);

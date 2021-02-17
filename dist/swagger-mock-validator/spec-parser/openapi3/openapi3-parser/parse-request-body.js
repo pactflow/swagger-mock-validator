@@ -38,8 +38,9 @@ const getConsumesAndRequestBodyParameter = (requestBody, parentOperation, spec) 
         requestBodyParameter
     };
 };
-exports.getParsedRequestBodyValues = (parentOperation, spec) => {
+const getParsedRequestBodyValues = (parentOperation, spec) => {
     return parentOperation.value.requestBody
         ? getConsumesAndRequestBodyParameter(parentOperation.value.requestBody, parentOperation, spec)
         : defaultConsumesAndRequestBodyParameter(parentOperation);
 };
+exports.getParsedRequestBodyValues = getParsedRequestBodyValues;

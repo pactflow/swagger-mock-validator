@@ -18,6 +18,7 @@ const toVerifiedFormat = (unverifiedFormat, pathOrUrl) => {
 };
 const autoDetectFormat = 'auto-detect';
 const isAutoDetectFormat = (unverifiedFormat) => unverifiedFormat === autoDetectFormat;
-exports.resolveSpecFormat = (unverifiedFormat, specJson, pathOrUrl) => isAutoDetectFormat(unverifiedFormat)
+const resolveSpecFormat = (unverifiedFormat, specJson, pathOrUrl) => isAutoDetectFormat(unverifiedFormat)
     ? detectContentFormat(specJson)
     : toVerifiedFormat(unverifiedFormat, pathOrUrl);
+exports.resolveSpecFormat = resolveSpecFormat;

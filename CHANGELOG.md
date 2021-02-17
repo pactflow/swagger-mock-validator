@@ -1,3 +1,12 @@
+## [10.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.0.0...10.0.1) (2021-02-17)
+
+
+### Bug Fixes
+
+* accept header should match mime-types of any operation responses for openapi 3 ([4f0eb55](https://bitbucket.org/atlassian/swagger-mock-validator/commits/4f0eb554ff937d964f65471a792d295f3a01a0b7)), closes [#87](https://bitbucket.org/atlassian/swagger-mock-validator/issue/87)
+
+
+
 # [10.0.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/9.0.0...10.0.0) (2020-11-03)
 
 

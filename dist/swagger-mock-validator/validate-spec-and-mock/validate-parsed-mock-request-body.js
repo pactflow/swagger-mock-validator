@@ -23,7 +23,7 @@ const isNotSupportedMediaType = (parsedSpecOperation) => parsedSpecOperation.con
 const shouldSkipValidation = (parsedMockInteraction, parsedSpecOperation) => isNotSupportedMediaType(parsedSpecOperation) ||
     specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) ||
     isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation);
-exports.validateParsedMockRequestBody = (parsedMockInteraction, parsedSpecOperation) => {
+const validateParsedMockRequestBody = (parsedMockInteraction, parsedSpecOperation) => {
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecOperation)) {
         return [];
     }
@@ -40,3 +40,4 @@ exports.validateParsedMockRequestBody = (parsedMockInteraction, parsedSpecOperat
         })
     ];
 };
+exports.validateParsedMockRequestBody = validateParsedMockRequestBody;

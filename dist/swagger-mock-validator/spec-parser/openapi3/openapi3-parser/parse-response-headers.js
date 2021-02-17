@@ -13,6 +13,7 @@ const doParseResponseHeaders = (headers, parentOperation, headersRootLocation, s
     parsedHeaders[headerName] = parseHeader(headers[headerName], headerName, parentOperation, headersRootLocation, spec);
     return parsedHeaders;
 }, {});
-exports.parseResponseHeaders = (headers, parentOperation, headersRootLocation, spec) => headers
+const parseResponseHeaders = (headers, parentOperation, headersRootLocation, spec) => headers
     ? doParseResponseHeaders(headers, parentOperation, headersRootLocation, spec)
     : {};
+exports.parseResponseHeaders = parseResponseHeaders;

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.traverseJsonSchema = void 0;
 const _ = require("lodash");
 const util_1 = require("util");
-exports.traverseJsonSchema = (mutableSchema, visitor) => {
+const traverseJsonSchema = (mutableSchema, visitor) => {
     if (util_1.isBoolean(mutableSchema) || util_1.isUndefined(mutableSchema)) {
         return;
     }
@@ -18,3 +18,4 @@ exports.traverseJsonSchema = (mutableSchema, visitor) => {
     traverseSubSchema(mutableSchema.additionalProperties);
     visitor(mutableSchema);
 };
+exports.traverseJsonSchema = traverseJsonSchema;

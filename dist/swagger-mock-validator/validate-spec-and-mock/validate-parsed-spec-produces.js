@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateParsedSpecProduces = void 0;
-const _ = require("lodash");
 const result_1 = require("../result");
 const content_negotiation_1 = require("./content-negotiation");
 const acceptHeaderName = 'accept';
@@ -29,15 +28,21 @@ const validateResponseContentTypeWhenNoProducesSection = (parsedMockInteraction,
         })];
 };
 const validateResponseContentTypeWhenUnavailable = () => [];
-const validateParsedMockResponseContentType = (parsedMockInteraction, parsedSpecOperation, responseProduces) => {
-    const parsedMockResponseContentType = _.get(parsedMockInteraction.responseHeaders[contentTypeHeaderName], 'value');
+const validateResponseContentTypeWhenNoResponseFound = () => [];
+const validateParsedMockResponseContentType = (parsedMockInteraction, parsedSpecOperation) => {
+    var _a;
+    const response = parsedSpecOperation.responses[parsedMockInteraction.responseStatus.value];
+    if (!response) {
+        return validateResponseContentTypeWhenNoResponseFound();
+    }
+    const parsedMockResponseContentType = (_a = parsedMockInteraction.responseHeaders[contentTypeHeaderName]) === null || _a === void 0 ? void 0 : _a.value;
     if (!parsedMockResponseContentType) {
         return validateResponseContentTypeWhenUnavailable();
     }
-    if (responseProduces.value.length === 0) {
+    if (response.produces.value.length === 0) {
         return validateResponseContentTypeWhenNoProducesSection(parsedMockInteraction, parsedSpecOperation);
     }
-    return validateResponseContentType(parsedMockInteraction, parsedMockResponseContentType, responseProduces);
+    return validateResponseContentType(parsedMockInteraction, parsedMockResponseContentType, response.produces);
 };
 const checkAcceptsHeaderCompatibility = (parsedMockAcceptRequestHeaderValue, responseProduces) => {
     const acceptedMediaTypes = parsedMockAcceptRequestHeaderValue.split(',');
@@ -68,26 +73,19 @@ const validateAcceptsHeaderWhenNoProducesSection = (parsedMockInteraction, parse
         })];
 };
 const validateAcceptsHeaderWhenNoHeaderValue = () => [];
-const validateParsedMockRequestAcceptsHeader = (parsedMockInteraction, parsedSpecOperation, responseProduces) => {
-    const parsedMockAcceptRequestHeaderValue = _.get(parsedMockInteraction.requestHeaders[acceptHeaderName], 'value');
+const validateParsedMockRequestAcceptsHeader = (parsedMockInteraction, parsedSpecOperation) => {
+    var _a;
+    const parsedMockAcceptRequestHeaderValue = (_a = parsedMockInteraction.requestHeaders[acceptHeaderName]) === null || _a === void 0 ? void 0 : _a.value;
     if (!parsedMockAcceptRequestHeaderValue) {
         return validateAcceptsHeaderWhenNoHeaderValue();
     }
-    if (responseProduces.value.length === 0) {
+    if (parsedSpecOperation.produces.value.length === 0) {
         return validateAcceptsHeaderWhenNoProducesSection(parsedMockInteraction, parsedSpecOperation);
     }
-    return validateAcceptsHeader(parsedMockInteraction, parsedMockAcceptRequestHeaderValue, responseProduces);
+    return validateAcceptsHeader(parsedMockInteraction, parsedMockAcceptRequestHeaderValue, parsedSpecOperation.produces);
 };
-const getResponseProduceMimeTypes = (parsedMockInteraction, parsedSpecOperation) => {
-    const response = parsedSpecOperation.responses[parsedMockInteraction.responseStatus.value];
-    return response
-        ? response.produces
-        : undefined;
-};
-exports.validateParsedSpecProduces = (parsedMockInteraction, parsedSpecOperation) => {
-    const responseProduces = getResponseProduceMimeTypes(parsedMockInteraction, parsedSpecOperation);
-    if (!responseProduces) {
-        return [];
-    }
-    return _.concat(validateParsedMockRequestAcceptsHeader(parsedMockInteraction, parsedSpecOperation, responseProduces), validateParsedMockResponseContentType(parsedMockInteraction, parsedSpecOperation, responseProduces));
-};
+const validateParsedSpecProduces = (parsedMockInteraction, parsedSpecOperation) => [
+    ...validateParsedMockRequestAcceptsHeader(parsedMockInteraction, parsedSpecOperation),
+    ...validateParsedMockResponseContentType(parsedMockInteraction, parsedSpecOperation)
+];
+exports.validateParsedSpecProduces = validateParsedSpecProduces;

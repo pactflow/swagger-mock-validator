@@ -18,7 +18,8 @@ const validateSpecFormat = (content, pathOrUrl) => {
         throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `"${pathOrUrl}" is not a "swagger2" spec`);
     }
 };
-exports.validateAndDereferenceSwagger2Spec = (content, pathOrUrl) => __awaiter(void 0, void 0, void 0, function* () {
+const validateAndDereferenceSwagger2Spec = (content, pathOrUrl) => __awaiter(void 0, void 0, void 0, function* () {
     validateSpecFormat(content, pathOrUrl);
     return validate_and_dereference_spec_1.validateAndDereferenceSpec(content, pathOrUrl);
 });
+exports.validateAndDereferenceSwagger2Spec = validateAndDereferenceSwagger2Spec;

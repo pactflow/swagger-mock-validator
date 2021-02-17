@@ -10,7 +10,7 @@ const checkForCircles = (ref, visitedReferences) => {
         throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `Unable to resolve circular reference "${ref}"`);
     }
 };
-exports.doDereferenceComponent = (component, spec, visitedReferences) => {
+const doDereferenceComponent = (component, spec, visitedReferences) => {
     if (isReference(component)) {
         const ref = component.$ref;
         checkForCircles(ref, visitedReferences);
@@ -19,4 +19,6 @@ exports.doDereferenceComponent = (component, spec, visitedReferences) => {
     }
     return component;
 };
-exports.dereferenceComponent = (component, spec) => exports.doDereferenceComponent(component, spec, []);
+exports.doDereferenceComponent = doDereferenceComponent;
+const dereferenceComponent = (component, spec) => exports.doDereferenceComponent(component, spec, []);
+exports.dereferenceComponent = dereferenceComponent;

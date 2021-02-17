@@ -53,7 +53,7 @@ const doInteractionAndOperationMatch = (parsedMockInteraction, parsedSpecOperati
     };
 };
 const isGetSwaggerValueSuccessResult = (res) => res.found;
-exports.getParsedSpecOperation = (parsedMockInteraction, normalizedParsedSpec) => {
+const getParsedSpecOperation = (parsedMockInteraction, normalizedParsedSpec) => {
     const match = normalizedParsedSpec.operations
         .map((parsedSpecOperation) => doInteractionAndOperationMatch(parsedMockInteraction, parsedSpecOperation))
         .find(isGetSwaggerValueSuccessResult);
@@ -79,3 +79,4 @@ exports.getParsedSpecOperation = (parsedMockInteraction, normalizedParsedSpec) =
         value: match.value
     };
 };
+exports.getParsedSpecOperation = getParsedSpecOperation;

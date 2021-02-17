@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateAndDereferenceSpec = void 0;
 const SwaggerParser = require("swagger-parser");
 const swagger_mock_validator_error_impl_1 = require("../swagger-mock-validator-error-impl");
-exports.validateAndDereferenceSpec = (document, pathOrUrl) => __awaiter(void 0, void 0, void 0, function* () {
+const validateAndDereferenceSpec = (document, pathOrUrl) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         return yield SwaggerParser.validate(document, {
             dereference: {
@@ -24,3 +24,4 @@ exports.validateAndDereferenceSpec = (document, pathOrUrl) => __awaiter(void 0, 
         throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `Unable to parse "${pathOrUrl}"`, error);
     }
 });
+exports.validateAndDereferenceSpec = validateAndDereferenceSpec;

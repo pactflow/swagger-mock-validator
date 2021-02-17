@@ -6,7 +6,12 @@ const parse_parameters_1 = require("./parse-parameters");
 const parse_request_body_1 = require("./parse-request-body");
 const parse_responses_1 = require("./parse-responses");
 const parse_security_requirements_1 = require("./parse-security-requirements");
-exports.parseOperation = ({ operation, operationName, pathName, pathItemParameters, operationLocation, spec, specPathOrUrl }) => {
+const getAllProducedMimeTypes = (parentOperation, responses) => {
+    const value = Object.values(responses)
+        .reduce((allMimeTypes, response) => response.produces ? [...allMimeTypes, ...response.produces.value] : allMimeTypes, []);
+    return { value, location: parentOperation.location, parentOperation };
+};
+const parseOperation = ({ operation, operationName, pathName, pathItemParameters, operationLocation, spec, specPathOrUrl }) => {
     // tslint:disable-next-line:no-object-literal-type-assertion
     const parsedOperation = {
         location: operationLocation,
@@ -31,5 +36,7 @@ exports.parseOperation = ({ operation, operationName, pathName, pathItemParamete
     parsedOperation.consumes = parsedRequestBodyProperties.consumes;
     parsedOperation.requestBodyParameter = parsedRequestBodyProperties.requestBodyParameter;
     parsedOperation.responses = parse_responses_1.parseResponses(operation, parsedOperation, spec);
+    parsedOperation.produces = getAllProducedMimeTypes(parsedOperation, parsedOperation.responses);
     return parsedOperation;
 };
+exports.parseOperation = parseOperation;

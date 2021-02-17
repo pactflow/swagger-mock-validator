@@ -40,7 +40,7 @@ const validateHasNoConsumesValue = (parsedMockInteraction, parsedSpecOperation, 
             })]
         : [];
 };
-exports.validateParsedSpecConsumes = (parsedMockInteraction, parsedSpecOperation) => {
+const validateParsedSpecConsumes = (parsedMockInteraction, parsedSpecOperation) => {
     const parsedMockContentTypeRequestHeaderValue = _.get(parsedMockInteraction.requestHeaders[contentTypeHeaderName], 'value');
     const parsedSpecHasConsumesValue = parsedSpecOperation.consumes.value.length > 0;
     if (!parsedSpecHasConsumesValue) {
@@ -51,3 +51,4 @@ exports.validateParsedSpecConsumes = (parsedMockInteraction, parsedSpecOperation
     }
     return validateParsedMockContentTypeAgainstParsedSpecConsumes(parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue);
 };
+exports.validateParsedSpecConsumes = validateParsedSpecConsumes;

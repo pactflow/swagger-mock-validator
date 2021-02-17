@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createEmptyParentOperation = void 0;
-exports.createEmptyParentOperation = (specPathOrUrl) => {
+const createEmptyParentOperation = (specPathOrUrl) => {
     const location = '';
     const emptyParentOperation = {
         consumes: {
@@ -35,3 +35,4 @@ exports.createEmptyParentOperation = (specPathOrUrl) => {
     emptyParentOperation.responses.parentOperation = emptyParentOperation;
     return emptyParentOperation;
 };
+exports.createEmptyParentOperation = createEmptyParentOperation;

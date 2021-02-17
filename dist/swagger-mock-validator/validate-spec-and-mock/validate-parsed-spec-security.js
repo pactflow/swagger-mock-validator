@@ -43,7 +43,7 @@ const validateRequirements = (parsedMockInteraction, parsedSpecSecurityRequireme
         .compact()
         .value();
 };
-exports.validateParsedSpecSecurity = (parsedMockInteraction, parsedSpecOperation) => {
+const validateParsedSpecSecurity = (parsedMockInteraction, parsedSpecOperation) => {
     const validationResultsPerRequirement = _(parsedSpecOperation.securityRequirements)
         .map((requirements) => validateRequirements(parsedMockInteraction, requirements));
     const anySecurityRequirementsMet = validationResultsPerRequirement
@@ -53,3 +53,4 @@ exports.validateParsedSpecSecurity = (parsedMockInteraction, parsedSpecOperation
     }
     return validationResultsPerRequirement.first() || [];
 };
+exports.validateParsedSpecSecurity = validateParsedSpecSecurity;

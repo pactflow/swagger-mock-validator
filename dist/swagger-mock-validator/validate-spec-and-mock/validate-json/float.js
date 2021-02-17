@@ -5,13 +5,14 @@ const decimal_js_1 = require("decimal.js");
 const is_type_supported_1 = require("./is-type-supported");
 const maximumFloatPrecision = 6;
 exports.floatAjvKeyword = 'formatFloat';
-exports.formatForFloatNumbers = (schema) => {
+const formatForFloatNumbers = (schema) => {
     if (is_type_supported_1.isTypeSupported('number', schema.type) && schema.format === 'float') {
         delete schema.format;
         schema[exports.floatAjvKeyword] = true;
     }
 };
-exports.isFloat = (rawValue) => {
+exports.formatForFloatNumbers = formatForFloatNumbers;
+const isFloat = (rawValue) => {
     try {
         return new decimal_js_1.Decimal(rawValue).precision() <= maximumFloatPrecision;
     }
@@ -19,3 +20,4 @@ exports.isFloat = (rawValue) => {
         return false;
     }
 };
+exports.isFloat = isFloat;

@@ -6,7 +6,7 @@ const isParameterSchemaUnsupported = (schema) => schema.type === 'object' || sch
 const getParameterSchema = (parameter) => isParameterSchemaUndefined(parameter.schema) || isParameterSchemaUnsupported(parameter.schema)
     ? {}
     : parameter.schema;
-exports.toParsedSpecParameter = ({ parameter, name, parentOperation, location }) => {
+const toParsedSpecParameter = ({ parameter, name, parentOperation, location }) => {
     return {
         location,
         name,
@@ -16,3 +16,4 @@ exports.toParsedSpecParameter = ({ parameter, name, parentOperation, location })
         value: parameter
     };
 };
+exports.toParsedSpecParameter = toParsedSpecParameter;

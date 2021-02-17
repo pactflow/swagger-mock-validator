@@ -59,7 +59,7 @@ const validateParsedMockRequestHeader = (parsedMockInteraction, parsedSpecOperat
     const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(specHeader, mockHeader, parsedMockInteraction, 'request.header.incompatible');
     return validationResult.results;
 };
-exports.validateParsedMockRequestHeaders = (parsedMockInteraction, parsedSpecOperation) => {
+const validateParsedMockRequestHeaders = (parsedMockInteraction, parsedSpecOperation) => {
     const mockRequestHeaders = parsedMockInteraction.requestHeaders;
     const specRequestHeaders = parsedSpecOperation.requestHeaderParameters;
     return _(_.keys(mockRequestHeaders))
@@ -68,3 +68,4 @@ exports.validateParsedMockRequestHeaders = (parsedMockInteraction, parsedSpecOpe
         .flatten()
         .value();
 };
+exports.validateParsedMockRequestHeaders = validateParsedMockRequestHeaders;

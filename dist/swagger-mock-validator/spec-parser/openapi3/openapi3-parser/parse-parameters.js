@@ -31,4 +31,5 @@ const mergePathItemAndOperationParameters = (pathItemParameters, operationParame
     path: Object.assign(Object.assign({}, pathItemParameters.path), operationParameters.path),
     query: Object.assign(Object.assign({}, pathItemParameters.query), operationParameters.query)
 });
-exports.parseParameters = ({ pathItemParameters, operationParameters, parentOperation, spec }) => mergePathItemAndOperationParameters(toParsedParameters(pathItemParameters, parentOperation, spec), toParsedParameters(operationParameters, parentOperation, spec));
+const parseParameters = ({ pathItemParameters, operationParameters, parentOperation, spec }) => mergePathItemAndOperationParameters(toParsedParameters(pathItemParameters, parentOperation, spec), toParsedParameters(operationParameters, parentOperation, spec));
+exports.parseParameters = parseParameters;
