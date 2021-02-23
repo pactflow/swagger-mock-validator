@@ -21,8 +21,9 @@ const parseValues = (values, location, parentInteraction) => {
         return result;
     }, {});
 };
-const parseRequestQuery = (requestQuery) => {
-    const parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery || '');
+const isPactV1RequestQuery = (query) => typeof query === 'string';
+const parseAsPactV1RequestQuery = (requestQuery) => {
+    const parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery);
     const separator = '[multi-array-separator]';
     return Object.keys(parsedQueryAsStringsOrArrayOfStrings)
         .reduce((accumulator, queryName) => {
@@ -30,6 +31,20 @@ const parseRequestQuery = (requestQuery) => {
         accumulator[queryName] = (queryValue instanceof Array) ? queryValue.join(separator) : queryValue;
         return accumulator;
     }, {});
+};
+const parseAsPactV3RequestQuery = (requestQuery) => {
+    const separator = '[multi-array-separator]';
+    return Object.keys(requestQuery)
+        .reduce((accumulator, queryName) => {
+        accumulator[queryName] = requestQuery[queryName].join(separator);
+        return accumulator;
+    }, {});
+};
+const parseRequestQuery = (requestQuery) => {
+    requestQuery = requestQuery || '';
+    return isPactV1RequestQuery(requestQuery)
+        ? parseAsPactV1RequestQuery(requestQuery)
+        : parseAsPactV3RequestQuery(requestQuery);
 };
 const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
     // tslint:disable:no-object-literal-type-assertion

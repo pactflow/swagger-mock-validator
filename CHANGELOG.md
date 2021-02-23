@@ -1,3 +1,12 @@
+# [10.1.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.0.1...10.1.0) (2021-02-23)
+
+
+### Features
+
+* support Pact v3 query format ([5bf15c3](https://bitbucket.org/atlassian/swagger-mock-validator/commits/5bf15c3c988bc0f621c84612608ce227c6a508be))
+
+
+
 ## [10.0.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.0.0...10.0.1) (2021-02-17)
 
 
