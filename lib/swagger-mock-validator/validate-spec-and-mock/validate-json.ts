@@ -14,8 +14,11 @@ import {isPassword} from './validate-json/password';
 // tslint:disable:no-submodule-imports
 const draft4MetaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
 
+const removeLeadingDotIfPresent = (dataPath: string): string =>
+    dataPath.replace(/^\./, '');
+
 const getRawValueFromJson = (rawJson: any, dataPath?: string): any =>
-    dataPath ? _.get(rawJson, dataPath.substring(1)) : rawJson;
+    dataPath ? _.get(rawJson, removeLeadingDotIfPresent(dataPath)) : rawJson;
 
 const addSwaggerFormatsAndKeywords = (ajv: Ajv.Ajv, rawJson: any) => {
     ajv.addFormat('binary', isBinary);

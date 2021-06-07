@@ -6,6 +6,7 @@ import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loade
 import {swagger2Builder} from './support/swagger2-builder';
 import {definitionsBuilder} from './support/swagger2-builder/definitions-builder';
 import {operationBuilder} from './support/swagger2-builder/operation-builder';
+import {bodyParameterBuilder} from './support/swagger2-builder/parameter-builder/body-parameter-builder';
 import {pathParameterBuilder} from './support/swagger2-builder/parameter-builder/path-parameter-builder';
 import {pathBuilder, PathBuilder} from './support/swagger2-builder/path-builder';
 import {responseBuilder} from './support/swagger2-builder/response-builder';
@@ -1279,6 +1280,82 @@ describe('formats', () => {
                 source: 'spec-mock-validation',
                 specDetails: {
                     location: '[root].paths./does/exist.get.responses.200.schema.allOf.0.properties.id.formatInt32',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    specFile: 'spec.json',
+                    value: undefined
+                },
+                type: 'error'
+            }]);
+        });
+
+        it('should validate valid formats in array items for arrays as root schemas', async () => {
+            const smallInteger = 101;
+            const pactFile = pactBuilder
+                .withInteraction(interactionBuilder
+                    .withDescription('interaction description')
+                    .withRequestPath('/does/exist')
+                    .withRequestBody([smallInteger])
+                    .withResponseStatus(200)
+                )
+                .build();
+
+            const requestBodySchema = schemaBuilder
+                .withTypeArray(schemaBuilder.withTypeInteger().withFormatInt64());
+
+            const swaggerFile = swagger2Builder
+                .withPath('/does/exist', pathBuilder
+                    .withGetOperation(operationBuilder
+                        .withParameter(bodyParameterBuilder.withRequiredSchema(requestBodySchema))
+                        .withResponse(200, responseBuilder)
+                    )
+                )
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
+        it('should validate invalid formats in array items for arrays as root schemas', async () => {
+            const tooBigInteger = (Math.pow(2, 31) + 1);
+            const pactFile = pactBuilder
+                .withInteraction(interactionBuilder
+                    .withDescription('interaction description')
+                    .withRequestPath('/does/exist')
+                    .withRequestBody([tooBigInteger])
+                    .withResponseStatus(200)
+                )
+                .build();
+
+            const requestBodySchema = schemaBuilder
+                .withTypeArray(schemaBuilder.withTypeInteger().withFormatInt32());
+
+            const swaggerFile = swagger2Builder
+                .withPath('/does/exist', pathBuilder
+                    .withGetOperation(operationBuilder
+                        .withParameter(bodyParameterBuilder.withRequiredSchema(requestBodySchema))
+                        .withResponse(200, responseBuilder)
+                    )
+                )
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+            expect(result.failureReason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([{
+                code: 'request.body.incompatible',
+                message: 'Request body is incompatible with the request body schema in the spec file: ' +
+                    'should pass "formatInt32" keyword validation',
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].request.body[0]',
+                    mockFile: 'pact.json',
+                    value: tooBigInteger
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[root].paths./does/exist.get.parameters[0].schema.items.formatInt32',
                     pathMethod: 'get',
                     pathName: '/does/exist',
                     specFile: 'spec.json',
