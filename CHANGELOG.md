@@ -1,3 +1,12 @@
+## [10.1.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.1.0...10.1.1) (2021-06-08)
+
+
+### Bug Fixes
+
+* properly validate formats in root array items ([6213a82](https://bitbucket.org/atlassian/swagger-mock-validator/commits/6213a8235e5b9024f1a004b7cf4362e6218b9507)), closes [#92](https://bitbucket.org/atlassian/swagger-mock-validator/issue/92)
+
+
+
 # [10.1.0](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.0.1...10.1.0) (2021-02-23)
 
 
