@@ -1,3 +1,7 @@
+## [10.1.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.1.1...10.1.2) (2022-01-10)
+
+
+
 ## [10.1.1](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.1.0...10.1.1) (2021-06-08)
 
 
