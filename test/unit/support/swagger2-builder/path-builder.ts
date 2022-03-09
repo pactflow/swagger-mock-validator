@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {Swagger2Path} from '../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
+import {Swagger2HttpMethod, Swagger2Path} from '../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {addToArrayOn, setValueOn} from '../builder-utilities';
 import {OperationBuilder} from './operation-builder';
 import {ParameterBuilder} from './parameter-builder';
@@ -15,8 +15,9 @@ const createPathBuilder = (path: Swagger2Path) => ({
     withParameter: (parameterBuilder: ParameterBuilder) =>
         createPathBuilder(addToArrayOn(path, 'parameters', parameterBuilder.build())),
     withParameterReference: (name: string) => createPathBuilder(
-        addToArrayOn(path, 'parameters', {$ref: `#/parameters/${name}`})
-    ),
+        addToArrayOn(path, 'parameters', {$ref: `#/parameters/${name}`})),
+    withOperation: (method: Swagger2HttpMethod, operationBuilder: OperationBuilder) =>
+        createPathBuilder(setValueOn(path, method, operationBuilder.build())),
     withPostOperation: (operationBuilder: OperationBuilder) =>
         createPathBuilder(setValueOn(path, 'post', operationBuilder.build())),
     withXProperty: () =>

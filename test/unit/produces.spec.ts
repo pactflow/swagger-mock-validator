@@ -1,3 +1,5 @@
+import {ValidationOutcome} from '../../lib/api-types';
+import {Swagger2HttpMethod} from '../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
 import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';
@@ -217,48 +219,62 @@ describe('produces', () => {
     });
 
     describe('response content type', () => {
-        const validateResponseContentType = (swaggerProduces?: string[], pactResponseContentTypeValue?: string) => {
-            let interaction = defaultInteractionBuilder.withRequestMethodPost();
+        const validateResponseContentType = (
+            options: {specProduces?: string[], mockResponseContentType?: string, method?: Swagger2HttpMethod}
+        ): Promise<ValidationOutcome> => {
+            const method: Swagger2HttpMethod = options.method ?? 'post';
 
-            if (pactResponseContentTypeValue) {
-                interaction = interaction.withResponseHeader('Content-Type', pactResponseContentTypeValue);
+            let interaction = defaultInteractionBuilder.withRequestMethod(method);
+            if (options.mockResponseContentType) {
+                interaction = interaction.withResponseHeader('Content-Type', options.mockResponseContentType);
+
             }
 
             const pactFile = pactBuilder.withInteraction(interaction).build();
 
-            const operation = swaggerProduces
-                ? operationBuilder.withProduces(swaggerProduces)
+            const operation = options.specProduces
+                ? operationBuilder.withProduces(options.specProduces)
                 : operationBuilder;
 
             const swaggerFile = swagger2Builder
-                .withPath('/does/exist', pathBuilder.withPostOperation(operation))
+                .withPath('/does/exist', pathBuilder.withOperation(method, operation))
                 .build();
 
             return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
         };
 
         it('should pass when the pact response content type header matches the spec', async () => {
-            const result = await validateResponseContentType(
-                ['text/html', 'application/json; charset=utf-8'], 'application/json'
-            );
+            const result = await validateResponseContentType({
+                specProduces: ['text/html', 'application/json; charset=utf-8'],
+                mockResponseContentType: 'application/json'
+            });
 
             expect(result).toContainNoWarningsOrErrors();
         });
 
         it('should pass when the pact response content type header is missing', async () => {
-            const result = await validateResponseContentType(['application/json']);
+            const result = await validateResponseContentType({
+                specProduces: ['application/json'],
+                mockResponseContentType: undefined
+            });
 
             expect(result).toContainNoWarningsOrErrors();
         });
 
         it('should pass when there is no pact response content type and no produces', async () => {
-            const result = await validateResponseContentType();
+            const result = await validateResponseContentType({
+                specProduces: undefined,
+                mockResponseContentType: undefined
+            });
 
             expect(result).toContainNoWarningsOrErrors();
         });
 
         it('should return a warning when there is no produces and content type is defined', async () => {
-            const result = await validateResponseContentType(undefined, 'application/json');
+            const result = await validateResponseContentType({
+                specProduces: undefined,
+                mockResponseContentType: 'application/json'
+            });
 
             expect(result).toContainNoErrors();
             expect(result).toContainWarnings([{
@@ -284,8 +300,21 @@ describe('produces', () => {
             }]);
         });
 
+        it('should pass when content type is defined and there is no produces but method is HEAD', async () => {
+            const result = await validateResponseContentType({
+                specProduces: undefined,
+                mockResponseContentType: 'application/json',
+                method: 'head'
+            });
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+
         it('should return the error when response content-type header does not match the spec', async () => {
-            const result = await validateResponseContentType(['application/xml'], 'application/json');
+            const result = await validateResponseContentType({
+                specProduces: ['application/xml'],
+                mockResponseContentType: 'application/json'
+            });
 
             expect(result.failureReason).toEqual(expectedFailedValidationError);
             expect(result).toContainErrors([{
