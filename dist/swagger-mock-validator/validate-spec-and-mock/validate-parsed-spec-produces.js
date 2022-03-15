@@ -19,13 +19,15 @@ const validateResponseContentType = (parsedMockInteraction, parsedMockResponseCo
     return [];
 };
 const validateResponseContentTypeWhenNoProducesSection = (parsedMockInteraction, parsedSpecOperation) => {
-    return [result_1.result.build({
-            code: 'response.content-type.unknown',
-            message: 'Response Content-Type header is defined but the spec does not specify any mime-types to produce',
-            mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
-            source: 'spec-mock-validation',
-            specSegment: parsedSpecOperation
-        })];
+    return parsedSpecOperation.method === 'head'
+        ? []
+        : [result_1.result.build({
+                code: 'response.content-type.unknown',
+                message: 'Response Content-Type header is defined but the spec does not specify any mime-types to produce',
+                mockSegment: parsedMockInteraction.responseHeaders[contentTypeHeaderName],
+                source: 'spec-mock-validation',
+                specSegment: parsedSpecOperation
+            })];
 };
 const validateResponseContentTypeWhenUnavailable = () => [];
 const validateResponseContentTypeWhenNoResponseFound = () => [];

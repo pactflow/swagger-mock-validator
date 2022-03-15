@@ -1,3 +1,12 @@
+## [10.1.3](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.1.2...10.1.3) (2022-03-15)
+
+
+### Bug Fixes
+
+* do not warn if mock expects content-type in HEAD response and no mime type are defined in the spec ([b6aabbc](https://bitbucket.org/atlassian/swagger-mock-validator/commits/b6aabbcd76698008132545c7920ca7a528f78e22)), closes [#75](https://bitbucket.org/atlassian/swagger-mock-validator/issue/75)
+
+
+
 ## [10.1.2](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.1.1...10.1.2) (2022-01-10)
 
 
