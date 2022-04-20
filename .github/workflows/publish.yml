@@ -19,8 +19,10 @@ jobs:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
-      - id: publish
+      - id: prepare
         run: yarn run release-major
+      - id: publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
   release-minor:
@@ -36,8 +38,10 @@ jobs:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
-      - id: publish
+      - id: prepare
         run: yarn run release-minor
+      - id: publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
   release-patch:
@@ -53,7 +57,9 @@ jobs:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
-      - id: publish
+      - id: prepare
         run: yarn run release-patch
+      - id: publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
