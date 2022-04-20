@@ -1,0 +1,11 @@
+test
+lib
+.github
+build-output
+scripts
+.conventional-changelog-lintrc  
+.nvmrc
+bitbucket-pipelines.yml
+gulpfile.js
+tsconfig.json
+tslint.json

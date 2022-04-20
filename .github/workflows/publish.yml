@@ -1,0 +1,55 @@
+name: Publish and release
+
+on:
+  repository_dispatch:
+    types:
+      - release-triggered
+
+jobs:
+  release-major:
+    if: ${{ github.event.client_payload.release_type == 'major' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: fregante/setup-git-user@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn install
+      - id: prepare
+        run: yarn run release-patch
+  release-minor:
+    if: ${{ github.event.client_payload.release_type == 'minor' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: fregante/setup-git-user@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn install
+      - id: prepare
+        run: yarn run release-patch
+  release-patch:
+    if: ${{ github.event.client_payload.release_type == 'patch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: fregante/setup-git-user@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn install
+      - id: prepare
+        run: yarn run release-patch
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}

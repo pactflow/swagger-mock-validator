@@ -16,9 +16,19 @@ For a list of all the validation features see [FEATURES.md](docs/FEATURES.md).
 
 ## Installation
 
-Install the tool using npm
+Install the tool globally using npm
 ```
-npm install --global swagger-mock-validator
+npm install --global @pactflow/swagger-mock-validator
+```
+
+Install the tool a single project
+```
+npm install --save-dev @pactflow/swagger-mock-validator
+```
+
+Download and run the tool directly, without a global install, see [Usage](#usage)
+```
+npx @pactflow/swagger-mock-validator /path/to/swagger.json /path/to/pact.json
 ```
 
 ## Usage
@@ -87,3 +97,8 @@ See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ## License
 See [LICENSE.txt](LICENSE.txt)
+
+## Acknowledgements 
+
+This repository is a fork of Atlassians swagger-mock-validator which resides on BitBucket https://bitbucket.org/atlassian/swagger-mock-validator/src/master/
+

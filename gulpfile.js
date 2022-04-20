@@ -30,7 +30,7 @@ const utilities = {
     exec: (command) => {
         return new Promise((resolve, reject) => {
             console.log(`Executing command '${colors.yellow(command)}'`);
-            const childProcess = exec(command, (error) => {
+            const childProcess = exec(command, {'NODE_AUTH_TOKEN': process.env.NODE_AUTH_TOKEN} , (error) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -113,7 +113,7 @@ const lintTypescript = () => {
         .pipe(tslint.report())
 };
 
-const npmPublish = () => utilities.exec('npm publish');
+const npmPublish = () => utilities.exec('npm publish --access public');
 
 const pushChanges = (callback) => {
     git.push('origin', 'master', {args: '--tags'}, callback);
