@@ -142,9 +142,9 @@ Included in this repository is a [sample Pact file](./docs/pact.json)
 Default behaviour, as per the following flags 
 
 - `--additionalPropertiesInResponse` true
-- `--additionalPropertiesInResponse` false
+- `--requiredPropertiesInResponse` false
 
-`❯ ./bin/swagger-mock-validator-local https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
 
 ```bash
 0 error(s)
@@ -154,7 +154,9 @@ Default behaviour, as per the following flags
 With 
 
 - `--additionalPropertiesInResponse` false
-- `--additionalPropertiesInResponse` false
+- `--requiredPropertiesInResponse` false
+
+``npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse false https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
 
 ```bash
 Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
@@ -193,9 +195,9 @@ Error: Mock file "./docs/pact.json" is not compatible with spec file "https://pe
 With 
 
 - `--additionalPropertiesInResponse` false
-- `--additionalPropertiesInResponse` true
+- `--requiredPropertiesInResponse` true
 
-`❯ ./bin/swagger-mock-validator-local --additionalPropertiesInResponse false --requiredPropertiesInResponse true https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse true https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
 
 ```bash
 
@@ -275,9 +277,9 @@ Error: Mock file "./docs/pact.json" is not compatible with spec file "https://pe
 With 
 
 - `--additionalPropertiesInResponse` true
-- `--additionalPropertiesInResponse` true
+- `--requiredPropertiesInResponse` true
 
-`❯ ./bin/swagger-mock-validator-local --additionalPropertiesInResponse false --requiredPropertiesInResponse true https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse true https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
 
 ```bash
 Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
