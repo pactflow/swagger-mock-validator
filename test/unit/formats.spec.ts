@@ -1066,7 +1066,8 @@ describe('formats', () => {
             'uri-reference': 'not-a-uri-reference\n',
             'uri-template': 'not-a-uri-template\n',
             'url': 'not-a-url',
-            'uuid': 'not-a-uuid'
+            'uuid': 'not-a-uuid',
+            'S2S-Token': 'S2S-Token'
         };
 
         _.each(formats, (pactValue, formatName) => {

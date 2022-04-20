@@ -8,6 +8,7 @@ import {doubleAjvKeyword, formatForDoubleNumbers, isDouble} from './validate-jso
 import {floatAjvKeyword, formatForFloatNumbers, isFloat} from './validate-json/float';
 import {formatForInt32Numbers, int32AjvKeyword, isInt32} from './validate-json/int32';
 import {formatForInt64Numbers, int64AjvKeyword, isInt64} from './validate-json/int64';
+import { formatForString, isString, stringAjvKeyword } from './validate-json/string';
 import {isPassword} from './validate-json/password';
 
 // tslint:disable:no-var-requires
@@ -53,6 +54,13 @@ const addSwaggerFormatsAndKeywords = (ajv: Ajv.Ajv, rawJson: any) => {
             return isInt64(rawValue);
         }
     });
+    ajv.addKeyword(stringAjvKeyword, {
+        type: 'string',
+        validate: (_schema: any, _data: string, _parentSchema: any, dataPath?: string) => {
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
+            return isString(rawValue);
+        }
+    });
 };
 
 const nonSwaggerAjvFormats = [
@@ -89,6 +97,7 @@ const changeTypeToKeywordForCustomFormats = (schema?: ParsedSpecJsonSchema) => {
         formatForFloatNumbers(mutableSchema);
         formatForInt32Numbers(mutableSchema);
         formatForInt64Numbers(mutableSchema);
+        formatForString(mutableSchema);
     });
 };
 const createAjvForDraft4 = (userOptions: Ajv.Options) => {

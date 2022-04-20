@@ -15,6 +15,7 @@ const createOpenApi3SchemaBuilder = (openApi3Schema: Schema) => ({
     withFormatFloat: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'format', 'float')),
     withFormatInt32: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'format', 'int32')),
     withFormatInt64: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'format', 'int64')),
+    withFormatAny: (value: string) => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'format', value)),
     withItems: (items: OpenApi3SchemaBuilder) =>
         createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'items', items.build())),
     withNot: (schemaBuilder: OpenApi3SchemaBuilder) =>
@@ -30,7 +31,8 @@ const createOpenApi3SchemaBuilder = (openApi3Schema: Schema) => ({
     withTypeBoolean: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'type', 'boolean')),
     withTypeInteger: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'type', 'integer')),
     withTypeNumber: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'type', 'number')),
-    withTypeObject: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'type', 'object'))
+    withTypeObject: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'type', 'object')),
+    withTypeString: () => createOpenApi3SchemaBuilder(setValueOn(openApi3Schema, 'type', 'string'))
 });
 
 export const openApi3SchemaBuilder = createOpenApi3SchemaBuilder({});

@@ -247,6 +247,46 @@ describe('openapi3/parser', () => {
                 expect(result).toContainNoWarningsOrErrors();
             });
         });
+
+        describe('any named string and schemas with swagger custom formats', async () => {
+            const whenValidatingNullMockPropertyAgainstSpecPropertySchema = (
+                specPropertySchema: OpenApi3SchemaBuilder
+            ) => {
+                const pactRequestBody = {
+                    name: null
+                };
+
+                const pactFile = pactBuilder
+                    .withInteraction(defaultInteractionBuilder
+                        .withRequestHeader('Content-Type', 'application/json')
+                        .withRequestBody(pactRequestBody))
+                    .build();
+
+                const operationBuilder = openApi3OperationBuilder
+                    .withRequestBody(openApi3RequestBodyBuilder
+                        .withContent(openApi3ContentBuilder
+                            .withJsonContent(openApi3SchemaBuilder
+                                .withTypeObject()
+                                .withOptionalProperty('S2S-Token', specPropertySchema)))
+                    );
+
+                const specFile = openApi3Builder
+                    .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
+                    .build();
+
+                return  swaggerMockValidatorLoader.invoke(specFile, pactFile);
+            };
+
+            it('should support any named format parameter', async () => {
+                const result = await whenValidatingNullMockPropertyAgainstSpecPropertySchema(
+                    openApi3SchemaBuilder
+                        .withFormatAny('S2S-Token').withTypeString()
+                );
+
+                expect(result).toContainNoWarningsOrErrors();
+            });
+
+        });
     });
 
     describe('paths', () => {
