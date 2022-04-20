@@ -35,7 +35,7 @@ const getCollectionSeparator = (parsedSpecCollectionFormat) => {
     return ',';
     // tslint:enable:cyclomatic-complexity
 };
-const isParsedSpecJsonSchemaCore = (schema) => util_1.isObject(schema);
+const isParsedSpecJsonSchemaCore = (schema) => (0, util_1.isObject)(schema);
 const expandArrays = (parsedMockValue, parsedSpecParameterSchema, parsedSpecCollectionFormat) => {
     if (isParsedSpecJsonSchemaCore(parsedSpecParameterSchema) && parsedSpecParameterSchema.type === 'array') {
         const values = parsedMockValue.split(getCollectionSeparator(parsedSpecCollectionFormat));
@@ -56,7 +56,7 @@ const toWrappedParsedMockValue = (parsedMockValue, parsedSpecParameter) => {
 const validateMockValueAgainstSpec = (parsedSpecParameter, parsedMockValue, parsedMockInteraction, validationResultCode) => {
     const schema = toJsonSchema(parsedSpecParameter);
     const wrappedParsedMockValue = toWrappedParsedMockValue(parsedMockValue, parsedSpecParameter);
-    const errors = validate_json_1.validateJson(schema, wrappedParsedMockValue, true);
+    const errors = (0, validate_json_1.validateJson)(schema, wrappedParsedMockValue, true);
     return {
         match: errors.length === 0,
         results: _.map(errors, (error) => result_1.result.build({

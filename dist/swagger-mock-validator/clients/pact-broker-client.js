@@ -21,7 +21,7 @@ class PactBrokerClient {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const content = yield this.httpClient.get(url, this.auth);
-                return transform_string_to_object_1.transformStringToObject(content, url);
+                return (0, transform_string_to_object_1.transformStringToObject)(content, url);
             }
             catch (error) {
                 throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_READ_ERROR', `Unable to read "${url}"`, error);

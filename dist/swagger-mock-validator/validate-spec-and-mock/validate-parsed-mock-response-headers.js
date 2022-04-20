@@ -78,7 +78,7 @@ const validateParsedMockResponseHeader = (headerName, parsedMockResponseHeader, 
     if (!parsedSpecResponseHeader) {
         return validateMockHeaderMissingInSpec(headerName, parsedMockResponseHeader, parsedSpecResponse);
     }
-    const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecResponseHeader, parsedMockResponseHeader, parsedMockInteraction, 'response.header.incompatible');
+    const validationResult = (0, validate_mock_value_against_spec_1.validateMockValueAgainstSpec)(parsedSpecResponseHeader, parsedMockResponseHeader, parsedMockInteraction, 'response.header.incompatible');
     return validationResult.results;
 };
 const validateParsedMockResponseHeaders = (parsedMockInteraction, parsedSpecResponse) => {

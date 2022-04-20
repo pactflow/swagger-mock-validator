@@ -10,6 +10,7 @@ const double_1 = require("./validate-json/double");
 const float_1 = require("./validate-json/float");
 const int32_1 = require("./validate-json/int32");
 const int64_1 = require("./validate-json/int64");
+const string_1 = require("./validate-json/string");
 const password_1 = require("./validate-json/password");
 // tslint:disable:no-var-requires
 // tslint:disable:no-submodule-imports
@@ -25,28 +26,35 @@ const addSwaggerFormatsAndKeywords = (ajv, rawJson) => {
         type: 'number',
         validate: (_schema, _data, _parentSchema, dataPath) => {
             const rawValue = getRawValueFromJson(rawJson, dataPath);
-            return double_1.isDouble(rawValue);
+            return (0, double_1.isDouble)(rawValue);
         }
     });
     ajv.addKeyword(float_1.floatAjvKeyword, {
         type: 'number',
         validate: (_schema, _data, _parentSchema, dataPath) => {
             const rawValue = getRawValueFromJson(rawJson, dataPath);
-            return float_1.isFloat(rawValue);
+            return (0, float_1.isFloat)(rawValue);
         }
     });
     ajv.addKeyword(int32_1.int32AjvKeyword, {
         type: 'integer',
         validate: (_schema, _data, _parentSchema, dataPath) => {
             const rawValue = getRawValueFromJson(rawJson, dataPath);
-            return int32_1.isInt32(rawValue);
+            return (0, int32_1.isInt32)(rawValue);
         }
     });
     ajv.addKeyword(int64_1.int64AjvKeyword, {
         type: 'integer',
         validate: (_schema, _data, _parentSchema, dataPath) => {
             const rawValue = getRawValueFromJson(rawJson, dataPath);
-            return int64_1.isInt64(rawValue);
+            return (0, int64_1.isInt64)(rawValue);
+        }
+    });
+    ajv.addKeyword(string_1.stringAjvKeyword, {
+        type: 'string',
+        validate: (_schema, _data, _parentSchema, dataPath) => {
+            const rawValue = getRawValueFromJson(rawJson, dataPath);
+            return (0, string_1.isString)(rawValue);
         }
     });
 };
@@ -75,11 +83,12 @@ const updateSchemaPropertyToDraft4 = (schema) => {
     schema.$schema = 'http://json-schema.org/draft-04/schema';
 };
 const changeTypeToKeywordForCustomFormats = (schema) => {
-    traverse_json_schema_1.traverseJsonSchema(schema, (mutableSchema) => {
-        double_1.formatForDoubleNumbers(mutableSchema);
-        float_1.formatForFloatNumbers(mutableSchema);
-        int32_1.formatForInt32Numbers(mutableSchema);
-        int64_1.formatForInt64Numbers(mutableSchema);
+    (0, traverse_json_schema_1.traverseJsonSchema)(schema, (mutableSchema) => {
+        (0, double_1.formatForDoubleNumbers)(mutableSchema);
+        (0, float_1.formatForFloatNumbers)(mutableSchema);
+        (0, int32_1.formatForInt32Numbers)(mutableSchema);
+        (0, int64_1.formatForInt64Numbers)(mutableSchema);
+        (0, string_1.formatForString)(mutableSchema);
     });
 };
 const createAjvForDraft4 = (userOptions) => {

@@ -4,7 +4,7 @@ exports.parseSecurityRequirements = void 0;
 const dereference_component_1 = require("./dereference-component");
 const dereferenceSecuritySchemes = (securitySchemes, spec) => Object.keys(securitySchemes)
     .reduce((dereferencedSchemes, schemeName) => {
-    dereferencedSchemes[schemeName] = dereference_component_1.dereferenceComponent(securitySchemes[schemeName], spec);
+    dereferencedSchemes[schemeName] = (0, dereference_component_1.dereferenceComponent)(securitySchemes[schemeName], spec);
     return dereferencedSchemes;
 }, {});
 const getCredentialLocation = (securityScheme) => securityScheme.type === 'apiKey' ? securityScheme.in : 'header';

@@ -8,7 +8,7 @@ const equalsTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegmen
     const match = parsedSpecPathNameSegment.value === parsedMockPathNameSegment.value;
     return { match, results: [] };
 };
-const jsonSchemaTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegment) => validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecPathNameSegment.parameter, parsedMockPathNameSegment, parsedMockPathNameSegment.parentInteraction, 'request.path-or-method.unknown');
+const jsonSchemaTypeValidator = (parsedMockPathNameSegment, parsedSpecPathNameSegment) => (0, validate_mock_value_against_spec_1.validateMockValueAgainstSpec)(parsedSpecPathNameSegment.parameter, parsedMockPathNameSegment, parsedMockPathNameSegment.parentInteraction, 'request.path-or-method.unknown');
 const doInteractionAndOperationMatchPaths = (parsedMockInteraction, parsedSpecOperation) => {
     const parsedSpecPathNameSegments = parsedSpecOperation.pathNameSegments;
     if (parsedMockInteraction.requestPathSegments.length !== parsedSpecPathNameSegments.length) {

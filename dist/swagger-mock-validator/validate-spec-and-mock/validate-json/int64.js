@@ -7,7 +7,7 @@ const int64MinValue = decimal_js_1.Decimal.pow(2, 63).negated();
 const int64MaxValue = decimal_js_1.Decimal.pow(2, 63).minus(1);
 exports.int64AjvKeyword = 'formatInt64';
 const formatForInt64Numbers = (schema) => {
-    if (is_type_supported_1.isTypeSupported('integer', schema.type) && schema.format === 'int64') {
+    if ((0, is_type_supported_1.isTypeSupported)('integer', schema.type) && schema.format === 'int64') {
         delete schema.format;
         schema[exports.int64AjvKeyword] = true;
     }

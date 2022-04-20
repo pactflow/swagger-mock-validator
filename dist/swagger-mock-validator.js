@@ -46,7 +46,7 @@ const validateSpecAndMockContent = (options) => __awaiter(void 0, void 0, void 0
     const mock = options.mock;
     const parsedSpec = yield spec_parser_1.SpecParser.parse(spec);
     const parsedMock = mock_parser_1.MockParser.parse(mock);
-    const validationOutcome = yield validate_spec_and_mock_1.validateSpecAndMock(parsedMock, parsedSpec);
+    const validationOutcome = yield (0, validate_spec_and_mock_1.validateSpecAndMock)(parsedMock, parsedSpec);
     return {
         parsedMock,
         validationOutcome
@@ -123,7 +123,7 @@ class SwaggerMockValidator {
     }
     validateSpecAndMock(spec, mock, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield exports.validateSpecAndMockContent({ mock, spec });
+            const result = yield (0, exports.validateSpecAndMockContent)({ mock, spec });
             if (result.parsedMock) {
                 yield this.postAnalyticEvent(options, result.parsedMock, result.validationOutcome);
             }

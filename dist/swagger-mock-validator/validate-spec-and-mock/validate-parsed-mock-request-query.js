@@ -26,7 +26,7 @@ const validateParsedMockRequestQuery = (parsedMockInteraction, parsedSpecOperati
         if (!parsedSpecRequestQuery && parsedMockRequestQuery) {
             return getWarningForUndefinedQueryParameter(queryName, parsedMockRequestQuery, parsedSpecOperation);
         }
-        const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(parsedSpecRequestQuery, parsedMockRequestQuery, parsedMockInteraction, 'request.query.incompatible');
+        const validationResult = (0, validate_mock_value_against_spec_1.validateMockValueAgainstSpec)(parsedSpecRequestQuery, parsedMockRequestQuery, parsedMockInteraction, 'request.query.incompatible');
         return validationResult.results;
     })
         .flatten()

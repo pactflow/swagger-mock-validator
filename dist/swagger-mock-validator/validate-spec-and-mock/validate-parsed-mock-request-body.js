@@ -6,7 +6,7 @@ const result_1 = require("../result");
 const content_negotiation_1 = require("./content-negotiation");
 const validate_json_1 = require("./validate-json");
 const validateRequestBodyAgainstSchema = (parsedMockRequestBody, parsedSpecRequestBody) => {
-    const validationErrors = validate_json_1.validateJson(parsedSpecRequestBody.schema, parsedMockRequestBody.value);
+    const validationErrors = (0, validate_json_1.validateJson)(parsedSpecRequestBody.schema, parsedMockRequestBody.value);
     return _.map(validationErrors, (error) => result_1.result.build({
         code: 'request.body.incompatible',
         message: `Request body is incompatible with the request body schema in the spec file: ${error.message}`,
@@ -19,7 +19,7 @@ const isOptionalRequestBodyMissing = (parsedMockInteraction, parsedSpecOperation
     !(parsedSpecOperation.requestBodyParameter && parsedSpecOperation.requestBodyParameter.required);
 const specAndMockHaveNoBody = (parsedMockInteraction, parsedSpecOperation) => !parsedSpecOperation.requestBodyParameter && !parsedMockInteraction.requestBody.value;
 const isNotSupportedMediaType = (parsedSpecOperation) => parsedSpecOperation.consumes.value.length > 0 &&
-    !content_negotiation_1.isMediaTypeSupported('application/json', parsedSpecOperation.consumes.value);
+    !(0, content_negotiation_1.isMediaTypeSupported)('application/json', parsedSpecOperation.consumes.value);
 const shouldSkipValidation = (parsedMockInteraction, parsedSpecOperation) => isNotSupportedMediaType(parsedSpecOperation) ||
     specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) ||
     isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation);

@@ -4,10 +4,10 @@ exports.traverseJsonSchema = void 0;
 const _ = require("lodash");
 const util_1 = require("util");
 const traverseJsonSchema = (mutableSchema, visitor) => {
-    if (util_1.isBoolean(mutableSchema) || util_1.isUndefined(mutableSchema)) {
+    if ((0, util_1.isBoolean)(mutableSchema) || (0, util_1.isUndefined)(mutableSchema)) {
         return;
     }
-    const traverseSubSchema = (item) => exports.traverseJsonSchema(item, visitor);
+    const traverseSubSchema = (item) => (0, exports.traverseJsonSchema)(item, visitor);
     _.each(mutableSchema.definitions, traverseSubSchema);
     _.each(mutableSchema.allOf, traverseSubSchema);
     _.each(mutableSchema.oneOf, traverseSubSchema);

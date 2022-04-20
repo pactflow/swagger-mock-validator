@@ -6,7 +6,7 @@ const content_negotiation_1 = require("./content-negotiation");
 const acceptHeaderName = 'accept';
 const contentTypeHeaderName = 'content-type';
 const validateResponseContentType = (parsedMockInteraction, parsedMockResponseContentType, responseProduces) => {
-    const areMediaTypesCompatible = content_negotiation_1.isMediaTypeSupported(parsedMockResponseContentType, responseProduces.value);
+    const areMediaTypesCompatible = (0, content_negotiation_1.isMediaTypeSupported)(parsedMockResponseContentType, responseProduces.value);
     if (!areMediaTypesCompatible) {
         return [result_1.result.build({
                 code: 'response.content-type.incompatible',
@@ -49,7 +49,7 @@ const validateParsedMockResponseContentType = (parsedMockInteraction, parsedSpec
 const checkAcceptsHeaderCompatibility = (parsedMockAcceptRequestHeaderValue, responseProduces) => {
     const acceptedMediaTypes = parsedMockAcceptRequestHeaderValue.split(',');
     return acceptedMediaTypes.some((acceptedMediaType) => {
-        return content_negotiation_1.isMediaTypeSupported(acceptedMediaType, responseProduces.value);
+        return (0, content_negotiation_1.isMediaTypeSupported)(acceptedMediaType, responseProduces.value);
     });
 };
 const validateAcceptsHeader = (parsedMockInteraction, parsedMockAcceptRequestHeaderValue, responseProduces) => {
