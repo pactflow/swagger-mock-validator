@@ -156,7 +156,7 @@ With
 - `--additionalPropertiesInResponse` false
 - `--requiredPropertiesInResponse` false
 
-``npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse false https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse false https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
 
 ```bash
 Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
