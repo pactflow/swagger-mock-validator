@@ -1,3 +1,8 @@
+<a name="10.2.1"></a>
+## [10.2.1](https://github.com/pactflow/swagger-mock-validator/compare/10.2.0...10.2.1) (2022-04-20)
+
+
+
 <a name="10.2.0"></a>
 # [10.2.0](https://github.com/pactflow/swagger-mock-validator/compare/10.1.4...10.2.0) (2022-04-20)
 
