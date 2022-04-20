@@ -57,7 +57,7 @@ For more options on how to use the command run the command with the help flag.
 `swagger-mock-validator --help`
 
 ```bash
-Usage: swagger-mock-validator-local [options] <swagger> <mock>
+Usage: swagger-mock-validator [options] <swagger> <mock>
 
 Confirms the swagger spec and mock are compatible with each other.
 
