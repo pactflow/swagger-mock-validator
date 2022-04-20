@@ -45,7 +45,7 @@ const parseUserOptions = (
   specSource: getSpecSource(userOptions.specPathOrUrl),
   additionalPropertiesInResponse:
     typeof userOptions.additionalPropertiesInResponse === 'undefined'
-      ? true // default to true - existing behaviour
+      ? false // default to true - existing behaviour
       : userOptions.additionalPropertiesInResponse === 'true'
       ? true
       : false,

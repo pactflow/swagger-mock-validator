@@ -85,7 +85,7 @@ Options:
   -u, --user [USERNAME:PASSWORD]                  The basic auth username and password to access the pact broker
   -a, --analyticsUrl [string]                     The url to send analytics events to as a http post
   -o, --outputDepth [integer]                     Specifies the number of times to recurse while formatting the output objects. This is useful in case of large complicated objects or schemas. (default: 4)
-  -A, --additionalPropertiesInResponse [boolean]  allow additional properties in response bodies, default true
+  -A, --additionalPropertiesInResponse [boolean]  allow additional properties in response bodies, default false
   -R, --requiredPropertiesInResponse [boolean]    allows required properties in response bodies, default false
   -h, --help                                      display help for command
 ```
@@ -147,18 +147,6 @@ Default behaviour, as per the following flags
 `npx @pactflow/swagger-mock-validator https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
 
 ```bash
-0 error(s)
-0 warning(s)
-```
-
-With 
-
-- `--additionalPropertiesInResponse` false
-- `--requiredPropertiesInResponse` false
-
-`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse false https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
-
-```bash
 Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
 1 error(s)
         response.body.incompatible: 1
@@ -190,6 +178,18 @@ Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.
 }
 
 Error: Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
+```
+
+With 
+
+- `--additionalPropertiesInResponse` false
+- `--requiredPropertiesInResponse` false
+
+`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse true --requiredPropertiesInResponse false https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+
+```bash
+0 error(s)
+0 warning(s)
 ```
 
 With 

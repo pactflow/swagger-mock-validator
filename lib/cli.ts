@@ -53,7 +53,7 @@ commander
     .option('-o, --outputDepth [integer]', 'Specifies the number of times to recurse ' +
     'while formatting the output objects. ' +
     'This is useful in case of large complicated objects or schemas.', parseInt, 4)
-    .option('-A, --additionalPropertiesInResponse [boolean]', 'allow additional properties in response bodies, default true')
+    .option('-A, --additionalPropertiesInResponse [boolean]', 'allow additional properties in response bodies, default false')
     .option('-R, --requiredPropertiesInResponse [boolean]', 'allows required properties in response bodies, default false')
     .description(
 `Confirms the swagger spec and mock are compatible with each other.
