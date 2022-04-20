@@ -154,7 +154,8 @@ exports.release = gulp.series(
     commitChanges,
     createNewTag,
     pushChanges,
-    npmPublish
+    // Skipping publish - doing this as a seperate action in GH
+    // npmPublish
 );
 
 exports.watch = gulp.series(
