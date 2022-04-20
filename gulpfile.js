@@ -154,7 +154,7 @@ exports.release = gulp.series(
     commitChanges,
     createNewTag,
     pushChanges,
-    // npmPublish
+    npmPublish
 );
 
 exports.watch = gulp.series(

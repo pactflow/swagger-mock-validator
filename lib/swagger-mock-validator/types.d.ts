@@ -31,6 +31,8 @@ export interface SwaggerMockValidatorUserOptions {
     providerName?: string;
     specPathOrUrl: string;
     tag?: string;
+    additionalPropertiesInResponse?: string;
+    requiredPropertiesInResponse?: string;
 }
 
 export interface PactBrokerUserOptions {
@@ -60,6 +62,8 @@ export interface SerializedMock {
 export interface ValidateOptions {
     mock: SerializedMock;
     spec: SerializedSpec;
+    additionalPropertiesInResponse: boolean;
+    requiredPropertiesInResponse: boolean;
 }
 
 interface ParsedSwaggerMockValidatorOptions {
@@ -70,6 +74,8 @@ interface ParsedSwaggerMockValidatorOptions {
     specPathOrUrl: string;
     specSource: SpecSource;
     tag?: string;
+    additionalPropertiesInResponse: boolean;
+    requiredPropertiesInResponse: boolean;
 }
 
 export type MockSource = 'pactBroker' | 'path' | 'url';

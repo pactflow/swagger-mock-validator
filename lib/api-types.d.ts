@@ -83,6 +83,8 @@ declare namespace SwaggerMockValidator {
     export interface SwaggerMockValidatorOptions {
         mock: SwaggerMockValidatorOptionsMock;
         spec: SwaggerMockValidatorOptionsSpec;
+        additionalPropertiesInResponse: boolean;
+        requiredPropertiesInResponse: boolean;
     }
 
     export type ErrorCode =

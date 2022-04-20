@@ -51,8 +51,10 @@ commander
     .option('-u, --user [USERNAME:PASSWORD]', 'The basic auth username and password to access the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
     .option('-o, --outputDepth [integer]', 'Specifies the number of times to recurse ' +
-        'while formatting the output objects. ' +
-        'This is useful in case of large complicated objects or schemas.', parseInt, 4)
+    'while formatting the output objects. ' +
+    'This is useful in case of large complicated objects or schemas.', parseInt, 4)
+    .option('-A, --additionalPropertiesInResponse [boolean]', 'set additionalProperties response body to defined value, defaults true')
+    .option('-R, --requiredPropertiesInResponse [boolean]', 'set additionalProperties response body to required value, default true')
     .description(
 `Confirms the swagger spec and mock are compatible with each other.
 
@@ -82,7 +84,9 @@ If the pact broker has basic auth enabled, pass a --user option with username an
                 mockPathOrUrl: mock,
                 providerName: options.provider,
                 specPathOrUrl: swagger,
-                tag: options.tag
+                tag: options.tag,
+                additionalPropertiesInResponse: options.additionalPropertiesInResponse,
+                requiredPropertiesInResponse: options.requiredPropertiesInResponse
             });
 
             displaySummary(result, options.outputDepth);
