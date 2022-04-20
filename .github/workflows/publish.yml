@@ -19,8 +19,10 @@ jobs:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
-      - id: prepare
-        run: yarn run release-patch
+      - id: publish
+        run: yarn run release-major
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
   release-minor:
     if: ${{ github.event.client_payload.release_type == 'minor' }}
     runs-on: ubuntu-latest
@@ -34,8 +36,10 @@ jobs:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
-      - id: prepare
-        run: yarn run release-patch
+      - id: publish
+        run: yarn run release-minor
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
   release-patch:
     if: ${{ github.event.client_payload.release_type == 'patch' }}
     runs-on: ubuntu-latest
@@ -49,7 +53,7 @@ jobs:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
-      - id: prepare
+      - id: publish
         run: yarn run release-patch
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
