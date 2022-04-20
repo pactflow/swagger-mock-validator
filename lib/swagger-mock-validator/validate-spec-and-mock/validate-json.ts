@@ -108,6 +108,7 @@ const createAjvForDraft4 = (userOptions: Ajv.Options) => {
 export const validateJson = (jsonSchema: ParsedSpecJsonSchema, json: any, numbersSentAsStrings?: boolean) => {
     const ajv = createAjvForDraft4({
         allErrors: true,
+        unknownFormats: 'ignore',
         coerceTypes: numbersSentAsStrings || false,
         verbose: true
     });

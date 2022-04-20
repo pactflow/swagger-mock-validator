@@ -1081,6 +1081,17 @@ describe('formats', () => {
         });
     });
 
+    describe('free string formats', () => {
+        it(`should pass when the pact path contains any value for parameter with unknown format`, async () => {
+            const swaggerPathWithFormatParameter = defaultSwaggerPathBuilder
+                .withParameter(pathParameterBuilder.withUnknownStringFormatNamed('free-string-format', 'value'));
+
+            const result = await invokeValidatorWithPath(swaggerPathWithFormatParameter, 'path-value');
+
+            expect(result).toContainNoWarningsOrErrors();
+        });
+    });
+
     describe('location', () => {
         it('should validate headers with formats', async () => {
             const tooBigInteger = (Math.pow(2, 31) + 1).toString();
