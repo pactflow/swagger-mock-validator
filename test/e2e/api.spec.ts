@@ -33,9 +33,7 @@ describe('swagger-mock-validator/api', () => {
                 content: specContent,
                 format: 'swagger2',
                 pathOrUrl: specPath
-            },
-            additionalPropertiesInResponse: true,
-            requiredPropertiesInResponse: false
+            }
         });
 
         expect(result).toEqual({
@@ -82,9 +80,7 @@ describe('swagger-mock-validator/api', () => {
                 content: specContent,
                 format: 'swagger2',
                 pathOrUrl: specPath
-            },
-            additionalPropertiesInResponse: true,
-            requiredPropertiesInResponse: false
+            }
         });
 
         expect(result.errors.length).toBe(23, 'result.errors.length');
@@ -133,9 +129,7 @@ describe('swagger-mock-validator/api', () => {
                 content: specContent,
                 format: 'swagger2',
                 pathOrUrl: 'not-a-swagger-file.json'
-            },
-            additionalPropertiesInResponse: true,
-            requiredPropertiesInResponse: false
+            }
         }));
 
         expect(error.message).toEqual(jasmine.stringMatching(
@@ -157,9 +151,7 @@ describe('swagger-mock-validator/api', () => {
                 content: specContent,
                 format: 'swagger2',
                 pathOrUrl: 'spec.json'
-            },
-            additionalPropertiesInResponse: true,
-            requiredPropertiesInResponse: false
+            }
         }));
 
         expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
@@ -181,9 +173,7 @@ describe('swagger-mock-validator/api', () => {
                 content: specContent,
                 format: 'openapi3',
                 pathOrUrl: 'spec.json'
-            },
-            additionalPropertiesInResponse: true,
-            requiredPropertiesInResponse: false
+            }
         }));
 
         expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
@@ -205,9 +195,7 @@ describe('swagger-mock-validator/api', () => {
                 content: specContent,
                 format: 'unknown-format' as any,
                 pathOrUrl: 'spec.json'
-            },
-            additionalPropertiesInResponse: true,
-            requiredPropertiesInResponse: false
+            }
         }));
 
         expect(error).toEqual(new SwaggerMockValidatorErrorImpl(
