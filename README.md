@@ -141,7 +141,7 @@ Included in this repository is a [sample Pact file](./docs/pact.json)
 
 Default behaviour, as per the following flags 
 
-- `--additionalPropertiesInResponse` true
+- `--additionalPropertiesInResponse` false
 - `--requiredPropertiesInResponse` false
 
 `npx @pactflow/swagger-mock-validator https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
@@ -182,7 +182,7 @@ Error: Mock file "./docs/pact.json" is not compatible with spec file "https://pe
 
 With 
 
-- `--additionalPropertiesInResponse` false
+- `--additionalPropertiesInResponse` true
 - `--requiredPropertiesInResponse` false
 
 `npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse true --requiredPropertiesInResponse false https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
@@ -279,7 +279,7 @@ With
 - `--additionalPropertiesInResponse` true
 - `--requiredPropertiesInResponse` true
 
-`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse true https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse true --requiredPropertiesInResponse true https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
 
 ```bash
 Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
