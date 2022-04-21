@@ -25,7 +25,16 @@ const getMockSource = (mockPathOrUrl, providerName) => {
     return 'path';
 };
 const getSpecSource = (specPathOrUrl) => file_store_1.FileStore.isUrl(specPathOrUrl) ? 'url' : 'path';
-const parseUserOptions = (userOptions) => (Object.assign(Object.assign({}, userOptions), { mockSource: getMockSource(userOptions.mockPathOrUrl, userOptions.providerName), specSource: getSpecSource(userOptions.specPathOrUrl) }));
+// tslint:disable:cyclomatic-complexity
+const parseUserOptions = (userOptions) => (Object.assign(Object.assign({}, userOptions), { mockSource: getMockSource(userOptions.mockPathOrUrl, userOptions.providerName), specSource: getSpecSource(userOptions.specPathOrUrl), additionalPropertiesInResponse: typeof userOptions.additionalPropertiesInResponse === 'undefined'
+        ? true // default to true - existing behaviour
+        : userOptions.additionalPropertiesInResponse === 'true'
+            ? true
+            : false, requiredPropertiesInResponse: typeof userOptions.requiredPropertiesInResponse === 'undefined'
+        ? false // default to false - existing behaviour
+        : userOptions.requiredPropertiesInResponse === 'true'
+            ? true
+            : false }));
 const combineValidationResults = (validationResults) => {
     const flattenedValidationResults = _.flatten(validationResults);
     return _.uniqWith(flattenedValidationResults, _.isEqual);
@@ -44,9 +53,13 @@ const combineValidationOutcomes = (validationOutcomes) => {
 const validateSpecAndMockContent = (options) => __awaiter(void 0, void 0, void 0, function* () {
     const spec = options.spec;
     const mock = options.mock;
+    const opts = ({
+        additionalPropertiesInResponse: options.additionalPropertiesInResponse,
+        requiredPropertiesInResponse: options.requiredPropertiesInResponse
+    } = options);
     const parsedSpec = yield spec_parser_1.SpecParser.parse(spec);
     const parsedMock = mock_parser_1.MockParser.parse(mock);
-    const validationOutcome = yield (0, validate_spec_and_mock_1.validateSpecAndMock)(parsedMock, parsedSpec);
+    const validationOutcome = yield (0, validate_spec_and_mock_1.validateSpecAndMock)(parsedMock, parsedSpec, opts);
     return {
         parsedMock,
         validationOutcome
@@ -63,12 +76,14 @@ class SwaggerMockValidator {
         const noMocksValidationOutcome = {
             errors: [],
             success: true,
-            warnings: [{
+            warnings: [
+                {
                     code: 'pact-broker.no-pacts-found',
                     message: 'No consumer pacts found in Pact Broker',
                     source: 'pact-broker',
                     type: 'warning'
-                }]
+                }
+            ]
         };
         return [noMocksValidationOutcome];
     }
@@ -83,12 +98,13 @@ class SwaggerMockValidator {
     loadSpecAndMocks(options) {
         return __awaiter(this, void 0, void 0, function* () {
             const whenSpecContent = this.getSpecFromFileOrUrl(options.specPathOrUrl);
-            const whenMocks = options.providerName ?
-                this.pactBroker.loadPacts({
+            const whenMocks = options.providerName
+                ? this.pactBroker.loadPacts({
                     pactBrokerUrl: options.mockPathOrUrl,
                     providerName: options.providerName,
                     tag: options.tag
-                }) : this.getPactFromFileOrUrl(options.mockPathOrUrl);
+                })
+                : this.getPactFromFileOrUrl(options.mockPathOrUrl);
             const [spec, mocks] = yield Promise.all([whenSpecContent, whenMocks]);
             return { spec, mocks };
         });
@@ -106,11 +122,13 @@ class SwaggerMockValidator {
     getPactFromFileOrUrl(mockPathOrUrl) {
         return __awaiter(this, void 0, void 0, function* () {
             const content = yield this.fileStore.loadFile(mockPathOrUrl);
-            return [{
+            return [
+                {
                     content,
                     format: 'auto-detect',
                     pathOrUrl: mockPathOrUrl
-                }];
+                }
+            ];
         });
     }
     getValidationOutcomes(spec, mocks, options) {
@@ -123,7 +141,13 @@ class SwaggerMockValidator {
     }
     validateSpecAndMock(spec, mock, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield (0, exports.validateSpecAndMockContent)({ mock, spec });
+            const { additionalPropertiesInResponse, requiredPropertiesInResponse } = options;
+            const result = yield (0, exports.validateSpecAndMockContent)({
+                mock,
+                spec,
+                additionalPropertiesInResponse,
+                requiredPropertiesInResponse
+            });
             if (result.parsedMock) {
                 yield this.postAnalyticEvent(options, result.parsedMock, result.validationOutcome);
             }
