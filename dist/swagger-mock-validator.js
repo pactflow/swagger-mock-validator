@@ -27,7 +27,7 @@ const getMockSource = (mockPathOrUrl, providerName) => {
 const getSpecSource = (specPathOrUrl) => file_store_1.FileStore.isUrl(specPathOrUrl) ? 'url' : 'path';
 // tslint:disable:cyclomatic-complexity
 const parseUserOptions = (userOptions) => (Object.assign(Object.assign({}, userOptions), { mockSource: getMockSource(userOptions.mockPathOrUrl, userOptions.providerName), specSource: getSpecSource(userOptions.specPathOrUrl), additionalPropertiesInResponse: typeof userOptions.additionalPropertiesInResponse === 'undefined'
-        ? true // default to true - existing behaviour
+        ? false // default to true - existing behaviour
         : userOptions.additionalPropertiesInResponse === 'true'
             ? true
             : false, requiredPropertiesInResponse: typeof userOptions.requiredPropertiesInResponse === 'undefined'
@@ -59,11 +59,7 @@ const validateSpecAndMockContent = (options) => __awaiter(void 0, void 0, void 0
     } = options);
     const parsedSpec = yield spec_parser_1.SpecParser.parse(spec);
     const parsedMock = mock_parser_1.MockParser.parse(mock);
-<<<<<<< HEAD
     const validationOutcome = yield (0, validate_spec_and_mock_1.validateSpecAndMock)(parsedMock, parsedSpec, opts);
-=======
-    const validationOutcome = yield (0, validate_spec_and_mock_1.validateSpecAndMock)(parsedMock, parsedSpec);
->>>>>>> origin/master
     return {
         parsedMock,
         validationOutcome
