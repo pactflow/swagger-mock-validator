@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const swagger_mock_validator_1 = require("./swagger-mock-validator");
 const swaggerMockValidator = {
     validate: (options) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield swagger_mock_validator_1.validateSpecAndMockContent(options);
+        const result = yield (0, swagger_mock_validator_1.validateSpecAndMockContent)(options);
         return result.validationOutcome;
     })
 };

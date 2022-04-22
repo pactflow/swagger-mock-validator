@@ -19,7 +19,7 @@ const prepareOpenApi3SchemaForValidationVisitor = (mutableSchema) => {
     fixJsonSchemaReferences(mutableSchema);
 };
 const prepareOpenApi3SchemaForValidation = (schema) => {
-    traverse_json_schema_1.traverseJsonSchema(schema, prepareOpenApi3SchemaForValidationVisitor);
+    (0, traverse_json_schema_1.traverseJsonSchema)(schema, prepareOpenApi3SchemaForValidationVisitor);
     return schema;
 };
 const getOpenApi3SchemaComponents = (spec) => (spec.components || {}).schemas;

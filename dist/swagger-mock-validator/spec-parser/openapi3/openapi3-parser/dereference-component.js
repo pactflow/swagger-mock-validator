@@ -15,10 +15,10 @@ const doDereferenceComponent = (component, spec, visitedReferences) => {
         const ref = component.$ref;
         checkForCircles(ref, visitedReferences);
         const pointer = toJsonPointer(ref);
-        return exports.doDereferenceComponent(jsonpointer.get(spec, pointer), spec, [...visitedReferences, ref]);
+        return (0, exports.doDereferenceComponent)(jsonpointer.get(spec, pointer), spec, [...visitedReferences, ref]);
     }
     return component;
 };
 exports.doDereferenceComponent = doDereferenceComponent;
-const dereferenceComponent = (component, spec) => exports.doDereferenceComponent(component, spec, []);
+const dereferenceComponent = (component, spec) => (0, exports.doDereferenceComponent)(component, spec, []);
 exports.dereferenceComponent = dereferenceComponent;

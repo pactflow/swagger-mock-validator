@@ -222,7 +222,7 @@ const parseOperationFromPath = (path, pathName, specPathOrUrl, specJson) => Obje
     const parsedParameters = parseParameters(path, pathLocation, parsedOperation, specJson.definitions);
     parsedOperation.parentOperation = parsedOperation;
     parsedOperation.pathNameSegments =
-        parse_path_name_segments_1.parsePathNameSegments(pathName, parsedParameters.requestPath, parsedOperation, specJson.basePath);
+        (0, parse_path_name_segments_1.parsePathNameSegments)(pathName, parsedParameters.requestPath, parsedOperation, specJson.basePath);
     parsedOperation.consumes = parseMimeType({
         mimeTypeName: 'consumes',
         operation,
@@ -251,7 +251,7 @@ exports.swagger2Parser = {
         pathOrUrl: specPathOrUrl,
         paths: {
             location: '[root].paths',
-            parentOperation: create_empty_parent_operation_1.createEmptyParentOperation(specPathOrUrl),
+            parentOperation: (0, create_empty_parent_operation_1.createEmptyParentOperation)(specPathOrUrl),
             value: specJson.paths
         }
     })

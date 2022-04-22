@@ -24,11 +24,11 @@ const toResponsesWithNormalizedHeaders = (responses) => {
         .forEach((responsePropertyKey) => {
         const responseProperty = modifiedResponses[responsePropertyKey];
         modifiedResponses[responsePropertyKey] = responseProperty.headers
-            ? Object.assign(Object.assign({}, responseProperty), { headers: to_map_with_lower_case_keys_1.toMapWithLowerCaseKeys(responseProperty.headers) }) : responseProperty;
+            ? Object.assign(Object.assign({}, responseProperty), { headers: (0, to_map_with_lower_case_keys_1.toMapWithLowerCaseKeys)(responseProperty.headers) }) : responseProperty;
     });
     return modifiedResponses;
 };
-const toNormalizedRequestHeaders = (requestHeaders) => to_map_with_lower_case_keys_1.toMapWithLowerCaseKeys(requestHeaders);
+const toNormalizedRequestHeaders = (requestHeaders) => (0, to_map_with_lower_case_keys_1.toMapWithLowerCaseKeys)(requestHeaders);
 const toParsedSpecOperationWithNormalizedHeaders = (parsedSpecOperation) => (Object.assign(Object.assign({}, parsedSpecOperation), { requestHeaderParameters: toNormalizedRequestHeaders(parsedSpecOperation.requestHeaderParameters), responses: toResponsesWithNormalizedHeaders(parsedSpecOperation.responses), securityRequirements: toNormalizedSecurityRequirementsInHeaders(parsedSpecOperation.securityRequirements) }));
 const toNormalizedParsedSpecOperations = (operations) => operations
     .map(toParsedSpecOperationWithNormalizedHeaders)

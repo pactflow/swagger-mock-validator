@@ -6,7 +6,7 @@ const is_type_supported_1 = require("./is-type-supported");
 const maximumFloatPrecision = 6;
 exports.floatAjvKeyword = 'formatFloat';
 const formatForFloatNumbers = (schema) => {
-    if (is_type_supported_1.isTypeSupported('number', schema.type) && schema.format === 'float') {
+    if ((0, is_type_supported_1.isTypeSupported)('number', schema.type) && schema.format === 'float') {
         delete schema.format;
         schema[exports.floatAjvKeyword] = true;
     }

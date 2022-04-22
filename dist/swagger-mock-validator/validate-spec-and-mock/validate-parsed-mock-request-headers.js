@@ -56,7 +56,7 @@ const validateParsedMockRequestHeader = (parsedMockInteraction, parsedSpecOperat
     if (!specHeader && mockHeader) {
         return getWarningForUndefinedHeader(headerName, mockHeader, parsedSpecOperation);
     }
-    const validationResult = validate_mock_value_against_spec_1.validateMockValueAgainstSpec(specHeader, mockHeader, parsedMockInteraction, 'request.header.incompatible');
+    const validationResult = (0, validate_mock_value_against_spec_1.validateMockValueAgainstSpec)(specHeader, mockHeader, parsedMockInteraction, 'request.header.incompatible');
     return validationResult.results;
 };
 const validateParsedMockRequestHeaders = (parsedMockInteraction, parsedSpecOperation) => {

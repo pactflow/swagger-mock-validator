@@ -6,7 +6,7 @@ const result_1 = require("../result");
 const content_negotiation_1 = require("./content-negotiation");
 const contentTypeHeaderName = 'content-type';
 const validateParsedMockContentTypeAgainstParsedSpecConsumes = (parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue) => {
-    const areMediaTypesCompatible = content_negotiation_1.isMediaTypeSupported(parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value);
+    const areMediaTypesCompatible = (0, content_negotiation_1.isMediaTypeSupported)(parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value);
     if (!areMediaTypesCompatible) {
         return [result_1.result.build({
                 code: 'request.content-type.incompatible',

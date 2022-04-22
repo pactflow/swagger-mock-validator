@@ -1,3 +1,28 @@
+<a name="10.2.1"></a>
+## [10.2.1](https://github.com/pactflow/swagger-mock-validator/compare/10.2.0...10.2.1) (2022-04-20)
+
+
+
+<a name="10.2.0"></a>
+# [10.2.0](https://github.com/pactflow/swagger-mock-validator/compare/10.1.4...10.2.0) (2022-04-20)
+
+
+
+<a name="10.1.4"></a>
+## [10.1.4](https://github.com/pactflow/swagger-mock-validator/compare/10.1.3...10.1.4) (2022-04-20)
+
+
+### Bug Fixes
+
+* support for open string-valued properties ([178240e](https://github.com/pactflow/swagger-mock-validator/commit/178240e))
+
+
+### Features
+
+* rename to [@pactflow](https://github.com/pactflow) scope and add gh action scripts ([5f55007](https://github.com/pactflow/swagger-mock-validator/commit/5f55007))
+
+
+
 ## [10.1.3](https://bitbucket.org/atlassian/swagger-mock-validator/compare/10.1.2...10.1.3) (2022-03-15)
 
 

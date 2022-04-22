@@ -10,7 +10,7 @@ const getApplicationJsonContentSchema = (content, spec) => {
     const jsonContent = content[jsonMediaType];
     const jsonSchema = jsonContent ? jsonContent.schema : undefined;
     return jsonSchema
-        ? { schema: get_schema_with_spec_definitions_1.getSchemaWithSpecDefinitions(jsonSchema, spec), mediaType: jsonMediaType }
+        ? { schema: (0, get_schema_with_spec_definitions_1.getSchemaWithSpecDefinitions)(jsonSchema, spec), mediaType: jsonMediaType }
         : { mediaType: jsonMediaType };
 };
 const getContentSchema = (content, spec) => content

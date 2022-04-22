@@ -8,14 +8,14 @@ const content_negotiation_1 = require("./content-negotiation");
 const validate_json_1 = require("./validate-json");
 const removeRequiredPropertiesFromSchema = (schema) => {
     const modifiedSchema = _.cloneDeep(schema);
-    traverse_json_schema_1.traverseJsonSchema(modifiedSchema, (mutableSchema) => {
+    (0, traverse_json_schema_1.traverseJsonSchema)(modifiedSchema, (mutableSchema) => {
         delete mutableSchema.required;
     });
     return modifiedSchema;
 };
 const isMockInteractionWithoutResponseBody = (parsedMockInteraction) => !parsedMockInteraction.responseBody.value;
 const isNotSupportedMediaType = (parsedSpecResponse) => parsedSpecResponse.produces.value.length > 0 &&
-    !content_negotiation_1.isMediaTypeSupported('application/json', parsedSpecResponse.produces.value);
+    !(0, content_negotiation_1.isMediaTypeSupported)('application/json', parsedSpecResponse.produces.value);
 const shouldSkipValidation = (parsedMockInteraction, parsedSpecResponse) => isMockInteractionWithoutResponseBody(parsedMockInteraction) || isNotSupportedMediaType(parsedSpecResponse);
 const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecResponse) => {
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecResponse)) {
@@ -33,7 +33,7 @@ const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecRespons
         ];
     }
     const responseBodyWithoutRequiredProperties = removeRequiredPropertiesFromSchema(parsedSpecResponse.schema);
-    const validationErrors = validate_json_1.validateJson(responseBodyWithoutRequiredProperties, parsedMockInteraction.responseBody.value);
+    const validationErrors = (0, validate_json_1.validateJson)(responseBodyWithoutRequiredProperties, parsedMockInteraction.responseBody.value);
     return _.map(validationErrors, (error) => {
         const message = error.keyword === 'additionalProperties'
             ? `${error.message} - ${error.params.additionalProperty}`

@@ -14,7 +14,7 @@ const parsePathOperations = (pathName, specJson, rootLocation, specPathOrUrl) =>
     return getPathHttpMethodNames(path)
         .map((pathHttpMethod) => {
         const pathLocation = `${rootLocation}.paths.${pathName}`;
-        return parse_operation_1.parseOperation({
+        return (0, parse_operation_1.parseOperation)({
             operation: path[pathHttpMethod],
             operationLocation: `${pathLocation}.${pathHttpMethod}`,
             operationName: pathHttpMethod,
@@ -39,7 +39,7 @@ exports.openApi3Parser = {
             pathOrUrl: specPathOrUrl,
             paths: {
                 location: `${rootLocation}.paths`,
-                parentOperation: create_empty_parent_operation_1.createEmptyParentOperation(specPathOrUrl),
+                parentOperation: (0, create_empty_parent_operation_1.createEmptyParentOperation)(specPathOrUrl),
                 value: specJson.paths
             }
         };

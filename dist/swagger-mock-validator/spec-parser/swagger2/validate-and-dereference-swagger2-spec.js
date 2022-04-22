@@ -14,12 +14,12 @@ const swagger_mock_validator_error_impl_1 = require("../../swagger-mock-validato
 const validate_and_dereference_spec_1 = require("../validate-and-dereference-spec");
 const is_swagger2_content_1 = require("./is-swagger2-content");
 const validateSpecFormat = (content, pathOrUrl) => {
-    if (!is_swagger2_content_1.isSwagger2Content(content)) {
+    if (!(0, is_swagger2_content_1.isSwagger2Content)(content)) {
         throw new swagger_mock_validator_error_impl_1.SwaggerMockValidatorErrorImpl('SWAGGER_MOCK_VALIDATOR_PARSE_ERROR', `"${pathOrUrl}" is not a "swagger2" spec`);
     }
 };
 const validateAndDereferenceSwagger2Spec = (content, pathOrUrl) => __awaiter(void 0, void 0, void 0, function* () {
     validateSpecFormat(content, pathOrUrl);
-    return validate_and_dereference_spec_1.validateAndDereferenceSpec(content, pathOrUrl);
+    return (0, validate_and_dereference_spec_1.validateAndDereferenceSpec)(content, pathOrUrl);
 });
 exports.validateAndDereferenceSwagger2Spec = validateAndDereferenceSwagger2Spec;

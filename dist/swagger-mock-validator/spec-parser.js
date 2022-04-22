@@ -19,8 +19,8 @@ const transform_string_to_object_1 = require("./transform-string-to-object");
 class SpecParser {
     static parse(spec) {
         return __awaiter(this, void 0, void 0, function* () {
-            const specJson = transform_string_to_object_1.transformStringToObject(spec.content, spec.pathOrUrl);
-            const format = resolve_spec_format_1.resolveSpecFormat(spec.format, specJson, spec.pathOrUrl);
+            const specJson = (0, transform_string_to_object_1.transformStringToObject)(spec.content, spec.pathOrUrl);
+            const format = (0, resolve_spec_format_1.resolveSpecFormat)(spec.format, specJson, spec.pathOrUrl);
             return format === 'swagger2'
                 ? this.validateAndParseSwagger2(specJson, spec.pathOrUrl)
                 : this.validateAndParseOpenApi3(specJson, spec.pathOrUrl);
@@ -28,13 +28,13 @@ class SpecParser {
     }
     static validateAndParseSwagger2(specJson, pathOrUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const spec = yield validate_and_dereference_swagger2_spec_1.validateAndDereferenceSwagger2Spec(specJson, pathOrUrl);
+            const spec = yield (0, validate_and_dereference_swagger2_spec_1.validateAndDereferenceSwagger2Spec)(specJson, pathOrUrl);
             return swagger2_parser_1.swagger2Parser.parse(spec, pathOrUrl);
         });
     }
     static validateAndParseOpenApi3(specJson, pathOrUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const spec = yield validate_and_dereference_openapi3_spec_1.validateAndDereferenceOpenApi3Spec(specJson, pathOrUrl);
+            const spec = yield (0, validate_and_dereference_openapi3_spec_1.validateAndDereferenceOpenApi3Spec)(specJson, pathOrUrl);
             return openapi3_parser_1.openApi3Parser.parse(spec, pathOrUrl);
         });
     }

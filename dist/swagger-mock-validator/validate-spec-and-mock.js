@@ -14,16 +14,16 @@ const validate_parsed_mock_response_headers_1 = require("./validate-spec-and-moc
 const validate_parsed_spec_consumes_1 = require("./validate-spec-and-mock/validate-parsed-spec-consumes");
 const validate_parsed_spec_produces_1 = require("./validate-spec-and-mock/validate-parsed-spec-produces");
 const validate_parsed_spec_security_1 = require("./validate-spec-and-mock/validate-parsed-spec-security");
-const validateMockInteractionRequest = (parsedMockInteraction, parsedSpecOperation) => _.concat(validate_parsed_spec_consumes_1.validateParsedSpecConsumes(parsedMockInteraction, parsedSpecOperation), validate_parsed_spec_produces_1.validateParsedSpecProduces(parsedMockInteraction, parsedSpecOperation), validate_parsed_spec_security_1.validateParsedSpecSecurity(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_body_1.validateParsedMockRequestBody(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_headers_1.validateParsedMockRequestHeaders(parsedMockInteraction, parsedSpecOperation), validate_parsed_mock_request_query_1.validateParsedMockRequestQuery(parsedMockInteraction, parsedSpecOperation));
+const validateMockInteractionRequest = (parsedMockInteraction, parsedSpecOperation) => _.concat((0, validate_parsed_spec_consumes_1.validateParsedSpecConsumes)(parsedMockInteraction, parsedSpecOperation), (0, validate_parsed_spec_produces_1.validateParsedSpecProduces)(parsedMockInteraction, parsedSpecOperation), (0, validate_parsed_spec_security_1.validateParsedSpecSecurity)(parsedMockInteraction, parsedSpecOperation), (0, validate_parsed_mock_request_body_1.validateParsedMockRequestBody)(parsedMockInteraction, parsedSpecOperation), (0, validate_parsed_mock_request_headers_1.validateParsedMockRequestHeaders)(parsedMockInteraction, parsedSpecOperation), (0, validate_parsed_mock_request_query_1.validateParsedMockRequestQuery)(parsedMockInteraction, parsedSpecOperation));
 const validateMockInteractionResponse = (parsedMockInteraction, parsedSpecOperation) => {
-    const parsedSpecResponseResult = get_parsed_spec_response_1.getParsedSpecResponse(parsedMockInteraction, parsedSpecOperation);
+    const parsedSpecResponseResult = (0, get_parsed_spec_response_1.getParsedSpecResponse)(parsedMockInteraction, parsedSpecOperation);
     if (!parsedSpecResponseResult.found) {
         return parsedSpecResponseResult.results;
     }
-    return _.concat(parsedSpecResponseResult.results, validate_parsed_mock_response_body_1.validateParsedMockResponseBody(parsedMockInteraction, parsedSpecResponseResult.value), validate_parsed_mock_response_headers_1.validateParsedMockResponseHeaders(parsedMockInteraction, parsedSpecResponseResult.value));
+    return _.concat(parsedSpecResponseResult.results, (0, validate_parsed_mock_response_body_1.validateParsedMockResponseBody)(parsedMockInteraction, parsedSpecResponseResult.value), (0, validate_parsed_mock_response_headers_1.validateParsedMockResponseHeaders)(parsedMockInteraction, parsedSpecResponseResult.value));
 };
 const validateMockInteraction = (parsedMockInteraction, normalizedParsedSpec) => {
-    const getParsedSpecOperationResult = get_parsed_spec_operation_1.getParsedSpecOperation(parsedMockInteraction, normalizedParsedSpec);
+    const getParsedSpecOperationResult = (0, get_parsed_spec_operation_1.getParsedSpecOperation)(parsedMockInteraction, normalizedParsedSpec);
     if (!getParsedSpecOperationResult.found) {
         return getParsedSpecOperationResult.results;
     }
@@ -39,8 +39,8 @@ const createValidationOutcome = (validationResults, mockPathOrUrl, specPathOrUrl
     return { errors, failureReason, success, warnings };
 };
 const validateSpecAndMock = (parsedMock, parsedSpec) => {
-    const normalizedParsedSpec = to_normalized_parsed_spec_1.toNormalizedParsedSpec(parsedSpec);
-    const normalizedParsedMock = to_normalized_parsed_mock_1.toNormalizedParsedMock(parsedMock);
+    const normalizedParsedSpec = (0, to_normalized_parsed_spec_1.toNormalizedParsedSpec)(parsedSpec);
+    const normalizedParsedMock = (0, to_normalized_parsed_mock_1.toNormalizedParsedMock)(parsedMock);
     const validationResults = _(normalizedParsedMock.interactions)
         .map((parsedMockInteraction) => validateMockInteraction(parsedMockInteraction, normalizedParsedSpec))
         .flatten()
