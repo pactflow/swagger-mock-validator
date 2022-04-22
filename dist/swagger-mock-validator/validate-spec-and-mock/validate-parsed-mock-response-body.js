@@ -27,9 +27,14 @@ const setAdditionalPropertiesToFalseInSchema = (schema) => {
 const isMockInteractionWithoutResponseBody = (parsedMockInteraction) => !parsedMockInteraction.responseBody.value;
 const isNotSupportedMediaType = (parsedSpecResponse) => parsedSpecResponse.produces.value.length > 0 &&
     !(0, content_negotiation_1.isMediaTypeSupported)('application/json', parsedSpecResponse.produces.value);
+<<<<<<< HEAD
 const shouldSkipValidation = (parsedMockInteraction, parsedSpecResponse) => isMockInteractionWithoutResponseBody(parsedMockInteraction) ||
     isNotSupportedMediaType(parsedSpecResponse);
 const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecResponse, opts) => {
+=======
+const shouldSkipValidation = (parsedMockInteraction, parsedSpecResponse) => isMockInteractionWithoutResponseBody(parsedMockInteraction) || isNotSupportedMediaType(parsedSpecResponse);
+const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecResponse) => {
+>>>>>>> origin/master
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecResponse)) {
         return [];
     }
@@ -44,6 +49,7 @@ const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecRespons
             })
         ];
     }
+<<<<<<< HEAD
     let responseBodyToValidate = parsedSpecResponse.schema;
     // tslint:disable:cyclomatic-complexity
     if (!opts.additionalPropertiesInResponse) {
@@ -53,6 +59,10 @@ const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecRespons
         responseBodyToValidate = removeRequiredPropertiesFromSchema(responseBodyToValidate);
     }
     const validationErrors = (0, validate_json_1.validateJson)(responseBodyToValidate, parsedMockInteraction.responseBody.value);
+=======
+    const responseBodyWithoutRequiredProperties = removeRequiredPropertiesFromSchema(parsedSpecResponse.schema);
+    const validationErrors = (0, validate_json_1.validateJson)(responseBodyWithoutRequiredProperties, parsedMockInteraction.responseBody.value);
+>>>>>>> origin/master
     return _.map(validationErrors, (error) => {
         const message = error.keyword === 'additionalProperties'
             ? `${error.message} - ${error.params.additionalProperty}`

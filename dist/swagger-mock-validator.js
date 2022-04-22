@@ -59,7 +59,11 @@ const validateSpecAndMockContent = (options) => __awaiter(void 0, void 0, void 0
     } = options);
     const parsedSpec = yield spec_parser_1.SpecParser.parse(spec);
     const parsedMock = mock_parser_1.MockParser.parse(mock);
+<<<<<<< HEAD
     const validationOutcome = yield (0, validate_spec_and_mock_1.validateSpecAndMock)(parsedMock, parsedSpec, opts);
+=======
+    const validationOutcome = yield (0, validate_spec_and_mock_1.validateSpecAndMock)(parsedMock, parsedSpec);
+>>>>>>> origin/master
     return {
         parsedMock,
         validationOutcome
