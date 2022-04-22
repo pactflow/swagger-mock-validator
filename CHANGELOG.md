@@ -1,3 +1,18 @@
+<a name="11.0.0"></a>
+# [11.0.0](https://github.com/pactflow/swagger-mock-validator/compare/10.3.0...11.0.0) (2022-04-22)
+
+
+### Features
+
+* Breaking change update default flags ([#2](https://github.com/pactflow/swagger-mock-validator/issues/2)) ([b93d1a8](https://github.com/pactflow/swagger-mock-validator/commit/b93d1a8))
+
+
+### BREAKING CHANGES
+
+* Will change default behaviour to no longer allow additional properties in response by default. Will go out as a major release
+
+
+
 <a name="10.3.0"></a>
 # [10.3.0](https://github.com/pactflow/swagger-mock-validator/compare/10.1.3...10.3.0) (2022-04-22)
 
