@@ -27,7 +27,7 @@ const getMockSource = (mockPathOrUrl, providerName) => {
 const getSpecSource = (specPathOrUrl) => file_store_1.FileStore.isUrl(specPathOrUrl) ? 'url' : 'path';
 // tslint:disable:cyclomatic-complexity
 const parseUserOptions = (userOptions) => (Object.assign(Object.assign({}, userOptions), { mockSource: getMockSource(userOptions.mockPathOrUrl, userOptions.providerName), specSource: getSpecSource(userOptions.specPathOrUrl), additionalPropertiesInResponse: typeof userOptions.additionalPropertiesInResponse === 'undefined'
-        ? false // default to true - existing behaviour
+        ? false // BREAKING CHANGE - option switch here to change default from true, to false for versions > v10.3.0
         : userOptions.additionalPropertiesInResponse === 'true'
             ? true
             : false, requiredPropertiesInResponse: typeof userOptions.requiredPropertiesInResponse === 'undefined'
