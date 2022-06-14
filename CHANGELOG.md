@@ -1,3 +1,12 @@
+# [11.1.0](https://github.com/pactflow/swagger-mock-validator/compare/11.0.0...11.1.0) (2022-06-14)
+
+
+### Bug Fixes
+
+* Convert pact spec 3 headers to v1 format ([a0584b0](https://github.com/pactflow/swagger-mock-validator/commit/a0584b0590a5a857cb1bfa302595e892aee781ab))
+
+
+
 <a name="11.0.0"></a>
 # [11.0.0](https://github.com/pactflow/swagger-mock-validator/compare/10.3.0...11.0.0) (2022-04-22)
 

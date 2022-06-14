@@ -21,6 +21,14 @@ const parseValues = (values, location, parentInteraction) => {
         return result;
     }, {});
 };
+const parseHeaders = (headers, location, parentInteraction) => {
+    for (const key in headers) {
+        if (typeof headers[key] !== 'string') {
+            headers[key] = headers[key].toString();
+        }
+    }
+    return parseValues(headers, location, parentInteraction);
+};
 const isPactV1RequestQuery = (query) => typeof query === 'string';
 const parseAsPactV1RequestQuery = (requestQuery) => {
     const parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery);
@@ -76,7 +84,7 @@ const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
         parentInteraction: parsedInteraction,
         value: interaction.request.body
     };
-    parsedInteraction.requestHeaders = parseValues(interaction.request.headers, `${parsedInteraction.location}.request.headers`, parsedInteraction);
+    parsedInteraction.requestHeaders = parseHeaders(interaction.request.headers, `${parsedInteraction.location}.request.headers`, parsedInteraction);
     parsedInteraction.requestMethod = {
         location: `${parsedInteraction.location}.request.method`,
         parentInteraction: parsedInteraction,
@@ -94,7 +102,7 @@ const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
         parentInteraction: parsedInteraction,
         value: interaction.response.body
     };
-    parsedInteraction.responseHeaders = parseValues(interaction.response.headers, `${parsedInteraction.location}.response.headers`, parsedInteraction);
+    parsedInteraction.responseHeaders = parseHeaders(interaction.response.headers, `${parsedInteraction.location}.response.headers`, parsedInteraction);
     parsedInteraction.responseStatus = {
         location: `${parsedInteraction.location}.response.status`,
         parentInteraction: parsedInteraction,
