@@ -1,9 +1,10 @@
 import * as _ from 'lodash';
 import * as querystring from 'querystring';
 import {
-    MultiCollectionFormatSeparator} from '../../types';
-import {ParsedMock, ParsedMockInteraction, ParsedMockValueCollection} from '../parsed-mock';
-import {Pact, PactInteraction, PactInteractionHeaders, PactV1RequestQuery, PactV3RequestQuery} from './pact';
+    MultiCollectionFormatSeparator
+} from '../../types';
+import { ParsedMock, ParsedMockInteraction, ParsedMockValueCollection } from '../parsed-mock';
+import { Pact, PactInteraction, PactInteractionHeaders, PactV1RequestQuery, PactV3RequestQuery } from './pact';
 
 const parseRequestPathSegments = (requestPath: string, parentInteraction: ParsedMockInteraction) =>
     _(requestPath.split('/'))
@@ -16,7 +17,7 @@ const parseRequestPathSegments = (requestPath: string, parentInteraction: Parsed
         .value();
 
 const parseValues = (
-    values: {[name: string]: string} | undefined,
+    values: { [name: string]: string } | undefined,
     location: string,
     parentInteraction: ParsedMockInteraction
 ): ParsedMockValueCollection => {
@@ -34,25 +35,40 @@ const parseValues = (
     );
 };
 
+const parseHeaders = (
+    headers: any | undefined,
+    location: string,
+    parentInteraction: ParsedMockInteraction
+) => {
+    for (const key in headers) {
+        if (typeof headers[key] !== 'string') {
+            headers[key] = headers[key].toString()
+        }
+    }
+    return parseValues(
+        headers, location, parentInteraction
+    );
+}
+
 const isPactV1RequestQuery = (query: PactV1RequestQuery | PactV3RequestQuery): query is PactV1RequestQuery =>
     typeof query === 'string'
 
-const parseAsPactV1RequestQuery = (requestQuery: PactV1RequestQuery): {[name: string]: string} => {
+const parseAsPactV1RequestQuery = (requestQuery: PactV1RequestQuery): { [name: string]: string } => {
     const parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery);
     const separator: MultiCollectionFormatSeparator = '[multi-array-separator]';
 
     return Object.keys(parsedQueryAsStringsOrArrayOfStrings)
-        .reduce<{[name: string]: string}>((accumulator, queryName) => {
+        .reduce<{ [name: string]: string }>((accumulator, queryName) => {
             const queryValue = parsedQueryAsStringsOrArrayOfStrings[queryName] || '';
             accumulator[queryName] = (queryValue instanceof Array) ? queryValue.join(separator) : queryValue;
             return accumulator;
         }, {});
 };
 
-const parseAsPactV3RequestQuery = (requestQuery: PactV3RequestQuery): {[name: string]: string} => {
+const parseAsPactV3RequestQuery = (requestQuery: PactV3RequestQuery): { [name: string]: string } => {
     const separator: MultiCollectionFormatSeparator = '[multi-array-separator]';
     return Object.keys(requestQuery)
-        .reduce<{[name: string]: string}>((accumulator, queryName) => {
+        .reduce<{ [name: string]: string }>((accumulator, queryName) => {
             accumulator[queryName] = requestQuery[queryName].join(separator);
             return accumulator;
         }, {});
@@ -60,7 +76,7 @@ const parseAsPactV3RequestQuery = (requestQuery: PactV3RequestQuery): {[name: st
 
 const parseRequestQuery = (
     requestQuery: PactV1RequestQuery | PactV3RequestQuery | undefined
-): {[name: string]: string} => {
+): { [name: string]: string } => {
     requestQuery = requestQuery || ''
 
     return isPactV1RequestQuery(requestQuery)
@@ -106,7 +122,7 @@ const parseInteraction = (
         parentInteraction: parsedInteraction,
         value: interaction.request.body
     };
-    parsedInteraction.requestHeaders = parseValues(
+    parsedInteraction.requestHeaders = parseHeaders(
         interaction.request.headers, `${parsedInteraction.location}.request.headers`, parsedInteraction
     );
     parsedInteraction.requestMethod = {
@@ -120,7 +136,7 @@ const parseInteraction = (
         value: interaction.request.path
     };
     parsedInteraction.requestPathSegments = parseRequestPathSegments(interaction.request.path, parsedInteraction);
-    parsedInteraction.requestQuery =  parseValues(
+    parsedInteraction.requestQuery = parseValues(
         parseRequestQuery(interaction.request.query), `${parsedInteraction.location}.request.query`, parsedInteraction
     );
     parsedInteraction.responseBody = {
@@ -128,7 +144,7 @@ const parseInteraction = (
         parentInteraction: parsedInteraction,
         value: interaction.response.body
     };
-    parsedInteraction.responseHeaders = parseValues(
+    parsedInteraction.responseHeaders = parseHeaders(
         interaction.response.headers, `${parsedInteraction.location}.response.headers`, parsedInteraction
     );
     parsedInteraction.responseStatus = {

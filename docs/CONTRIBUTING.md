@@ -55,6 +55,15 @@ To get fast test feedback run `npm run watch` in one terminal window and `npm ru
 - `npm run watch-e2e` - Automatically runs the e2e tests whenever you edit a relevant file. This command does not
 compile the code and must be run in combination with the watch command.
 
+### Run progam locally
+
+To run the compiled development code locally change to the bin directory and run the swagger-mock-validator-local app via node. This compiled version preserves any console logs for development purposes.
+
+```
+cd bin
+node swagger-mock-validator-local <example_swagger_json> <example_pactfile_json> --outputDepth 5
+```
+
 ## Releasing a new version
 
 This project is versioned using [Semantic Versioning](http://semver.org/).
