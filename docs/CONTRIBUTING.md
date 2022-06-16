@@ -66,11 +66,7 @@ node swagger-mock-validator-local <example_swagger_json> <example_pactfile_json>
 
 ## Releasing a new version
 
-This project is versioned using [Semantic Versioning](http://semver.org/).
-
-- `npm run release-patch` - Publishes a patch version to npm, e.g. 1.0.0 -> 1.0.1
-- `npm run release-minor` - Publishes a minor version to npm, e.g. 1.0.0 -> 1.1.0
-- `npm run release-major` - Publishes a major version to npm, e.g. 1.0.0 -> 2.0.0
+See [Releasing](RELEASING.md)
 
 ## Bumping project dependencies
 
