@@ -38,10 +38,11 @@ cypress-slack-reporter repository.
 
 - Set an environment variable `GITHUB_ACCESS_TOKEN_FOR_PACTFLOW_RELEASES` to this token.
 - Make sure master contains the code you want to release
-- Run one of the following, depending on the class of change
-  - `npm run release-patch`
-  - `npm run release-minor`
-  - `npm run release-major`
+- Run one of the following, depending on the class of change. These scripts send the custom repository_dispatch event `release-triggered`, kicking of the release workflow.
+
+  - `./scripts/trigger-release-patch` - Publishes a patch version to npm, e.g. 1.0.0 -> 1.0.1
+  - `./scripts/trigger-release-minor` - Publishes a minor version to npm, e.g. 1.0.0 -> 1.1.0
+  - `./scripts/trigger-release-major` - Publishes a major version to npm, e.g. 1.0.0 -> 2.0.0
 
 Then wait for github to do its magic. It will release the current head of master.
 
