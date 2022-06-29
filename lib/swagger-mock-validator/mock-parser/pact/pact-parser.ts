@@ -96,8 +96,6 @@ const parseInteraction = (
         value: interaction
     } as ParsedMockInteraction;
 
-
-    console.log('interaction', interaction)
     const getBodyPath = (bodyValue: any, bodyLocation: string, path: string) => {
         let location = bodyLocation;
         let value = bodyValue;
