@@ -96,6 +96,8 @@ const parseInteraction = (
         value: interaction
     } as ParsedMockInteraction;
 
+
+    console.log('interaction', interaction)
     const getBodyPath = (bodyValue: any, bodyLocation: string, path: string) => {
         let location = bodyLocation;
         let value = bodyValue;
@@ -113,9 +115,9 @@ const parseInteraction = (
     };
 
     parsedInteraction.getRequestBodyPath = (path) =>
-        getBodyPath(interaction.request.body, `${parsedInteraction.location}.request.body`, path);
+        getBodyPath(interaction?.request?.body, `${parsedInteraction.location}.request.body`, path);
     parsedInteraction.getResponseBodyPath = (path) =>
-        getBodyPath(interaction.response.body, `${parsedInteraction.location}.response.body`, path);
+        getBodyPath(interaction?.response?.body, `${parsedInteraction.location}.response.body`, path);
     parsedInteraction.parentInteraction = parsedInteraction;
     parsedInteraction.requestBody = {
         location: `${parsedInteraction.location}.request.body`,
@@ -159,7 +161,7 @@ const parseInteraction = (
 export const pactParser = {
     parse: (pactJson: Pact, mockPathOrUrl: string): ParsedMock => ({
         consumer: pactJson.consumer.name,
-        interactions: pactJson.interactions.map((interaction: PactInteraction, interactionIndex: number) =>
+        interactions: pactJson.interactions.filter(interaction => interaction?.type !== 'Asynchronous/Messages').map((interaction: PactInteraction, interactionIndex: number) =>
             parseInteraction(interaction, interactionIndex, mockPathOrUrl)
         ),
         pathOrUrl: mockPathOrUrl,
