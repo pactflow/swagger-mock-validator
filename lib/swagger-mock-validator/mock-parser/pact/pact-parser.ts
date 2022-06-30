@@ -156,8 +156,8 @@ const parseInteraction = (
     return parsedInteraction;
 };
 
-const filterUnsupportedTypes = (interaction: PactInteraction)=> {
-    if(!interaction?.type || interaction.type === 'Synchronous/HTTP'){
+const filterUnsupportedTypes = (interaction: PactInteraction) => {
+    if (!interaction?.type || interaction.type === 'Synchronous/HTTP') {
         return interaction
     }
     return null

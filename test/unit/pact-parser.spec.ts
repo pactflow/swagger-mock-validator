@@ -46,7 +46,7 @@ describe('pact-parser', () => {
         expect(pact.interactions[0].requestHeaders['Content-Type'].value).toEqual('text/json')
     });
 
-    it('should filter out interactions that have a type defined other than "Synchronous/HTTP"', () => {
+    it('should filter out interactions that have a type defined other than \'Synchronous/HTTP\'', () => {
 
         const pactV4Json = {
             'consumer': {
@@ -66,7 +66,7 @@ describe('pact-parser', () => {
                 },
                 {
                     'name': 'Synchronous/HTTP defined',
-                    "type": "Synchronous/HTTP",
+                    'type': 'Synchronous/HTTP',
                     'description': 'a request to retrieve a product with existing id',
                     'request': {
                         'method': 'GET',
@@ -78,7 +78,7 @@ describe('pact-parser', () => {
                 },
                 {
                     'name': 'different type defined',
-                    "type": "Asynchronous/Messages",
+                    'type': 'Asynchronous/Messages',
                     'description': 'a request to retrieve a product with existing id',
                     'request': {
                         'method': 'GET',
