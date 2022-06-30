@@ -156,10 +156,17 @@ const parseInteraction = (
     return parsedInteraction;
 };
 
+const filterUnsupportedTypes = (interaction: PactInteraction)=> {
+    if(!interaction?.type || interaction.type === 'Synchronous/HTTP'){
+        return interaction
+    }
+    return null
+}
+
 export const pactParser = {
     parse: (pactJson: Pact, mockPathOrUrl: string): ParsedMock => ({
         consumer: pactJson.consumer.name,
-        interactions: pactJson.interactions.filter(interaction => interaction?.type !== 'Asynchronous/Messages').map((interaction: PactInteraction, interactionIndex: number) =>
+        interactions: pactJson.interactions.filter(interaction => filterUnsupportedTypes(interaction)).map((interaction: PactInteraction, interactionIndex: number) =>
             parseInteraction(interaction, interactionIndex, mockPathOrUrl)
         ),
         pathOrUrl: mockPathOrUrl,
