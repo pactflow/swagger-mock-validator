@@ -1,0 +1,70 @@
+{
+    "consumer": {
+        "name": "pactflow-example-bi-directional-consumer-nock"
+    },
+    "provider": {
+        "name": "pactflow-example-bi-directional-provider-dredd"
+    },
+    "interactions": [
+        {
+            "description": "nock_GET_/products_200",
+            "request": {
+                "method": "GET",
+                "path": "/products",
+                "body": "",
+                "query":{
+                    "max_results": ["100"]
+                }
+            },
+            "response": {
+                "status": 200,
+                "body": [
+                    {
+                        "id": "09",
+                        "type": "CREDIT_CARD",
+                        "name": "Gem Visa",
+                        "version": "v1",
+                        "price": 99.99
+                    },
+                    {
+                        "id": "10",
+                        "type": "CREDIT_CARD",
+                        "name": "28 Degrees",
+                        "version": "v1",
+                        "price": 49.49
+                    },
+                    {
+                        "id": "11",
+                        "type": "PERSONAL_LOAN",
+                        "name": "MyFlexiPay",
+                        "version": "v2",
+                        "price": 16.5
+                    }
+                ]
+            }
+        },
+        {
+            "description": "nock_GET_/product/10_200",
+            "request": {
+                "method": "GET",
+                "path": "/product/10",
+                "body": ""
+            },
+            "response": {
+                "status": 200,
+                "body": {
+                    "id": "10",
+                    "type": "CREDIT_CARD",
+                    "name": "28 Degrees",
+                    "version": "v1",
+                    "price": 49.49
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "pactSpecification": {
+            "version": "3.0.0"
+        }
+    }
+}
