@@ -1,0 +1,81 @@
+{
+    "consumer": {
+        "name": "pactflow-example-bi-directional-consumer-nock"
+    },
+    "provider": {
+        "name": "pactflow-example-bi-directional-provider-dredd"
+    },
+    "interactions": [
+        {
+            "type": "Synchronous/HTTP",
+            "description": "products",
+            "key": "8d1495bb",
+            "pending": false,
+            "comments": "",
+            "interactionMarkup":"",
+            "pluginConfiguration": [],
+            "request": {
+                "headers": {
+                    "Content-Type": ["image/gif"]
+                  },
+                "method": "GET",
+                "path": "/products",
+                "body": ""
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": ["image/gif"]
+                  },
+                "body": [
+                    {
+                        "id": "09",
+                        "type": "CREDIT_CARD",
+                        "name": "Gem Visa",
+                        "version": "v1",
+                        "price": 99.99
+                    },
+                    {
+                        "id": "10",
+                        "type": "CREDIT_CARD",
+                        "name": "28 Degrees",
+                        "version": "v1",
+                        "price": 49.49
+                    },
+                    {
+                        "id": "11",
+                        "type": "PERSONAL_LOAN",
+                        "name": "MyFlexiPay",
+                        "version": "v2",
+                        "price": 16.5
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Asynchronous/Messages",
+            "key": "8d1495aa",
+            "description": "product by id",
+            "request": {
+                "method": "GET",
+                "path": "/product/10",
+                "body": ""
+            },
+            "response": {
+                "status": 200,
+                "body": {
+                    "id": "10",
+                    "type": "CREDIT_CARD",
+                    "name": "28 Degrees",
+                    "version": "v1",
+                    "price": 49.49
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "pactSpecification": {
+            "version": "4.0.0"
+        }
+    }
+}
