@@ -91,7 +91,7 @@ describe('swagger-mock-validator/api', () => {
     });
 
     it('should pass when the pact file is v4 format', async () => {
-        const specPath = 'test/e2e/fixtures/pactv3-compatible-swagger.yaml';
+        const specPath = 'test/e2e/fixtures/pactv4-compatible-swagger.yaml';
         const mockPath = 'test/e2e/fixtures/v4-pact-file.json';
 
         const specContent = await loadContent(specPath);
@@ -108,7 +108,7 @@ describe('swagger-mock-validator/api', () => {
                 format: 'openapi3',
                 pathOrUrl: specPath
             },
-            additionalPropertiesInResponse: false,
+            additionalPropertiesInResponse: true,
             requiredPropertiesInResponse: false
         });
 
