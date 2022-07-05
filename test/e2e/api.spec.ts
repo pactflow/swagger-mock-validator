@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as SwaggerMockValidator from '../../lib/api';
-import {SwaggerMockValidatorErrorImpl} from '../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
-import {expectToFail} from '../support/expect-to-fail';
+import { SwaggerMockValidatorErrorImpl } from '../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
+import { expectToFail } from '../support/expect-to-fail';
 
 describe('swagger-mock-validator/api', () => {
     const loadContent = (filePath: string): Promise<string> => {
@@ -71,7 +71,7 @@ describe('swagger-mock-validator/api', () => {
 
         const specContent = await loadContent(specPath);
         const mockContent = await loadContent(mockPath);
-        
+
         const result = await SwaggerMockValidator.validate({
             mock: {
                 content: mockContent,
@@ -86,8 +86,8 @@ describe('swagger-mock-validator/api', () => {
             additionalPropertiesInResponse: true,
             requiredPropertiesInResponse: false
         });
-            expect(result.errors.length).toEqual(0)
-            expect(result.warnings.length).toEqual(0)
+        expect(result.errors.length).toEqual(0)
+        expect(result.warnings.length).toEqual(0)
     });
 
     it('should pass when the pact file is v4 format', async () => {
@@ -96,7 +96,7 @@ describe('swagger-mock-validator/api', () => {
 
         const specContent = await loadContent(specPath);
         const mockContent = await loadContent(mockPath);
-        
+
         const result = await SwaggerMockValidator.validate({
             mock: {
                 content: mockContent,
@@ -195,8 +195,8 @@ describe('swagger-mock-validator/api', () => {
     }, 30000);
 
     it('should fail when the format is swagger2 but the content is not', async () => {
-        const specContent = JSON.stringify({not: 'swagger2'});
-        const mockContent = JSON.stringify({interactions: []});
+        const specContent = JSON.stringify({ not: 'swagger2' });
+        const mockContent = JSON.stringify({ interactions: [] });
 
         const error = await expectToFail(SwaggerMockValidator.validate({
             mock: {
@@ -219,8 +219,8 @@ describe('swagger-mock-validator/api', () => {
     });
 
     it('should fail when the format is openapi3 but the content is not', async () => {
-        const specContent = JSON.stringify({openapi: '4.0'});
-        const mockContent = JSON.stringify({interactions: []});
+        const specContent = JSON.stringify({ openapi: '4.0' });
+        const mockContent = JSON.stringify({ interactions: [] });
 
         const error = await expectToFail(SwaggerMockValidator.validate({
             mock: {
@@ -243,8 +243,8 @@ describe('swagger-mock-validator/api', () => {
     });
 
     it('should fail when the given format is unknown', async () => {
-        const specContent = JSON.stringify({unknown: 'spec format'});
-        const mockContent = JSON.stringify({interactions: []});
+        const specContent = JSON.stringify({ unknown: 'spec format' });
+        const mockContent = JSON.stringify({ interactions: [] });
 
         const error = await expectToFail(SwaggerMockValidator.validate({
             mock: {
