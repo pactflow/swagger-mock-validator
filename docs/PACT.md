@@ -1,7 +1,9 @@
 # Pact Support
 
-Pact v1, v2, and v3 specifications are supported.
+Pact v1, v2, v3 and v4 specifications are supported.
 This is a list of all the relevant field names in Pact and if the validation supports them.
+
+When using [Pact specification V4](https://github.com/pact-foundation/pact-specification/tree/version-4) note that only interactions with type "Synchronous/HTTP" are validated. Validation will ignore other interaction types such as "Asynchronous/Messages" which cannot be directly compared to an OAS.
 
 ## Pact Object
 
