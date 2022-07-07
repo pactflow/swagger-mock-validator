@@ -1,3 +1,22 @@
+<a name="11.3.0"></a>
+# [11.3.0](https://github.com/pactflow/swagger-mock-validator/compare/11.2.0...11.3.0) (2022-07-07)
+
+
+### Bug Fixes
+
+* fix linting errors ([007c76c](https://github.com/pactflow/swagger-mock-validator/commit/007c76c))
+* fix the build ([f98715b](https://github.com/pactflow/swagger-mock-validator/commit/f98715b))
+
+
+### Features
+
+* add pact v4 e2e test ([c6b6418](https://github.com/pactflow/swagger-mock-validator/commit/c6b6418))
+* filter requests by type to support v4 ([923f241](https://github.com/pactflow/swagger-mock-validator/commit/923f241))
+* update pact parser to filter out all unsupported interaction types ([343647d](https://github.com/pactflow/swagger-mock-validator/commit/343647d))
+* Update pact-parser.ts ([a200bf0](https://github.com/pactflow/swagger-mock-validator/commit/a200bf0))
+
+
+
 <a name="11.2.0"></a>
 # [11.2.0](https://github.com/pactflow/swagger-mock-validator/compare/11.1.0...11.2.0) (2022-06-14)
 

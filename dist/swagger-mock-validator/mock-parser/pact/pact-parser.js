@@ -76,8 +76,8 @@ const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
             value
         };
     };
-    parsedInteraction.getRequestBodyPath = (path) => getBodyPath(interaction.request.body, `${parsedInteraction.location}.request.body`, path);
-    parsedInteraction.getResponseBodyPath = (path) => getBodyPath(interaction.response.body, `${parsedInteraction.location}.response.body`, path);
+    parsedInteraction.getRequestBodyPath = (path) => { var _a; return getBodyPath((_a = interaction === null || interaction === void 0 ? void 0 : interaction.request) === null || _a === void 0 ? void 0 : _a.body, `${parsedInteraction.location}.request.body`, path); };
+    parsedInteraction.getResponseBodyPath = (path) => { var _a; return getBodyPath((_a = interaction === null || interaction === void 0 ? void 0 : interaction.response) === null || _a === void 0 ? void 0 : _a.body, `${parsedInteraction.location}.response.body`, path); };
     parsedInteraction.parentInteraction = parsedInteraction;
     parsedInteraction.requestBody = {
         location: `${parsedInteraction.location}.request.body`,
@@ -110,10 +110,16 @@ const parseInteraction = (interaction, interactionIndex, mockPathOrUrl) => {
     };
     return parsedInteraction;
 };
+const filterUnsupportedTypes = (interaction) => {
+    if (!(interaction === null || interaction === void 0 ? void 0 : interaction.type) || interaction.type === 'Synchronous/HTTP') {
+        return interaction;
+    }
+    return null;
+};
 exports.pactParser = {
     parse: (pactJson, mockPathOrUrl) => ({
         consumer: pactJson.consumer.name,
-        interactions: pactJson.interactions.map((interaction, interactionIndex) => parseInteraction(interaction, interactionIndex, mockPathOrUrl)),
+        interactions: pactJson.interactions.filter(interaction => filterUnsupportedTypes(interaction)).map((interaction, interactionIndex) => parseInteraction(interaction, interactionIndex, mockPathOrUrl)),
         pathOrUrl: mockPathOrUrl,
         provider: pactJson.provider.name
     })
