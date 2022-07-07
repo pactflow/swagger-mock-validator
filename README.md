@@ -3,7 +3,7 @@
 
 ## What is Swagger Mock Validator
 - A command line tool that confirms mock request and responses conform to the schema specified in a Swagger 2 or OpenApi 3 specification.
-- Supports mocks in Pact format (1.0, 1.1, 2.0 or 3.0) and the [Pact Broker](https://github.com/bethesque/pact_broker) (1.8.0 or higher)
+- Supports mocks in Pact format (1.0, 1.1, 2.0 or 3.0, 4.0) and the [Pact Broker](https://github.com/bethesque/pact_broker) (1.8.0 or higher)
 - Supports local files and urls
 - Supports Swagger/OpenApi files in json or yaml format
 - Can be invoked from the command line in any language
