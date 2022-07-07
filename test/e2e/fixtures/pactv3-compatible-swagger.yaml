@@ -1,0 +1,122 @@
+openapi: 3.0.1
+info:
+  title: Product API
+  description: Pactflow Product API demo
+  version: 1.0.0
+paths:
+  /products:
+    post:
+      summary: Create a product
+      description: Creates a new product
+      operationId: createProduct
+      requestBody:
+        description: Create a new Product
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+            examples:
+              application/json:
+                value:
+                  id: "1234"
+                  type: "food"
+                  price: 42
+      responses:
+        "200":
+          description: successful operation
+          content:
+            "application/json; charset=utf-8":
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Product'
+              examples:
+                application/json:
+                  value:
+                    id: "1234"
+                    type: "food"
+                    price: 42
+    get:
+      summary: List all products
+      description: Returns all products
+      parameters:
+      - name: max_results
+        in: query
+        description: '{"max_results":100}'
+        required: true
+        schema:
+          type: integer
+      operationId: getAllProducts
+      responses:
+        "200":
+          description: successful operation
+          content:
+            "application/json; charset=utf-8":
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                application/json:
+                  value:
+                    - id: "1234"
+                      type: "food"
+                      price: 42
+        "400":
+          description: Invalid ID supplied
+          content: {}
+  /product/{id}:
+    get:
+      summary: Find product by ID
+      description: Returns a single product
+      operationId: getProductByID
+      parameters:
+      - name: id
+        in: path
+        description: ID of product to get
+        schema:
+          type: string
+        required: true
+        example: 10
+      responses:
+        "200":
+          description: successful operation
+          content:
+            "application/json; charset=utf-8":
+              schema:
+                $ref: '#/components/schemas/Product'
+              examples:
+                application/json:
+                  value:
+                    id: "1234"
+                    type: "food"
+                    price: 42
+                    # name: "pizza"
+                    # version: "1.0.0"
+                    # see https://github.com/apiaryio/dredd/issues/1430 for why
+        "400":
+          description: Invalid ID supplied
+          content: {}
+        "404":
+          description: Product not found
+          content: {}
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - price
+      additionalProperties: false # WARNING! without this, a consumer can add stuff that doesn't exist! See also https://bitbucket.org/atlassian/swagger-mock-validator/issues/84/test-incorrectly-passes-when-mock-expects
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+        price:
+          type: number

@@ -113,9 +113,9 @@ const parseInteraction = (
     };
 
     parsedInteraction.getRequestBodyPath = (path) =>
-        getBodyPath(interaction.request.body, `${parsedInteraction.location}.request.body`, path);
+        getBodyPath(interaction?.request?.body, `${parsedInteraction.location}.request.body`, path);
     parsedInteraction.getResponseBodyPath = (path) =>
-        getBodyPath(interaction.response.body, `${parsedInteraction.location}.response.body`, path);
+        getBodyPath(interaction?.response?.body, `${parsedInteraction.location}.response.body`, path);
     parsedInteraction.parentInteraction = parsedInteraction;
     parsedInteraction.requestBody = {
         location: `${parsedInteraction.location}.request.body`,
@@ -156,10 +156,17 @@ const parseInteraction = (
     return parsedInteraction;
 };
 
+const filterUnsupportedTypes = (interaction: PactInteraction) => {
+    if (!interaction?.type || interaction.type === 'Synchronous/HTTP') {
+        return interaction
+    }
+    return null
+}
+
 export const pactParser = {
     parse: (pactJson: Pact, mockPathOrUrl: string): ParsedMock => ({
         consumer: pactJson.consumer.name,
-        interactions: pactJson.interactions.map((interaction: PactInteraction, interactionIndex: number) =>
+        interactions: pactJson.interactions.filter(interaction => filterUnsupportedTypes(interaction)).map((interaction: PactInteraction, interactionIndex: number) =>
             parseInteraction(interaction, interactionIndex, mockPathOrUrl)
         ),
         pathOrUrl: mockPathOrUrl,

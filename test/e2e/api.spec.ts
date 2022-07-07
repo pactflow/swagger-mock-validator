@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as SwaggerMockValidator from '../../lib/api';
-import {SwaggerMockValidatorErrorImpl} from '../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
-import {expectToFail} from '../support/expect-to-fail';
+import { SwaggerMockValidatorErrorImpl } from '../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
+import { expectToFail } from '../support/expect-to-fail';
 
 describe('swagger-mock-validator/api', () => {
     const loadContent = (filePath: string): Promise<string> => {
@@ -64,6 +64,57 @@ describe('swagger-mock-validator/api', () => {
             }]
         });
     }, 30000);
+
+    it('should pass when the pact file is v3 format', async () => {
+        const specPath = 'test/e2e/fixtures/pactv3-compatible-swagger.yaml';
+        const mockPath = 'test/e2e/fixtures/v3-pact-file.json';
+
+        const specContent = await loadContent(specPath);
+        const mockContent = await loadContent(mockPath);
+
+        const result = await SwaggerMockValidator.validate({
+            mock: {
+                content: mockContent,
+                format: 'pact',
+                pathOrUrl: mockPath
+            },
+            spec: {
+                content: specContent,
+                format: 'openapi3',
+                pathOrUrl: specPath
+            },
+            additionalPropertiesInResponse: true,
+            requiredPropertiesInResponse: false
+        });
+        expect(result.errors.length).toEqual(0)
+        expect(result.warnings.length).toEqual(0)
+    });
+
+    it('should pass when the pact file is v4 format', async () => {
+        const specPath = 'test/e2e/fixtures/pactv4-compatible-swagger.yaml';
+        const mockPath = 'test/e2e/fixtures/v4-pact-file.json';
+
+        const specContent = await loadContent(specPath);
+        const mockContent = await loadContent(mockPath);
+
+        const result = await SwaggerMockValidator.validate({
+            mock: {
+                content: mockContent,
+                format: 'pact',
+                pathOrUrl: mockPath
+            },
+            spec: {
+                content: specContent,
+                format: 'openapi3',
+                pathOrUrl: specPath
+            },
+            additionalPropertiesInResponse: true,
+            requiredPropertiesInResponse: false
+        });
+
+        expect(result.errors.length).toEqual(0)
+        expect(result.warnings.length).toEqual(0)
+    });
 
     it('should succeed with validation errors when a pact file and a swagger file are not compatible', async () => {
         const specPath = 'test/e2e/fixtures/swagger-provider.json';
@@ -144,8 +195,8 @@ describe('swagger-mock-validator/api', () => {
     }, 30000);
 
     it('should fail when the format is swagger2 but the content is not', async () => {
-        const specContent = JSON.stringify({not: 'swagger2'});
-        const mockContent = JSON.stringify({interactions: []});
+        const specContent = JSON.stringify({ not: 'swagger2' });
+        const mockContent = JSON.stringify({ interactions: [] });
 
         const error = await expectToFail(SwaggerMockValidator.validate({
             mock: {
@@ -168,8 +219,8 @@ describe('swagger-mock-validator/api', () => {
     });
 
     it('should fail when the format is openapi3 but the content is not', async () => {
-        const specContent = JSON.stringify({openapi: '4.0'});
-        const mockContent = JSON.stringify({interactions: []});
+        const specContent = JSON.stringify({ openapi: '4.0' });
+        const mockContent = JSON.stringify({ interactions: [] });
 
         const error = await expectToFail(SwaggerMockValidator.validate({
             mock: {
@@ -192,8 +243,8 @@ describe('swagger-mock-validator/api', () => {
     });
 
     it('should fail when the given format is unknown', async () => {
-        const specContent = JSON.stringify({unknown: 'spec format'});
-        const mockContent = JSON.stringify({interactions: []});
+        const specContent = JSON.stringify({ unknown: 'spec format' });
+        const mockContent = JSON.stringify({ interactions: [] });
 
         const error = await expectToFail(SwaggerMockValidator.validate({
             mock: {

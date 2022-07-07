@@ -6,6 +6,7 @@ export interface Pact {
 }
 
 export interface PactInteraction {
+    type?: string;
     description: string;
     request: PactInteractionRequest;
     response: PactInteractionResponse;
