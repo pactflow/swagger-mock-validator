@@ -1,0 +1,59 @@
+{
+  "consumer": {
+    "name": "ExampleConsumer"
+  },
+  "interactions": [
+    {
+      "description": "a request for myModel",
+      "request": {
+
+        "method": "GET",
+        "path": "/getMyModel"
+      },
+      "response": {
+        "body": {
+            "optionalString": "string",
+            "optionalData": {
+                "data": "string"
+            }
+        },
+        "headers": {
+          "Content-Type": ["application/json"]
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to get otherModel",
+      "request": {
+        "method": "GET",
+        "path": "/getOtherModel"
+      },
+      "response": {
+        "body": {
+          "requiredString": "string",
+          "requiredData": {
+            "data": "child model data"
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pactRust": {
+      "ffi": "0.2.1",
+      "mockserver": "0.8.7",
+      "models": "0.2.7"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "ExampleProvider"
+  }
+}

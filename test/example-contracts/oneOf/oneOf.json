@@ -1,0 +1,96 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/CANDYG24/allOfExample/1.0.0"
+    }
+  ],
+  "info": {
+    "description": "This is a simple API",
+    "version": "1.0.0",
+    "title": "Simple Inventory API",
+    "contact": {
+      "email": "you@your-company.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "admins",
+      "description": "Secured Admin-only calls"
+    },
+    {
+      "name": "developers",
+      "description": "Operations available to regular developers"
+    }
+  ],
+  "paths": {
+    "/pets": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Cat"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Dog"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Dog": {
+        "type": "object",
+        "properties": {
+          "bark": {
+            "type": "boolean"
+          },
+          "breed": {
+            "type": "string",
+            "enum": [
+              "Dingo",
+              "Husky",
+              "Retriever",
+              "Shepherd"
+            ]
+          }
+        },        
+        "required": [
+          "breed"
+        ]
+      },
+      "Cat": {
+        "type": "object",
+        "properties": {
+          "hunts": {
+            "type": "boolean"
+          },
+          "age": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "age"
+        ]
+      }
+    }
+  }
+}
