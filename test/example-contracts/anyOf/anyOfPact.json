@@ -1,0 +1,37 @@
+{
+    "consumer": {
+        "name": "ExampleConsumer"
+    },
+    "interactions": [
+        {
+            "description": "a an update to a pet",
+            "request": {
+                "method": "patch",
+                "path": "/pets",
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "esfsdf": "dsfsd",
+                    "age": 4
+                }
+            },
+            "response": {
+                "status": 200
+            }
+        }
+    ],
+    "metadata": {
+        "pactRust": {
+            "ffi": "0.2.1",
+            "mockserver": "0.8.7",
+            "models": "0.2.7"
+        },
+        "pactSpecification": {
+            "version": "3.0.0"
+        }
+    },
+    "provider": {
+        "name": "ExampleProvider"
+    }
+}

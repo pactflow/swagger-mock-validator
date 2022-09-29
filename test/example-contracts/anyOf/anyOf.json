@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "This is a simple API",
+    "version": "1.0.0",
+    "title": "Simple Inventory API",
+    "contact": {
+      "email": "you@your-company.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+
+  "paths": {
+    "/pets": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/PetByAge"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PetByType"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PetByAge": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer"
+          },
+          "nickname": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "age"
+        ]
+      },
+      "PetByType": {
+        "type": "object",
+        "properties": {
+          "pet_type": {
+            "type": "string",
+            "enum": [
+              "Cat",
+              "Dog"
+            ]
+          },
+          "hunts": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "pet_type"
+        ]
+      }
+    }
+  }
+}
