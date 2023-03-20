@@ -1,3 +1,13 @@
+<a name="11.3.1"></a>
+## [11.3.1](https://github.com/pactflow/swagger-mock-validator/compare/11.3.0...11.3.1) (2023-03-20)
+
+
+### Bug Fixes
+
+* replace unmaintained dependency request for axios (merge from upstream) ([af43f68](https://github.com/pactflow/swagger-mock-validator/commit/af43f68))
+
+
+
 <a name="11.3.0"></a>
 # [11.3.0](https://github.com/pactflow/swagger-mock-validator/compare/11.2.0...11.3.0) (2022-07-07)
 
