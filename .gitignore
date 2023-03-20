@@ -1,6 +1,7 @@
 .vs
 node_modules
 .idea
+.npmrc
 build-output
 npm-debug.log
 package-lock.json

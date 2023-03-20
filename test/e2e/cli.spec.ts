@@ -310,7 +310,7 @@ describe('swagger-mock-validator/cli', () => {
             swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
         }));
 
-        expect(error).toEqual(jasmine.stringMatching('Expected 200 but received 404'));
+        expect(error).toEqual(jasmine.stringMatching('Request failed with status code 404'));
     }, 30000);
 
     it('should succeed when a pact broker url and a swagger url are compatible', async () => {
