@@ -294,7 +294,7 @@ describe('swagger-mock-validator/cli', () => {
             swagger: 'test/e2e/fixtures/swagger-invalid-provider.json'
         }));
 
-        expect(error).toEqual(jasmine.stringMatching('Missing required property: version at #/info'));
+        expect(error).toEqual(jasmine.stringMatching('#/info must have required property \'version\''));
     }, 30000);
 
     it('should succeed when a pact url and a swagger url are compatible', async () => {

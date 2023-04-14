@@ -1,4 +1,4 @@
-declare module 'swagger-parser' {
+declare module '@apidevtools/swagger-parser' {
     export interface ValidateOptions {
         allow?: {
             json?: boolean;

@@ -1,4 +1,4 @@
-import * as SwaggerParser from 'swagger-parser';
+import * as SwaggerParser from '@apidevtools/swagger-parser';
 import {SwaggerMockValidatorErrorImpl} from '../swagger-mock-validator-error-impl';
 import {Openapi3Schema} from './openapi3/openapi3';
 import {Swagger2} from './swagger2/swagger2';
