@@ -11,6 +11,7 @@ const defaultMediaType = 'application/json';
 
 const findApplicationJsonMediaType = (content: Content): string =>
     Object.keys(content).find((mediaType) => mediaType.indexOf('application/json') === 0)
+    || Object.keys(content).find((mediaType) => mediaType.indexOf('application/vnd.api+json') === 0)
     || defaultMediaType;
 
 const getApplicationJsonContentSchema = (content: Content, spec: Openapi3Schema): GetContentSchemaResult => {

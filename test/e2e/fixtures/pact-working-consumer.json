@@ -1,303 +1,346 @@
 {
     "provider": {
-        "name": "User Service"
+      "name": "User Service"
     },
     "consumer": {
-        "name": "Billing Service"
+      "name": "Billing Service"
     },
-    "interactions": [{
+    "interactions": [
+      {
         "description": "request path exists test",
         "request": {
-            "method": "get",
-            "path": "/1/users/2"
+          "method": "get",
+          "path": "/1/users/2"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "request method exists test",
         "request": {
-            "method": "get",
-            "path": "/1/users/2"
+          "method": "get",
+          "path": "/1/users/2"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "request body valid test",
         "request": {
-            "body": {
-                "email": "bsmith@domain.com",
-                "firstName": "Bob",
-                "lastName": "Smith"
-            },
-            "method": "post",
-            "path": "/1/users"
+          "body": {
+            "email": "bsmith@domain.com",
+            "firstName": "Bob",
+            "lastName": "Smith"
+          },
+          "method": "post",
+          "path": "/1/users"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "request status exists test",
         "request": {
-            "method": "get",
-            "path": "/1/users/2"
+          "method": "get",
+          "path": "/1/users/2"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "response body valid test",
         "request": {
-            "method": "get",
-            "path": "/1/users/2"
+          "method": "get",
+          "path": "/1/users/2"
         },
         "response": {
-            "body": {
-                "email": "bsmith@domain.com",
-                "firstName": "Bob",
-                "lastName": "Smith",
-                "userId": 2
-            },
-            "status": 200
+          "body": {
+            "email": "bsmith@domain.com",
+            "firstName": "Bob",
+            "lastName": "Smith",
+            "userId": 2
+          },
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "request header valid test",
         "request": {
-            "headers": {
-                "x-version": "1.0"
-            },
-            "method": "get",
-            "path": "/1/users/2"
+          "headers": {
+            "x-version": "1.0"
+          },
+          "method": "get",
+          "path": "/1/users/2"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "format valid test",
         "request": {
-            "headers": {
-                "x-client-id": "12345"
-            },
-            "method": "get",
-            "path": "/1/users/2"
+          "headers": {
+            "x-client-id": "12345"
+          },
+          "method": "get",
+          "path": "/1/users/2"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "enum valid test",
         "request": {
-            "headers": {
-                "x-enum-value": "value1"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-enum-value": "value1"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "maximum valid test",
         "request": {
-            "headers": {
-                "x-maximum-value": "99"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-maximum-value": "99"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "minimum valid test",
         "request": {
-            "headers": {
-                "x-minimum-value": "1"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-minimum-value": "1"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "maxlength valid test",
         "request": {
-            "headers": {
-                "x-maxlength-value": "abc"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-maxlength-value": "abc"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "minlength valid test",
         "request": {
-            "headers": {
-                "x-minlength-value": "abc"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-minlength-value": "abc"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "pattern valid test",
         "request": {
-            "headers": {
-                "x-pattern-value": "1234567890abcdef"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-pattern-value": "1234567890abcdef"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "multipleof valid test",
         "request": {
-            "headers": {
-                "x-multipleof-value": "2"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-multipleof-value": "2"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "array valid test",
         "request": {
-            "headers": {
-                "x-array-value": "1,2,3"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-array-value": "1,2,3"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "maxitems valid test",
         "request": {
-            "headers": {
-                "x-maxitems-value": "1,2"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-maxitems-value": "1,2"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "unknown header as a warning test",
         "request": {
-            "headers": {
-                "x-unknown-header": "1,2"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-unknown-header": "1,2"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "minitems valid test",
         "request": {
-            "headers": {
-                "x-minitems-value": "1,2"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-minitems-value": "1,2"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "uniqueitems valid test",
         "request": {
-            "headers": {
-                "x-uniqueitems-value": "1,2,3"
-            },
-            "method": "get",
-            "path": "/test"
+          "headers": {
+            "x-uniqueitems-value": "1,2,3"
+          },
+          "method": "get",
+          "path": "/test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "query valid test",
         "request": {
-            "method": "get",
-            "path": "/test",
-            "query": "query-value=1"
+          "method": "get",
+          "path": "/test",
+          "query": "query-value=1"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "accept header valid test",
         "request": {
-            "headers": {
-                "accept": "application/json"
-            },
-            "method": "get",
-            "path": "/accept-test"
+          "headers": {
+            "accept": "application/json"
+          },
+          "method": "get",
+          "path": "/accept-test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "request content type header valid test",
         "request": {
-            "headers": {
-                "content-type": "application/json"
-            },
-            "method": "post",
-            "path": "/request-content-type-test",
-            "body": {
-                "email": "bsmith@domain.com",
-                "firstName": "Bob",
-                "lastName": "Smith"
-            }
+          "headers": {
+            "content-type": "application/json"
+          },
+          "method": "post",
+          "path": "/request-content-type-test",
+          "body": {
+            "email": "bsmith@domain.com",
+            "firstName": "Bob",
+            "lastName": "Smith"
+          }
         },
         "response": {
-
-            "status": 200
+          "status": 200
         }
-    }, {
+      },
+      {
         "description": "response content type header valid test",
         "request": {
-            "method": "post",
-            "path": "/response-content-type-test"
+          "method": "post",
+          "path": "/response-content-type-test"
         },
         "response": {
-            "body": {
-                "id": 1
-            },
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "status": 200
+          "body": {
+            "id": 1
+          },
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "status": 200
         }
-    }, {
+      },
+      {
+        "description": "response content type header (vnd.api+json) valid test",
+        "request": {
+          "method": "post",
+          "path": "/response-content-type-vnd-api-json-test"
+        },
+        "response": {
+          "body": {
+            "data": {
+              "id": "1",
+              "type": "test"
+            }
+          },
+          "headers": {
+            "Content-Type": "application/vnd.api+json"
+          },
+          "status": 200
+        }
+      },
+      {
         "description": "authorization valid test",
         "request": {
-            "headers": {
-                "Authorization": "Bearer token-value-here"
-            },
-            "method": "get",
-            "path": "/authorization-test"
+          "headers": {
+            "Authorization": "Bearer token-value-here"
+          },
+          "method": "get",
+          "path": "/authorization-test"
         },
         "response": {
-            "status": 200
+          "status": 200
         }
-    }],
+      }
+    ],
     "metadata": {
-        "pactSpecificationVersion": "1.0.0"
+      "pactSpecificationVersion": "1.0.0"
     }
-}
+  }
