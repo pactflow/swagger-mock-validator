@@ -11,7 +11,7 @@
           "Authorization": "Bearer 2019-01-14T11:34:18.045Z"
         },
         "matchingRules": {
-          "$.header.$.Authorization": {
+          "$.header.$.Authorization[0]": {
             "match": "type"
           }
         },
@@ -42,11 +42,11 @@
   ],
   "metadata": {
     "pact-js": {
-      "version": "10.1.3"
+      "version": "10.4.1"
     },
     "pactRust": {
-      "ffi": "0.3.11",
-      "models": "0.4.5"
+      "ffi": "0.4.0",
+      "models": "1.0.4"
     },
     "pactSpecification": {
       "version": "2.0.0"

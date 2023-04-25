@@ -30,10 +30,30 @@ export class API {
     return axios
       .get(this.withPath("/products"), {
         headers: {
+          Accept:        "application/json",
           Authorization: this.generateAuthToken(),
         },
       })
       .then((r) => r.data.map((p) => new Product(p)));
+  }
+
+  async getAllVndProducts() {
+    return axios
+      .get(this.withPath("/products"), {
+        headers: {
+          Accept:        "application/vnd.api+json",
+          Authorization: this.generateAuthToken(),
+        },
+      })
+      .then((r) => r.data.map(
+        (p) => new Product(
+          {
+            id:   p["data"]["id"],
+            type: p["data"]["type"],
+            name: p["data"]["attributes"]["name"]
+          }          
+        )
+      ));
   }
 }
 
