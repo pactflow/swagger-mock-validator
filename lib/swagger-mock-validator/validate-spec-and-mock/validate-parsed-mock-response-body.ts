@@ -79,12 +79,19 @@ export const validateParsedMockResponseBody = (
     ];
   }
 
+  // start with a default schema
   let responseBodyToValidate: ParsedSpecJsonSchema = parsedSpecResponse.schema;
+
+  // switch schema based on content-type
+  const contentType = parsedMockInteraction.responseHeaders['content-type']?.value;
+  if (contentType && parsedSpecResponse.schemasByContentType && parsedSpecResponse.schemasByContentType[contentType]) {
+    responseBodyToValidate = parsedSpecResponse.schemasByContentType[contentType];
+  }
 
   // tslint:disable:cyclomatic-complexity
   if (!opts.additionalPropertiesInResponse) {
     responseBodyToValidate = setAdditionalPropertiesToFalseInSchema(
-      parsedSpecResponse.schema
+      responseBodyToValidate
     );
   }
   if (!opts.requiredPropertiesInResponse) {
@@ -112,7 +119,8 @@ export const validateParsedMockResponseBody = (
       mockSegment: parsedMockInteraction.getResponseBodyPath(error.dataPath),
       source: 'spec-mock-validation',
       specSegment: parsedSpecResponse.getFromSchema(
-        error.schemaPath.replace(/\//g, '.').substring(2)
+        error.schemaPath.replace(/\//g, '.').substring(2),
+        contentType
       )
     });
   });

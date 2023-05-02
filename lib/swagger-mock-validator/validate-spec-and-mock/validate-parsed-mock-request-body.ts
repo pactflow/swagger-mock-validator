@@ -1,15 +1,26 @@
 import * as _ from 'lodash';
-import {ParsedMockInteraction, ParsedMockValue} from '../mock-parser/parsed-mock';
+import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
 import {ParsedSpecBody, ParsedSpecOperation} from '../spec-parser/parsed-spec';
-import {isMediaTypeSupported} from './content-negotiation';
 import {validateJson} from './validate-json';
 
 const validateRequestBodyAgainstSchema = (
-    parsedMockRequestBody: ParsedMockValue<any>,
-    parsedSpecRequestBody: ParsedSpecBody
+    parsedMockInteraction: ParsedMockInteraction,
+    parsedSpecOperation: ParsedSpecOperation
 ) => {
-    const validationErrors = validateJson(parsedSpecRequestBody.schema, parsedMockRequestBody.value);
+    const parsedMockRequestBody = parsedMockInteraction.requestBody;
+    const parsedSpecRequestBody = parsedSpecOperation.requestBodyParameter as ParsedSpecBody;
+
+    // start with a default schema
+    let schema = parsedSpecRequestBody.schema
+
+    // switch schema based on content-type
+    const contentType = parsedMockInteraction.requestHeaders['content-type']?.value;
+    if (contentType && parsedSpecRequestBody.schemasByContentType && parsedSpecRequestBody.schemasByContentType[contentType]) {
+      schema = parsedSpecRequestBody.schemasByContentType[contentType]
+    }
+
+    const validationErrors = validateJson(schema, parsedMockRequestBody.value);
 
     return _.map(validationErrors, (error) => result.build({
         code: 'request.body.incompatible',
@@ -17,7 +28,10 @@ const validateRequestBodyAgainstSchema = (
             `Request body is incompatible with the request body schema in the spec file: ${error.message}`,
         mockSegment: parsedMockRequestBody.parentInteraction.getRequestBodyPath(error.dataPath),
         source: 'spec-mock-validation',
-        specSegment: parsedSpecRequestBody.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2))
+        specSegment: parsedSpecRequestBody.getFromSchema(
+            error.schemaPath.replace(/\//g, '.').substring(2),
+            contentType
+        )
     }));
 };
 
@@ -30,13 +44,8 @@ const specAndMockHaveNoBody = (parsedMockInteraction: ParsedMockInteraction,
                                parsedSpecOperation: ParsedSpecOperation) =>
     !parsedSpecOperation.requestBodyParameter && !parsedMockInteraction.requestBody.value;
 
-const isNotSupportedMediaType = (parsedSpecOperation: ParsedSpecOperation) =>
-    parsedSpecOperation.consumes.value.length > 0 &&
-    !isMediaTypeSupported('application/json', parsedSpecOperation.consumes.value);
-
 const shouldSkipValidation = (parsedMockInteraction: ParsedMockInteraction,
                               parsedSpecOperation: ParsedSpecOperation) =>
-    isNotSupportedMediaType(parsedSpecOperation) ||
     specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) ||
     isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation);
 
@@ -48,8 +57,8 @@ export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockI
 
     if (parsedSpecOperation.requestBodyParameter) {
         return validateRequestBodyAgainstSchema(
-            parsedMockInteraction.requestBody,
-            parsedSpecOperation.requestBodyParameter
+            parsedMockInteraction,
+            parsedSpecOperation
         );
     }
 
