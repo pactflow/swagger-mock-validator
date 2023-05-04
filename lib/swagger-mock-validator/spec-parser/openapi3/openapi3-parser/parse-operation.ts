@@ -38,7 +38,6 @@ export const parseOperation = ({
     spec,
     specPathOrUrl
 }: ParseOperationOptions): ParsedSpecOperation => {
-    // tslint:disable-next-line:no-object-literal-type-assertion
     const parsedOperation = {
         location: operationLocation,
         method: operationName,

@@ -1,4 +1,3 @@
-// tslint:disable:no-namespace
 declare namespace SwaggerMockValidator {
     export type ValidationResultSource =
         'pact-broker' |

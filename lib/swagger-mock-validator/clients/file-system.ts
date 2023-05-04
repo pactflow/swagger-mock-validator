@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs from 'fs';
 
 export class FileSystem {
     public readFile(fileName: string): Promise<string> {

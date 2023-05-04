@@ -34,7 +34,6 @@ export const getDefaultContentSchema = (content: Content | undefined, spec: Open
         ? getApplicationJsonContentSchema(content, spec)
         : {mediaType: defaultMediaType};
 
-// tslint:disable:cyclomatic-complexity
 export const getContentSchemasByContentType = (content: Content | undefined, spec: Openapi3Schema): Record<string, ParsedSpecJsonSchema> => {
     const result: Record<string, ParsedSpecJsonSchema> = {};
 
@@ -51,4 +50,3 @@ export const getContentSchemasByContentType = (content: Content | undefined, spe
 
     return result
 }
-// tslint:enable:cyclomatic-complexity

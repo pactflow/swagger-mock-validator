@@ -1,13 +1,12 @@
 #! /usr/bin/env node
 
-import * as commander from 'commander';
-import * as _ from 'lodash';
-import * as util from 'util';
+import { program } from 'commander';
+import _ from 'lodash';
+import util from 'util';
 import {ValidationOutcome, ValidationResult} from './api-types';
 import {SwaggerMockValidatorFactory} from './swagger-mock-validator-factory';
 
-// tslint:disable:no-var-requires
-const packageJson = require('../package.json');
+import packageJson from "../package.json";
 
 const displaySummaryForValidationResults = (name: string, resultsOrNone?: ValidationResult[]) => {
     const results = resultsOrNone || [];
@@ -43,7 +42,7 @@ const logErrorAndExitProcess = (error: Error) => {
     process.exitCode = 1;
 };
 
-commander
+program
     .version(packageJson.version)
     .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
@@ -100,6 +99,6 @@ If the pact broker has basic auth enabled, pass a --user option with username an
     })
     .parse(process.argv);
 
-if (!commander.args.length) {
-    commander.help();
+if (!program.args.length) {
+    program.help();
 }

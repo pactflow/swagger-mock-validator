@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {ParsedSpecBody, ParsedSpecOperation, ParsedSpecValue} from '../../parsed-spec';
 import {Openapi3Schema, Reference, RequestBody} from '../openapi3';
 import {dereferenceComponent} from './dereference-component';

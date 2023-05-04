@@ -1,8 +1,8 @@
-import * as yaml from 'js-yaml';
+import yaml from 'js-yaml';
 import {ValidationOutcome} from '../../lib/api-types';
 import {FileSystem} from '../../lib/swagger-mock-validator/clients/file-system';
 import {SwaggerMockValidatorErrorImpl} from '../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
-import {expectToFail} from '../support/expect-to-fail';
+import {expectToFail} from '../helpers/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBuilder} from './support/pact-builder';
 import {MockFileSystemResponses, swaggerMockValidatorLoader} from './support/swagger-mock-validator-loader';

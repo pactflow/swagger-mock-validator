@@ -1,7 +1,7 @@
-import * as fs from 'fs';
-import * as SwaggerMockValidator from '../../lib/api';
+import fs from 'fs';
+import SwaggerMockValidator from '../../lib/api';
 import { SwaggerMockValidatorErrorImpl } from '../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
-import { expectToFail } from '../support/expect-to-fail';
+import { expectToFail } from '../helpers/expect-to-fail';
 
 describe('swagger-mock-validator/api', () => {
     const loadContent = (filePath: string): Promise<string> => {

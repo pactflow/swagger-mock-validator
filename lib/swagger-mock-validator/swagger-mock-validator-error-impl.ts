@@ -1,4 +1,4 @@
-import * as VError from 'verror';
+import VError from 'verror';
 import {ErrorCode, SwaggerMockValidatorError} from '../api-types';
 
 export class SwaggerMockValidatorErrorImpl extends VError implements SwaggerMockValidatorError {

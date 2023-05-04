@@ -1,12 +1,11 @@
-import axios, {AxiosRequestHeaders} from 'axios';
+import axios from 'axios';
 
 export class HttpClient {
     public async get(url: string, auth?: string): Promise<string> {
-        const headers: AxiosRequestHeaders = auth
-            ? {authorization: 'Basic ' + Buffer.from(auth).toString('base64')}
-            : {}
         const response = await axios.get(url, {
-            headers,
+            headers: {
+              ...(auth ? {authorization: 'Basic ' + Buffer.from(auth).toString('base64')} : {})
+            },
             timeout: 30000,
             transformResponse: (data) => data,
             validateStatus: (status) => status === 200

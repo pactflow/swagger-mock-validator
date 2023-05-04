@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {JsonSchemaVisitor, traverseJsonSchema} from '../../../common/traverse-json-schema';
 import {ParsedSpecJsonSchemaCore, ParsedSpecJsonSchemaType} from '../../parsed-spec';
 import {Openapi3Schema, Schema as Openapi3JsonSchema} from '../openapi3';

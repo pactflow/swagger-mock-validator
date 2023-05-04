@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { pactParser } from '../../lib/swagger-mock-validator/mock-parser/pact/pact-parser';
 import { validateAndResolvePact } from '../../lib/swagger-mock-validator/validate-and-resolve-pact';
 

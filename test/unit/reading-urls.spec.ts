@@ -1,7 +1,7 @@
 import {ValidationOutcome} from '../../lib/api-types';
 import {HttpClient} from '../../lib/swagger-mock-validator/clients/http-client';
 import {SwaggerMockValidatorErrorImpl} from '../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
-import {expectToFail} from '../support/expect-to-fail';
+import {expectToFail} from '../helpers/expect-to-fail';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {pactBrokerResponseBuilder, providerPactsBuilder} from './support/pact-broker-response-builder';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';

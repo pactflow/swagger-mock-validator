@@ -1,5 +1,5 @@
 import {SwaggerMockValidatorErrorImpl} from '../../../lib/swagger-mock-validator/swagger-mock-validator-error-impl';
-import {expectToFail} from '../../support/expect-to-fail';
+import {expectToFail} from '../../helpers/expect-to-fail';
 import {CustomMatchers, customMatchers} from '../support/custom-jasmine-matchers';
 import {openApi3Builder} from '../support/openapi3-builder';
 import {openApi3ContentBuilder} from '../support/openapi3-builder/openapi3-content-builder';

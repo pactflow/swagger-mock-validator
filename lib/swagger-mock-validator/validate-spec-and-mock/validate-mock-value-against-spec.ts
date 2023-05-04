@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {isObject} from 'util';
 import {ValidationResultCode} from '../../api-types';
 import {ParsedMockInteraction, ParsedMockValue} from '../mock-parser/parsed-mock';
@@ -29,7 +29,6 @@ const toJsonSchema = (parsedSpecParameter: ParsedSpecParameter): ParsedSpecJsonS
 const multiCollectionFormatSeparator: MultiCollectionFormatSeparator = '[multi-array-separator]';
 
 const getCollectionSeparator = (parsedSpecCollectionFormat?: ParsedSpecCollectionFormat) => {
-    // tslint:disable:cyclomatic-complexity
     if (parsedSpecCollectionFormat === 'ssv') {
         return ' ';
     } else if (parsedSpecCollectionFormat === 'tsv') {
@@ -41,7 +40,6 @@ const getCollectionSeparator = (parsedSpecCollectionFormat?: ParsedSpecCollectio
     }
 
     return ',';
-    // tslint:enable:cyclomatic-complexity
 };
 
 const isParsedSpecJsonSchemaCore = (schema?: ParsedSpecJsonSchema): schema is ParsedSpecJsonSchemaCore =>

@@ -1,4 +1,4 @@
-import * as SwaggerMockValidator from './api-types';
+import SwaggerMockValidator from './api-types';
 import {validateSpecAndMockContent} from './swagger-mock-validator';
 
 const swaggerMockValidator: typeof SwaggerMockValidator = {
@@ -8,4 +8,4 @@ const swaggerMockValidator: typeof SwaggerMockValidator = {
     }
 };
 
-export = swaggerMockValidator;
+export default swaggerMockValidator;

@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {Swagger2JsonSchemaDefinitions} from '../../../../lib/swagger-mock-validator/spec-parser/swagger2/swagger2';
 import {setValueOn} from '../builder-utilities';
 import {SchemaBuilder} from './schema-builder';

@@ -1,5 +1,5 @@
-import * as Ajv from 'ajv';
-import * as _ from 'lodash';
+import Ajv from 'ajv';
+import _ from 'lodash';
 import { traverseJsonSchema } from '../common/traverse-json-schema';
 import { ParsedMockInteraction } from '../mock-parser/parsed-mock';
 import { result } from '../result';
@@ -88,7 +88,6 @@ export const validateParsedMockResponseBody = (
     responseBodyToValidate = parsedSpecResponse.schemasByContentType[contentType];
   }
 
-  // tslint:disable:cyclomatic-complexity
   if (!opts.additionalPropertiesInResponse) {
     responseBodyToValidate = setAdditionalPropertiesToFalseInSchema(
       responseBodyToValidate

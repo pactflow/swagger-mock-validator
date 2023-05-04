@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 const setMutableValueOn = <T extends object>(obj: T, path: string, mutableValue: any): T =>
     _.set<T>(_.cloneDeep(obj), path, mutableValue);

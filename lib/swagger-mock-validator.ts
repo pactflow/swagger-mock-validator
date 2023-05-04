@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { ValidationOutcome, ValidationResult } from './api-types';
 import { Analytics } from './swagger-mock-validator/analytics';
 import { FileStore } from './swagger-mock-validator/file-store';
@@ -33,7 +33,6 @@ const getMockSource = (
 const getSpecSource = (specPathOrUrl: string): SpecSource =>
   FileStore.isUrl(specPathOrUrl) ? 'url' : 'path';
 
-// tslint:disable:cyclomatic-complexity
 const parseUserOptions = (
   userOptions: SwaggerMockValidatorUserOptions
 ): ParsedSwaggerMockValidatorOptions => ({

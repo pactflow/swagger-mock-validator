@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {PactBrokerClient} from './clients/pact-broker-client';
 import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator-error-impl';
 import {

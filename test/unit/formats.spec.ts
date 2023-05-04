@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {ValidationOutcome} from '../../lib/api-types';
 import {customMatchers, CustomMatchers} from './support/custom-jasmine-matchers';
 import {interactionBuilder, pactBuilder} from './support/pact-builder';
@@ -540,7 +540,8 @@ describe('formats', () => {
         });
 
         it('should return the error when the pact response body contains a too large int64 value', async () => {
-            const pactResponseBody = {id: 12345678901234567890};
+            // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
+            const pactResponseBody = {id: 12345678901234567890}; 
 
             const swaggerBodySchema = schemaBuilder
                 .withTypeObject()
@@ -558,6 +559,7 @@ describe('formats', () => {
                     interactionState: '[none]',
                     location: '[root].interactions[0].response.body.id',
                     mockFile: 'pact.json',
+                    // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
                     value: 12345678901234567000
                 },
                 source: 'spec-mock-validation',
@@ -914,6 +916,7 @@ describe('formats', () => {
         });
 
         it('should pass when the pact response body contains a value that is so big precision is lost', async () => {
+            // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
             const valueWherePrecisionIsLost = 12345678901234567890;
             const pactResponseBody = {id: valueWherePrecisionIsLost};
 

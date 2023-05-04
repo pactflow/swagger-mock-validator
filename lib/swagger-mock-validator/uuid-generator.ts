@@ -1,7 +1,7 @@
-import * as uuid from 'uuidjs';
+import { UUID } from 'uuidjs';
 
 export class UuidGenerator {
     public generate(): string {
-        return uuid.generate();
+        return UUID.generate()
     }
 }
