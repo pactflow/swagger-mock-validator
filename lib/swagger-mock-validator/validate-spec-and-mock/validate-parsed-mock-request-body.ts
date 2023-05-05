@@ -59,18 +59,19 @@ export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockI
                                               parsedSpecOperation: ParsedSpecOperation) => {
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecOperation)) {
         // this is temporary code to identify passing validations that should've failed
+        // tslint:disable:cyclomatic-complexity
         if (isNotSupportedMediaType(parsedSpecOperation)) {
             const debugValidation = (validation: any) => {
                 console.error(
                     JSON.stringify({
-                        message: "Passing validation that should've failed due to unsupported media type",
+                        message: 'Passing validation that should\'ve failed due to unsupported media type',
                         pact_request: {
-                          'content-type': parsedMockInteraction.requestHeaders['content-type']?.value,
+                          'content-type': parsedMockInteraction.requestHeaders['content-type']?.value
                         },
                         oas_consumes: {
-                          'content-type': parsedSpecOperation.consumes.value,
+                          'content-type': parsedSpecOperation.consumes.value
                         },
-                        validation,
+                        validation
                     })
                 );
             };
@@ -93,6 +94,7 @@ export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockI
                 ]);
             }
         }
+        // tslint:enable:cyclomatic-complexity
 
         return [];
     }
