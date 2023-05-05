@@ -210,6 +210,37 @@ paths:
                 properties:
                   id:
                     type: number
+  /response-content-type-vnd-api-json-test:
+    post:
+      requestBody:
+        required: true
+        content:
+          'application/vnd.api+json':
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: "string"
+                    type:
+                      type: "string"
+      responses:
+        '200':
+          description: The result
+          content:
+            'application/vnd.api+json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: "string"
+                      type:
+                        type: "string"
   /authorization-test:
     get:
       responses:

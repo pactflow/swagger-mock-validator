@@ -206,6 +206,56 @@
                 }
             }
         },
+        "/response-content-type-vnd-api-json-test": {
+            "post": {
+                "consumes": ["application/vnd.api+json"],
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                      "schema": {
+                          "type": "object",
+                          "properties": {
+                              "data": {
+                                  "type": "object",
+                                  "properties": {
+                                      "id": {
+                                          "type": "string"
+                                      },
+                                      "type": {
+                                          "type": "string"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                }],
+                "produces": [
+                    "application/vnd.api+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The result",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/authorization-test": {
             "get": {
                 "responses": {

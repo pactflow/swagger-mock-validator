@@ -532,7 +532,7 @@ describe('openapi3/parser', () => {
         it('should return error if pact not compatible with application/json request with charset', async () => {
             const pactFile = pactBuilder
                 .withInteraction(defaultInteractionBuilder
-                    .withRequestHeader('content-type', 'application/json; charset=UTF-8')
+                    .withRequestHeader('content-type', 'application/json;charset=utf-8')
                     .withRequestBody(true))
                 .build();
 

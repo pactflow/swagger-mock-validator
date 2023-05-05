@@ -285,6 +285,33 @@
             "status": 200
         }
     }, {
+        "description": "response content type header (vnd.api+json) valid test",
+        "request": {
+            "headers": {
+                "content-type": "application/vnd.api+json"
+            },
+            "method": "post",
+            "path": "/response-content-type-vnd-api-json-test",
+            "body": {
+                "data": {
+                    "id": "id",
+                    "type": "type"
+                }
+            }
+        },
+        "response": {
+            "body": {
+                "data": {
+                  "id": "1",
+                  "type": "test"
+                }
+            },
+            "headers": {
+                "Content-Type": "application/vnd.api+json"
+            },
+            "status": 200
+        }
+    }, {
         "description": "authorization valid test",
         "request": {
             "headers": {

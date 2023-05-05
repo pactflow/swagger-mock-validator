@@ -3,7 +3,7 @@ import {ParsedSpecBody, ParsedSpecOperation, ParsedSpecValue} from '../../parsed
 import {Openapi3Schema, Reference, RequestBody} from '../openapi3';
 import {dereferenceComponent} from './dereference-component';
 import {getContentMimeTypes} from './get-content-mime-types';
-import {getContentSchema} from './get-content-schema';
+import {getDefaultContentSchema, getContentSchemasByContentType} from './get-content-schema';
 
 interface ParsedRequestBodyValues {
     consumes: ParsedSpecValue<string[]>;
@@ -13,21 +13,23 @@ interface ParsedRequestBodyValues {
 const parseRequestBody = (
     parentOperation: ParsedSpecOperation, requestBody: RequestBody, spec: Openapi3Schema
 ): ParsedSpecBody | undefined => {
-    const {schema, mediaType} = getContentSchema(requestBody.content, spec);
+    const {schema, mediaType} = getDefaultContentSchema(requestBody.content, spec);
+    const schemasByContentType = getContentSchemasByContentType(requestBody.content, spec);
 
     return schema
         ? {
-            getFromSchema: (pathToGet: string) => {
+            getFromSchema: (pathToGet, actualMediaType) => {
                 return {
                     location:
-                        `${parentOperation.location}.requestBody.content.${mediaType}.schema.${pathToGet}`,
+                        `${parentOperation.location}.requestBody.content.${actualMediaType || mediaType}.schema.${pathToGet}`,
                     parentOperation,
                     value: _.get(schema, pathToGet)
                 };
             },
             name: '',
             required: requestBody.required || false,
-            schema
+            schema,
+            schemasByContentType
         }
         : undefined;
 };
