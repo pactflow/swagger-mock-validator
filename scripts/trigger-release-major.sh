@@ -8,7 +8,7 @@
 
 : "${GITHUB_ACCESS_TOKEN_FOR_PACTFLOW_RELEASES:?Please set environment variable GITHUB_ACCESS_TOKEN_FOR_PACTFLOW_RELEASES}"
 
-repository_slug=$(git remote get-url $(git remote show) | awk -F'//' '{print $2}' | sed 's/\.git//')
+repository_slug=$(git remote get-url $(git remote show) | cut -d':' -f2 | sed 's/\.git//' | sed 's://::' | sed 's:github.com/::')
 
 output=$(curl -L -v -X POST https://api.github.com/repos/${repository_slug}/dispatches \
       -H 'Accept: application/vnd.github.everest-preview+json' \
