@@ -60,7 +60,7 @@ export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockI
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecOperation)) {
         // this is temporary code to identify passing validations that should've failed
         // tslint:disable:cyclomatic-complexity
-        if (isNotSupportedMediaType(parsedSpecOperation)) {
+        if (process.env.DEBUG_CONTENT_TYPE_ISSUE && isNotSupportedMediaType(parsedSpecOperation)) {
             const debugValidation = (validation: any) => {
                 console.error(
                     JSON.stringify({
