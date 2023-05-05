@@ -2,6 +2,7 @@ import _ from 'lodash';
 import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';
 import {ParsedSpecBody, ParsedSpecOperation} from '../spec-parser/parsed-spec';
+import {isMediaTypeSupported} from './content-negotiation';
 import {validateJson} from './validate-json';
 
 const validateRequestBodyAgainstSchema = (
@@ -44,14 +45,57 @@ const specAndMockHaveNoBody = (parsedMockInteraction: ParsedMockInteraction,
                                parsedSpecOperation: ParsedSpecOperation) =>
     !parsedSpecOperation.requestBodyParameter && !parsedMockInteraction.requestBody.value;
 
+const isNotSupportedMediaType = (parsedSpecOperation: ParsedSpecOperation) =>
+    parsedSpecOperation.consumes.value.length > 0 &&
+    !isMediaTypeSupported('application/json', parsedSpecOperation.consumes.value);
+
 const shouldSkipValidation = (parsedMockInteraction: ParsedMockInteraction,
                               parsedSpecOperation: ParsedSpecOperation) =>
+    isNotSupportedMediaType(parsedSpecOperation) ||
     specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) ||
     isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation);
 
 export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockInteraction,
                                               parsedSpecOperation: ParsedSpecOperation) => {
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecOperation)) {
+        // this is temporary code to identify passing validations that should've failed
+        // tslint:disable:cyclomatic-complexity
+        if (process.env.DEBUG_CONTENT_TYPE_ISSUE && isNotSupportedMediaType(parsedSpecOperation)) {
+            const debugValidation = (validation: any) => {
+                console.error(
+                    JSON.stringify({
+                        message: 'Passing validation that should\'ve failed due to unsupported media type',
+                        pact_request: {
+                          'content-type': parsedMockInteraction.requestHeaders['content-type']?.value
+                        },
+                        oas_consumes: {
+                          'content-type': parsedSpecOperation.consumes.value
+                        },
+                        validation
+                    })
+                );
+            };
+            if (parsedSpecOperation.requestBodyParameter) {
+                debugValidation(
+                    validateRequestBodyAgainstSchema(
+                        parsedMockInteraction,
+                        parsedSpecOperation
+                    )
+                );
+            } else {
+                debugValidation([
+                    result.build({
+                        code: 'request.body.unknown',
+                        message: 'No schema found for request body',
+                        mockSegment: parsedMockInteraction.requestBody,
+                        source: 'spec-mock-validation',
+                        specSegment: parsedSpecOperation
+                    })
+                ]);
+            }
+        }
+        // tslint:enable:cyclomatic-complexity
+
         return [];
     }
 

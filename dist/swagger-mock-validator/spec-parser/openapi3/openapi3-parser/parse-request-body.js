@@ -6,19 +6,21 @@ const dereference_component_1 = require("./dereference-component");
 const get_content_mime_types_1 = require("./get-content-mime-types");
 const get_content_schema_1 = require("./get-content-schema");
 const parseRequestBody = (parentOperation, requestBody, spec) => {
-    const { schema, mediaType } = (0, get_content_schema_1.getContentSchema)(requestBody.content, spec);
+    const { schema, mediaType } = (0, get_content_schema_1.getDefaultContentSchema)(requestBody.content, spec);
+    const schemasByContentType = (0, get_content_schema_1.getContentSchemasByContentType)(requestBody.content, spec);
     return schema
         ? {
-            getFromSchema: (pathToGet) => {
+            getFromSchema: (pathToGet, actualMediaType) => {
                 return {
-                    location: `${parentOperation.location}.requestBody.content.${mediaType}.schema.${pathToGet}`,
+                    location: `${parentOperation.location}.requestBody.content.${actualMediaType || mediaType}.schema.${pathToGet}`,
                     parentOperation,
                     value: _.get(schema, pathToGet)
                 };
             },
             name: '',
             required: requestBody.required || false,
-            schema
+            schema,
+            schemasByContentType
         }
         : undefined;
 };
