@@ -59,7 +59,6 @@ export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockI
                                               parsedSpecOperation: ParsedSpecOperation) => {
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecOperation)) {
         // this is temporary code to identify passing validations that should've failed
-        // tslint:disable:cyclomatic-complexity
         if (process.env.DEBUG_CONTENT_TYPE_ISSUE && isNotSupportedMediaType(parsedSpecOperation)) {
             const debugValidation = (validation: any) => {
                 console.error(
@@ -94,7 +93,6 @@ export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockI
                 ]);
             }
         }
-        // tslint:enable:cyclomatic-complexity
 
         return [];
     }
