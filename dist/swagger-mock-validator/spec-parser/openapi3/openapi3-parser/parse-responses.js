@@ -8,11 +8,12 @@ const get_content_schema_1 = require("./get-content-schema");
 const parse_response_headers_1 = require("./parse-response-headers");
 const parseResponse = ({ response, parentOperation, responseLocation, spec }) => {
     const dereferencedResponse = (0, dereference_component_1.dereferenceComponent)(response, spec);
-    const { schema, mediaType } = (0, get_content_schema_1.getContentSchema)(dereferencedResponse.content, spec);
+    const { schema, mediaType } = (0, get_content_schema_1.getDefaultContentSchema)(dereferencedResponse.content, spec);
+    const schemasByContentType = (0, get_content_schema_1.getContentSchemasByContentType)(dereferencedResponse.content, spec);
     return {
-        getFromSchema: (pathToGet) => {
+        getFromSchema: (pathToGet, actualMediaType) => {
             return {
-                location: `${responseLocation}.content.${mediaType}.schema.${pathToGet}`,
+                location: `${responseLocation}.content.${actualMediaType || mediaType}.schema.${pathToGet}`,
                 parentOperation,
                 value: _.get(schema, pathToGet)
             };
@@ -26,6 +27,7 @@ const parseResponse = ({ response, parentOperation, responseLocation, spec }) =>
             value: (0, get_content_mime_types_1.getContentMimeTypes)(dereferencedResponse.content)
         },
         schema,
+        schemasByContentType,
         value: response
     };
 };

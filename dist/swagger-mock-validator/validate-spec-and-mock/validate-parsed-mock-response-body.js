@@ -30,6 +30,7 @@ const isNotSupportedMediaType = (parsedSpecResponse) => parsedSpecResponse.produ
 const shouldSkipValidation = (parsedMockInteraction, parsedSpecResponse) => isMockInteractionWithoutResponseBody(parsedMockInteraction) ||
     isNotSupportedMediaType(parsedSpecResponse);
 const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecResponse, opts) => {
+    var _a;
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecResponse)) {
         return [];
     }
@@ -44,10 +45,16 @@ const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecRespons
             })
         ];
     }
+    // start with a default schema
     let responseBodyToValidate = parsedSpecResponse.schema;
+    // switch schema based on content-type
+    const contentType = (_a = parsedMockInteraction.responseHeaders['content-type']) === null || _a === void 0 ? void 0 : _a.value;
+    if (contentType && parsedSpecResponse.schemasByContentType && parsedSpecResponse.schemasByContentType[contentType]) {
+        responseBodyToValidate = parsedSpecResponse.schemasByContentType[contentType];
+    }
     // tslint:disable:cyclomatic-complexity
     if (!opts.additionalPropertiesInResponse) {
-        responseBodyToValidate = setAdditionalPropertiesToFalseInSchema(parsedSpecResponse.schema);
+        responseBodyToValidate = setAdditionalPropertiesToFalseInSchema(responseBodyToValidate);
     }
     if (!opts.requiredPropertiesInResponse) {
         responseBodyToValidate = removeRequiredPropertiesFromSchema(responseBodyToValidate);
@@ -62,7 +69,7 @@ const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecRespons
             message: `Response body is incompatible with the response body schema in the spec file: ${message}`,
             mockSegment: parsedMockInteraction.getResponseBodyPath(error.dataPath),
             source: 'spec-mock-validation',
-            specSegment: parsedSpecResponse.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2))
+            specSegment: parsedSpecResponse.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), contentType)
         });
     });
 };

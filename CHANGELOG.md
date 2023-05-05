@@ -1,3 +1,15 @@
+<a name="11.4.0"></a>
+# [11.4.0](https://github.com/pactflow/swagger-mock-validator/compare/11.3.1...11.4.0) (2023-05-05)
+
+
+### Features
+
+* hide debug behind feature toggle ([c692494](https://github.com/pactflow/swagger-mock-validator/commit/c692494))
+* log where validation passes when it should've failed ([5691531](https://github.com/pactflow/swagger-mock-validator/commit/5691531))
+* Respect request and response content-types ([5c86507](https://github.com/pactflow/swagger-mock-validator/commit/5c86507))
+
+
+
 <a name="11.3.1"></a>
 ## [11.3.1](https://github.com/pactflow/swagger-mock-validator/compare/11.3.0...11.3.1) (2023-03-20)
 
