@@ -597,8 +597,6 @@ describe('openapi3/parser', () => {
 
             const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
 
-            // console.log(JSON.stringify(result, null, 4));
-
             expect(result).toContainErrors([{
                 code: 'request.body.incompatible',
                 message: 'Request body is incompatible with the request body schema in the spec file: should be boolean',
