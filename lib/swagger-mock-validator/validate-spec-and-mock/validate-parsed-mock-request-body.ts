@@ -16,8 +16,6 @@ const validateRequestBodyAgainstSchema = (
     const schemaForMediaType = parsedSpecRequestBody.schemaByContentType(expectedMediaType);
 
     if (!schemaForMediaType) {
-      // This is redundant: 'request.content-type.incompatible' would have already been returned
-      // But we keep it here as defensive programming
       return [
           result.build({
               code: 'request.body.unknown',

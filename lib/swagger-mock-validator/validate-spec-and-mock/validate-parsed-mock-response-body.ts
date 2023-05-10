@@ -72,8 +72,6 @@ export const validateParsedMockResponseBody = (
   const schemaForMediaType = parsedSpecResponse.schemaByContentType(expectedMediaType);
 
   if (!schemaForMediaType) {
-    // This is redundant: 'request.accept.incompatible' would have already been returned
-    // But we keep it here as defensive programming
     return [
       result.build({
         code: 'response.body.unknown',
