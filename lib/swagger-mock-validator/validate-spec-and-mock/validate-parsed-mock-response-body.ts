@@ -8,7 +8,7 @@ import {
   ParsedSpecResponse
 } from '../spec-parser/parsed-spec';
 import { ValidateOptions } from '../types';
-import { isMediaTypeSupported } from './content-negotiation';
+import { isTypesOfJson } from './content-negotiation';
 import { validateJson } from './validate-json';
 
 const removeRequiredPropertiesFromSchema = (
@@ -46,7 +46,7 @@ const isMockInteractionWithoutResponseBody = (
 
 const isNotSupportedMediaType = (parsedSpecResponse: ParsedSpecResponse) =>
   parsedSpecResponse.produces.value.length > 0 &&
-  !isMediaTypeSupported('application/json', parsedSpecResponse.produces.value);
+  !isTypesOfJson(parsedSpecResponse.produces.value);
 
 const shouldSkipValidation = (
   parsedMockInteraction: ParsedMockInteraction,
@@ -55,6 +55,7 @@ const shouldSkipValidation = (
   isMockInteractionWithoutResponseBody(parsedMockInteraction) ||
   isNotSupportedMediaType(parsedSpecResponse);
 
+// tslint:disable:cyclomatic-complexity
 export const validateParsedMockResponseBody = (
   parsedMockInteraction: ParsedMockInteraction,
   parsedSpecResponse: ParsedSpecResponse,
@@ -67,7 +68,12 @@ export const validateParsedMockResponseBody = (
     return [];
   }
 
-  if (!parsedSpecResponse.schema) {
+  const expectedMediaType = parsedMockInteraction.requestHeaders['accept']?.value;
+  const schemaForMediaType = parsedSpecResponse.schemaByContentType(expectedMediaType);
+
+  if (!schemaForMediaType) {
+    // This is redundant: 'request.accept.incompatible' would have already been returned
+    // But we keep it here as defensive programming
     return [
       result.build({
         code: 'response.body.unknown',
@@ -79,29 +85,18 @@ export const validateParsedMockResponseBody = (
     ];
   }
 
-  // start with a default schema
-  let responseBodyToValidate: ParsedSpecJsonSchema = parsedSpecResponse.schema;
+  let schema = schemaForMediaType.schema;
+  const mediaType = schemaForMediaType.mediaType;
 
-  // switch schema based on content-type
-  const contentType = parsedMockInteraction.responseHeaders['content-type']?.value;
-  if (contentType && parsedSpecResponse.schemasByContentType && parsedSpecResponse.schemasByContentType[contentType]) {
-    responseBodyToValidate = parsedSpecResponse.schemasByContentType[contentType];
-  }
-
-  // tslint:disable:cyclomatic-complexity
   if (!opts.additionalPropertiesInResponse) {
-    responseBodyToValidate = setAdditionalPropertiesToFalseInSchema(
-      responseBodyToValidate
-    );
+    schema = setAdditionalPropertiesToFalseInSchema(schema);
   }
   if (!opts.requiredPropertiesInResponse) {
-    responseBodyToValidate = removeRequiredPropertiesFromSchema(
-      responseBodyToValidate
-    );
+    schema = removeRequiredPropertiesFromSchema(schema);
   }
 
   const validationErrors = validateJson(
-    responseBodyToValidate,
+    schema,
     parsedMockInteraction.responseBody.value
   );
 
@@ -120,8 +115,10 @@ export const validateParsedMockResponseBody = (
       source: 'spec-mock-validation',
       specSegment: parsedSpecResponse.getFromSchema(
         error.schemaPath.replace(/\//g, '.').substring(2),
-        contentType
+        schema,
+        mediaType
       )
     });
   });
 };
+// tslint:enable:cyclomatic-complexity
