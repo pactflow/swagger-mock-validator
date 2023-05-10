@@ -44,6 +44,6 @@ export const isMediaTypeSupported = (actualMediaType: string, supportedMediaType
 export const isTypesOfJson = (supportedMediaTypes: string[]): boolean => {
     return supportedMediaTypes.some((supportedMediaType) => {
         const mediaType = normalizeMediaType(supportedMediaType);
-        return mediaType.startsWith("application/") && mediaType.endsWith("json") || mediaType === "*/*";
+        return mediaType.startsWith('application/') && mediaType.endsWith('json') || mediaType === '*/*';
     });
 };

@@ -68,7 +68,7 @@ export const validateParsedMockResponseBody = (
     return [];
   }
 
-  const expectedMediaType = parsedMockInteraction.requestHeaders['accept']?.value;
+  const expectedMediaType = parsedMockInteraction.requestHeaders.accept?.value;
   const schemaForMediaType = parsedSpecResponse.schemaByContentType(expectedMediaType);
 
   if (!schemaForMediaType) {
