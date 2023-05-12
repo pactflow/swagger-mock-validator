@@ -508,7 +508,7 @@ describe('openapi3/parser', () => {
             }]);
         });
 
-        it('should pass when request body has an unsupported mimetype (unsupported feature)', async () => {
+        it('should pass when request body is not a type of json', async () => {
             const pactFile = pactBuilder
                 .withInteraction(defaultInteractionBuilder
                     .withRequestHeader('Content-Type', 'application/xml')
@@ -563,6 +563,72 @@ describe('openapi3/parser', () => {
                 specDetails: {
                     location: `[root].paths.${defaultPath}.get.requestBody.content.` +
                         'application/json;charset=utf-8.schema.type',
+                    pathMethod: 'get',
+                    pathName: defaultPath,
+                    specFile: 'spec.json',
+                    value: 'number'
+                },
+                type: 'error'
+            }]);
+        });
+
+        it('should match compatible request content-types', async () => {
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('content-type', 'application/boolean+json; charset=utf-8')
+                    .withRequestBody([]))
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('content-type', 'application/number+json; charset=utf-8')
+                    .withRequestBody([]))
+                .build();
+
+            const operationBuilder = openApi3OperationBuilder
+                .withRequestBody(openApi3RequestBodyBuilder
+                    .withContent(openApi3ContentBuilder
+                        .withMimeTypeContent('application/boolean+json', openApi3SchemaBuilder.withTypeBoolean())
+                        .withMimeTypeContent('application/number+json', openApi3SchemaBuilder.withTypeNumber())
+                    )
+                )
+                .withResponse(200, openApi3ResponseBuilder);
+
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainErrors([{
+                code: 'request.body.incompatible',
+                message: 'Request body is incompatible with the request body schema in the spec file: should be boolean',
+                mockDetails: {
+                    interactionDescription: defaultInteractionDescription,
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].request.body',
+                    mockFile: 'pact.json',
+                    value: []
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: `[root].paths.${defaultPath}.get.requestBody.content.application/boolean+json.schema.type`,
+                    pathMethod: 'get',
+                    pathName: defaultPath,
+                    specFile: 'spec.json',
+                    value: 'boolean'
+                },
+                type: 'error'
+            }, {
+                code: 'request.body.incompatible',
+                message: 'Request body is incompatible with the request body schema in the spec file: should be number',
+                mockDetails: {
+                    interactionDescription: defaultInteractionDescription,
+                    interactionState: '[none]',
+                    location: '[root].interactions[1].request.body',
+                    mockFile: 'pact.json',
+                    value: []
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: `[root].paths.${defaultPath}.get.requestBody.content.application/number+json.schema.type`,
                     pathMethod: 'get',
                     pathName: defaultPath,
                     specFile: 'spec.json',
@@ -1253,7 +1319,7 @@ describe('openapi3/parser', () => {
             }]);
         });
 
-        it('should pass when response body has an unsupported mime type (unsupported feature)', async () => {
+        it('should pass when response body is not a type of json', async () => {
             const pactFile = pactBuilder
                 .withInteraction(defaultInteractionBuilder
                     .withResponseHeader('Content-Type', 'application/xml')
@@ -1310,6 +1376,71 @@ describe('openapi3/parser', () => {
                     location:
                         `[root].paths.${defaultPath}.get.responses.200.content.` +
                         'application/json;charset=utf-8.schema.type',
+                    pathMethod: 'get',
+                    pathName: defaultPath,
+                    specFile: 'spec.json',
+                    value: 'number'
+                },
+                type: 'error'
+            }]);
+        });
+
+        it('should match compatible response content-types', async () => {
+            const pactFile = pactBuilder
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('accept', 'application/boolean+json; charset=UTF-8')
+                    .withResponseBody([]))
+                .withInteraction(defaultInteractionBuilder
+                    .withRequestHeader('accept', 'application/number+json; charset=UTF-8')
+                    .withResponseBody([]))
+                .build();
+
+            const operationBuilder = openApi3OperationBuilder
+                .withResponse(200, openApi3ResponseBuilder
+                    .withContent(openApi3ContentBuilder
+                        .withMimeTypeContent('application/boolean+json', openApi3SchemaBuilder.withTypeBoolean())
+                        .withMimeTypeContent('application/number+json', openApi3SchemaBuilder.withTypeNumber())
+                    )
+                );
+
+            const specFile = openApi3Builder
+                .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
+                .build();
+
+            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
+
+            expect(result).toContainErrors([{
+                code: 'response.body.incompatible',
+                message: 'Response body is incompatible with the response body schema in the spec file: should be boolean',
+                mockDetails: {
+                    interactionDescription: defaultInteractionDescription,
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].response.body',
+                    mockFile: 'pact.json',
+                    value: []
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: `[root].paths.${defaultPath}.get.responses.200.content.application/boolean+json.schema.type`,
+                    pathMethod: 'get',
+                    pathName: defaultPath,
+                    specFile: 'spec.json',
+                    value: 'boolean'
+                },
+                type: 'error'
+            }, {
+                code: 'response.body.incompatible',
+                message: 'Response body is incompatible with the response body schema in the spec file: should be number',
+                mockDetails: {
+                    interactionDescription: defaultInteractionDescription,
+                    interactionState: '[none]',
+                    location: '[root].interactions[1].response.body',
+                    mockFile: 'pact.json',
+                    value: []
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: `[root].paths.${defaultPath}.get.responses.200.content.application/number+json.schema.type`,
                     pathMethod: 'get',
                     pathName: defaultPath,
                     specFile: 'spec.json',
