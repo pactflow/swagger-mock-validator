@@ -10,12 +10,9 @@ const toParsedSpecValue = (parameters, parentLocation, parentOperation) => _.map
     value: parameter
 }));
 const addDefinitionsToSchema = (schema, spec) => {
-    if (schema) {
-        const modifiedSchema = _.cloneDeep(schema);
-        modifiedSchema.definitions = spec.definitions;
-        return modifiedSchema;
-    }
-    return undefined;
+    const modifiedSchema = _.cloneDeep(schema);
+    modifiedSchema.definitions = spec.definitions;
+    return modifiedSchema;
 };
 const mergePathAndOperationParameters = (pathParameters, operationParameters) => {
     const mergedParameters = _.clone(pathParameters);
@@ -87,18 +84,25 @@ const parseResponses = (operation, parentOperation, specJson) => {
     });
     _.each(responses, (response, responseStatus) => {
         const responseLocation = `${parsedResponses.location}.${responseStatus}`;
-        const originalSchema = response.schema;
         parsedResponses[responseStatus] = {
-            getFromSchema: (pathToGet) => ({
-                location: `${responseLocation}.schema.${pathToGet}`,
+            getFromSchema: (path, schema) => ({
+                location: `${responseLocation}.schema.${path}`,
                 parentOperation,
-                value: _.get(originalSchema, pathToGet)
+                value: _.get(schema, path)
             }),
             headers: parseResponseHeaders(response.headers, responseLocation, parentOperation),
             location: responseLocation,
             parentOperation,
             produces,
-            schema: addDefinitionsToSchema(response.schema, specJson),
+            schemaByContentType: (mediaType) => {
+                if (!response.schema) {
+                    return undefined;
+                }
+                return {
+                    schema: addDefinitionsToSchema(response.schema, specJson),
+                    mediaType
+                };
+            },
             value: response
         };
     });
@@ -114,16 +118,24 @@ const toRequestBodyParameter = (parameters, definitions) => _(parameters)
     const modifiedSchema = _.cloneDeep(parameter.value.schema);
     modifiedSchema.definitions = definitions;
     return {
-        getFromSchema: (pathToGet) => ({
-            location: `${parameter.location}.schema.${pathToGet}`,
+        getFromSchema: (path, schema, _mediaType) => ({
+            location: `${parameter.location}.schema.${path}`,
             parentOperation: parameter.parentOperation,
-            value: _.get(parameter.value.schema, pathToGet)
+            value: _.get(schema, path)
         }),
         location: parameter.location,
         name: parameter.value.name,
         parentOperation: parameter.parentOperation,
         required: parameter.value.required,
-        schema: modifiedSchema,
+        schemaByContentType: (mediaType) => {
+            if (!parameter.value.schema) {
+                return undefined;
+            }
+            return {
+                schema: modifiedSchema,
+                mediaType
+            };
+        },
         value: parameter.value
     };
 })

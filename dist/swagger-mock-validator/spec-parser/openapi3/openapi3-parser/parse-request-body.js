@@ -6,23 +6,16 @@ const dereference_component_1 = require("./dereference-component");
 const get_content_mime_types_1 = require("./get-content-mime-types");
 const get_content_schema_1 = require("./get-content-schema");
 const parseRequestBody = (parentOperation, requestBody, spec) => {
-    const { schema, mediaType } = (0, get_content_schema_1.getDefaultContentSchema)(requestBody.content, spec);
-    const schemasByContentType = (0, get_content_schema_1.getContentSchemasByContentType)(requestBody.content, spec);
-    return schema
-        ? {
-            getFromSchema: (pathToGet, actualMediaType) => {
-                return {
-                    location: `${parentOperation.location}.requestBody.content.${actualMediaType || mediaType}.schema.${pathToGet}`,
-                    parentOperation,
-                    value: _.get(schema, pathToGet)
-                };
-            },
-            name: '',
-            required: requestBody.required || false,
-            schema,
-            schemasByContentType
-        }
-        : undefined;
+    return {
+        getFromSchema: (path, schema, mediaType) => ({
+            location: `${parentOperation.location}.requestBody.content.${mediaType}.schema.${path}`,
+            parentOperation,
+            value: _.get(schema, path)
+        }),
+        name: '',
+        required: requestBody.required || false,
+        schemaByContentType: (0, get_content_schema_1.schemaByContentType)(requestBody.content, spec)
+    };
 };
 const createConsumesWithMimeTypes = (parentOperation, mimeTypes) => ({
     location: `${parentOperation.location}.requestBody.content`,
@@ -34,10 +27,9 @@ const defaultConsumesAndRequestBodyParameter = (parentOperation) => ({
 });
 const getConsumesAndRequestBodyParameter = (requestBody, parentOperation, spec) => {
     const dereferencedRequestBody = (0, dereference_component_1.dereferenceComponent)(requestBody, spec);
-    const requestBodyParameter = parseRequestBody(parentOperation, dereferencedRequestBody, spec);
     return {
         consumes: createConsumesWithMimeTypes(parentOperation, (0, get_content_mime_types_1.getContentMimeTypes)(dereferencedRequestBody.content)),
-        requestBodyParameter
+        requestBodyParameter: parseRequestBody(parentOperation, dereferencedRequestBody, spec)
     };
 };
 const getParsedRequestBodyValues = (parentOperation, spec) => {

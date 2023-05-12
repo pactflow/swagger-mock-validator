@@ -26,15 +26,18 @@ const setAdditionalPropertiesToFalseInSchema = (schema) => {
 };
 const isMockInteractionWithoutResponseBody = (parsedMockInteraction) => !parsedMockInteraction.responseBody.value;
 const isNotSupportedMediaType = (parsedSpecResponse) => parsedSpecResponse.produces.value.length > 0 &&
-    !(0, content_negotiation_1.isMediaTypeSupported)('application/json', parsedSpecResponse.produces.value);
+    !(0, content_negotiation_1.isTypesOfJson)(parsedSpecResponse.produces.value);
 const shouldSkipValidation = (parsedMockInteraction, parsedSpecResponse) => isMockInteractionWithoutResponseBody(parsedMockInteraction) ||
     isNotSupportedMediaType(parsedSpecResponse);
+// tslint:disable:cyclomatic-complexity
 const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecResponse, opts) => {
     var _a;
     if (shouldSkipValidation(parsedMockInteraction, parsedSpecResponse)) {
         return [];
     }
-    if (!parsedSpecResponse.schema) {
+    const expectedMediaType = (_a = parsedMockInteraction.requestHeaders.accept) === null || _a === void 0 ? void 0 : _a.value;
+    const schemaForMediaType = parsedSpecResponse.schemaByContentType(expectedMediaType);
+    if (!schemaForMediaType) {
         return [
             result_1.result.build({
                 code: 'response.body.unknown',
@@ -45,21 +48,15 @@ const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecRespons
             })
         ];
     }
-    // start with a default schema
-    let responseBodyToValidate = parsedSpecResponse.schema;
-    // switch schema based on content-type
-    const contentType = (_a = parsedMockInteraction.responseHeaders['content-type']) === null || _a === void 0 ? void 0 : _a.value;
-    if (contentType && parsedSpecResponse.schemasByContentType && parsedSpecResponse.schemasByContentType[contentType]) {
-        responseBodyToValidate = parsedSpecResponse.schemasByContentType[contentType];
-    }
-    // tslint:disable:cyclomatic-complexity
+    let schema = schemaForMediaType.schema;
+    const mediaType = schemaForMediaType.mediaType;
     if (!opts.additionalPropertiesInResponse) {
-        responseBodyToValidate = setAdditionalPropertiesToFalseInSchema(responseBodyToValidate);
+        schema = setAdditionalPropertiesToFalseInSchema(schema);
     }
     if (!opts.requiredPropertiesInResponse) {
-        responseBodyToValidate = removeRequiredPropertiesFromSchema(responseBodyToValidate);
+        schema = removeRequiredPropertiesFromSchema(schema);
     }
-    const validationErrors = (0, validate_json_1.validateJson)(responseBodyToValidate, parsedMockInteraction.responseBody.value);
+    const validationErrors = (0, validate_json_1.validateJson)(schema, parsedMockInteraction.responseBody.value);
     return _.map(validationErrors, (error) => {
         const message = error.keyword === 'additionalProperties'
             ? `${error.message} - ${error.params.additionalProperty}`
@@ -69,8 +66,9 @@ const validateParsedMockResponseBody = (parsedMockInteraction, parsedSpecRespons
             message: `Response body is incompatible with the response body schema in the spec file: ${message}`,
             mockSegment: parsedMockInteraction.getResponseBodyPath(error.dataPath),
             source: 'spec-mock-validation',
-            specSegment: parsedSpecResponse.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), contentType)
+            specSegment: parsedSpecResponse.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), schema, mediaType)
         });
     });
 };
 exports.validateParsedMockResponseBody = validateParsedMockResponseBody;
+// tslint:enable:cyclomatic-complexity
