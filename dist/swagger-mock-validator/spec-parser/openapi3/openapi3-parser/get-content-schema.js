@@ -1,36 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getContentSchemasByContentType = exports.getDefaultContentSchema = void 0;
+exports.schemaByContentType = void 0;
 const get_schema_with_spec_definitions_1 = require("./get-schema-with-spec-definitions");
+const content_negotiation_1 = require("../../../validate-spec-and-mock/content-negotiation");
 const defaultMediaType = 'application/json';
 const findDefaultMediaType = (content) => {
     const mediaTypes = Object.keys(content);
     return mediaTypes.find((mediaType) => mediaType.startsWith('application/json')) || mediaTypes.find((mediaType) => mediaType.match(/application\/.+json/)) || mediaTypes[0] || defaultMediaType;
 };
-const getApplicationJsonContentSchema = (content, spec) => {
-    const mediaType = findDefaultMediaType(content);
-    const schema = content[mediaType] ? content[mediaType].schema : undefined;
-    return schema
-        ? { schema: (0, get_schema_with_spec_definitions_1.getSchemaWithSpecDefinitions)(schema, spec), mediaType }
-        : { mediaType };
-};
-const getDefaultContentSchema = (content, spec) => content
-    ? getApplicationJsonContentSchema(content, spec)
-    : { mediaType: defaultMediaType };
-exports.getDefaultContentSchema = getDefaultContentSchema;
 // tslint:disable:cyclomatic-complexity
-const getContentSchemasByContentType = (content, spec) => {
-    const result = {};
+const schemaByContentType = (content, spec) => (mediaType) => {
+    var _a;
     if (!content) {
-        return result;
+        return undefined;
     }
+    const effectiveMediaType = mediaType || findDefaultMediaType(content);
+    const normalizedMediaType = (0, content_negotiation_1.normalizeMediaType)(effectiveMediaType);
     const mediaTypes = Object.keys(content);
-    for (const mediaType of mediaTypes) {
-        if (content[mediaType] && content[mediaType].schema) {
-            result[mediaType] = (0, get_schema_with_spec_definitions_1.getSchemaWithSpecDefinitions)(content[mediaType].schema, spec);
-        }
+    const contentMediaType = mediaTypes.find(type => (0, content_negotiation_1.areMediaTypesCompatible)((0, content_negotiation_1.normalizeMediaType)(type), normalizedMediaType));
+    if (!contentMediaType) {
+        return undefined;
     }
-    return result;
+    const schema = (_a = content[contentMediaType]) === null || _a === void 0 ? void 0 : _a.schema;
+    if (!schema) {
+        return undefined;
+    }
+    return {
+        schema: (0, get_schema_with_spec_definitions_1.getSchemaWithSpecDefinitions)(schema, spec),
+        mediaType: contentMediaType
+    };
 };
-exports.getContentSchemasByContentType = getContentSchemasByContentType;
+exports.schemaByContentType = schemaByContentType;
 // tslint:enable:cyclomatic-complexity

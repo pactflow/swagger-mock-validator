@@ -3,7 +3,7 @@ import {ParsedSpecOperation, ParsedSpecResponse, ParsedSpecResponses} from '../.
 import {Openapi3Schema, Operation, Reference, Response} from '../openapi3';
 import {dereferenceComponent} from './dereference-component';
 import {getContentMimeTypes} from './get-content-mime-types';
-import {getDefaultContentSchema, getContentSchemasByContentType} from './get-content-schema';
+import {schemaByContentType} from './get-content-schema';
 import {parseResponseHeaders} from './parse-response-headers';
 
 interface ParseResponseOptions {
@@ -22,17 +22,13 @@ const parseResponse = (
     {response, parentOperation, responseLocation, spec}: ParseResponseOptions
 ): ParsedSpecResponse => {
     const dereferencedResponse = dereferenceComponent(response, spec);
-    const {schema, mediaType} = getDefaultContentSchema(dereferencedResponse.content, spec);
-    const schemasByContentType = getContentSchemasByContentType(dereferencedResponse.content, spec);
 
     return {
-        getFromSchema: (pathToGet, actualMediaType) => {
-            return {
-                location: `${responseLocation}.content.${actualMediaType || mediaType}.schema.${pathToGet}`,
-                parentOperation,
-                value: _.get(schema, pathToGet)
-            };
-        },
+        getFromSchema: (path, schema, mediaType) => ({
+            location: `${responseLocation}.content.${mediaType}.schema.${path}`,
+            parentOperation,
+            value: _.get(schema, path)
+        }),
         headers: parseResponseHeaders(
             dereferencedResponse.headers, parentOperation, `${responseLocation}.headers`, spec),
         location: `${responseLocation}`,
@@ -42,8 +38,7 @@ const parseResponse = (
             parentOperation,
             value: getContentMimeTypes(dereferencedResponse.content)
         },
-        schema,
-        schemasByContentType,
+        schemaByContentType: schemaByContentType(dereferencedResponse.content, spec),
         value: response
     };
 };

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isMediaTypeSupported = void 0;
+exports.isTypesOfJson = exports.isMediaTypeSupported = exports.normalizeMediaType = exports.areMediaTypesCompatible = void 0;
 const PARAMETER_SEPARATOR = ';';
 const WILDCARD = '*';
 const TYPE_SUBTYPE_SEPARATOR = '/';
@@ -20,17 +20,26 @@ const areMediaTypesCompatible = (actualMediaType, supportedMediaType) => {
     return areTypeFragmentsCompatible(parsedActualMediaType.type, parsedSupportedMediaType.type) &&
         areTypeFragmentsCompatible(parsedActualMediaType.subtype, parsedSupportedMediaType.subtype);
 };
+exports.areMediaTypesCompatible = areMediaTypesCompatible;
 const normalizeMediaType = (mediaType) => {
     return mediaType
         .split(PARAMETER_SEPARATOR)[0]
         .toLowerCase()
         .trim();
 };
+exports.normalizeMediaType = normalizeMediaType;
 const isMediaTypeSupported = (actualMediaType, supportedMediaTypes) => {
-    const normalizedActualMediaType = normalizeMediaType(actualMediaType);
+    const normalizedActualMediaType = (0, exports.normalizeMediaType)(actualMediaType);
     return supportedMediaTypes.some((supportedMediaType) => {
-        const normalizedSupportedMediaType = normalizeMediaType(supportedMediaType);
-        return areMediaTypesCompatible(normalizedActualMediaType, normalizedSupportedMediaType);
+        const normalizedSupportedMediaType = (0, exports.normalizeMediaType)(supportedMediaType);
+        return (0, exports.areMediaTypesCompatible)(normalizedActualMediaType, normalizedSupportedMediaType);
     });
 };
 exports.isMediaTypeSupported = isMediaTypeSupported;
+const isTypesOfJson = (supportedMediaTypes) => {
+    return supportedMediaTypes.some((supportedMediaType) => {
+        const mediaType = (0, exports.normalizeMediaType)(supportedMediaType);
+        return mediaType.startsWith('application/') && mediaType.endsWith('json') || mediaType === '*/*';
+    });
+};
+exports.isTypesOfJson = isTypesOfJson;

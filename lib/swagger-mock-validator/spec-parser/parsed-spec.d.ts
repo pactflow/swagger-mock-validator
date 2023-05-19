@@ -97,11 +97,15 @@ interface ParsedSpecJsonSchemaProperties {
     [name: string]: ParsedSpecJsonSchema;
 }
 
+export interface GetContentSchemaResult {
+    schema: ParsedSpecJsonSchema;
+    mediaType: string;
+}
+
 export interface ParsedSpecResponse extends ParsedSpecValue<any> {
     headers: ParsedSpecParameterCollection;
-    getFromSchema: (pathToGet: string, mediaType: string) => ParsedSpecValue<any>;
-    schema?: ParsedSpecJsonSchema;
-    schemasByContentType?: Record<string, ParsedSpecJsonSchema>;
+    getFromSchema: (pathToGet: string, schema: ParsedSpecJsonSchema, mediaType: string) => ParsedSpecValue<any>;
+    schemaByContentType: (mediaType: string) => GetContentSchemaResult | undefined;
     produces: ParsedSpecValue<string[]>;
 }
 
@@ -115,11 +119,10 @@ export interface ParsedSpecParameter extends ParsedSpecValue<any> {
 }
 
 export interface ParsedSpecBody {
-    getFromSchema: (pathToGet: string, mediaType: string) => ParsedSpecValue<any>;
+    getFromSchema: (pathToGet: string, schema: ParsedSpecJsonSchema, mediaType: string) => ParsedSpecValue<any>;
+    schemaByContentType: (mediaType: string) => GetContentSchemaResult | undefined;
     name: string;
     required?: boolean;
-    schema: ParsedSpecJsonSchema;
-    schemasByContentType?: Record<string, ParsedSpecJsonSchema>;
 }
 
 export interface ParsedSpecValue<T> {

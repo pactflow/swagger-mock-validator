@@ -16,7 +16,7 @@ const parseMediaType = (mediaType: string): { type: string, subtype: string } =>
     return {type, subtype};
 };
 
-const areMediaTypesCompatible = (actualMediaType: string, supportedMediaType: string): boolean => {
+export const areMediaTypesCompatible = (actualMediaType: string, supportedMediaType: string): boolean => {
     const parsedActualMediaType = parseMediaType(actualMediaType);
     const parsedSupportedMediaType = parseMediaType(supportedMediaType);
 
@@ -24,7 +24,7 @@ const areMediaTypesCompatible = (actualMediaType: string, supportedMediaType: st
         areTypeFragmentsCompatible(parsedActualMediaType.subtype, parsedSupportedMediaType.subtype);
 };
 
-const normalizeMediaType = (mediaType: string): string => {
+export const normalizeMediaType = (mediaType: string): string => {
     return mediaType
         .split(PARAMETER_SEPARATOR)[0]
         .toLowerCase()
@@ -38,5 +38,12 @@ export const isMediaTypeSupported = (actualMediaType: string, supportedMediaType
         const normalizedSupportedMediaType = normalizeMediaType(supportedMediaType);
 
         return areMediaTypesCompatible(normalizedActualMediaType, normalizedSupportedMediaType);
+    });
+};
+
+export const isTypesOfJson = (supportedMediaTypes: string[]): boolean => {
+    return supportedMediaTypes.some((supportedMediaType) => {
+        const mediaType = normalizeMediaType(supportedMediaType);
+        return mediaType.startsWith('application/') && mediaType.endsWith('json') || mediaType === '*/*';
     });
 };

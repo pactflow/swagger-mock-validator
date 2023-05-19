@@ -41,15 +41,10 @@ const toParsedSpecValue = (
     value: parameter
 }));
 
-const addDefinitionsToSchema = (
-    schema: Swagger2JsonSchema | undefined, spec: Swagger2
-): Swagger2JsonSchema | undefined => {
-    if (schema) {
-        const modifiedSchema = _.cloneDeep(schema);
-        modifiedSchema.definitions = spec.definitions;
-        return modifiedSchema;
-    }
-    return undefined;
+const addDefinitionsToSchema = (schema: Swagger2JsonSchema, spec: Swagger2): Swagger2JsonSchema => {
+    const modifiedSchema = _.cloneDeep(schema);
+    modifiedSchema.definitions = spec.definitions;
+    return modifiedSchema;
 };
 
 const mergePathAndOperationParameters = (
@@ -152,19 +147,27 @@ const parseResponses = (
 
     _.each(responses, (response, responseStatus) => {
         const responseLocation = `${parsedResponses.location}.${responseStatus}`;
-        const originalSchema = response.schema;
 
         parsedResponses[responseStatus as any] = {
-            getFromSchema: (pathToGet) => ({
-                location: `${responseLocation}.schema.${pathToGet}`,
+            getFromSchema: (path, schema) => ({
+                location: `${responseLocation}.schema.${path}`,
                 parentOperation,
-                value: _.get(originalSchema, pathToGet)
+                value: _.get(schema, path)
             }),
             headers: parseResponseHeaders(response.headers, responseLocation, parentOperation),
             location: responseLocation,
             parentOperation,
             produces,
-            schema: addDefinitionsToSchema(response.schema, specJson),
+            schemaByContentType: (mediaType: string) => {
+                if (!response.schema) {
+                    return undefined;
+                }
+
+                return {
+                    schema: addDefinitionsToSchema(response.schema, specJson),
+                    mediaType
+                }
+            },
             value: response
         };
     });
@@ -188,18 +191,27 @@ const toRequestBodyParameter = (
             modifiedSchema.definitions = definitions;
 
             return {
-                getFromSchema: (pathToGet: string): ParsedSpecValue<any> => ({
-                    location: `${parameter.location}.schema.${pathToGet}`,
+                getFromSchema: (path, schema,  _mediaType) => ({
+                    location: `${parameter.location}.schema.${path}`,
                     parentOperation: parameter.parentOperation,
-                    value: _.get(parameter.value.schema, pathToGet)
+                    value: _.get(schema, path)
                 }),
                 location: parameter.location,
                 name: parameter.value.name,
                 parentOperation: parameter.parentOperation,
                 required: parameter.value.required,
-                schema: modifiedSchema,
+                schemaByContentType: (mediaType: string) => {
+                  if (!parameter.value.schema) {
+                      return undefined;
+                  }
+
+                  return {
+                      schema: modifiedSchema,
+                      mediaType
+                  }
+                },
                 value: parameter.value
-            };
+            } as ParsedSpecBody;
         })
         .first();
 

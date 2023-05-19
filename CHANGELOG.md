@@ -1,3 +1,13 @@
+<a name="11.5.0"></a>
+# [11.5.0](https://github.com/pactflow/swagger-mock-validator/compare/11.4.0...11.5.0) (2023-05-12)
+
+
+### Features
+
+* handle more varieties of json ([e59bcdf](https://github.com/pactflow/swagger-mock-validator/commit/e59bcdf))
+
+
+
 <a name="11.4.0"></a>
 # [11.4.0](https://github.com/pactflow/swagger-mock-validator/compare/11.3.1...11.4.0) (2023-05-05)
 

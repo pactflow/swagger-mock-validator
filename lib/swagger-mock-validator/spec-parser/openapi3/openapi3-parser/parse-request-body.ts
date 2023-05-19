@@ -3,7 +3,7 @@ import {ParsedSpecBody, ParsedSpecOperation, ParsedSpecValue} from '../../parsed
 import {Openapi3Schema, Reference, RequestBody} from '../openapi3';
 import {dereferenceComponent} from './dereference-component';
 import {getContentMimeTypes} from './get-content-mime-types';
-import {getDefaultContentSchema, getContentSchemasByContentType} from './get-content-schema';
+import {schemaByContentType} from './get-content-schema';
 
 interface ParsedRequestBodyValues {
     consumes: ParsedSpecValue<string[]>;
@@ -12,26 +12,18 @@ interface ParsedRequestBodyValues {
 
 const parseRequestBody = (
     parentOperation: ParsedSpecOperation, requestBody: RequestBody, spec: Openapi3Schema
-): ParsedSpecBody | undefined => {
-    const {schema, mediaType} = getDefaultContentSchema(requestBody.content, spec);
-    const schemasByContentType = getContentSchemasByContentType(requestBody.content, spec);
-
-    return schema
-        ? {
-            getFromSchema: (pathToGet, actualMediaType) => {
-                return {
-                    location:
-                        `${parentOperation.location}.requestBody.content.${actualMediaType || mediaType}.schema.${pathToGet}`,
-                    parentOperation,
-                    value: _.get(schema, pathToGet)
-                };
-            },
-            name: '',
-            required: requestBody.required || false,
-            schema,
-            schemasByContentType
-        }
-        : undefined;
+): ParsedSpecBody => {
+    return {
+        getFromSchema: (path, schema, mediaType) => ({
+            location:
+                `${parentOperation.location}.requestBody.content.${mediaType}.schema.${path}`,
+            parentOperation,
+            value: _.get(schema, path)
+        }),
+        name: '',
+        required: requestBody.required || false,
+        schemaByContentType: schemaByContentType(requestBody.content, spec)
+    }
 };
 
 const createConsumesWithMimeTypes = (
@@ -52,11 +44,10 @@ const getConsumesAndRequestBodyParameter = (
     spec: Openapi3Schema
 ): ParsedRequestBodyValues => {
     const dereferencedRequestBody = dereferenceComponent(requestBody, spec);
-    const requestBodyParameter = parseRequestBody(parentOperation, dereferencedRequestBody, spec);
 
     return {
         consumes: createConsumesWithMimeTypes(parentOperation, getContentMimeTypes(dereferencedRequestBody.content)),
-        requestBodyParameter
+        requestBodyParameter: parseRequestBody(parentOperation, dereferencedRequestBody, spec)
     };
 };
 

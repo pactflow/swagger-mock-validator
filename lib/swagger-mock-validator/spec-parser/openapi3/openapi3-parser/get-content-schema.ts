@@ -1,11 +1,7 @@
-import {ParsedSpecJsonSchema} from '../../parsed-spec';
-import {Content, Openapi3Schema, Schema} from '../openapi3';
+import {GetContentSchemaResult} from '../../parsed-spec';
+import {Content, Openapi3Schema} from '../openapi3';
 import {getSchemaWithSpecDefinitions} from './get-schema-with-spec-definitions';
-
-interface GetContentSchemaResult {
-    schema?: ParsedSpecJsonSchema;
-    mediaType: string;
-}
+import {areMediaTypesCompatible, normalizeMediaType} from '../../../validate-spec-and-mock/content-negotiation';
 
 const defaultMediaType = 'application/json';
 
@@ -19,34 +15,29 @@ const findDefaultMediaType = (content: Content): string => {
     ) || mediaTypes[0] || defaultMediaType;
 }
 
-const getApplicationJsonContentSchema = (content: Content, spec: Openapi3Schema): GetContentSchemaResult => {
-    const mediaType = findDefaultMediaType(content);
+// tslint:disable:cyclomatic-complexity
+export const schemaByContentType = (content: Content | undefined, spec: Openapi3Schema) => (mediaType?: string): GetContentSchemaResult | undefined => {
+  if (!content) {
+      return undefined;
+  }
 
-    const schema = content[mediaType] ? content[mediaType].schema : undefined;
+  const effectiveMediaType = mediaType || findDefaultMediaType(content);
+  const normalizedMediaType = normalizeMediaType(effectiveMediaType)
 
-    return schema
-        ? {schema: getSchemaWithSpecDefinitions(schema, spec), mediaType}
-        : {mediaType};
-};
+  const mediaTypes = Object.keys(content);
+  const contentMediaType = mediaTypes.find(type => areMediaTypesCompatible(normalizeMediaType(type), normalizedMediaType));
 
-export const getDefaultContentSchema = (content: Content | undefined, spec: Openapi3Schema): GetContentSchemaResult =>
-    content
-        ? getApplicationJsonContentSchema(content, spec)
-        : {mediaType: defaultMediaType};
+  if (!contentMediaType) {
+      return undefined;
+  }
 
-export const getContentSchemasByContentType = (content: Content | undefined, spec: Openapi3Schema): Record<string, ParsedSpecJsonSchema> => {
-    const result: Record<string, ParsedSpecJsonSchema> = {};
+  const schema = content[contentMediaType]?.schema;
+  if (!schema) {
+      return undefined;
+  }
 
-    if (!content) {
-        return result;
-    }
-
-    const mediaTypes: string[] = Object.keys(content);
-    for (const mediaType of mediaTypes) {
-        if (content[mediaType] && content[mediaType].schema) {
-            result[mediaType] = getSchemaWithSpecDefinitions((content[mediaType] as Schema).schema, spec);
-        }
-    }
-
-    return result
+  return {
+      schema: getSchemaWithSpecDefinitions(schema, spec),
+      mediaType: contentMediaType
+  }
 }

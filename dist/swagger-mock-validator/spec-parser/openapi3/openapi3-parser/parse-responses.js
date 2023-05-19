@@ -8,16 +8,12 @@ const get_content_schema_1 = require("./get-content-schema");
 const parse_response_headers_1 = require("./parse-response-headers");
 const parseResponse = ({ response, parentOperation, responseLocation, spec }) => {
     const dereferencedResponse = (0, dereference_component_1.dereferenceComponent)(response, spec);
-    const { schema, mediaType } = (0, get_content_schema_1.getDefaultContentSchema)(dereferencedResponse.content, spec);
-    const schemasByContentType = (0, get_content_schema_1.getContentSchemasByContentType)(dereferencedResponse.content, spec);
     return {
-        getFromSchema: (pathToGet, actualMediaType) => {
-            return {
-                location: `${responseLocation}.content.${actualMediaType || mediaType}.schema.${pathToGet}`,
-                parentOperation,
-                value: _.get(schema, pathToGet)
-            };
-        },
+        getFromSchema: (path, schema, mediaType) => ({
+            location: `${responseLocation}.content.${mediaType}.schema.${path}`,
+            parentOperation,
+            value: _.get(schema, path)
+        }),
         headers: (0, parse_response_headers_1.parseResponseHeaders)(dereferencedResponse.headers, parentOperation, `${responseLocation}.headers`, spec),
         location: `${responseLocation}`,
         parentOperation,
@@ -26,8 +22,7 @@ const parseResponse = ({ response, parentOperation, responseLocation, spec }) =>
             parentOperation,
             value: (0, get_content_mime_types_1.getContentMimeTypes)(dereferencedResponse.content)
         },
-        schema,
-        schemasByContentType,
+        schemaByContentType: (0, get_content_schema_1.schemaByContentType)(dereferencedResponse.content, spec),
         value: response
     };
 };
