@@ -5,7 +5,9 @@
   "bin": {
     "swagger-mock-validator": "./bin/swagger-mock-validator.mjs"
   },
-  "exports": "dist/api.js",
+  "exports": {
+    ".": "./dist/swagger-mock-validator-factory.js"
+  },
   "scripts": {
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --cache --write .",

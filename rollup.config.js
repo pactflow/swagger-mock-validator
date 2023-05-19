@@ -6,7 +6,7 @@ import resolve from '@rollup/plugin-node-resolve';
 const extensions = ['.js', '.ts'];
 
 export default {
-    input: ['lib/api.ts', 'lib/cli.ts'],
+    input: ['lib/api.ts', 'lib/cli.ts', 'lib/swagger-mock-validator-factory.ts'],
     output: {
         dir: 'dist',
         format: 'esm',
