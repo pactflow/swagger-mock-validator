@@ -16,7 +16,7 @@ jobs:
       - uses: fregante/setup-git-user@v1
       - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 18
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
       - id: prepare
@@ -35,7 +35,7 @@ jobs:
       - uses: fregante/setup-git-user@v1
       - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 18
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
       - id: prepare
@@ -54,7 +54,7 @@ jobs:
       - uses: fregante/setup-git-user@v1
       - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 18
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
       - id: prepare
