@@ -1,5 +1,5 @@
-import * as _ from 'lodash';
-import * as util from 'util';
+import _ from 'lodash';
+import util from 'util';
 import CustomMatcherFactories = jasmine.CustomMatcherFactories;
 import CustomEqualityTester = jasmine.CustomEqualityTester;
 import MatchersUtil = jasmine.MatchersUtil;

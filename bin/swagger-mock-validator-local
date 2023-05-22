@@ -1,2 +1,0 @@
-#!/usr/bin/env node
-require('../build-output/lib/cli.js');

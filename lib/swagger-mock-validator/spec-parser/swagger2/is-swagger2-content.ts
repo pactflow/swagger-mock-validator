@@ -1,3 +1,2 @@
-
 export const isSwagger2Content = (specContent: any): boolean =>
-    specContent.hasOwnProperty('swagger');
+    Object.prototype.hasOwnProperty.call(specContent, 'swagger');

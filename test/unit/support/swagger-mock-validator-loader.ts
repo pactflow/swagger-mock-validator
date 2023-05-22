@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {ValidationOutcome} from '../../../lib/api-types';
 import {SwaggerMockValidator} from '../../../lib/swagger-mock-validator';
 import {Analytics} from '../../../lib/swagger-mock-validator/analytics';
@@ -104,7 +104,6 @@ export const swaggerMockValidatorLoader = {
             mockPathOrUrl: 'pact.json',
             specPathOrUrl: 'spec.json'
         }),
-    // tslint:disable:cyclomatic-complexity
     invokeWithMocks: (options: SwaggerMockValidatorLoaderInvokeWithMocksOptions): Promise<ValidationOutcome> => {
         const mockFileSystem = options.fileSystem || swaggerMockValidatorLoader.createMockFileSystem({});
         const mockHttpClient = options.httpClient || swaggerMockValidatorLoader.createMockHttpClient({});

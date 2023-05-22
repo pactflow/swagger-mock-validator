@@ -1,7 +1,6 @@
-const $RefParser = require("@apidevtools/json-schema-ref-parser");
-const resolveAllOf = require("json-schema-resolve-allof");
-const fs = require("fs");
-
+import $RefParser from "@apidevtools/json-schema-ref-parser";
+import resolveAllOf from "json-schema-resolve-allof";
+import fs from "fs";
 
 const myArgs = process.argv.slice(2);
 

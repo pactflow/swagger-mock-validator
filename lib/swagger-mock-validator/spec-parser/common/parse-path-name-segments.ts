@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {ParsedSpecOperation, ParsedSpecParameter, ParsedSpecPathNameSegment} from '../parsed-spec';
 
 const parseParameterSegment = (

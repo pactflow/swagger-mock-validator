@@ -1,4 +1,4 @@
-import * as jsonpointer from 'jsonpointer';
+import jsonpointer from 'jsonpointer';
 import {SwaggerMockValidatorErrorImpl} from '../../../swagger-mock-validator-error-impl';
 import {Header, Openapi3Schema, Parameter, Reference, RequestBody, Response, SecurityScheme} from '../openapi3';
 

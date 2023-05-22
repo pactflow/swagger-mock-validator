@@ -1,4 +1,4 @@
-import * as util from 'util';
+import util from 'util';
 
 export async function expectToFail(promise: Promise<any>): Promise<Error> {
     let result: any;

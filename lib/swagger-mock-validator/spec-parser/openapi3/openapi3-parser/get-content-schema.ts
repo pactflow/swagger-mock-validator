@@ -41,4 +41,3 @@ export const schemaByContentType = (content: Content | undefined, spec: Openapi3
       mediaType: contentMediaType
   }
 }
-// tslint:enable:cyclomatic-complexity

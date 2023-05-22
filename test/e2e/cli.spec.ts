@@ -1,9 +1,9 @@
-import * as bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import {exec} from 'child_process';
-import * as express from 'express';
+import express from 'express';
 import {Server} from 'http';
-import VError = require('verror');
-import {expectToFail} from '../support/expect-to-fail';
+import VError from 'verror';
+import {expectToFail} from '../helpers/expect-to-fail';
 
 interface InvokeCommandOptions {
     analyticsUrl?: string;
@@ -27,9 +27,8 @@ const execute = (command: string): Promise<string> => {
     });
 };
 
-// tslint:disable-next-line:cyclomatic-complexity
 const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
-    let command = `./bin/swagger-mock-validator-local ${options.swagger} ${options.mock}`;
+    let command = `./bin/swagger-mock-validator.mjs ${options.swagger} ${options.mock}`;
 
     if (options.providerName) {
         command += ` --provider ${options.providerName}`;
@@ -294,7 +293,7 @@ describe('swagger-mock-validator/cli', () => {
             swagger: 'test/e2e/fixtures/swagger-invalid-provider.json'
         }));
 
-        expect(error).toEqual(jasmine.stringMatching('Missing required property: version at #/info'));
+        expect(error).toEqual(jasmine.stringMatching('#/info must have required property \'version\''));
     }, 30000);
 
     it('should succeed when a pact url and a swagger url are compatible', async () => {

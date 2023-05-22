@@ -1,4 +1,4 @@
-import * as yaml from 'js-yaml';
+import yaml from 'js-yaml';
 import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator-error-impl';
 
 const parseJson = <T>(pathOrUrl: string, rawString: string): T => {

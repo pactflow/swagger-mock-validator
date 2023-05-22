@@ -1,5 +1,5 @@
-import * as _ from 'lodash';
-import * as querystring from 'querystring';
+import _ from 'lodash';
+import querystring from 'querystring';
 import {
     MultiCollectionFormatSeparator
 } from '../../types';
@@ -87,7 +87,6 @@ const parseRequestQuery = (
 const parseInteraction = (
     interaction: PactInteraction, interactionIndex: number, mockPathOrUrl: string
 ) => {
-    // tslint:disable:no-object-literal-type-assertion
     const parsedInteraction = {
         description: interaction.description,
         location: `[root].interactions[${interactionIndex}]`,

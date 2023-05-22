@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {ValidationResult} from '../../api-types';
 import {ParsedMockInteraction} from '../mock-parser/parsed-mock';
 import {result} from '../result';

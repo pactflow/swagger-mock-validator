@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {createEmptyParentOperation} from '../common/create-empty-parent-operation';
 import {parsePathNameSegments} from '../common/parse-path-name-segments';
 import {
@@ -132,7 +132,6 @@ const parseResponses = (
     specJson: Swagger2
 ): ParsedSpecResponses => {
     const responses = operation.responses;
-    // tslint:disable:no-object-literal-type-assertion
     const parsedResponses = {
         location: `${parentOperation.location}.responses`,
         parentOperation,

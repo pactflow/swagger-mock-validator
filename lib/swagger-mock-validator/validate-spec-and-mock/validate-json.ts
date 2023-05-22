@@ -1,5 +1,5 @@
-import * as Ajv from 'ajv';
-import * as _ from 'lodash';
+import Ajv from 'ajv';
+import _ from 'lodash';
 import {traverseJsonSchema} from '../common/traverse-json-schema';
 import {ParsedSpecJsonSchema, ParsedSpecJsonSchemaCore} from '../spec-parser/parsed-spec';
 import {isBinary} from './validate-json/binary';
@@ -10,10 +10,7 @@ import {formatForInt32Numbers, int32AjvKeyword, isInt32} from './validate-json/i
 import {formatForInt64Numbers, int64AjvKeyword, isInt64} from './validate-json/int64';
 import { formatForString, isString, stringAjvKeyword } from './validate-json/string';
 import {isPassword} from './validate-json/password';
-
-// tslint:disable:no-var-requires
-// tslint:disable:no-submodule-imports
-const draft4MetaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
+import draft4MetaSchema from 'ajv/lib/refs/json-schema-draft-04.json';
 
 const removeLeadingDotIfPresent = (dataPath: string): string =>
     dataPath.replace(/^\./, '');
@@ -25,7 +22,6 @@ const addSwaggerFormatsAndKeywords = (ajv: Ajv.Ajv, rawJson: any) => {
     ajv.addFormat('binary', isBinary);
     ajv.addFormat('byte', isByte);
     ajv.addFormat('password', isPassword);
-    // tslint:disable:variable-name
     ajv.addKeyword(doubleAjvKeyword, {
         type: 'number',
         validate: (_schema: any, _data: number, _parentSchema: any, dataPath?: string) => {
