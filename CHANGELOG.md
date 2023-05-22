@@ -1,3 +1,12 @@
+# [12.0.0](https://github.com/pactflow/swagger-mock-validator/compare/11.5.0...12.0.0) (2023-05-22)
+
+
+### Features
+
+* upgrade packages and move to ESM-only dist ([#24](https://github.com/pactflow/swagger-mock-validator/issues/24)) ([b027afb](https://github.com/pactflow/swagger-mock-validator/commit/b027afbecea447247fff77db73d416be40e57b4f))
+
+
+
 <a name="11.5.0"></a>
 # [11.5.0](https://github.com/pactflow/swagger-mock-validator/compare/11.4.0...11.5.0) (2023-05-12)
 

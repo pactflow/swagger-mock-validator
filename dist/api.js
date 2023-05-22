@@ -1,18 +1,37 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+import { _ as _asyncToGenerator, a as _regeneratorRuntime, v as validateSpecAndMockContent } from './swagger-mock-validator-63cb78d9.js';
+import 'assert';
+import 'stream';
+import 'util';
+import 'querystring';
+import 'url';
+import 'fs';
+import 'http';
+import 'https';
+
+var swaggerMockValidator = {
+  validate: function () {
+    var _validate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(options) {
+      var result;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return validateSpecAndMockContent(options);
+          case 2:
+            result = _context.sent;
+            return _context.abrupt("return", result.validationOutcome);
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    function validate(_x) {
+      return _validate.apply(this, arguments);
+    }
+    return validate;
+  }()
 };
-const swagger_mock_validator_1 = require("./swagger-mock-validator");
-const swaggerMockValidator = {
-    validate: (options) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield (0, swagger_mock_validator_1.validateSpecAndMockContent)(options);
-        return result.validationOutcome;
-    })
-};
-module.exports = swaggerMockValidator;
+
+export { swaggerMockValidator as default };
+//# sourceMappingURL=api.js.map
