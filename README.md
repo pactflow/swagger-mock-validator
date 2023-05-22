@@ -11,8 +11,9 @@
 For a list of all the validation features see [FEATURES.md](docs/FEATURES.md).
 
 ## Requirements
-- nodejs 10.x or higher (tested using 10.x, 12.x and 14.x)
-- npm 6.x or higher (tested using 3.x, 5x and 6.x)
+- nodejs 14.x or higher (tested using 14.x, 16.x and 16.x)
+
+Note: Beginning from v12+, this package is ESM-only, so you may need to upgrade your tooling to support this.
 
 ## Installation
 
