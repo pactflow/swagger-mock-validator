@@ -15,9 +15,9 @@
     "test": "jasmine --config=jasmine.json \"test/unit/**/*.ts\"",
     "test:e2e": "jasmine --config=jasmine.json \"test/e2e/**/*.ts\"",
     "build": "rm -rf dist && rollup -c",
-    "release-major": "gulp release --type major",
-    "release-minor": "gulp release --type minor",
-    "release-patch": "gulp release --type patch"
+    "release-major": "gulp --gulpfile gulpfile.cjs release --type major",
+    "release-minor": "gulp --gulpfile gulpfile.cjs release --type minor",
+    "release-patch": "gulp --gulpfile gulpfile.cjs release --type patch"
   },
   "repository": {
     "type": "git",

@@ -19,6 +19,7 @@ jobs:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
+      - run: yarn build
       - id: prepare
         run: yarn run release-major
       - id: publish
@@ -38,6 +39,7 @@ jobs:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
+      - run: yarn build
       - id: prepare
         run: yarn run release-minor
       - id: publish
@@ -57,6 +59,7 @@ jobs:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
+      - run: yarn build
       - id: prepare
         run: yarn run release-patch
       - id: publish
