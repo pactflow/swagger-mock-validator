@@ -357,6 +357,15 @@ function _regeneratorRuntime() {
     }
   }, exports;
 }
+function _typeof$1(obj) {
+  "@babel/helpers - typeof";
+
+  return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof$1(obj);
+}
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -11440,7 +11449,7 @@ function Type$1$1(tag, options) {
   }
 }
 
-var type$i = Type$1$1;
+var type$j = Type$1$1;
 
 /*eslint-disable max-len*/
 
@@ -11509,7 +11518,7 @@ Schema$1$1.prototype.extend = function extend(definition) {
   var implicit = [];
   var explicit = [];
 
-  if (definition instanceof type$i) {
+  if (definition instanceof type$j) {
     // Schema.extend(type)
     explicit.push(definition);
 
@@ -11528,7 +11537,7 @@ Schema$1$1.prototype.extend = function extend(definition) {
   }
 
   implicit.forEach(function (type$1) {
-    if (!(type$1 instanceof type$i)) {
+    if (!(type$1 instanceof type$j)) {
       throw new exception$1('Specified list of YAML types (or a single Type object) contains a non-Type object.');
     }
 
@@ -11542,7 +11551,7 @@ Schema$1$1.prototype.extend = function extend(definition) {
   });
 
   explicit.forEach(function (type$1) {
-    if (!(type$1 instanceof type$i)) {
+    if (!(type$1 instanceof type$j)) {
       throw new exception$1('Specified list of YAML types (or a single Type object) contains a non-Type object.');
     }
   });
@@ -11562,17 +11571,17 @@ Schema$1$1.prototype.extend = function extend(definition) {
 
 var schema$2 = Schema$1$1;
 
-var str$1 = new type$i('tag:yaml.org,2002:str', {
+var str$1 = new type$j('tag:yaml.org,2002:str', {
   kind: 'scalar',
   construct: function (data) { return data !== null ? data : ''; }
 });
 
-var seq$1 = new type$i('tag:yaml.org,2002:seq', {
+var seq$1 = new type$j('tag:yaml.org,2002:seq', {
   kind: 'sequence',
   construct: function (data) { return data !== null ? data : []; }
 });
 
-var map$1 = new type$i('tag:yaml.org,2002:map', {
+var map$1 = new type$j('tag:yaml.org,2002:map', {
   kind: 'mapping',
   construct: function (data) { return data !== null ? data : {}; }
 });
@@ -11602,7 +11611,7 @@ function isNull$1(object) {
   return object === null;
 }
 
-var _null$1 = new type$i('tag:yaml.org,2002:null', {
+var _null$1 = new type$j('tag:yaml.org,2002:null', {
   kind: 'scalar',
   resolve: resolveYamlNull$1,
   construct: constructYamlNull$1,
@@ -11636,7 +11645,7 @@ function isBoolean$2(object) {
   return Object.prototype.toString.call(object) === '[object Boolean]';
 }
 
-var bool$1 = new type$i('tag:yaml.org,2002:bool', {
+var bool$1 = new type$j('tag:yaml.org,2002:bool', {
   kind: 'scalar',
   resolve: resolveYamlBoolean$1,
   construct: constructYamlBoolean$1,
@@ -11780,7 +11789,7 @@ function isInteger$1(object) {
          (object % 1 === 0 && !common$7.isNegativeZero(object));
 }
 
-var int$1 = new type$i('tag:yaml.org,2002:int', {
+var int$1 = new type$j('tag:yaml.org,2002:int', {
   kind: 'scalar',
   resolve: resolveYamlInteger$1,
   construct: constructYamlInteger$1,
@@ -11885,7 +11894,7 @@ function isFloat$4(object) {
          (object % 1 !== 0 || common$7.isNegativeZero(object));
 }
 
-var float$1 = new type$i('tag:yaml.org,2002:float', {
+var float$1 = new type$j('tag:yaml.org,2002:float', {
   kind: 'scalar',
   resolve: resolveYamlFloat$1,
   construct: constructYamlFloat$1,
@@ -11982,7 +11991,7 @@ function representYamlTimestamp$1(object /*, style*/) {
   return object.toISOString();
 }
 
-var timestamp$1 = new type$i('tag:yaml.org,2002:timestamp', {
+var timestamp$1 = new type$j('tag:yaml.org,2002:timestamp', {
   kind: 'scalar',
   resolve: resolveYamlTimestamp$1,
   construct: constructYamlTimestamp$1,
@@ -11994,7 +12003,7 @@ function resolveYamlMerge$1(data) {
   return data === '<<' || data === null;
 }
 
-var merge$3 = new type$i('tag:yaml.org,2002:merge', {
+var merge$3 = new type$j('tag:yaml.org,2002:merge', {
   kind: 'scalar',
   resolve: resolveYamlMerge$1
 });
@@ -12115,7 +12124,7 @@ function isBinary$3(obj) {
   return Object.prototype.toString.call(obj) ===  '[object Uint8Array]';
 }
 
-var binary$2 = new type$i('tag:yaml.org,2002:binary', {
+var binary$2 = new type$j('tag:yaml.org,2002:binary', {
   kind: 'scalar',
   resolve: resolveYamlBinary$1,
   construct: constructYamlBinary$1,
@@ -12158,7 +12167,7 @@ function constructYamlOmap$1(data) {
   return data !== null ? data : [];
 }
 
-var omap$1 = new type$i('tag:yaml.org,2002:omap', {
+var omap$1 = new type$j('tag:yaml.org,2002:omap', {
   kind: 'sequence',
   resolve: resolveYamlOmap$1,
   construct: constructYamlOmap$1
@@ -12208,7 +12217,7 @@ function constructYamlPairs$1(data) {
   return result;
 }
 
-var pairs$1 = new type$i('tag:yaml.org,2002:pairs', {
+var pairs$1 = new type$j('tag:yaml.org,2002:pairs', {
   kind: 'sequence',
   resolve: resolveYamlPairs$1,
   construct: constructYamlPairs$1
@@ -12234,7 +12243,7 @@ function constructYamlSet$1(data) {
   return data !== null ? data : {};
 }
 
-var set$2 = new type$i('tag:yaml.org,2002:set', {
+var set$2 = new type$j('tag:yaml.org,2002:set', {
   kind: 'mapping',
   resolve: resolveYamlSet$1,
   construct: constructYamlSet$1
@@ -14960,7 +14969,7 @@ function renamed(from, to) {
 }
 
 
-var Type$i                = type$i;
+var Type$i                = type$j;
 var Schema$6              = schema$2;
 var FAILSAFE_SCHEMA     = failsafe$1;
 var JSON_SCHEMA         = json$2;
@@ -15385,67 +15394,189 @@ var getSchemaWithSpecDefinitions = function getSchemaWithSpecDefinitions(schema,
 var PARAMETER_SEPARATOR = ';';
 var WILDCARD = '*';
 var TYPE_SUBTYPE_SEPARATOR = '/';
-var isWildcard = function isWildcard(type) {
-  return type === WILDCARD;
+var EXTENSION_SEPARATOR = '+';
+var quality = function quality(a) {
+  var match = /.*;q=([01].?\d*)/.exec(a);
+  return match ? parseFloat(match[1]) : 1.0;
 };
-var areTypeFragmentsCompatible = function areTypeFragmentsCompatible(actualTypeFragment, supportedTypeFragment) {
-  return actualTypeFragment === supportedTypeFragment || isWildcard(actualTypeFragment) || isWildcard(supportedTypeFragment);
+var byQuality = function byQuality(a, b) {
+  return quality(b) - quality(a);
 };
-var parseMediaType = function parseMediaType(mediaType) {
-  var _mediaType$split = mediaType.split(TYPE_SUBTYPE_SEPARATOR),
-    _mediaType$split2 = _slicedToArray(_mediaType$split, 2),
-    type = _mediaType$split2[0],
-    subtype = _mediaType$split2[1];
-  return {
-    type: type,
-    subtype: subtype
-  };
+var ignoreCasing = function ignoreCasing(t) {
+  return t.toLowerCase();
 };
-var areMediaTypesCompatible = function areMediaTypesCompatible(actualMediaType, supportedMediaType) {
-  var parsedActualMediaType = parseMediaType(actualMediaType);
-  var parsedSupportedMediaType = parseMediaType(supportedMediaType);
-  return areTypeFragmentsCompatible(parsedActualMediaType.type, parsedSupportedMediaType.type) && areTypeFragmentsCompatible(parsedActualMediaType.subtype, parsedSupportedMediaType.subtype);
+var ignoreWhitespace = function ignoreWhitespace(t) {
+  return t.replace(/\s+/g, '');
 };
-var normalizeMediaType = function normalizeMediaType(mediaType) {
-  return mediaType.split(PARAMETER_SEPARATOR)[0].toLowerCase().trim();
+var ignoreParameters = function ignoreParameters(t) {
+  return t.split(PARAMETER_SEPARATOR)[0];
 };
-var isMediaTypeSupported = function isMediaTypeSupported(actualMediaType, supportedMediaTypes) {
-  var normalizedActualMediaType = normalizeMediaType(actualMediaType);
-  return supportedMediaTypes.some(function (supportedMediaType) {
-    var normalizedSupportedMediaType = normalizeMediaType(supportedMediaType);
-    return areMediaTypesCompatible(normalizedActualMediaType, normalizedSupportedMediaType);
-  });
+var removeQuality = function removeQuality(t) {
+  return t.replace(/;q=[01].?\d*/, '');
 };
+var type$i = function type(t) {
+  return t.split(TYPE_SUBTYPE_SEPARATOR)[0];
+};
+var subtype = function subtype(t) {
+  var _t$split = t.split(TYPE_SUBTYPE_SEPARATOR),
+    _t$split2 = _slicedToArray(_t$split, 2);
+    _t$split2[0];
+    var subtype = _t$split2[1];
+  return subtype === null || subtype === void 0 ? void 0 : subtype.split(EXTENSION_SEPARATOR).pop();
+};
+function findMatchingType(requestType, responseTypes) {
+  // exact match
+  var accept = requestType.split(',').map(ignoreWhitespace).map(ignoreCasing).sort(byQuality).map(removeQuality);
+  var available = responseTypes.map(ignoreWhitespace).map(ignoreCasing);
+  var _iterator = _createForOfIteratorHelper(accept),
+    _step;
+  try {
+    var _loop = function _loop() {
+      var a = _step.value;
+      var matchExactly = function matchExactly(t) {
+        return t === a;
+      };
+      var index = available.findIndex(matchExactly);
+      if (index >= 0) {
+        return {
+          v: responseTypes[index]
+        };
+      }
+    };
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var _ret = _loop();
+      if (_typeof$1(_ret) === "object") return _ret.v;
+    }
+
+    // ignore additional parameters
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  accept = accept.map(ignoreParameters);
+  available = available.map(ignoreParameters);
+  var _iterator2 = _createForOfIteratorHelper(accept),
+    _step2;
+  try {
+    var _loop2 = function _loop2() {
+      var a = _step2.value;
+      var matchExactly = function matchExactly(t) {
+        return t === a;
+      };
+      var index = available.findIndex(matchExactly);
+      if (index >= 0) {
+        return {
+          v: responseTypes[index]
+        };
+      }
+    };
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var _ret2 = _loop2();
+      if (_typeof$1(_ret2) === "object") return _ret2.v;
+    }
+
+    // ignore vendor extensions
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+  var _iterator3 = _createForOfIteratorHelper(accept),
+    _step3;
+  try {
+    var _loop3 = function _loop3() {
+      var a = _step3.value;
+      var matchTypesAndSubtypes = function matchTypesAndSubtypes(t) {
+        return type$i(t) === type$i(a) && subtype(t) === subtype(a);
+      };
+      var index = available.findIndex(matchTypesAndSubtypes);
+      if (index >= 0) {
+        return {
+          v: responseTypes[index]
+        };
+      }
+    };
+    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+      var _ret3 = _loop3();
+      if (_typeof$1(_ret3) === "object") return _ret3.v;
+    }
+
+    // wildcards in responseTypes
+  } catch (err) {
+    _iterator3.e(err);
+  } finally {
+    _iterator3.f();
+  }
+  var _iterator4 = _createForOfIteratorHelper(accept),
+    _step4;
+  try {
+    var _loop4 = function _loop4() {
+      var a = _step4.value;
+      var matchSubtype = function matchSubtype(t) {
+        return subtype(t) === WILDCARD && type$i(t) === type$i(a);
+      };
+      var index = available.findIndex(matchSubtype);
+      if (index >= 0) {
+        return {
+          v: responseTypes[index]
+        };
+      }
+    };
+    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+      var _ret4 = _loop4();
+      if (_typeof$1(_ret4) === "object") return _ret4.v;
+    }
+  } catch (err) {
+    _iterator4.e(err);
+  } finally {
+    _iterator4.f();
+  }
+  if (available.includes("".concat(WILDCARD, "/").concat(WILDCARD))) {
+    return "".concat(WILDCARD, "/").concat(WILDCARD);
+  }
+
+  // wildcards in requestTypes
+  var _iterator5 = _createForOfIteratorHelper(accept),
+    _step5;
+  try {
+    var _loop5 = function _loop5() {
+      var a = _step5.value;
+      var matchSubtype = function matchSubtype(t) {
+        return subtype(a) === WILDCARD && type$i(t) === type$i(a);
+      };
+      var index = available.findIndex(matchSubtype);
+      if (index >= 0) {
+        return {
+          v: responseTypes[index]
+        };
+      }
+    };
+    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+      var _ret5 = _loop5();
+      if (_typeof$1(_ret5) === "object") return _ret5.v;
+    }
+  } catch (err) {
+    _iterator5.e(err);
+  } finally {
+    _iterator5.f();
+  }
+  if (accept.includes("".concat(WILDCARD, "/").concat(WILDCARD))) {
+    return responseTypes[0];
+  }
+  return undefined;
+}
 var isTypesOfJson = function isTypesOfJson(supportedMediaTypes) {
-  return supportedMediaTypes.some(function (supportedMediaType) {
-    var mediaType = normalizeMediaType(supportedMediaType);
-    return mediaType.startsWith('application/') && mediaType.endsWith('json') || mediaType === '*/*';
-  });
+  return !!findMatchingType('application/json', supportedMediaTypes);
 };
 
-var defaultMediaType = 'application/json';
-var findDefaultMediaType = function findDefaultMediaType(content) {
-  var mediaTypes = Object.keys(content);
-  return mediaTypes.find(function (mediaType) {
-    return mediaType.startsWith('application/json');
-  }) || mediaTypes.find(function (mediaType) {
-    return mediaType.match(/application\/.+json/);
-  }) || mediaTypes[0] || defaultMediaType;
-};
-
-// tslint:disable:cyclomatic-complexity
 var schemaByContentType = function schemaByContentType(content, spec) {
   return function (mediaType) {
     var _content$contentMedia;
     if (!content) {
       return undefined;
     }
-    var effectiveMediaType = mediaType || findDefaultMediaType(content);
-    var normalizedMediaType = normalizeMediaType(effectiveMediaType);
-    var mediaTypes = Object.keys(content);
-    var contentMediaType = mediaTypes.find(function (type) {
-      return areMediaTypesCompatible(normalizeMediaType(type), normalizedMediaType);
-    });
+    var contentMediaType = findMatchingType(mediaType || 'application/json', Object.keys(content));
     if (!contentMediaType) {
       return undefined;
     }
@@ -55270,7 +55401,7 @@ var validateParsedMockResponseBody = function validateParsedMockResponseBody(par
   if (shouldSkipValidation(parsedMockInteraction, parsedSpecResponse)) {
     return [];
   }
-  var expectedMediaType = (_parsedMockInteractio = parsedMockInteraction.requestHeaders.accept) === null || _parsedMockInteractio === void 0 ? void 0 : _parsedMockInteractio.value;
+  var expectedMediaType = ((_parsedMockInteractio = parsedMockInteraction.requestHeaders.accept) === null || _parsedMockInteractio === void 0 ? void 0 : _parsedMockInteractio.value) || "application/json";
   var schemaForMediaType = parsedSpecResponse.schemaByContentType(expectedMediaType);
   if (!schemaForMediaType) {
     return [result.build({
@@ -55355,8 +55486,8 @@ var validateParsedMockResponseHeaders = function validateParsedMockResponseHeade
 
 var contentTypeHeaderName$1 = 'content-type';
 var validateParsedMockContentTypeAgainstParsedSpecConsumes = function validateParsedMockContentTypeAgainstParsedSpecConsumes(parsedMockInteraction, parsedSpecOperation, parsedMockContentTypeRequestHeaderValue) {
-  var areMediaTypesCompatible = isMediaTypeSupported(parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value);
-  if (!areMediaTypesCompatible) {
+  var type = findMatchingType(parsedMockContentTypeRequestHeaderValue, parsedSpecOperation.consumes.value);
+  if (!type) {
     return [result.build({
       code: 'request.content-type.incompatible',
       message: 'Request Content-Type header is incompatible with the mime-types the spec accepts to consume',
@@ -55400,8 +55531,8 @@ var validateParsedSpecConsumes = function validateParsedSpecConsumes(parsedMockI
 var acceptHeaderName = 'accept';
 var contentTypeHeaderName = 'content-type';
 var validateResponseContentType = function validateResponseContentType(parsedMockInteraction, parsedMockResponseContentType, responseProduces) {
-  var areMediaTypesCompatible = isMediaTypeSupported(parsedMockResponseContentType, responseProduces.value);
-  if (!areMediaTypesCompatible) {
+  var type = findMatchingType(parsedMockResponseContentType, responseProduces.value);
+  if (!type) {
     return [result.build({
       code: 'response.content-type.incompatible',
       message: 'Response Content-Type header is incompatible with the mime-types the spec defines to produce',
@@ -55445,7 +55576,7 @@ var validateParsedMockResponseContentType = function validateParsedMockResponseC
 var checkAcceptsHeaderCompatibility = function checkAcceptsHeaderCompatibility(parsedMockAcceptRequestHeaderValue, responseProduces) {
   var acceptedMediaTypes = parsedMockAcceptRequestHeaderValue.split(',');
   return acceptedMediaTypes.some(function (acceptedMediaType) {
-    return isMediaTypeSupported(acceptedMediaType, responseProduces.value);
+    return !!findMatchingType(acceptedMediaType, responseProduces.value);
   });
 };
 var validateAcceptsHeader = function validateAcceptsHeader(parsedMockInteraction, parsedMockAcceptRequestHeaderValue, responseProduces) {
@@ -55913,4 +56044,4 @@ var SwaggerMockValidator = /*#__PURE__*/function () {
 }();
 
 export { FileStore as F, SwaggerMockValidatorErrorImpl as S, _asyncToGenerator as _, _regeneratorRuntime as a, _ as b, _createClass as c, _classCallCheck as d, _objectSpread2 as e, SwaggerMockValidator as f, getDefaultExportFromCjs as g, transformStringToObject as t, validateSpecAndMockContent as v };
-//# sourceMappingURL=swagger-mock-validator-63cb78d9.js.map
+//# sourceMappingURL=swagger-mock-validator-af8c13cd.js.map

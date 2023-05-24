@@ -1,3 +1,12 @@
+# [12.1.0](https://github.com/pactflow/swagger-mock-validator/compare/12.0.0...12.1.0) (2023-05-24)
+
+
+### Bug Fixes
+
+* better content negotiation ([#26](https://github.com/pactflow/swagger-mock-validator/issues/26)) ([b2ac593](https://github.com/pactflow/swagger-mock-validator/commit/b2ac59368ed446a472b553f4ff22d05c308e9f83))
+
+
+
 # [12.0.0](https://github.com/pactflow/swagger-mock-validator/compare/11.5.0...12.0.0) (2023-05-22)
 
 
