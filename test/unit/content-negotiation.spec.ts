@@ -151,6 +151,11 @@ describe('#findMatchingType', () => {
             expect(findMatchingType('bbb, xxx', ['aaa', 'bbb'])).toBe('bbb');
             expect(findMatchingType('xxx, bbb', ['aaa', 'bbb'])).toBe('bbb');
         });
+
+        it('matches case-insensitively', () => {
+            expect(findMatchingType('AaA', ['aaa', 'bbb'])).toBe('aaa');
+            expect(findMatchingType('bBb', ['aaa', 'bbb'])).toBe('bbb');
+        });
     });
 
     describe('with parameters', () => {
@@ -166,6 +171,10 @@ describe('#findMatchingType', () => {
             expect(findMatchingType('aaa;v2', ['aaa', 'aaa; v2'])).toBe('aaa; v2');
             expect(findMatchingType('aaa', ['aaa', 'aaa; v2'])).toBe('aaa');
             expect(findMatchingType('aaa; v2', ['aaa'])).toBe('aaa');
+        });
+
+        it('matches case-insensitively', () => {
+            expect(findMatchingType('aaa;VvV2', ['aaa', 'AaA;vvv2'])).toBe('AaA;vvv2');
         });
     });
 
