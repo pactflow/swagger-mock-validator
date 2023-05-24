@@ -1,49 +1,90 @@
 const PARAMETER_SEPARATOR = ';';
 const WILDCARD = '*';
 const TYPE_SUBTYPE_SEPARATOR = '/';
+const EXTENSION_SEPARATOR = '+';
 
-const isWildcard = (type: string): boolean => type === WILDCARD;
-
-const areTypeFragmentsCompatible = (actualTypeFragment: string, supportedTypeFragment: string): boolean => {
-    return actualTypeFragment === supportedTypeFragment ||
-        isWildcard(actualTypeFragment) ||
-        isWildcard(supportedTypeFragment);
+const quality = (a: string): number => {
+    const match = /.*;q=([01].?\d*)/.exec(a);
+    return match ? parseFloat(match[1]) : 1.0;
 };
 
-const parseMediaType = (mediaType: string): { type: string, subtype: string } => {
-    const [type, subtype] = mediaType.split(TYPE_SUBTYPE_SEPARATOR);
-
-    return {type, subtype};
+const byQuality = (a: string, b: string): number => {
+    return quality(b) - quality(a);
+};
+const ignoreCasing = (t: string): string => t.toLowerCase();
+const ignoreWhitespace = (t: string): string => t.replace(/\s+/g, '');
+const ignoreParameters = (t: string): string => t.split(PARAMETER_SEPARATOR)[0];
+const removeQuality = (t: string): string => t.replace(/;q=[01].?\d*/, '');
+const type = (t: string): string => t.split(TYPE_SUBTYPE_SEPARATOR)[0];
+const subtype = (t: string): string | undefined => {
+    const [_type, subtype] = t.split(TYPE_SUBTYPE_SEPARATOR);
+    return subtype?.split(EXTENSION_SEPARATOR).pop();
 };
 
-export const areMediaTypesCompatible = (actualMediaType: string, supportedMediaType: string): boolean => {
-    const parsedActualMediaType = parseMediaType(actualMediaType);
-    const parsedSupportedMediaType = parseMediaType(supportedMediaType);
+export function findMatchingType(requestType: string, responseTypes: string[]): string | undefined {
+    // exact match
+    let accept = requestType.split(',').map(ignoreWhitespace).map(ignoreCasing).sort(byQuality).map(removeQuality);
+    let available = responseTypes.map(ignoreWhitespace).map(ignoreCasing);
+    for (let a of accept) {
+        let matchExactly = (t: string): boolean => t === a;
+        let index = available.findIndex(matchExactly);
+        if (index >= 0) {
+            return responseTypes[index];
+        }
+    }
 
-    return areTypeFragmentsCompatible(parsedActualMediaType.type, parsedSupportedMediaType.type) &&
-        areTypeFragmentsCompatible(parsedActualMediaType.subtype, parsedSupportedMediaType.subtype);
-};
+    // ignore additional parameters
+    accept = accept.map(ignoreParameters);
+    for (let a of accept) {
+        let matchExactly = (t: string): boolean => t === a;
+        let index = available.findIndex(matchExactly);
+        if (index >= 0) {
+            return responseTypes[index];
+        }
+    }
 
-export const normalizeMediaType = (mediaType: string): string => {
-    return mediaType
-        .split(PARAMETER_SEPARATOR)[0]
-        .toLowerCase()
-        .trim();
-};
+    // ignore vendor extensions
+    for (let a of accept) {
+        let matchTypesAndSubtypes = (t: string): boolean => type(t) === type(a) && subtype(t) === subtype(a);
+        let index = available.findIndex(matchTypesAndSubtypes);
+        if (index >= 0) {
+            return responseTypes[index];
+        }
+    }
 
-export const isMediaTypeSupported = (actualMediaType: string, supportedMediaTypes: string[]): boolean => {
-    const normalizedActualMediaType = normalizeMediaType(actualMediaType);
+    // wildcards in responseTypes
+    available = available.map(ignoreParameters);
+    for (let a of accept) {
+        let matchSubtype = (t: string): boolean => subtype(t) === WILDCARD && type(t) === type(a);
+        let index = available.findIndex(matchSubtype);
+        if (index >= 0) {
+            return responseTypes[index];
+        }
+    }
+    if (available.includes(`${WILDCARD}/${WILDCARD}`)) {
+        return `${WILDCARD}/${WILDCARD}`;
+    }
 
-    return supportedMediaTypes.some((supportedMediaType) => {
-        const normalizedSupportedMediaType = normalizeMediaType(supportedMediaType);
+    // wildcards in requestTypes
+    for (let a of accept) {
+        let matchSubtype = (t: string): boolean => subtype(a) === WILDCARD && type(t) === type(a);
+        let index = available.findIndex(matchSubtype);
+        if (index >= 0) {
+            return responseTypes[index];
+        }
+    }
+    if (accept.includes(`${WILDCARD}/${WILDCARD}`)) {
+        return responseTypes[0];
+    }
 
-        return areMediaTypesCompatible(normalizedActualMediaType, normalizedSupportedMediaType);
-    });
-};
+    // legacy fallback behaviour
+    if (available.includes('application/json')) {
+        return 'application/json';
+    }
+
+    return undefined;
+}
 
 export const isTypesOfJson = (supportedMediaTypes: string[]): boolean => {
-    return supportedMediaTypes.some((supportedMediaType) => {
-        const mediaType = normalizeMediaType(supportedMediaType);
-        return mediaType.startsWith('application/') && mediaType.endsWith('json') || mediaType === '*/*';
-    });
+    return !!findMatchingType('application/json', supportedMediaTypes);
 };
