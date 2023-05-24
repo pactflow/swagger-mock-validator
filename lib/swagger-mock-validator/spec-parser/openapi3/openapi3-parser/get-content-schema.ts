@@ -10,7 +10,7 @@ export const schemaByContentType =
             return undefined;
         }
 
-        const contentMediaType = findMatchingType(mediaType || '', Object.keys(content));
+        const contentMediaType = findMatchingType(mediaType || 'application/json', Object.keys(content));
         if (!contentMediaType) {
             return undefined;
         }

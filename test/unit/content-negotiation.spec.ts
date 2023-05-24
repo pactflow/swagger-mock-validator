@@ -154,14 +154,11 @@ describe('#findMatchingType', () => {
     });
 
     describe('with parameters', () => {
-        it('matches none', () => {
-            expect(findMatchingType('aaa;v3', ['aaa;v1', 'aaa;v2'])).toBe(undefined);
-        });
-
         it('prefers exact matches, but falls back accordingly', () => {
             expect(findMatchingType('aaa;v2', ['aaa', 'aaa;v2'])).toBe('aaa;v2');
             expect(findMatchingType('aaa', ['aaa', 'aaa;v2'])).toBe('aaa');
             expect(findMatchingType('aaa;v2', ['aaa'])).toBe('aaa');
+            expect(findMatchingType('aaa;v3', ['aaa;v1', 'aaa;v2'])).toBe('aaa;v1');
         });
 
         it('prefers exact matches, but falls back accordingly, ignoring whitespaces', () => {
@@ -194,6 +191,8 @@ describe('#findMatchingType', () => {
     describe('wildcard responses', () => {
         it('matches wildcard types', () => {
             expect(findMatchingType('aaa', ['aaa/*'])).toBe('aaa/*');
+            expect(findMatchingType('aaa', ['aaa;v2'])).toBe('aaa;v2');
+
             expect(findMatchingType('aaa/*', ['aaa;v2'])).toBe('aaa;v2');
             expect(findMatchingType('aaa/*', ['aaa/bbb'])).toBe('aaa/bbb');
             expect(findMatchingType('aaa/*', ['aaa/bbb;v2'])).toBe('aaa/bbb;v2');

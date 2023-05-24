@@ -35,6 +35,7 @@ export function findMatchingType(requestType: string, responseTypes: string[]): 
 
     // ignore additional parameters
     accept = accept.map(ignoreParameters);
+    available = available.map(ignoreParameters);
     for (const a of accept) {
         const matchExactly = (t: string): boolean => t === a;
         const index = available.findIndex(matchExactly);
@@ -53,7 +54,6 @@ export function findMatchingType(requestType: string, responseTypes: string[]): 
     }
 
     // wildcards in responseTypes
-    available = available.map(ignoreParameters);
     for (const a of accept) {
         const matchSubtype = (t: string): boolean => subtype(t) === WILDCARD && type(t) === type(a);
         const index = available.findIndex(matchSubtype);
@@ -75,11 +75,6 @@ export function findMatchingType(requestType: string, responseTypes: string[]): 
     }
     if (accept.includes(`${WILDCARD}/${WILDCARD}`)) {
         return responseTypes[0];
-    }
-
-    // legacy fallback behaviour
-    if (available.includes('application/json')) {
-        return 'application/json';
     }
 
     return undefined;
