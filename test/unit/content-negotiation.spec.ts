@@ -179,7 +179,7 @@ describe('#findMatchingType', () => {
             );
         });
 
-        it('fallsback to base content-type', () => {
+        it('falls back to base content-type', () => {
             expect(findMatchingType('application/vnd.foo+json', ['application/json'])).toBe('application/json');
         });
 
