@@ -189,6 +189,36 @@ describe('pact-parser', () => {
                         status: 200,
                     },
                 },
+                {
+                    name: 'tolerates bad JSON',
+                    description: 'a request to update a product with existing id',
+                    request: {
+                        method: 'POST',
+                        path: '/products/27',
+                        body: {
+                            encoded: 'JSON',
+                            contents: '{ not: json }',
+                        },
+                    },
+                    response: {
+                        status: 200,
+                    },
+                },
+                {
+                    name: 'tolerates bad encoding',
+                    description: 'a request to update a product with existing id',
+                    request: {
+                        method: 'POST',
+                        path: '/products/27',
+                        body: {
+                            encoded: 'foo',
+                            contents: 'abcdef',
+                        },
+                    },
+                    response: {
+                        status: 200,
+                    },
+                },
             ],
             provider: {
                 name: 'ExampleProvider',
@@ -209,5 +239,8 @@ describe('pact-parser', () => {
         expect(pact.interactions[3].requestBody.value).toEqual({ hello: 'world' });
         expect(pact.interactions[4].requestBody.value).toEqual({ hello: 'world' });
         expect(pact.interactions[5].requestBody.value).toEqual('hello world');
+
+        expect(pact.interactions[6].requestBody.value).toEqual('{ not: json }');
+        expect(pact.interactions[7].requestBody.value).toEqual('abcdef');
     });
 });
