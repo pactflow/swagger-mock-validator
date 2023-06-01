@@ -1,7 +1,17 @@
+interface PactMetadata {
+    pactSpecification?: {
+        version?: string;
+    };
+    pactSpecificationVersion?: string;
+    'pact-specification'?: {
+        version?: string;
+    };
+}
 export interface Pact {
     consumer: { name: string };
     interactions: PactInteraction[];
-    metadata?: { pactSpecification?: {version?: string }};
+    metadata?: PactMetadata;
+    metaData?: PactMetadata;
     provider: { name: string };
 }
 
@@ -14,8 +24,8 @@ export interface PactInteraction {
     provider_state?: string;
 }
 
-export type PactV1RequestQuery = string
-export type PactV3RequestQuery = {[name: string]: string[]}
+export type PactV1RequestQuery = string;
+export type PactV3RequestQuery = { [name: string]: string[] };
 
 export interface PactInteractionRequest {
     headers?: PactInteractionHeaders;
