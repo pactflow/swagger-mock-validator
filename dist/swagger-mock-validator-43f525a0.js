@@ -11069,7 +11069,8 @@ var parseHeaders = function parseHeaders(headers, location, parentInteraction) {
 var isPactV1RequestQuery = function isPactV1RequestQuery(query) {
   return typeof query === 'string';
 };
-var parseAsPactV1RequestQuery = function parseAsPactV1RequestQuery(requestQuery) {
+var parseAsPactV1RequestQuery = function parseAsPactV1RequestQuery() {
+  var requestQuery = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var parsedQueryAsStringsOrArrayOfStrings = querystring.parse(requestQuery);
   var separator = '[multi-array-separator]';
   return Object.keys(parsedQueryAsStringsOrArrayOfStrings).reduce(function (accumulator, queryName) {
@@ -11078,77 +11079,106 @@ var parseAsPactV1RequestQuery = function parseAsPactV1RequestQuery(requestQuery)
     return accumulator;
   }, {});
 };
-var parseAsPactV3RequestQuery = function parseAsPactV3RequestQuery(requestQuery) {
+var parseAsPactV3RequestQuery = function parseAsPactV3RequestQuery() {
+  var requestQuery = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var separator = '[multi-array-separator]';
   return Object.keys(requestQuery).reduce(function (accumulator, queryName) {
     accumulator[queryName] = requestQuery[queryName].join(separator);
     return accumulator;
   }, {});
 };
+
+// Instead of relying on version number, it is more resilient to detect the capability
 var parseRequestQuery = function parseRequestQuery(requestQuery) {
   requestQuery = requestQuery || '';
   return isPactV1RequestQuery(requestQuery) ? parseAsPactV1RequestQuery(requestQuery) : parseAsPactV3RequestQuery(requestQuery);
 };
-var parseInteraction = function parseInteraction(interaction, interactionIndex, mockPathOrUrl) {
-  var parsedInteraction = {
-    description: interaction.description,
-    location: "[root].interactions[".concat(interactionIndex, "]"),
-    mockFile: mockPathOrUrl,
-    state: interaction.providerState || interaction.provider_state || '[none]',
-    value: interaction
-  };
-  var getBodyPath = function getBodyPath(bodyValue, bodyLocation, path) {
-    var location = bodyLocation;
-    var value = bodyValue;
-    if (path) {
-      location += "".concat(path);
-      value = _.get(value, path[0] === '.' ? path.substring(1) : path);
+var parseAsPactV4Body = function parseAsPactV4Body(body) {
+  if (!body) {
+    return undefined;
+  }
+  var encoded = body.encoded,
+    _body$contents = body.contents,
+    contents = _body$contents === void 0 ? '' : _body$contents;
+  try {
+    if (!encoded) {
+      return contents;
     }
-    return {
-      location: location,
-      parentInteraction: parsedInteraction,
-      value: value
+    if (encoded.toUpperCase() === 'JSON') {
+      return JSON.parse(contents); // throws if fails to parse
+    }
+
+    return Buffer.from(contents, encoded).toString(); // throws if unrecognised encoding
+  } catch (_unused) {
+    return contents;
+  }
+};
+var passThrough = function passThrough(x) {
+  return x;
+};
+var parseInteractionFor = function parseInteractionFor(mockPathOrUrl, version) {
+  var parseBody = version >= 4 ? parseAsPactV4Body : passThrough;
+  return function (interaction, interactionIndex) {
+    var parsedInteraction = {
+      description: interaction.description,
+      location: "[root].interactions[".concat(interactionIndex, "]"),
+      mockFile: mockPathOrUrl,
+      state: interaction.providerState || interaction.provider_state || '[none]',
+      value: interaction
     };
+    var getBodyPath = function getBodyPath(bodyValue, bodyLocation, path) {
+      var location = bodyLocation;
+      var value = bodyValue;
+      if (path) {
+        location += "".concat(path);
+        value = _.get(value, path[0] === '.' ? path.substring(1) : path);
+      }
+      return {
+        location: location,
+        parentInteraction: parsedInteraction,
+        value: value
+      };
+    };
+    parsedInteraction.getRequestBodyPath = function (path) {
+      var _interaction$request;
+      return getBodyPath(interaction === null || interaction === void 0 ? void 0 : (_interaction$request = interaction.request) === null || _interaction$request === void 0 ? void 0 : _interaction$request.body, "".concat(parsedInteraction.location, ".request.body"), path);
+    };
+    parsedInteraction.getResponseBodyPath = function (path) {
+      var _interaction$response;
+      return getBodyPath(interaction === null || interaction === void 0 ? void 0 : (_interaction$response = interaction.response) === null || _interaction$response === void 0 ? void 0 : _interaction$response.body, "".concat(parsedInteraction.location, ".response.body"), path);
+    };
+    parsedInteraction.parentInteraction = parsedInteraction;
+    parsedInteraction.requestBody = {
+      location: "".concat(parsedInteraction.location, ".request.body"),
+      parentInteraction: parsedInteraction,
+      value: parseBody(interaction.request.body)
+    };
+    parsedInteraction.requestHeaders = parseHeaders(interaction.request.headers, "".concat(parsedInteraction.location, ".request.headers"), parsedInteraction);
+    parsedInteraction.requestMethod = {
+      location: "".concat(parsedInteraction.location, ".request.method"),
+      parentInteraction: parsedInteraction,
+      value: interaction.request.method.toLowerCase()
+    };
+    parsedInteraction.requestPath = {
+      location: "".concat(parsedInteraction.location, ".request.path"),
+      parentInteraction: parsedInteraction,
+      value: interaction.request.path
+    };
+    parsedInteraction.requestPathSegments = parseRequestPathSegments(interaction.request.path, parsedInteraction);
+    parsedInteraction.requestQuery = parseValues(parseRequestQuery(interaction.request.query), "".concat(parsedInteraction.location, ".request.query"), parsedInteraction);
+    parsedInteraction.responseBody = {
+      location: "".concat(parsedInteraction.location, ".response.body"),
+      parentInteraction: parsedInteraction,
+      value: parseBody(interaction.response.body)
+    };
+    parsedInteraction.responseHeaders = parseHeaders(interaction.response.headers, "".concat(parsedInteraction.location, ".response.headers"), parsedInteraction);
+    parsedInteraction.responseStatus = {
+      location: "".concat(parsedInteraction.location, ".response.status"),
+      parentInteraction: parsedInteraction,
+      value: interaction.response.status
+    };
+    return parsedInteraction;
   };
-  parsedInteraction.getRequestBodyPath = function (path) {
-    var _interaction$request;
-    return getBodyPath(interaction === null || interaction === void 0 ? void 0 : (_interaction$request = interaction.request) === null || _interaction$request === void 0 ? void 0 : _interaction$request.body, "".concat(parsedInteraction.location, ".request.body"), path);
-  };
-  parsedInteraction.getResponseBodyPath = function (path) {
-    var _interaction$response;
-    return getBodyPath(interaction === null || interaction === void 0 ? void 0 : (_interaction$response = interaction.response) === null || _interaction$response === void 0 ? void 0 : _interaction$response.body, "".concat(parsedInteraction.location, ".response.body"), path);
-  };
-  parsedInteraction.parentInteraction = parsedInteraction;
-  parsedInteraction.requestBody = {
-    location: "".concat(parsedInteraction.location, ".request.body"),
-    parentInteraction: parsedInteraction,
-    value: interaction.request.body
-  };
-  parsedInteraction.requestHeaders = parseHeaders(interaction.request.headers, "".concat(parsedInteraction.location, ".request.headers"), parsedInteraction);
-  parsedInteraction.requestMethod = {
-    location: "".concat(parsedInteraction.location, ".request.method"),
-    parentInteraction: parsedInteraction,
-    value: interaction.request.method.toLowerCase()
-  };
-  parsedInteraction.requestPath = {
-    location: "".concat(parsedInteraction.location, ".request.path"),
-    parentInteraction: parsedInteraction,
-    value: interaction.request.path
-  };
-  parsedInteraction.requestPathSegments = parseRequestPathSegments(interaction.request.path, parsedInteraction);
-  parsedInteraction.requestQuery = parseValues(parseRequestQuery(interaction.request.query), "".concat(parsedInteraction.location, ".request.query"), parsedInteraction);
-  parsedInteraction.responseBody = {
-    location: "".concat(parsedInteraction.location, ".response.body"),
-    parentInteraction: parsedInteraction,
-    value: interaction.response.body
-  };
-  parsedInteraction.responseHeaders = parseHeaders(interaction.response.headers, "".concat(parsedInteraction.location, ".response.headers"), parsedInteraction);
-  parsedInteraction.responseStatus = {
-    location: "".concat(parsedInteraction.location, ".response.status"),
-    parentInteraction: parsedInteraction,
-    value: interaction.response.status
-  };
-  return parsedInteraction;
 };
 var filterUnsupportedTypes = function filterUnsupportedTypes(interaction) {
   if (!(interaction !== null && interaction !== void 0 && interaction.type) || interaction.type === 'Synchronous/HTTP') {
@@ -11158,13 +11188,13 @@ var filterUnsupportedTypes = function filterUnsupportedTypes(interaction) {
 };
 var pactParser = {
   parse: function parse(pactJson, mockPathOrUrl) {
+    var _metadata$pactSpecifi, _metadata$pactSpecif;
+    var metadata = pactJson.metadata || pactJson.metaData;
+    var version = parseInt((metadata === null || metadata === void 0 ? void 0 : (_metadata$pactSpecifi = metadata.pactSpecification) === null || _metadata$pactSpecifi === void 0 ? void 0 : _metadata$pactSpecifi.version) || (metadata === null || metadata === void 0 ? void 0 : metadata.pactSpecificationVersion) || (metadata === null || metadata === void 0 ? void 0 : (_metadata$pactSpecif = metadata['pact-specification']) === null || _metadata$pactSpecif === void 0 ? void 0 : _metadata$pactSpecif.version) || '0');
+    var parseInteraction = parseInteractionFor(mockPathOrUrl, version);
     return {
       consumer: pactJson.consumer.name,
-      interactions: pactJson.interactions.filter(function (interaction) {
-        return filterUnsupportedTypes(interaction);
-      }).map(function (interaction, interactionIndex) {
-        return parseInteraction(interaction, interactionIndex, mockPathOrUrl);
-      }),
+      interactions: pactJson.interactions.filter(filterUnsupportedTypes).map(parseInteraction),
       pathOrUrl: mockPathOrUrl,
       provider: pactJson.provider.name
     };
@@ -56044,4 +56074,4 @@ var SwaggerMockValidator = /*#__PURE__*/function () {
 }();
 
 export { FileStore as F, SwaggerMockValidatorErrorImpl as S, _asyncToGenerator as _, _regeneratorRuntime as a, _ as b, _createClass as c, _classCallCheck as d, _objectSpread2 as e, SwaggerMockValidator as f, getDefaultExportFromCjs as g, transformStringToObject as t, validateSpecAndMockContent as v };
-//# sourceMappingURL=swagger-mock-validator-af8c13cd.js.map
+//# sourceMappingURL=swagger-mock-validator-43f525a0.js.map

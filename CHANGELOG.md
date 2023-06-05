@@ -1,3 +1,12 @@
+# [12.2.0](https://github.com/pactflow/swagger-mock-validator/compare/12.1.0...12.2.0) (2023-06-05)
+
+
+### Features
+
+* parse pact-v4 request/response bodies ([#29](https://github.com/pactflow/swagger-mock-validator/issues/29)) ([bf22ab9](https://github.com/pactflow/swagger-mock-validator/commit/bf22ab953f4d5b9590f39801062f4324b5082fda))
+
+
+
 # [12.1.0](https://github.com/pactflow/swagger-mock-validator/compare/12.0.0...12.1.0) (2023-05-24)
 
 
