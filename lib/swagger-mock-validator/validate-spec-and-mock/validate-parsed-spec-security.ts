@@ -71,6 +71,11 @@ export const validateParsedSpecSecurity = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ): ValidationResult[] => {
+    // bypass security requirement if testing failure scenarios
+    if (parsedMockInteraction.responseStatus.value >= 400) {
+        return [];
+    }
+
     const validationResultsPerRequirement = _(parsedSpecOperation.securityRequirements)
         .map((requirements) => validateRequirements(parsedMockInteraction, requirements));
 
