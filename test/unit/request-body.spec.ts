@@ -59,7 +59,7 @@ describe('request body', () => {
                             bodyParameterBuilder.withRequiredSchema(
                                 schemaBuilder
                                     .withTypeObject()
-                                    .withRequiredProperty('id', schemaBuilder.withTypeNumber())
+                                    .withRequiredProperty('ignoredForBadRequests', schemaBuilder.withTypeNumber())
                             )
                         )
                 )
