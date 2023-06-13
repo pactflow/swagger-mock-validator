@@ -58,11 +58,15 @@ const isNotSupportedMediaType = (parsedSpecOperation: ParsedSpecOperation) =>
     parsedSpecOperation.consumes.value.length > 0 &&
     !isTypesOfJson(parsedSpecOperation.consumes.value);
 
+const isBadRequest = (parsedMockInteraction: ParsedMockInteraction) =>
+    parsedMockInteraction.responseStatus.value >= 400;
+
 const shouldSkipValidation = (parsedMockInteraction: ParsedMockInteraction,
                               parsedSpecOperation: ParsedSpecOperation) =>
     isNotSupportedMediaType(parsedSpecOperation) ||
     specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) ||
-    isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation);
+    isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation) ||
+    isBadRequest(parsedMockInteraction);
 
 export const validateParsedMockRequestBody = (parsedMockInteraction: ParsedMockInteraction,
                                               parsedSpecOperation: ParsedSpecOperation) => {

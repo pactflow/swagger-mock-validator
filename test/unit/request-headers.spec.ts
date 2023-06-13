@@ -9,6 +9,7 @@ import {
     requestHeaderParameterBuilder
 } from './support/swagger2-builder/parameter-builder/request-header-parameter-builder';
 import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {responseBuilder} from './support/swagger2-builder/response-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -50,6 +51,25 @@ describe('request headers', () => {
 
         return swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
     };
+
+    it('should pass for failure cases, ignoring headers', async () => {
+        const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder.withResponseStatus(400)).build();
+
+        const swaggerFile = swagger2Builder
+            .withPath(
+                '/does/exist',
+                pathBuilder.withGetOperation(
+                    operationBuilder
+                        .withResponse(400, responseBuilder)
+                        .withParameter(requestHeaderParameterBuilder.withRequiredNumberNamed('x-ignored-for-bad-requests'))
+                )
+            )
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result).toContainNoWarningsOrErrors();
+    });
 
     it('should pass when the pact request header matches the spec', async () => {
         const requestHeaders = {'x-custom-header': '1'};

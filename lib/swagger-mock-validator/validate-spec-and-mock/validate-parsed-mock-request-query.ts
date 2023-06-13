@@ -27,8 +27,18 @@ const getWarningForUndefinedQueryParameter = (queryName: string,
     })];
 };
 
+const isBadRequest = (parsedMockInteraction: ParsedMockInteraction) =>
+    parsedMockInteraction.responseStatus.value >= 400;
+
+const shouldSkipValidation = (parsedMockInteraction: ParsedMockInteraction) =>
+    isBadRequest(parsedMockInteraction);
+
 export const validateParsedMockRequestQuery = (parsedMockInteraction: ParsedMockInteraction,
                                                parsedSpecOperation: ParsedSpecOperation) => {
+    if (shouldSkipValidation(parsedMockInteraction)) {
+        return [];
+    }
+
     return _(_.keys(parsedMockInteraction.requestQuery))
         .union(_.keys(parsedSpecOperation.requestQueryParameters))
         .map((queryName) => {

@@ -7,6 +7,7 @@ import {operationBuilder} from './support/swagger2-builder/operation-builder';
 import {ParameterBuilder} from './support/swagger2-builder/parameter-builder';
 import {queryParameterBuilder} from './support/swagger2-builder/parameter-builder/query-parameter-builder';
 import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {responseBuilder} from './support/swagger2-builder/response-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -51,6 +52,25 @@ describe('request query', () => {
         const swaggerQueryParameters = swaggerQueryParameter ? [swaggerQueryParameter] : [];
         return validateRequestQueryWithMultipleSwaggerParams(swaggerQueryParameters, pactRequestQuery);
     };
+
+    it('should pass for failure cases, ignoring query parameters', async () => {
+        const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder.withResponseStatus(400)).build();
+
+        const swaggerFile = swagger2Builder
+            .withPath(
+                '/does/exist',
+                pathBuilder.withGetOperation(
+                    operationBuilder
+                        .withResponse(400, responseBuilder)
+                        .withParameter(queryParameterBuilder.withRequiredNumberNamed('ignoredForBadRequests'))
+                )
+            )
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result).toContainNoWarningsOrErrors();
+    });
 
     it('should pass when the pact request query matches the spec', async () => {
         const requestQuery = 'value=1';

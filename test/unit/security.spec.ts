@@ -240,7 +240,7 @@ describe('security', () => {
         }]);
     });
 
-    it('should pass for failure case when the pact request is missing required apiKey auth query', async () => {
+    it('should pass for failure case, ignoring security requirements', async () => {
         const pactFile = pactBuilder
             .withInteraction(
                 interactionBuilder

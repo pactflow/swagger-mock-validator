@@ -67,12 +67,17 @@ const validateRequirements = (
         .value();
 };
 
+const isBadRequest = (parsedMockInteraction: ParsedMockInteraction) =>
+    parsedMockInteraction.responseStatus.value >= 400;
+
+const shouldSkipValidation = (parsedMockInteraction: ParsedMockInteraction) =>
+    isBadRequest(parsedMockInteraction);
+
 export const validateParsedSpecSecurity = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ): ValidationResult[] => {
-    // bypass security requirement if testing failure scenarios
-    if (parsedMockInteraction.responseStatus.value >= 400) {
+    if (shouldSkipValidation(parsedMockInteraction)) {
         return [];
     }
 
