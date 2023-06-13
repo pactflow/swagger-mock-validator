@@ -4,6 +4,7 @@ import {swaggerMockValidatorLoader} from './support/swagger-mock-validator-loade
 import {swagger2Builder} from './support/swagger2-builder';
 import {operationBuilder} from './support/swagger2-builder/operation-builder';
 import {pathBuilder} from './support/swagger2-builder/path-builder';
+import {responseBuilder} from './support/swagger2-builder/response-builder';
 import {securitySchemeBuilder} from './support/swagger2-builder/security-scheme-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
@@ -237,6 +238,31 @@ describe('security', () => {
             },
             type: 'error'
         }]);
+    });
+
+    it('should pass for failure case, ignoring security requirements', async () => {
+        const pactFile = pactBuilder
+            .withInteraction(
+                interactionBuilder
+                    .withDescription('does not have request credentials')
+                    .withRequestPath('/does/exist')
+                    .withResponseStatus(401)
+            )
+            .build();
+
+        const swaggerFile = swagger2Builder
+            .withPath(
+                '/does/exist',
+                pathBuilder.withGetOperation(
+                    operationBuilder.withSecurityRequirementNamed('apiKey').withResponse(401, responseBuilder)
+                )
+            )
+            .withSecurityDefinitionNamed('apiKey', securitySchemeBuilder.withTypeApiKeyInQuery('apiToken'))
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result).toContainNoWarningsOrErrors();
     });
 
     it('should pass when the pact request has one of the security requirements', async () => {

@@ -8,6 +8,7 @@ import {ParameterBuilder} from './support/swagger2-builder/parameter-builder';
 import {bodyParameterBuilder} from './support/swagger2-builder/parameter-builder/body-parameter-builder';
 import {pathBuilder} from './support/swagger2-builder/path-builder';
 import {schemaBuilder} from './support/swagger2-builder/schema-builder';
+import {responseBuilder} from './support/swagger2-builder/response-builder';
 
 declare function expect<T>(actual: T): CustomMatchers<T>;
 
@@ -44,6 +45,31 @@ describe('request body', () => {
 
         return swaggerMockValidatorLoader.invoke(swaggerWithOperationBuilder.build(), pactFile);
     };
+
+    it('should pass for failure cases, ignoring body', async () => {
+        const pactFile = pactBuilder.withInteraction(defaultInteractionBuilder.withResponseStatus(400)).build();
+
+        const swaggerFile = swagger2Builder
+            .withPath(
+                '/does/exist',
+                pathBuilder.withGetOperation(
+                    operationBuilder
+                        .withResponse(400, responseBuilder)
+                        .withParameter(
+                            bodyParameterBuilder.withRequiredSchema(
+                                schemaBuilder
+                                    .withTypeObject()
+                                    .withRequiredProperty('ignoredForBadRequests', schemaBuilder.withTypeNumber())
+                            )
+                        )
+                )
+            )
+            .build();
+
+        const result = await swaggerMockValidatorLoader.invoke(swaggerFile, pactFile);
+
+        expect(result).toContainNoWarningsOrErrors();
+    });
 
     it('should pass when a pact request body is compatible with the swagger schema', async () => {
         const pactRequestBody = {id: 1};

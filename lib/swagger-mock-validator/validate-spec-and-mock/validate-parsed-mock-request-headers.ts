@@ -85,8 +85,18 @@ const validateParsedMockRequestHeader = (
     return validationResult.results;
 };
 
+const isBadRequest = (parsedMockInteraction: ParsedMockInteraction) =>
+    parsedMockInteraction.responseStatus.value >= 400;
+
+const shouldSkipValidation = (parsedMockInteraction: ParsedMockInteraction) =>
+    isBadRequest(parsedMockInteraction);
+
 export const validateParsedMockRequestHeaders = (parsedMockInteraction: ParsedMockInteraction,
                                                  parsedSpecOperation: ParsedSpecOperation) => {
+    if (shouldSkipValidation(parsedMockInteraction)) {
+        return [];
+    }
+
     const mockRequestHeaders = parsedMockInteraction.requestHeaders;
     const specRequestHeaders = parsedSpecOperation.requestHeaderParameters;
 

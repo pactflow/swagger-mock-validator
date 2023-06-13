@@ -67,10 +67,20 @@ const validateRequirements = (
         .value();
 };
 
+const isBadRequest = (parsedMockInteraction: ParsedMockInteraction) =>
+    parsedMockInteraction.responseStatus.value >= 400;
+
+const shouldSkipValidation = (parsedMockInteraction: ParsedMockInteraction) =>
+    isBadRequest(parsedMockInteraction);
+
 export const validateParsedSpecSecurity = (
     parsedMockInteraction: ParsedMockInteraction,
     parsedSpecOperation: ParsedSpecOperation
 ): ValidationResult[] => {
+    if (shouldSkipValidation(parsedMockInteraction)) {
+        return [];
+    }
+
     const validationResultsPerRequirement = _(parsedSpecOperation.securityRequirements)
         .map((requirements) => validateRequirements(parsedMockInteraction, requirements));
 
