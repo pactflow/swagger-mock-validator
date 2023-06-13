@@ -1,4 +1,4 @@
-import { c as _createClass, d as _classCallCheck, g as getDefaultExportFromCjs, _ as _asyncToGenerator, a as _regeneratorRuntime, e as _objectSpread2, S as SwaggerMockValidatorErrorImpl, t as transformStringToObject, b as _, F as FileStore, f as SwaggerMockValidator } from './swagger-mock-validator-43f525a0.js';
+import { c as _createClass, d as _classCallCheck, g as getDefaultExportFromCjs, _ as _asyncToGenerator, a as _regeneratorRuntime, e as _objectSpread2, S as SwaggerMockValidatorErrorImpl, t as transformStringToObject, b as _, F as FileStore, f as SwaggerMockValidator } from './swagger-mock-validator-f2196fbd.js';
 import os from 'os';
 import require$$0$1 from 'fs';
 import require$$1__default, { TextEncoder } from 'util';
@@ -66,7 +66,7 @@ var Analytics = /*#__PURE__*/function () {
 }();
 
 var name = "@pactflow/swagger-mock-validator";
-var version = "12.1.0";
+var version = "12.2.0";
 var description = "A CLI tool to validate mocks against swagger/OpenApi specs.";
 var bin = {
 	"swagger-mock-validator": "./bin/swagger-mock-validator.mjs"
@@ -18087,4 +18087,4 @@ var SwaggerMockValidatorFactory = /*#__PURE__*/function () {
 }();
 
 export { SwaggerMockValidatorFactory as S, packageJson as p };
-//# sourceMappingURL=swagger-mock-validator-factory-b26edc41.js.map
+//# sourceMappingURL=swagger-mock-validator-factory-0a7253a6.js.map

@@ -1,3 +1,12 @@
+# [12.3.0](https://github.com/pactflow/swagger-mock-validator/compare/12.2.0...12.3.0) (2023-06-13)
+
+
+### Bug Fixes
+
+* handle validations for negative scenarios ([39f99b8](https://github.com/pactflow/swagger-mock-validator/commit/39f99b8fc1413233785fba8c78b48a0444a51fc9))
+
+
+
 # [12.2.0](https://github.com/pactflow/swagger-mock-validator/compare/12.1.0...12.2.0) (2023-06-05)
 
 

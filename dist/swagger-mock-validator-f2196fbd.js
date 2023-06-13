@@ -55312,11 +55312,14 @@ var specAndMockHaveNoBody = function specAndMockHaveNoBody(parsedMockInteraction
 var isNotSupportedMediaType$1 = function isNotSupportedMediaType(parsedSpecOperation) {
   return parsedSpecOperation.consumes.value.length > 0 && !isTypesOfJson(parsedSpecOperation.consumes.value);
 };
-var shouldSkipValidation$1 = function shouldSkipValidation(parsedMockInteraction, parsedSpecOperation) {
-  return isNotSupportedMediaType$1(parsedSpecOperation) || specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) || isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation);
+var isBadRequest$3 = function isBadRequest(parsedMockInteraction) {
+  return parsedMockInteraction.responseStatus.value >= 400;
+};
+var shouldSkipValidation$4 = function shouldSkipValidation(parsedMockInteraction, parsedSpecOperation) {
+  return isNotSupportedMediaType$1(parsedSpecOperation) || specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) || isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation) || isBadRequest$3(parsedMockInteraction);
 };
 var validateParsedMockRequestBody = function validateParsedMockRequestBody(parsedMockInteraction, parsedSpecOperation) {
-  if (shouldSkipValidation$1(parsedMockInteraction, parsedSpecOperation)) {
+  if (shouldSkipValidation$4(parsedMockInteraction, parsedSpecOperation)) {
     return [];
   }
   if (parsedSpecOperation.requestBodyParameter) {
@@ -55358,7 +55361,16 @@ var validateParsedMockRequestHeader = function validateParsedMockRequestHeader(p
   var validationResult = validateMockValueAgainstSpec(specHeader, mockHeader, parsedMockInteraction, 'request.header.incompatible');
   return validationResult.results;
 };
+var isBadRequest$2 = function isBadRequest(parsedMockInteraction) {
+  return parsedMockInteraction.responseStatus.value >= 400;
+};
+var shouldSkipValidation$3 = function shouldSkipValidation(parsedMockInteraction) {
+  return isBadRequest$2(parsedMockInteraction);
+};
 var validateParsedMockRequestHeaders = function validateParsedMockRequestHeaders(parsedMockInteraction, parsedSpecOperation) {
+  if (shouldSkipValidation$3(parsedMockInteraction)) {
+    return [];
+  }
   var mockRequestHeaders = parsedMockInteraction.requestHeaders;
   var specRequestHeaders = parsedSpecOperation.requestHeaderParameters;
   return _(_.keys(mockRequestHeaders)).union(_.keys(specRequestHeaders)).map(function (headerName) {
@@ -55385,7 +55397,16 @@ var getWarningForUndefinedQueryParameter = function getWarningForUndefinedQueryP
     specSegment: parsedSpecOperation
   })];
 };
+var isBadRequest$1 = function isBadRequest(parsedMockInteraction) {
+  return parsedMockInteraction.responseStatus.value >= 400;
+};
+var shouldSkipValidation$2 = function shouldSkipValidation(parsedMockInteraction) {
+  return isBadRequest$1(parsedMockInteraction);
+};
 var validateParsedMockRequestQuery = function validateParsedMockRequestQuery(parsedMockInteraction, parsedSpecOperation) {
+  if (shouldSkipValidation$2(parsedMockInteraction)) {
+    return [];
+  }
   return _(_.keys(parsedMockInteraction.requestQuery)).union(_.keys(parsedSpecOperation.requestQueryParameters)).map(function (queryName) {
     var parsedMockRequestQuery = parsedMockInteraction.requestQuery[queryName];
     var parsedSpecRequestQuery = parsedSpecOperation.requestQueryParameters[queryName];
@@ -55421,14 +55442,14 @@ var isMockInteractionWithoutResponseBody = function isMockInteractionWithoutResp
 var isNotSupportedMediaType = function isNotSupportedMediaType(parsedSpecResponse) {
   return parsedSpecResponse.produces.value.length > 0 && !isTypesOfJson(parsedSpecResponse.produces.value);
 };
-var shouldSkipValidation = function shouldSkipValidation(parsedMockInteraction, parsedSpecResponse) {
+var shouldSkipValidation$1 = function shouldSkipValidation(parsedMockInteraction, parsedSpecResponse) {
   return isMockInteractionWithoutResponseBody(parsedMockInteraction) || isNotSupportedMediaType(parsedSpecResponse);
 };
 
 // tslint:disable:cyclomatic-complexity
 var validateParsedMockResponseBody = function validateParsedMockResponseBody(parsedMockInteraction, parsedSpecResponse, opts) {
   var _parsedMockInteractio;
-  if (shouldSkipValidation(parsedMockInteraction, parsedSpecResponse)) {
+  if (shouldSkipValidation$1(parsedMockInteraction, parsedSpecResponse)) {
     return [];
   }
   var expectedMediaType = ((_parsedMockInteractio = parsedMockInteraction.requestHeaders.accept) === null || _parsedMockInteractio === void 0 ? void 0 : _parsedMockInteractio.value) || "application/json";
@@ -55688,7 +55709,16 @@ var validateRequirements = function validateRequirements(parsedMockInteraction, 
     return validateRequirement(parsedMockInteraction, parsedSpecSecurityRequirement);
   }).compact().value();
 };
+var isBadRequest = function isBadRequest(parsedMockInteraction) {
+  return parsedMockInteraction.responseStatus.value >= 400;
+};
+var shouldSkipValidation = function shouldSkipValidation(parsedMockInteraction) {
+  return isBadRequest(parsedMockInteraction);
+};
 var validateParsedSpecSecurity = function validateParsedSpecSecurity(parsedMockInteraction, parsedSpecOperation) {
+  if (shouldSkipValidation(parsedMockInteraction)) {
+    return [];
+  }
   var validationResultsPerRequirement = _(parsedSpecOperation.securityRequirements).map(function (requirements) {
     return validateRequirements(parsedMockInteraction, requirements);
   });
@@ -56074,4 +56104,4 @@ var SwaggerMockValidator = /*#__PURE__*/function () {
 }();
 
 export { FileStore as F, SwaggerMockValidatorErrorImpl as S, _asyncToGenerator as _, _regeneratorRuntime as a, _ as b, _createClass as c, _classCallCheck as d, _objectSpread2 as e, SwaggerMockValidator as f, getDefaultExportFromCjs as g, transformStringToObject as t, validateSpecAndMockContent as v };
-//# sourceMappingURL=swagger-mock-validator-43f525a0.js.map
+//# sourceMappingURL=swagger-mock-validator-f2196fbd.js.map
