@@ -119,7 +119,7 @@ describe('request query', () => {
 
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
-            message: 'Value is incompatible with the parameter defined in the spec file: should be number',
+            message: 'Value is incompatible with the parameter defined in the spec file: must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -148,7 +148,7 @@ describe('request query', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
-            message: 'Value is incompatible with the parameter defined in the spec file: should be number',
+            message: 'Value is incompatible with the parameter defined in the spec file: must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -177,7 +177,7 @@ describe('request query', () => {
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
             message: 'Value is incompatible with the parameter defined in the spec file: '
-            + 'should have required property \'value\'',
+            + 'must have required property \'value\'',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -205,7 +205,7 @@ describe('request query', () => {
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
             message: 'Value is incompatible with the parameter defined in the spec file: ' +
-            'should have required property \'value\'',
+            'must have required property \'value\'',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -261,7 +261,7 @@ describe('request query', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.query.incompatible',
-            message: 'Value is incompatible with the parameter defined in the spec file: should be number',
+            message: 'Value is incompatible with the parameter defined in the spec file: must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',

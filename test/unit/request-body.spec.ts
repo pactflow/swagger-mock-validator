@@ -96,7 +96,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                'should be number',
+                'must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -129,7 +129,7 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the spec file: should be number',
+            message: 'Request body is incompatible with the request body schema in the spec file: must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -165,7 +165,7 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the spec file: should be number',
+            message: 'Request body is incompatible with the request body schema in the spec file: must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -202,7 +202,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                'should be number',
+                'must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -222,7 +222,7 @@ describe('request body', () => {
         }, {
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                'should be number',
+                'must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -282,7 +282,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                'should be object',
+                'must be object',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -326,7 +326,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                'should be object',
+                'must be object',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -360,7 +360,7 @@ describe('request body', () => {
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
             message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                'should NOT have additional properties',
+                'must NOT have additional properties',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
@@ -393,11 +393,11 @@ describe('request body', () => {
         expect(result.failureReason).toEqual(expectedFailedValidationError);
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the spec file: should be number',
+            message: 'Request body is incompatible with the request body schema in the spec file: must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
-                location: '[root].interactions[0].request.body[\'a\']',
+                location: '[root].interactions[0].request.body.a',
                 mockFile: 'pact.json',
                 value: '1'
             },
@@ -423,7 +423,7 @@ describe('request body', () => {
 
         expect(result).toContainErrors([{
             code: 'request.body.incompatible',
-            message: 'Request body is incompatible with the request body schema in the spec file: should be number',
+            message: 'Request body is incompatible with the request body schema in the spec file: must be number',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',

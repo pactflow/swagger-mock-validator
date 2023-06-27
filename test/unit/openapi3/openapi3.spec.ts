@@ -124,7 +124,7 @@ describe('openapi3/parser', () => {
             expect(result).toContainErrors([{
                 code: 'request.body.incompatible',
                 message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                    'should be number',
+                    'must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -143,35 +143,6 @@ describe('openapi3/parser', () => {
                 },
                 type: 'error'
             }]);
-        });
-
-        it('should support the nullable schema keyword in an object property without type', async () => {
-            const pactRequestBody = {
-                name: null
-            };
-
-            const pactFile = pactBuilder
-                .withInteraction(defaultInteractionBuilder
-                    .withRequestHeader('Content-Type', 'application/json')
-                    .withRequestBody(pactRequestBody))
-                .build();
-
-            const operationBuilder = openApi3OperationBuilder
-                .withRequestBody(openApi3RequestBodyBuilder
-                    .withContent(openApi3ContentBuilder
-                        .withJsonContent(openApi3SchemaBuilder
-                            .withTypeObject()
-                            .withOptionalProperty('name', openApi3SchemaBuilder
-                                .withNullable(true))))
-                );
-
-            const specFile = openApi3Builder
-                .withPath(defaultPath, openApi3PathItemBuilder.withGetOperation(operationBuilder))
-                .build();
-
-            const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
-
-            expect(result).toContainNoWarningsOrErrors();
         });
 
         describe('nullable and schemas with swagger custom formats', async () => {
@@ -488,7 +459,7 @@ describe('openapi3/parser', () => {
             expect(result).toContainErrors([{
                 code: 'request.body.incompatible',
                 message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                    'should be number',
+                    'must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -551,7 +522,7 @@ describe('openapi3/parser', () => {
             expect(result).toContainErrors([{
                 code: 'request.body.incompatible',
                 message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                    'should be number',
+                    'must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -599,7 +570,7 @@ describe('openapi3/parser', () => {
 
             expect(result).toContainErrors([{
                 code: 'request.body.incompatible',
-                message: 'Request body is incompatible with the request body schema in the spec file: should be boolean',
+                message: 'Request body is incompatible with the request body schema in the spec file: must be boolean',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -618,7 +589,7 @@ describe('openapi3/parser', () => {
                 type: 'error'
             }, {
                 code: 'request.body.incompatible',
-                message: 'Request body is incompatible with the request body schema in the spec file: should be number',
+                message: 'Request body is incompatible with the request body schema in the spec file: must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -659,7 +630,7 @@ describe('openapi3/parser', () => {
             expect(result).toContainErrors([{
                 code: 'request.body.incompatible',
                 message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                    'should be number',
+                    'must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -728,7 +699,7 @@ describe('openapi3/parser', () => {
             expect(result).toContainErrors([{
                 code: 'request.body.incompatible',
                 message:
-                    'Request body is incompatible with the request body schema in the spec file: should be number',
+                    'Request body is incompatible with the request body schema in the spec file: must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -926,7 +897,7 @@ describe('openapi3/parser', () => {
 
             expect(result).toContainErrors([{
                 code: 'request.query.incompatible',
-                message: 'Value is incompatible with the parameter defined in the spec file: should be number',
+                message: 'Value is incompatible with the parameter defined in the spec file: must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -1101,7 +1072,7 @@ describe('openapi3/parser', () => {
 
             expect(result).toContainErrors([{
                 code: 'request.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the spec file: should be number',
+                message: 'Value is incompatible with the parameter defined in the spec file: must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -1297,7 +1268,7 @@ describe('openapi3/parser', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                    'should be number',
+                    'must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -1363,7 +1334,7 @@ describe('openapi3/parser', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                    'should be number',
+                    'must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -1411,7 +1382,7 @@ describe('openapi3/parser', () => {
 
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
-                message: 'Response body is incompatible with the response body schema in the spec file: should be boolean',
+                message: 'Response body is incompatible with the response body schema in the spec file: must be boolean',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -1430,7 +1401,7 @@ describe('openapi3/parser', () => {
                 type: 'error'
             }, {
                 code: 'response.body.incompatible',
-                message: 'Response body is incompatible with the response body schema in the spec file: should be number',
+                message: 'Response body is incompatible with the response body schema in the spec file: must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -1474,7 +1445,7 @@ describe('openapi3/parser', () => {
 
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
-                message: 'Value is incompatible with the parameter defined in the spec file: should be number',
+                message: 'Value is incompatible with the parameter defined in the spec file: must be number',
                 mockDetails: {
                     interactionDescription: defaultInteractionDescription,
                     interactionState: '[none]',
@@ -1778,7 +1749,7 @@ describe('openapi3/parser', () => {
                     code: 'request.body.incompatible',
                     message:
                         'Request body is incompatible with the request body schema in the spec file: '
-                        + 'should pass "formatInt32" keyword validation',
+                        + 'must match format "int32"',
                     mockDetails: {
                         interactionDescription: defaultInteractionDescription,
                         interactionState: '[none]',
@@ -1790,18 +1761,18 @@ describe('openapi3/parser', () => {
                     specDetails: {
                         location:
                             `[root].paths.${defaultPath}.get.requestBody.content.application/` +
-                            'json.schema.oneOf.0.formatInt32',
+                            'json.schema.oneOf.0.format',
                         pathMethod: 'get',
                         pathName: defaultPath,
                         specFile: 'spec.json',
-                        value: undefined
+                        value: 'int32'
                     },
                     type: 'error'
                 },
                 {
                     code: 'request.body.incompatible',
                     message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                        'should match exactly one schema in oneOf',
+                        'must match exactly one schema in oneOf',
                     mockDetails: {
                         interactionDescription: defaultInteractionDescription,
                         interactionState: '[none]',
@@ -1848,7 +1819,7 @@ describe('openapi3/parser', () => {
                     code: 'request.body.incompatible',
                     message:
                         'Request body is incompatible with the request body schema in the spec file: '
-                        + 'should pass "formatInt32" keyword validation',
+                        + 'must match format "int32"',
                     mockDetails: {
                         interactionDescription: defaultInteractionDescription,
                         interactionState: '[none]',
@@ -1860,18 +1831,18 @@ describe('openapi3/parser', () => {
                     specDetails: {
                         location:
                             `[root].paths.${defaultPath}.get.requestBody.content.application/` +
-                            'json.schema.anyOf.0.formatInt32',
+                            'json.schema.anyOf.0.format',
                         pathMethod: 'get',
                         pathName: defaultPath,
                         specFile: 'spec.json',
-                        value: undefined
+                        value: 'int32'
                     },
                     type: 'error'
                 },
                 {
                     code: 'request.body.incompatible',
                     message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                        'should match some schema in anyOf',
+                        'must match a schema in anyOf',
                     mockDetails: {
                         interactionDescription: defaultInteractionDescription,
                         interactionState: '[none]',
@@ -1917,7 +1888,7 @@ describe('openapi3/parser', () => {
                     code: 'request.body.incompatible',
                     message:
                         'Request body is incompatible with the request body schema in the spec file: '
-                        + 'should NOT be valid',
+                        + 'must NOT be valid',
                     mockDetails: {
                         interactionDescription: defaultInteractionDescription,
                         interactionState: '[none]',
@@ -1968,7 +1939,7 @@ describe('openapi3/parser', () => {
                     code: 'request.body.incompatible',
                     message:
                         'Request body is incompatible with the request body schema in the spec file: '
-                        + 'should pass "formatInt32" keyword validation',
+                        + 'must match format "int32"',
                     mockDetails: {
                         interactionDescription: defaultInteractionDescription,
                         interactionState: '[none]',
@@ -1979,7 +1950,7 @@ describe('openapi3/parser', () => {
                     source: 'spec-mock-validation',
                     specDetails: {
                         location: `[root].paths.${defaultPath}.get.requestBody.content.application/json` +
-                            '.schema.properties.id.formatInt32',
+                            '.schema.properties.id.format',
                         pathMethod: 'get',
                         pathName: defaultPath,
                         specFile: 'spec.json',

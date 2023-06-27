@@ -85,8 +85,8 @@ const toParsedParameter = (
     required: (parameter.value as SwaggerHeaderPathOrQueryParameter).required || false,
     schema: {
         enum: parameter.value.enum,
-        exclusiveMaximum: parameter.value.exclusiveMaximum,
-        exclusiveMinimum: parameter.value.exclusiveMinimum,
+        exclusiveMaximum: parameter.value.exclusiveMaximum ? parameter.value.maximum : undefined,
+        exclusiveMinimum: parameter.value.exclusiveMinimum ? parameter.value.minimum : undefined,
         format: parameter.value.format,
         items: parameter.value.items,
         maxItems: parameter.value.maxItems,

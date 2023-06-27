@@ -1,0 +1,20 @@
+diff --git a/node_modules/ajv/dist/compile/validate/dataType.js b/node_modules/ajv/dist/compile/validate/dataType.js
+index 1732d46..038b3cf 100644
+--- a/node_modules/ajv/dist/compile/validate/dataType.js
++++ b/node_modules/ajv/dist/compile/validate/dataType.js
+@@ -93,13 +93,13 @@ function coerceData(it, types, coerceTo) {
+             case "number":
+                 gen
+                     .elseIf((0, codegen_1._) `${dataType} == "boolean" || ${data} === null
+-              || (${dataType} == "string" && ${data} && ${data} == +${data})`)
++              || (${dataType} == "string" && ${data} && ${data}.trim() && ${data} == +${data})`)
+                     .assign(coerced, (0, codegen_1._) `+${data}`);
+                 return;
+             case "integer":
+                 gen
+                     .elseIf((0, codegen_1._) `${dataType} === "boolean" || ${data} === null
+-              || (${dataType} === "string" && ${data} && ${data} == +${data} && !(${data} % 1))`)
++              || (${dataType} === "string" && ${data} && ${data}.trim() && ${data} == +${data} && !(${data} % 1))`)
+                     .assign(coerced, (0, codegen_1._) `+${data}`);
+                 return;
+             case "boolean":

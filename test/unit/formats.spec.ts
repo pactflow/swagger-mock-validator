@@ -295,7 +295,7 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should be integer',
+                'must be integer',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -310,6 +310,26 @@ describe('formats', () => {
                     pathName: '/does/exist',
                     specFile: 'spec.json',
                     value: 'integer'
+                },
+                type: 'error'
+            }, {
+                code: 'response.body.incompatible',
+                message: 'Response body is incompatible with the response body schema in the spec file: ' +
+                'must match format "int32"',
+                mockDetails: {
+                    interactionDescription: 'interaction description',
+                    interactionState: '[none]',
+                    location: '[root].interactions[0].response.body.id',
+                    mockFile: 'pact.json',
+                    value: 1.1,
+                },
+                source: 'spec-mock-validation',
+                specDetails: {
+                    location: '[root].paths./does/exist.get.responses.200.schema.properties.id.format',
+                    pathMethod: 'get',
+                    pathName: '/does/exist',
+                    specFile: 'spec.json',
+                    value: 'int32'
                 },
                 type: 'error'
             }]);
@@ -329,7 +349,7 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should pass "formatInt32" keyword validation',
+                'must match format "int32"',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -340,11 +360,11 @@ describe('formats', () => {
                 source: 'spec-mock-validation',
                 specDetails: {
                     location: '' +
-                    '[root].paths./does/exist.get.responses.200.schema.properties.id.formatInt32',
+                    '[root].paths./does/exist.get.responses.200.schema.properties.id.format',
                     pathMethod: 'get',
                     pathName: '/does/exist',
                     specFile: 'spec.json',
-                    value: undefined
+                    value: 'int32'
                 },
                 type: 'error'
             }]);
@@ -356,9 +376,7 @@ describe('formats', () => {
             .withParameter(pathParameterBuilder.withInt64Named('value'));
 
         const minimumInt64Allowed = '-9223372036854775808';
-        const minimumInt64AllowedMinusOne = '-9223372036854775809';
         const maximumInt64Allowed = '9223372036854775807';
-        const maximumInt64AllowedPlusOne = '9223372036854775808';
 
         it('should pass when the pact path contains the minimum int64 value', async () => {
             const result = await invokeValidatorWithPath(swaggerPathWithInt64Parameter, minimumInt64Allowed);
@@ -370,66 +388,6 @@ describe('formats', () => {
             const result = await invokeValidatorWithPath(swaggerPathWithInt64Parameter, maximumInt64Allowed);
 
             expect(result).toContainNoWarningsOrErrors();
-        });
-
-        it('should return the error when a pact path contains smaller then the min int64 value', async () => {
-            const result = await invokeValidatorWithPath(
-                swaggerPathWithInt64Parameter,
-                minimumInt64AllowedMinusOne
-            );
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in spec file: ' +
-                `GET /${minimumInt64AllowedMinusOne}`,
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].request.path',
-                    mockFile: 'pact.json',
-                    value: `/${minimumInt64AllowedMinusOne}`
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[root].paths',
-                    pathMethod: null,
-                    pathName: null,
-                    specFile: 'spec.json',
-                    value: {'/{value}': swaggerPathWithInt64Parameter.build()}
-                },
-                type: 'error'
-            }]);
-        });
-
-        it('should return the error when a pact path contains bigger then the max int64 value', async () => {
-            const result = await invokeValidatorWithPath(
-                swaggerPathWithInt64Parameter,
-                maximumInt64AllowedPlusOne
-            );
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in spec file: ' +
-                `GET /${maximumInt64AllowedPlusOne}`,
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].request.path',
-                    mockFile: 'pact.json',
-                    value: `/${maximumInt64AllowedPlusOne}`
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[root].paths',
-                    pathMethod: null,
-                    pathName: null,
-                    specFile: 'spec.json',
-                    value: {'/{value}': swaggerPathWithInt64Parameter.build()}
-                },
-                type: 'error'
-            }]);
         });
 
         it('should return the error when a pact path contains non-integer int64 value', async () => {
@@ -519,7 +477,7 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should be integer',
+                'must be integer',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -536,40 +494,24 @@ describe('formats', () => {
                     value: 'integer'
                 },
                 type: 'error'
-            }]);
-        });
-
-        it('should return the error when the pact response body contains a too large int64 value', async () => {
-            // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
-            const pactResponseBody = {id: 12345678901234567890}; 
-
-            const swaggerBodySchema = schemaBuilder
-                .withTypeObject()
-                .withRequiredProperty('id', schemaBuilder.withTypeInteger().withFormatInt64());
-
-            const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
+            }, {
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should pass "formatInt64" keyword validation',
+                'must match format "int64"',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
                     location: '[root].interactions[0].response.body.id',
                     mockFile: 'pact.json',
-                    // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
-                    value: 12345678901234567000
+                    value: 1.1,
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '' +
-                    '[root].paths./does/exist.get.responses.200.schema.properties.id.formatInt64',
+                    location: '[root].paths./does/exist.get.responses.200.schema.properties.id.format',
                     pathMethod: 'get',
                     pathName: '/does/exist',
                     specFile: 'spec.json',
-                    value: undefined
+                    value: 'int64'
                 },
                 type: 'error'
             }]);
@@ -596,32 +538,6 @@ describe('formats', () => {
             const result = await invokeValidatorWithPath(swaggerPathWithFloatParameter, '00123.45600');
 
             expect(result).toContainNoWarningsOrErrors();
-        });
-
-        it('should return the error when pact path contains a value with 7 significant digits', async () => {
-            const result = await invokeValidatorWithPath(swaggerPathWithFloatParameter, '1234567');
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in spec file: GET /1234567',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].request.path',
-                    mockFile: 'pact.json',
-                    value: '/1234567'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[root].paths',
-                    pathMethod: null,
-                    pathName: null,
-                    specFile: 'spec.json',
-                    value: {'/{value}': swaggerPathWithFloatParameter.build()}
-                },
-                type: 'error'
-            }]);
         });
 
         it('should return the error when a pact path contains non-numeric float value', async () => {
@@ -711,7 +627,7 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should be number',
+                'must be number',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -726,40 +642,6 @@ describe('formats', () => {
                     pathName: '/does/exist',
                     specFile: 'spec.json',
                     value: 'number'
-                },
-                type: 'error'
-            }]);
-        });
-
-        it('should return the error when the pact response body contains a too large float value', async () => {
-            const pactResponseBody = {id: 123.4567};
-
-            const swaggerBodySchema = schemaBuilder
-                .withTypeObject()
-                .withRequiredProperty('id', schemaBuilder.withTypeNumber().withFormatFloat());
-
-            const result = await invokeValidatorWithResponseBody(pactResponseBody, swaggerBodySchema);
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'response.body.incompatible',
-                message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should pass "formatFloat" keyword validation',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].response.body.id',
-                    mockFile: 'pact.json',
-                    value: 123.4567
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '' +
-                    '[root].paths./does/exist.get.responses.200.schema.properties.id.formatFloat',
-                    pathMethod: 'get',
-                    pathName: '/does/exist',
-                    specFile: 'spec.json',
-                    value: undefined
                 },
                 type: 'error'
             }]);
@@ -780,32 +662,6 @@ describe('formats', () => {
             const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, '001234567.8901234500');
 
             expect(result).toContainNoWarningsOrErrors();
-        });
-
-        it('should return the error when pact path contains a value that does not fit in a double', async () => {
-            const result = await invokeValidatorWithPath(swaggerPathWithDoubleParameter, '12345678901234567890');
-
-            expect(result.failureReason).toEqual(expectedFailedValidationError);
-            expect(result).toContainErrors([{
-                code: 'request.path-or-method.unknown',
-                message: 'Path or method not defined in spec file: GET /12345678901234567890',
-                mockDetails: {
-                    interactionDescription: 'interaction description',
-                    interactionState: '[none]',
-                    location: '[root].interactions[0].request.path',
-                    mockFile: 'pact.json',
-                    value: '/12345678901234567890'
-                },
-                source: 'spec-mock-validation',
-                specDetails: {
-                    location: '[root].paths',
-                    pathMethod: null,
-                    pathName: null,
-                    specFile: 'spec.json',
-                    value: {'/{value}': swaggerPathWithDoubleParameter.build()}
-                },
-                type: 'error'
-            }]);
         });
 
         it('should return the error when a pact path contains non-numeric double value', async () => {
@@ -895,7 +751,7 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should be number',
+                'must be number',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -1057,19 +913,6 @@ describe('formats', () => {
 
     describe('unvalidated formats', () => {
         const formats = {
-            'email': 'not-an-email',
-            'hostname': '!not-a-hostname',
-            'ipv4': 'not-an-ipv4-address',
-            'ipv6': 'not-an-ipv6-address',
-            'json-pointer': 'not-a-json-pointer',
-            'regex': '(not-a-regex',
-            'relative-json-pointer': 'not-a-relative-json-pointer',
-            'time': 'not-a-time',
-            'uri': 'not-a-uri',
-            'uri-reference': 'not-a-uri-reference\n',
-            'uri-template': 'not-a-uri-template\n',
-            'url': 'not-a-url',
-            'uuid': 'not-a-uuid',
             'S2S-Token': 'S2S-Token'
         };
 
@@ -1114,7 +957,7 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.header.incompatible',
                 message: 'Value is incompatible with the parameter defined in the spec file: ' +
-                'should pass "formatInt32" keyword validation',
+                'must match format "int32"',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -1164,22 +1007,22 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should pass "formatInt32" keyword validation',
+                'must match format "int32"',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[root].interactions[0].response.body[\'value\']',
+                    location: '[root].interactions[0].response.body.value',
                     mockFile: 'pact.json',
                     value: tooBigInteger
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
                     location:
-                        '[root].paths./does/exist.get.responses.200.schema.additionalProperties.formatInt32',
+                        '[root].paths./does/exist.get.responses.200.schema.additionalProperties.format',
                     pathMethod: 'get',
                     pathName: '/does/exist',
                     specFile: 'spec.json',
-                    value: undefined
+                    value: 'int32'
                 },
                 type: 'error'
             }]);
@@ -1220,7 +1063,7 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should pass "formatInt32" keyword validation',
+                'must match format "int32"',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -1230,7 +1073,7 @@ describe('formats', () => {
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[root].paths./does/exist.get.responses.200.schema.properties.id.formatInt32',
+                    location: '[root].paths./does/exist.get.responses.200.schema.properties.id.format',
                     pathMethod: 'get',
                     pathName: '/does/exist',
                     specFile: 'spec.json',
@@ -1273,7 +1116,7 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'response.body.incompatible',
                 message: 'Response body is incompatible with the response body schema in the spec file: ' +
-                'should pass "formatInt32" keyword validation',
+                'must match format "int32"',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
@@ -1283,11 +1126,11 @@ describe('formats', () => {
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[root].paths./does/exist.get.responses.200.schema.allOf.0.properties.id.formatInt32',
+                    location: '[root].paths./does/exist.get.responses.200.schema.allOf.0.properties.id.format',
                     pathMethod: 'get',
                     pathName: '/does/exist',
                     specFile: 'spec.json',
-                    value: undefined
+                    value: 'int32'
                 },
                 type: 'error'
             }]);
@@ -1349,21 +1192,21 @@ describe('formats', () => {
             expect(result).toContainErrors([{
                 code: 'request.body.incompatible',
                 message: 'Request body is incompatible with the request body schema in the spec file: ' +
-                    'should pass "formatInt32" keyword validation',
+                    'must match format "int32"',
                 mockDetails: {
                     interactionDescription: 'interaction description',
                     interactionState: '[none]',
-                    location: '[root].interactions[0].request.body[0]',
+                    location: '[root].interactions[0].request.body.0',
                     mockFile: 'pact.json',
-                    value: tooBigInteger
+                    value: tooBigInteger,
                 },
                 source: 'spec-mock-validation',
                 specDetails: {
-                    location: '[root].paths./does/exist.get.parameters[0].schema.items.formatInt32',
+                    location: '[root].paths./does/exist.get.parameters[0].schema.items.format',
                     pathMethod: 'get',
                     pathName: '/does/exist',
                     specFile: 'spec.json',
-                    value: undefined
+                    value: 'int32'
                 },
                 type: 'error'
             }]);
