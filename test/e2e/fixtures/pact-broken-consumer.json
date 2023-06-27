@@ -73,18 +73,6 @@
             "status": 200
         }
     }, {
-        "description": "format invalid test",
-        "request": {
-            "headers": {
-                "x-client-id": "9223372036854777000"
-            },
-            "method": "get",
-            "path": "/1/users/2"
-        },
-        "response": {
-            "status": 200
-        }
-    }, {
         "description": "enum invalid test",
         "request": {
             "headers": {

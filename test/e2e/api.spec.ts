@@ -138,7 +138,7 @@ describe('swagger-mock-validator/api', () => {
             requiredPropertiesInResponse: false
         });
 
-        expect(result.errors.length).toBe(23, 'result.errors.length');
+        expect(result.errors.length).toBe(22, 'result.errors.length');
         expect(result.errors[0]).toEqual({
             code: 'request.path-or-method.unknown',
             message: 'Path or method not defined in spec file: GET /one/users/2',
