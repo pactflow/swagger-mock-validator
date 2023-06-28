@@ -31,7 +31,7 @@ const setAdditionalPropertiesToFalseInSchema = (
   const modifiedSchema = _.cloneDeep(schema);
 
   traverseJsonSchema(modifiedSchema, (mutableSchema) => {
-    if (typeof mutableSchema.additionalProperties === 'undefined') {
+    if (typeof mutableSchema.additionalProperties === 'undefined' && mutableSchema.type && mutableSchema.type === "object") {
       mutableSchema.additionalProperties = false;
     }
     return modifiedSchema;
@@ -109,7 +109,7 @@ export const validateParsedMockResponseBody = (
     return result.build({
       code: 'response.body.incompatible',
       message: `Response body is incompatible with the response body schema in the spec file: ${message}`,
-      mockSegment: parsedMockInteraction.getResponseBodyPath(error.dataPath),
+      mockSegment: parsedMockInteraction.getResponseBodyPath(error.instancePath.replace(/\//g, '.')),
       source: 'spec-mock-validation',
       specSegment: parsedSpecResponse.getFromSchema(
         error.schemaPath.replace(/\//g, '.').substring(2),

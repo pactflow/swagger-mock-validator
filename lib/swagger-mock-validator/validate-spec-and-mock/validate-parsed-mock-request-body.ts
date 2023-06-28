@@ -35,7 +35,7 @@ const validateRequestBodyAgainstSchema = (
         code: 'request.body.incompatible',
         message:
             `Request body is incompatible with the request body schema in the spec file: ${error.message}`,
-        mockSegment: parsedMockRequestBody.parentInteraction.getRequestBodyPath(error.dataPath),
+        mockSegment: parsedMockRequestBody.parentInteraction.getRequestBodyPath(error.instancePath.replace(/\//g, '.')),
         source: 'spec-mock-validation',
         specSegment: parsedSpecRequestBody.getFromSchema(
             error.schemaPath.replace(/\//g, '.').substring(2),

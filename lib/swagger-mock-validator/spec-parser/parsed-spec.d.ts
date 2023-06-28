@@ -60,8 +60,8 @@ interface ParsedSpecJsonSchemaBooleanKeywords {
 interface ParsedSpecJsonSchemaValue {
     additionalProperties?: boolean | ParsedSpecJsonSchema;
     enum?: any[];
-    exclusiveMaximum?: boolean;
-    exclusiveMinimum?: boolean;
+    exclusiveMaximum?: number;
+    exclusiveMinimum?: number;
     format?: ParsedSpecSchemaFormat;
     items?: ParsedSpecJsonSchema;
     maxItems?: number;

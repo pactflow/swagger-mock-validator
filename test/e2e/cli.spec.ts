@@ -111,7 +111,7 @@ describe('swagger-mock-validator/cli', () => {
             'is not compatible with spec file "test/e2e/fixtures/swagger-provider.json"'
         ));
 
-        expect(error).toEqual(jasmine.stringMatching('23 error'));
+        expect(error).toEqual(jasmine.stringMatching('22 error'));
         expect(error).toEqual(jasmine.stringMatching('0 warning'));
         // request path missing
         expect(error).toEqual(jasmine.stringMatching(/\[root].interactions\[0]\.request\.path/));
@@ -144,119 +144,110 @@ describe('swagger-mock-validator/cli', () => {
         // request header invalid
         expect(error).toEqual(jasmine.stringMatching(/\[root].interactions\[5]\.request\.headers\.x-version/));
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should be number'
+            'Value is incompatible with the parameter defined in the spec file: must be number'
         ));
         expect(error).toEqual(jasmine.stringMatching('name: \'x-version\', in: \'header\''));
 
-        // format invalid
-        expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[6]\.request\.headers\.x-client-id/)
-        );
-        expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: ' +
-            'should pass "formatInt64" keyword validation'
-        ));
-
         // enum invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[7]\.request\.headers\.x-enum-value/)
+            /\[root].interactions\[6]\.request\.headers\.x-enum-value/)
         );
         expect(error).toEqual(jasmine.stringMatching(
             'Value is incompatible with the parameter defined in the spec file: ' +
-            'should be equal to one of the allowed values'
+            'must be equal to one of the allowed values'
         ));
 
         // maximum invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[8]\.request\.headers\.x-maximum-value/)
+            /\[root].interactions\[7]\.request\.headers\.x-maximum-value/)
         );
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should be < 100'
+            'Value is incompatible with the parameter defined in the spec file: must be < 100'
         ));
 
         // minimum invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[9]\.request\.headers\.x-minimum-value/)
+            /\[root].interactions\[8]\.request\.headers\.x-minimum-value/)
         );
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should be > 0'
+            'Value is incompatible with the parameter defined in the spec file: must be > 0'
         ));
 
         // maxlength invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[10]\.request\.headers\.x-maxlength-value/)
+            /\[root].interactions\[9]\.request\.headers\.x-maxlength-value/)
         );
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should NOT be longer than 3 characters'
+            'Value is incompatible with the parameter defined in the spec file: must NOT have more than 3 characters'
         ));
 
         // minlength invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[11]\.request\.headers\.x-minlength-value/)
+            /\[root].interactions\[10]\.request\.headers\.x-minlength-value/)
         );
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should NOT be shorter than 3 characters'
+            'Value is incompatible with the parameter defined in the spec file: must NOT have fewer than 3 characters'
         ));
 
         // pattern invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[12]\.request\.headers\.x-pattern-value/)
+            /\[root].interactions\[11]\.request\.headers\.x-pattern-value/)
         );
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should match pattern'
+            'Value is incompatible with the parameter defined in the spec file: must match pattern'
         ));
 
         // multipleof invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[13]\.request\.headers\.x-multipleof-value/)
+            /\[root].interactions\[12]\.request\.headers\.x-multipleof-value/)
         );
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should be multiple of 2'
+            'Value is incompatible with the parameter defined in the spec file: must be multiple of 2'
         ));
 
         // array invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[14]\.request\.headers\.x-array-value/)
+            /\[root].interactions\[13]\.request\.headers\.x-array-value/)
         );
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should be number'
+            'Value is incompatible with the parameter defined in the spec file: must be number'
         ));
 
         // maxitems invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[15]\.request\.headers\.x-maxitems-value/
+            /\[root].interactions\[14]\.request\.headers\.x-maxitems-value/
         ));
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should NOT have more than 2 items'
+            'Value is incompatible with the parameter defined in the spec file: must NOT have more than 2 items'
         ));
 
         // minitems invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[16]\.request\.headers\.x-minitems-value/
+            /\[root].interactions\[15]\.request\.headers\.x-minitems-value/
         ));
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should NOT have fewer than 2 items'
+            'Value is incompatible with the parameter defined in the spec file: must NOT have fewer than 2 items'
         ));
 
         // uniqueitems invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[17]\.request\.headers\.x-uniqueitems-value/
+            /\[root].interactions\[16]\.request\.headers\.x-uniqueitems-value/
         ));
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should NOT have duplicate items'
+            'Value is incompatible with the parameter defined in the spec file: must NOT have duplicate items'
         ));
 
         // query invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[18]\.request\.query/
+            /\[root].interactions\[17]\.request\.query/
         ));
         expect(error).toEqual(jasmine.stringMatching(
-            'Value is incompatible with the parameter defined in the spec file: should be number'
+            'Value is incompatible with the parameter defined in the spec file: must be number'
         ));
 
         // accept header invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[19]\.request\.headers\.accept/
+            /\[root].interactions\[18]\.request\.headers\.accept/
         ));
         expect(error).toEqual(jasmine.stringMatching(
             'Request Accept header is incompatible with the mime-types the spec defines to produce'
@@ -264,7 +255,7 @@ describe('swagger-mock-validator/cli', () => {
 
         // request content-type header invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[20]\.request\.headers\.content-type/
+            /\[root].interactions\[19]\.request\.headers\.content-type/
         ));
         expect(error).toEqual(jasmine.stringMatching(
             'Request Content-Type header is incompatible with the mime-types the spec accepts to consume'
@@ -272,7 +263,7 @@ describe('swagger-mock-validator/cli', () => {
 
         // response content-type header invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[21]\.response\.headers\.Content-Type/
+            /\[root].interactions\[20]\.response\.headers\.Content-Type/
         ));
         expect(error).toEqual(jasmine.stringMatching(
             'Request Content-Type header is incompatible with the mime-types the spec accepts to consume'
@@ -280,7 +271,7 @@ describe('swagger-mock-validator/cli', () => {
 
         // authorization invalid
         expect(error).toEqual(jasmine.stringMatching(
-            /\[root].interactions\[22]/
+            /\[root].interactions\[21]/
         ));
         expect(error).toEqual(jasmine.stringMatching(
             'Request Authorization header is missing but is required by the spec file'

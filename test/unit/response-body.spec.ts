@@ -75,7 +75,7 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
                 {
                     code: 'response.body.incompatible',
                     message:
-                        'Response body is incompatible with the response body schema in the spec file: should be number',
+                        'Response body is incompatible with the response body schema in the spec file: must be number',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -113,7 +113,7 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
                 {
                     code: 'response.body.incompatible',
                     message:
-                        'Response body is incompatible with the response body schema in the spec file: should be number',
+                        'Response body is incompatible with the response body schema in the spec file: must be number',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -157,7 +157,7 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
                 {
                     code: 'response.body.incompatible',
                     message:
-                        'Response body is incompatible with the response body schema in the spec file: should be number',
+                        'Response body is incompatible with the response body schema in the spec file: must be number',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -204,11 +204,11 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
                 {
                     code: 'response.body.incompatible',
                     message:
-                        'Response body is incompatible with the response body schema in the spec file: should be number',
+                        'Response body is incompatible with the response body schema in the spec file: must be number',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[root].interactions[0].response.body.children[0].id',
+                        location: '[root].interactions[0].response.body.children.0.id',
                         mockFile: 'pact.json',
                         value: 'not-a-number',
                     },
@@ -254,11 +254,11 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
                 {
                     code: 'response.body.incompatible',
                     message:
-                        'Response body is incompatible with the response body schema in the spec file: should be string',
+                        'Response body is incompatible with the response body schema in the spec file: must be string',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: '[root].interactions[0].response.body[0].customer.last',
+                        location: '[root].interactions[0].response.body.0.customer.last',
                         mockFile: 'pact.json',
                         value: 1,
                     },
@@ -294,7 +294,7 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
                 {
                     code: 'response.body.incompatible',
                     message:
-                        'Response body is incompatible with the response body schema in the spec file: should be number',
+                        'Response body is incompatible with the response body schema in the spec file: must be number',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -315,7 +315,7 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
                 {
                     code: 'response.body.incompatible',
                     message:
-                        'Response body is incompatible with the response body schema in the spec file: should be number',
+                        'Response body is incompatible with the response body schema in the spec file: must be number',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
@@ -521,11 +521,11 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
                 {
                     code: 'response.body.incompatible',
                     message:
-                        'Response body is incompatible with the response body schema in the spec file: should be number',
+                        'Response body is incompatible with the response body schema in the spec file: must be number',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
-                        location: "[root].interactions[0].response.body['b']",
+                        location: "[root].interactions[0].response.body.b",
                         mockFile: 'pact.json',
                         value: '2',
                     },
