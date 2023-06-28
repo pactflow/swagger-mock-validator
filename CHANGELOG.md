@@ -1,6 +1,8 @@
 # [13.0.0](https://github.com/pactflow/swagger-mock-validator/compare/12.3.0...13.0.0) (2023-06-28)
 
+### Features
 
+* upgrade Ajv from v6 to v8 ([5a17818](https://github.com/pactflow/swagger-mock-validator/commit/5a1781824239367ffed35afd01748cba77d8b75e))
 
 # [12.3.0](https://github.com/pactflow/swagger-mock-validator/compare/12.2.0...12.3.0) (2023-06-13)
 
