@@ -1,11 +1,11 @@
-import { g as getDefaultExportFromCjs, _ as _asyncToGenerator, a as _regeneratorRuntime, b as _ } from './swagger-mock-validator-f2196fbd.js';
+import { g as getDefaultExportFromCjs, _ as _asyncToGenerator, a as _regeneratorRuntime, b as _ } from './swagger-mock-validator-bd3c27eb.js';
 import require$$0 from 'events';
 import require$$1 from 'child_process';
 import require$$2 from 'path';
 import require$$0$1 from 'fs';
 import require$$4 from 'process';
 import require$$1__default from 'util';
-import { p as packageJson, S as SwaggerMockValidatorFactory } from './swagger-mock-validator-factory-0a7253a6.js';
+import { p as packageJson, S as SwaggerMockValidatorFactory } from './swagger-mock-validator-factory-396b0a1e.js';
 import 'assert';
 import 'stream';
 import 'querystring';
@@ -1440,7 +1440,7 @@ let Command$1 = class Command extends EventEmitter {
    */
 
   arguments(names) {
-    names.split(/ +/).forEach(detail => {
+    names.trim().split(/ +/).forEach(detail => {
       this.argument(detail);
     });
     return this;
@@ -2192,6 +2192,26 @@ Expecting one of '${allowedValues.join("', '")}'`);
   }
 
   /**
+   * Invoke help directly if possible, or dispatch if necessary.
+   * e.g. help foo
+   *
+   * @api private
+   */
+
+  _dispatchHelpCommand(subcommandName) {
+    if (!subcommandName) {
+      this.help();
+    }
+    const subCommand = this._findCommand(subcommandName);
+    if (subCommand && !subCommand._executableHandler) {
+      subCommand.help();
+    }
+
+    // Fallback to parsing the help flag to invoke the help.
+    return this._dispatchSubcommand(subcommandName, [], [this._helpLongFlag]);
+  }
+
+  /**
    * Check this.args against expected this._args.
    *
    * @api private
@@ -2354,10 +2374,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
       return this._dispatchSubcommand(operands[0], operands.slice(1), unknown);
     }
     if (this._hasImplicitHelpCommand() && operands[0] === this._helpCommandName) {
-      if (operands.length === 1) {
-        this.help();
-      }
-      return this._dispatchSubcommand(operands[1], [], [this._helpLongFlag]);
+      return this._dispatchHelpCommand(operands[1]);
     }
     if (this._defaultCommandName) {
       outputHelpIfRequested(this, unknown); // Run the help for default command from parent rather than passing to default command

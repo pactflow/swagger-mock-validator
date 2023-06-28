@@ -1,4 +1,4 @@
-import { c as _createClass, d as _classCallCheck, g as getDefaultExportFromCjs, _ as _asyncToGenerator, a as _regeneratorRuntime, e as _objectSpread2, S as SwaggerMockValidatorErrorImpl, t as transformStringToObject, b as _, F as FileStore, f as SwaggerMockValidator } from './swagger-mock-validator-f2196fbd.js';
+import { c as _createClass, d as _classCallCheck, g as getDefaultExportFromCjs, _ as _asyncToGenerator, a as _regeneratorRuntime, e as _objectSpread2, S as SwaggerMockValidatorErrorImpl, t as transformStringToObject, b as _, F as FileStore, f as SwaggerMockValidator } from './swagger-mock-validator-bd3c27eb.js';
 import os from 'os';
 import require$$0$1 from 'fs';
 import require$$1__default, { TextEncoder } from 'util';
@@ -66,7 +66,7 @@ var Analytics = /*#__PURE__*/function () {
 }();
 
 var name = "@pactflow/swagger-mock-validator";
-var version = "12.2.0";
+var version = "12.3.0";
 var description = "A CLI tool to validate mocks against swagger/OpenApi specs.";
 var bin = {
 	"swagger-mock-validator": "./bin/swagger-mock-validator.mjs"
@@ -81,6 +81,7 @@ var scripts = {
 	test: "jasmine --config=jasmine.json \"test/unit/**/*.ts\"",
 	"test:e2e": "jasmine --config=jasmine.json \"test/e2e/**/*.ts\"",
 	build: "rm -rf dist && rollup -c",
+	postinstall: "patch-package",
 	"release-major": "gulp --gulpfile gulpfile.cjs release --type major",
 	"release-minor": "gulp --gulpfile gulpfile.cjs release --type minor",
 	"release-patch": "gulp --gulpfile gulpfile.cjs release --type patch"
@@ -99,58 +100,56 @@ var engines = {
 };
 var type = "module";
 var devDependencies = {
-	"@babel/core": "^7.21.8",
-	"@babel/preset-env": "^7.21.5",
-	"@babel/preset-typescript": "^7.21.5",
-	"@babel/register": "^7.21.0",
-	"@commitlint/cli": "^17.6.1",
-	"@commitlint/config-conventional": "^17.6.1",
+	"@babel/core": "^7.22.5",
+	"@babel/preset-env": "^7.22.5",
+	"@babel/preset-typescript": "^7.22.5",
+	"@babel/register": "^7.22.5",
+	"@commitlint/cli": "^17.6.6",
+	"@commitlint/config-conventional": "^17.6.6",
 	"@rollup/plugin-babel": "^6.0.3",
-	"@rollup/plugin-commonjs": "^24.1.0",
+	"@rollup/plugin-commonjs": "^25.0.2",
 	"@rollup/plugin-json": "^6.0.0",
-	"@rollup/plugin-node-resolve": "^15.0.2",
+	"@rollup/plugin-node-resolve": "^15.1.0",
 	"@types/body-parser": "^1.19.2",
 	"@types/express": "^4.17.17",
-	"@types/jasmine": "^4.3.1",
+	"@types/jasmine": "^4.3.4",
 	"@types/js-yaml": "^4.0.5",
-	"@types/lodash": "^4.14.194",
-	"@types/node": "^18.16.3",
-	"@types/q": "^1.5.5",
-	"@types/validator": "^13.7.15",
+	"@types/lodash": "^4.14.195",
+	"@types/node": "^20.3.1",
 	"@types/verror": "^1.10.6",
-	"@typescript-eslint/eslint-plugin": "^5.59.2",
-	"@typescript-eslint/parser": "^5.59.2",
+	"@typescript-eslint/eslint-plugin": "^5.60.0",
+	"@typescript-eslint/parser": "^5.60.0",
 	"ansi-colors": "^4.1.3",
 	"body-parser": "^1.20.2",
-	"conventional-changelog": "^3.1.25",
-	eslint: "^8.39.0",
+	"conventional-changelog": "^4.0.0",
+	eslint: "^8.43.0",
 	"eslint-config-prettier": "^8.8.0",
-	"eslint-plugin-jest": "^27.2.1",
+	"eslint-plugin-jest": "^27.2.2",
 	express: "^4.18.2",
 	gulp: "^4.0.2",
 	"gulp-bump": "^3.2.0",
 	"gulp-cli": "^2.3.0",
-	"gulp-conventional-changelog": "^2.0.35",
+	"gulp-conventional-changelog": "^3.0.0",
 	"gulp-git": "^2.10.1",
 	husky: "^8.0.3",
-	jasmine: "^4.6.0",
+	jasmine: "^5.0.2",
 	minimist: "^1.2.8",
 	prettier: "^2.8.8",
-	rollup: "^3.21.4",
-	typescript: "^5.0.4"
+	rollup: "^3.25.2",
+	typescript: "^5.1.3"
 };
 var dependencies = {
 	"@apidevtools/swagger-parser": "^10.1.0",
-	ajv: "^6.12.6",
+	ajv: "^8.12.0",
+	"ajv-formats": "^2.1.1",
 	axios: "^1.4.0",
-	commander: "^10.0.1",
-	"decimal.js": "^10.4.3",
+	commander: "^11.0.0",
 	"js-yaml": "^4.1.0",
 	jsonpointer: "^5.0.1",
 	lodash: "^4.17.21",
-	"openapi-types": "^12.1.0",
+	"openapi-types": "^12.1.3",
+	"patch-package": "^7.0.0",
 	uuidjs: "^5.0.1",
-	validator: "^13.9.0",
 	verror: "^1.10.1"
 };
 var types = "lib/api-types.d.ts";
@@ -18087,4 +18086,4 @@ var SwaggerMockValidatorFactory = /*#__PURE__*/function () {
 }();
 
 export { SwaggerMockValidatorFactory as S, packageJson as p };
-//# sourceMappingURL=swagger-mock-validator-factory-0a7253a6.js.map
+//# sourceMappingURL=swagger-mock-validator-factory-396b0a1e.js.map

@@ -1,3 +1,7 @@
+# [13.0.0](https://github.com/pactflow/swagger-mock-validator/compare/12.3.0...13.0.0) (2023-06-28)
+
+
+
 # [12.3.0](https://github.com/pactflow/swagger-mock-validator/compare/12.2.0...12.3.0) (2023-06-13)
 
 

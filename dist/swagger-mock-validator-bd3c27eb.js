@@ -1,7 +1,7 @@
 import require$$0$2 from 'assert';
 import stream from 'stream';
 import * as require$$1$2 from 'util';
-import require$$1__default, { isBoolean as isBoolean$4, isUndefined as isUndefined$2, isString as isString$2, isObject as isObject$3 } from 'util';
+import require$$1__default, { isBoolean as isBoolean$3, isUndefined as isUndefined$2, isString as isString$1, isObject as isObject$3 } from 'util';
 import querystring from 'querystring';
 import require$$0$3 from 'url';
 import require$$0$4 from 'fs';
@@ -357,14 +357,14 @@ function _regeneratorRuntime() {
     }
   }, exports;
 }
-function _typeof$1(obj) {
+function _typeof(obj) {
   "@babel/helpers - typeof";
 
-  return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
     return typeof obj;
   } : function (obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, _typeof$1(obj);
+  }, _typeof(obj);
 }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
@@ -10105,7 +10105,7 @@ root._=_;}}).call(commonjsGlobal);})(lodash,lodash.exports);var lodashExports=lo
 
 var assert = require$$0$2;
 var Stream = stream.Stream;
-var util$e = require$$1__default;
+var util$8 = require$$1__default;
 
 ///--- Globals
 
@@ -10119,7 +10119,7 @@ function _capitalize(str) {
 }
 function _toss(name, expected, oper, arg, actual) {
   throw new assert.AssertionError({
-    message: util$e.format('%s (%s) is required', name, expected),
+    message: util$8.format('%s (%s) is required', name, expected),
     actual: actual === undefined ? typeof arg : actual(arg),
     expected: expected,
     operator: oper || '===',
@@ -10129,7 +10129,7 @@ function _toss(name, expected, oper, arg, actual) {
 function _getClass(arg) {
   return Object.prototype.toString.call(arg).slice(8, -1);
 }
-function noop$1() {
+function noop() {
   // Why even bother with asserts?
 }
 
@@ -10212,7 +10212,7 @@ function _setExports(ndebug) {
 
   /* re-export standard assert */
   if (process.env.NODE_NDEBUG) {
-    out = noop$1;
+    out = noop;
   } else {
     out = function (arg, msg) {
       if (!arg) {
@@ -10224,7 +10224,7 @@ function _setExports(ndebug) {
   /* standard checks */
   keys.forEach(function (k) {
     if (ndebug) {
-      out[k] = noop$1;
+      out[k] = noop;
       return;
     }
     var type = types$2[k];
@@ -10239,7 +10239,7 @@ function _setExports(ndebug) {
   keys.forEach(function (k) {
     var name = 'optional' + _capitalize(k);
     if (ndebug) {
-      out[name] = noop$1;
+      out[name] = noop;
       return;
     }
     var type = types$2[k];
@@ -10257,7 +10257,7 @@ function _setExports(ndebug) {
   keys.forEach(function (k) {
     var name = 'arrayOf' + _capitalize(k);
     if (ndebug) {
-      out[name] = noop$1;
+      out[name] = noop;
       return;
     }
     var type = types$2[k];
@@ -10279,7 +10279,7 @@ function _setExports(ndebug) {
   keys.forEach(function (k) {
     var name = 'optionalArrayOf' + _capitalize(k);
     if (ndebug) {
-      out[name] = noop$1;
+      out[name] = noop;
       return;
     }
     var type = types$2[k];
@@ -10307,7 +10307,7 @@ function _setExports(ndebug) {
       return;
     }
     if (ndebug) {
-      out[k] = noop$1;
+      out[k] = noop;
       return;
     }
     out[k] = assert[k];
@@ -10495,7 +10495,7 @@ function dumpException(ex) {
   return ret;
 }
 
-var util$d = {};
+var util$7 = {};
 
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -10527,62 +10527,62 @@ function isArray(arg) {
   }
   return objectToString(arg) === '[object Array]';
 }
-util$d.isArray = isArray;
-function isBoolean$3(arg) {
+util$7.isArray = isArray;
+function isBoolean$2(arg) {
   return typeof arg === 'boolean';
 }
-util$d.isBoolean = isBoolean$3;
+util$7.isBoolean = isBoolean$2;
 function isNull$2(arg) {
   return arg === null;
 }
-util$d.isNull = isNull$2;
+util$7.isNull = isNull$2;
 function isNullOrUndefined(arg) {
   return arg == null;
 }
-util$d.isNullOrUndefined = isNullOrUndefined;
+util$7.isNullOrUndefined = isNullOrUndefined;
 function isNumber(arg) {
   return typeof arg === 'number';
 }
-util$d.isNumber = isNumber;
-function isString$1(arg) {
+util$7.isNumber = isNumber;
+function isString(arg) {
   return typeof arg === 'string';
 }
-util$d.isString = isString$1;
+util$7.isString = isString;
 function isSymbol(arg) {
   return typeof arg === 'symbol';
 }
-util$d.isSymbol = isSymbol;
+util$7.isSymbol = isSymbol;
 function isUndefined$1(arg) {
   return arg === void 0;
 }
-util$d.isUndefined = isUndefined$1;
+util$7.isUndefined = isUndefined$1;
 function isRegExp$1(re) {
   return objectToString(re) === '[object RegExp]';
 }
-util$d.isRegExp = isRegExp$1;
+util$7.isRegExp = isRegExp$1;
 function isObject$2(arg) {
   return typeof arg === 'object' && arg !== null;
 }
-util$d.isObject = isObject$2;
-function isDate$1(d) {
+util$7.isObject = isObject$2;
+function isDate(d) {
   return objectToString(d) === '[object Date]';
 }
-util$d.isDate = isDate$1;
+util$7.isDate = isDate;
 function isError(e) {
   return objectToString(e) === '[object Error]' || e instanceof Error;
 }
-util$d.isError = isError;
+util$7.isError = isError;
 function isFunction$1(arg) {
   return typeof arg === 'function';
 }
-util$d.isFunction = isFunction$1;
+util$7.isFunction = isFunction$1;
 function isPrimitive(arg) {
   return arg === null || typeof arg === 'boolean' || typeof arg === 'number' || typeof arg === 'string' || typeof arg === 'symbol' ||
   // ES6 symbol
   typeof arg === 'undefined';
 }
-util$d.isPrimitive = isPrimitive;
-util$d.isBuffer = Buffer.isBuffer;
+util$7.isPrimitive = isPrimitive;
+util$7.isBuffer = Buffer.isBuffer;
 function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
@@ -10593,7 +10593,7 @@ function objectToString(o) {
 var mod_assertplus = assert_1;
 var mod_util = require$$1__default;
 var mod_extsprintf = extsprintf;
-var mod_isError = util$d.isError;
+var mod_isError = util$7.isError;
 var sprintf = mod_extsprintf.sprintf;
 
 /*
@@ -11479,7 +11479,7 @@ function Type$1$1(tag, options) {
   }
 }
 
-var type$j = Type$1$1;
+var type$h = Type$1$1;
 
 /*eslint-disable max-len*/
 
@@ -11548,7 +11548,7 @@ Schema$1$1.prototype.extend = function extend(definition) {
   var implicit = [];
   var explicit = [];
 
-  if (definition instanceof type$j) {
+  if (definition instanceof type$h) {
     // Schema.extend(type)
     explicit.push(definition);
 
@@ -11567,7 +11567,7 @@ Schema$1$1.prototype.extend = function extend(definition) {
   }
 
   implicit.forEach(function (type$1) {
-    if (!(type$1 instanceof type$j)) {
+    if (!(type$1 instanceof type$h)) {
       throw new exception$1('Specified list of YAML types (or a single Type object) contains a non-Type object.');
     }
 
@@ -11581,7 +11581,7 @@ Schema$1$1.prototype.extend = function extend(definition) {
   });
 
   explicit.forEach(function (type$1) {
-    if (!(type$1 instanceof type$j)) {
+    if (!(type$1 instanceof type$h)) {
       throw new exception$1('Specified list of YAML types (or a single Type object) contains a non-Type object.');
     }
   });
@@ -11601,17 +11601,17 @@ Schema$1$1.prototype.extend = function extend(definition) {
 
 var schema$2 = Schema$1$1;
 
-var str$1 = new type$j('tag:yaml.org,2002:str', {
+var str$1 = new type$h('tag:yaml.org,2002:str', {
   kind: 'scalar',
   construct: function (data) { return data !== null ? data : ''; }
 });
 
-var seq$1 = new type$j('tag:yaml.org,2002:seq', {
+var seq$1 = new type$h('tag:yaml.org,2002:seq', {
   kind: 'sequence',
   construct: function (data) { return data !== null ? data : []; }
 });
 
-var map$1 = new type$j('tag:yaml.org,2002:map', {
+var map$1 = new type$h('tag:yaml.org,2002:map', {
   kind: 'mapping',
   construct: function (data) { return data !== null ? data : {}; }
 });
@@ -11641,7 +11641,7 @@ function isNull$1(object) {
   return object === null;
 }
 
-var _null$1 = new type$j('tag:yaml.org,2002:null', {
+var _null$1 = new type$h('tag:yaml.org,2002:null', {
   kind: 'scalar',
   resolve: resolveYamlNull$1,
   construct: constructYamlNull$1,
@@ -11671,15 +11671,15 @@ function constructYamlBoolean$1(data) {
          data === 'TRUE';
 }
 
-function isBoolean$2(object) {
+function isBoolean$1(object) {
   return Object.prototype.toString.call(object) === '[object Boolean]';
 }
 
-var bool$1 = new type$j('tag:yaml.org,2002:bool', {
+var bool$1 = new type$h('tag:yaml.org,2002:bool', {
   kind: 'scalar',
   resolve: resolveYamlBoolean$1,
   construct: constructYamlBoolean$1,
-  predicate: isBoolean$2,
+  predicate: isBoolean$1,
   represent: {
     lowercase: function (object) { return object ? 'true' : 'false'; },
     uppercase: function (object) { return object ? 'TRUE' : 'FALSE'; },
@@ -11819,7 +11819,7 @@ function isInteger$1(object) {
          (object % 1 === 0 && !common$7.isNegativeZero(object));
 }
 
-var int$1 = new type$j('tag:yaml.org,2002:int', {
+var int$1 = new type$h('tag:yaml.org,2002:int', {
   kind: 'scalar',
   resolve: resolveYamlInteger$1,
   construct: constructYamlInteger$1,
@@ -11919,16 +11919,16 @@ function representYamlFloat$1(object, style) {
   return SCIENTIFIC_WITHOUT_DOT$1.test(res) ? res.replace('e', '.e') : res;
 }
 
-function isFloat$4(object) {
+function isFloat$1(object) {
   return (Object.prototype.toString.call(object) === '[object Number]') &&
          (object % 1 !== 0 || common$7.isNegativeZero(object));
 }
 
-var float$1 = new type$j('tag:yaml.org,2002:float', {
+var float$1 = new type$h('tag:yaml.org,2002:float', {
   kind: 'scalar',
   resolve: resolveYamlFloat$1,
   construct: constructYamlFloat$1,
-  predicate: isFloat$4,
+  predicate: isFloat$1,
   represent: representYamlFloat$1,
   defaultStyle: 'lowercase'
 });
@@ -12021,7 +12021,7 @@ function representYamlTimestamp$1(object /*, style*/) {
   return object.toISOString();
 }
 
-var timestamp$1 = new type$j('tag:yaml.org,2002:timestamp', {
+var timestamp$1 = new type$h('tag:yaml.org,2002:timestamp', {
   kind: 'scalar',
   resolve: resolveYamlTimestamp$1,
   construct: constructYamlTimestamp$1,
@@ -12033,7 +12033,7 @@ function resolveYamlMerge$1(data) {
   return data === '<<' || data === null;
 }
 
-var merge$3 = new type$j('tag:yaml.org,2002:merge', {
+var merge$2 = new type$h('tag:yaml.org,2002:merge', {
   kind: 'scalar',
   resolve: resolveYamlMerge$1
 });
@@ -12150,15 +12150,15 @@ function representYamlBinary$1(object /*, style*/) {
   return result;
 }
 
-function isBinary$3(obj) {
+function isBinary$1(obj) {
   return Object.prototype.toString.call(obj) ===  '[object Uint8Array]';
 }
 
-var binary$2 = new type$j('tag:yaml.org,2002:binary', {
+var binary$2 = new type$h('tag:yaml.org,2002:binary', {
   kind: 'scalar',
   resolve: resolveYamlBinary$1,
   construct: constructYamlBinary$1,
-  predicate: isBinary$3,
+  predicate: isBinary$1,
   represent: representYamlBinary$1
 });
 
@@ -12197,7 +12197,7 @@ function constructYamlOmap$1(data) {
   return data !== null ? data : [];
 }
 
-var omap$1 = new type$j('tag:yaml.org,2002:omap', {
+var omap$1 = new type$h('tag:yaml.org,2002:omap', {
   kind: 'sequence',
   resolve: resolveYamlOmap$1,
   construct: constructYamlOmap$1
@@ -12247,7 +12247,7 @@ function constructYamlPairs$1(data) {
   return result;
 }
 
-var pairs$1 = new type$j('tag:yaml.org,2002:pairs', {
+var pairs$1 = new type$h('tag:yaml.org,2002:pairs', {
   kind: 'sequence',
   resolve: resolveYamlPairs$1,
   construct: constructYamlPairs$1
@@ -12273,7 +12273,7 @@ function constructYamlSet$1(data) {
   return data !== null ? data : {};
 }
 
-var set$2 = new type$j('tag:yaml.org,2002:set', {
+var set$2 = new type$h('tag:yaml.org,2002:set', {
   kind: 'mapping',
   resolve: resolveYamlSet$1,
   construct: constructYamlSet$1
@@ -12282,7 +12282,7 @@ var set$2 = new type$j('tag:yaml.org,2002:set', {
 var _default = core$7.extend({
   implicit: [
     timestamp$1,
-    merge$3
+    merge$2
   ],
   explicit: [
     binary$2,
@@ -12414,9 +12414,9 @@ function charFromCodepoint$1(c) {
 
 var simpleEscapeCheck$1 = new Array(256); // integer, for fast access
 var simpleEscapeMap$1 = new Array(256);
-for (var i$2 = 0; i$2 < 256; i$2++) {
-  simpleEscapeCheck$1[i$2] = simpleEscapeSequence$1(i$2) ? 1 : 0;
-  simpleEscapeMap$1[i$2] = simpleEscapeSequence$1(i$2);
+for (var i$1 = 0; i$1 < 256; i$1++) {
+  simpleEscapeCheck$1[i$1] = simpleEscapeSequence$1(i$1) ? 1 : 0;
+  simpleEscapeMap$1[i$1] = simpleEscapeSequence$1(i$1);
 }
 
 
@@ -14999,7 +14999,7 @@ function renamed(from, to) {
 }
 
 
-var Type$i                = type$j;
+var Type$i                = type$h;
 var Schema$6              = schema$2;
 var FAILSAFE_SCHEMA     = failsafe$1;
 var JSON_SCHEMA         = json$2;
@@ -15021,7 +15021,7 @@ var types$1 = {
   timestamp: timestamp$1,
   bool:      bool$1,
   int:       int$1,
-  merge:     merge$3,
+  merge:     merge$2,
   omap:      omap$1,
   seq:       seq$1,
   str:       str$1
@@ -15163,11 +15163,11 @@ var isParameter = function isParameter(pathNameSegment) {
 var parsePathNameSegment = function parsePathNameSegment(pathNameSegment, parsedOperation, pathParameters) {
   return isParameter(pathNameSegment) ? parseParameterSegment(pathNameSegment, parsedOperation, pathParameters) : parseNonParameterSegment(parsedOperation, pathNameSegment);
 };
-var getFullPath$2 = function getFullPath(pathName, basePath) {
+var getFullPath$1 = function getFullPath(pathName, basePath) {
   return basePath ? basePath + pathName : pathName;
 };
 var parsePathNameSegments = function parsePathNameSegments(pathName, pathParameters, parsedOperation, basePath) {
-  var path = getFullPath$2(pathName, basePath);
+  var path = getFullPath$1(pathName, basePath);
   return path.split('/').filter(function (pathNameSegment) {
     return pathNameSegment.length > 0;
   }).map(function (pathNameSegment) {
@@ -15249,7 +15249,7 @@ function set$1(obj, pointer, value) {
   if (pointer.length === 0) throw new Error('Invalid JSON pointer for set.');
   return setter(obj, pointer, value);
 }
-function compile$3(pointer) {
+function compile$1(pointer) {
   var compiled = compilePointer(pointer);
   return {
     get: function (object) {
@@ -15262,7 +15262,7 @@ function compile$3(pointer) {
 }
 jsonpointer.get = get$1;
 jsonpointer.set = set$1;
-jsonpointer.compile = compile$3;
+jsonpointer.compile = compile$1;
 
 var isReference = function isReference(value) {
   return Boolean(value.$ref);
@@ -15294,8 +15294,19 @@ var isParameterSchemaUndefined = function isParameterSchemaUndefined(schema) {
 var isParameterSchemaUnsupported = function isParameterSchemaUnsupported(schema) {
   return schema.type === 'object' || schema.type === 'array';
 };
+
+// draft-06 onwards converts exclusiveMinimum and exclusiveMaximum to numbers
+var upgradeSchema = function upgradeSchema(schema) {
+  if (schema.exclusiveMaximum) {
+    schema.exclusiveMaximum = schema.maximum;
+  }
+  if (schema.exclusiveMinimum) {
+    schema.exclusiveMinimum = schema.minimum;
+  }
+  return schema;
+};
 var getParameterSchema = function getParameterSchema(parameter) {
-  return isParameterSchemaUndefined(parameter.schema) || isParameterSchemaUnsupported(parameter.schema) ? {} : parameter.schema;
+  return isParameterSchemaUndefined(parameter.schema) || isParameterSchemaUnsupported(parameter.schema) ? {} : upgradeSchema(parameter.schema);
 };
 var toParsedSpecParameter = function toParsedSpecParameter(_ref) {
   var parameter = _ref.parameter,
@@ -15373,7 +15384,7 @@ var getContentMimeTypes = function getContentMimeTypes(content) {
 };
 
 var traverseJsonSchema = function traverseJsonSchema(mutableSchema, visitor) {
-  if (isBoolean$4(mutableSchema) || isUndefined$2(mutableSchema)) {
+  if (isBoolean$3(mutableSchema) || isUndefined$2(mutableSchema)) {
     return;
   }
   var traverseSubSchema = function traverseSubSchema(item) {
@@ -15444,7 +15455,7 @@ var ignoreParameters = function ignoreParameters(t) {
 var removeQuality = function removeQuality(t) {
   return t.replace(/;q=[01].?\d*/, '');
 };
-var type$i = function type(t) {
+var type$g = function type(t) {
   return t.split(TYPE_SUBTYPE_SEPARATOR)[0];
 };
 var subtype = function subtype(t) {
@@ -15475,7 +15486,7 @@ function findMatchingType(requestType, responseTypes) {
     };
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var _ret = _loop();
-      if (_typeof$1(_ret) === "object") return _ret.v;
+      if (_typeof(_ret) === "object") return _ret.v;
     }
 
     // ignore additional parameters
@@ -15503,7 +15514,7 @@ function findMatchingType(requestType, responseTypes) {
     };
     for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
       var _ret2 = _loop2();
-      if (_typeof$1(_ret2) === "object") return _ret2.v;
+      if (_typeof(_ret2) === "object") return _ret2.v;
     }
 
     // ignore vendor extensions
@@ -15518,7 +15529,7 @@ function findMatchingType(requestType, responseTypes) {
     var _loop3 = function _loop3() {
       var a = _step3.value;
       var matchTypesAndSubtypes = function matchTypesAndSubtypes(t) {
-        return type$i(t) === type$i(a) && subtype(t) === subtype(a);
+        return type$g(t) === type$g(a) && subtype(t) === subtype(a);
       };
       var index = available.findIndex(matchTypesAndSubtypes);
       if (index >= 0) {
@@ -15529,7 +15540,7 @@ function findMatchingType(requestType, responseTypes) {
     };
     for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
       var _ret3 = _loop3();
-      if (_typeof$1(_ret3) === "object") return _ret3.v;
+      if (_typeof(_ret3) === "object") return _ret3.v;
     }
 
     // wildcards in responseTypes
@@ -15544,7 +15555,7 @@ function findMatchingType(requestType, responseTypes) {
     var _loop4 = function _loop4() {
       var a = _step4.value;
       var matchSubtype = function matchSubtype(t) {
-        return subtype(t) === WILDCARD && type$i(t) === type$i(a);
+        return subtype(t) === WILDCARD && type$g(t) === type$g(a);
       };
       var index = available.findIndex(matchSubtype);
       if (index >= 0) {
@@ -15555,7 +15566,7 @@ function findMatchingType(requestType, responseTypes) {
     };
     for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
       var _ret4 = _loop4();
-      if (_typeof$1(_ret4) === "object") return _ret4.v;
+      if (_typeof(_ret4) === "object") return _ret4.v;
     }
   } catch (err) {
     _iterator4.e(err);
@@ -15573,7 +15584,7 @@ function findMatchingType(requestType, responseTypes) {
     var _loop5 = function _loop5() {
       var a = _step5.value;
       var matchSubtype = function matchSubtype(t) {
-        return subtype(a) === WILDCARD && type$i(t) === type$i(a);
+        return subtype(a) === WILDCARD && type$g(t) === type$g(a);
       };
       var index = available.findIndex(matchSubtype);
       if (index >= 0) {
@@ -15584,7 +15595,7 @@ function findMatchingType(requestType, responseTypes) {
     };
     for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
       var _ret5 = _loop5();
-      if (_typeof$1(_ret5) === "object") return _ret5.v;
+      if (_typeof(_ret5) === "object") return _ret5.v;
     }
   } catch (err) {
     _iterator5.e(err);
@@ -15906,7 +15917,7 @@ var openApi3Parser = {
   }
 };
 
-var util$c = {};
+var util$6 = {};
 
 var url$9 = {exports: {}};
 
@@ -16144,15 +16155,15 @@ var url$9 = {exports: {}};
 })(url$9, url$9.exports);
 var urlExports = url$9.exports;
 
-const util$b = require$$1__default;
+const util$5 = require$$1__default;
 const url$8 = urlExports;
-util$c.format = util$b.format;
-util$c.inherits = util$b.inherits;
+util$6.format = util$5.format;
+util$6.inherits = util$5.inherits;
 
 /**
  * Regular Expression that matches Swagger path params.
  */
-util$c.swaggerParamRegExp = /\{([^/}]+)}/g;
+util$6.swaggerParamRegExp = /\{([^/}]+)}/g;
 
 /**
  * List of HTTP verbs used for OperationItem as per the Swagger specification
@@ -16214,7 +16225,7 @@ function fixOasRelativeServers(schema, filePath) {
     });
   }
 }
-util$c.fixOasRelativeServers = fixOasRelativeServers;
+util$6.fixOasRelativeServers = fixOasRelativeServers;
 
 const nonJsonTypes = ["function", "symbol", "undefined"];
 const protectedProps$1 = ["constructor", "prototype", "__proto__"];
@@ -16267,7 +16278,7 @@ const inspectMethod = require$$1$2.inspect.custom || Symbol.for("nodejs.util.ins
  *
  * @see https://nodejs.org/api/util.html#util_util_format_format_args
  */
-const format$5 = require$$1$2.format;
+const format$4 = require$$1$2.format;
 /**
  * Adds an `inspect()` method to support Node's `util.inspect()` function.
  *
@@ -16463,7 +16474,7 @@ function normalizeOptions(options) {
   options = options || {};
   return {
     concatMessages: options.concatMessages === undefined ? true : Boolean(options.concatMessages),
-    format: options.format === undefined ? format$5 : typeof options.format === "function" ? options.format : false
+    format: options.format === undefined ? format$4 : typeof options.format === "function" ? options.format : false
   };
 }
 /**
@@ -16597,11 +16608,11 @@ var esm = /*#__PURE__*/Object.freeze({
 
 var require$$6$1 = /*@__PURE__*/getAugmentedNamespace(esm);
 
-var dist = {exports: {}};
+var dist$1 = {exports: {}};
 
 var core$6 = {};
 
-var validate$2 = {};
+var validate = {};
 
 var boolSchema = {};
 
@@ -17670,7 +17681,7 @@ function requireCodegen() {
   return codegen;
 }
 
-var util$a = {};
+var util$4 = {};
 
 (function (exports) {
 
@@ -17833,7 +17844,7 @@ var util$a = {};
     it.self.logger.warn(msg);
   }
   exports.checkStrictMode = checkStrictMode;
-})(util$a);
+})(util$4);
 
 var names = {};
 
@@ -17883,7 +17894,7 @@ function requireErrors() {
     });
     exports.extendErrors = exports.resetErrorsCount = exports.reportExtraError = exports.reportError = exports.keyword$DataError = exports.keywordError = void 0;
     const codegen_1 = requireCodegen();
-    const util_1 = util$a;
+    const util_1 = util$4;
     const names_1 = requireNames();
     exports.keywordError = {
       message: ({
@@ -18118,18 +18129,18 @@ function requireBoolSchema() {
 
 var dataType = {};
 
-var rules$2 = {};
+var rules = {};
 
-Object.defineProperty(rules$2, "__esModule", {
+Object.defineProperty(rules, "__esModule", {
   value: true
 });
-rules$2.getRules = rules$2.isJSONType = void 0;
+rules.getRules = rules.isJSONType = void 0;
 const _jsonTypes = ["string", "number", "integer", "boolean", "null", "object", "array"];
 const jsonTypes = new Set(_jsonTypes);
 function isJSONType(x) {
   return typeof x == "string" && jsonTypes.has(x);
 }
-rules$2.isJSONType = isJSONType;
+rules.isJSONType = isJSONType;
 function getRules() {
   const groups = {
     number: {
@@ -18166,7 +18177,7 @@ function getRules() {
     keywords: {}
   };
 }
-rules$2.getRules = getRules;
+rules.getRules = getRules;
 
 var applicability = {};
 
@@ -18204,11 +18215,11 @@ function requireApplicability() {
     value: true
   });
   exports.reportTypeError = exports.checkDataTypes = exports.checkDataType = exports.coerceAndCheckDataType = exports.getJSONTypes = exports.getSchemaTypes = exports.DataType = void 0;
-  const rules_1 = rules$2;
+  const rules_1 = rules;
   const applicability_1 = requireApplicability();
   const errors_1 = requireErrors();
   const codegen_1 = requireCodegen();
-  const util_1 = util$a;
+  const util_1 = util$4;
   var DataType;
   (function (DataType) {
     DataType[DataType["Correct"] = 0] = "Correct";
@@ -18286,11 +18297,11 @@ function requireApplicability() {
           return;
         case "number":
           gen.elseIf((0, codegen_1._)`${dataType} == "boolean" || ${data} === null
-              || (${dataType} == "string" && ${data} && ${data} == +${data})`).assign(coerced, (0, codegen_1._)`+${data}`);
+              || (${dataType} == "string" && ${data} && ${data}.trim() && ${data} == +${data})`).assign(coerced, (0, codegen_1._)`+${data}`);
           return;
         case "integer":
           gen.elseIf((0, codegen_1._)`${dataType} === "boolean" || ${data} === null
-              || (${dataType} === "string" && ${data} && ${data} == +${data} && !(${data} % 1))`).assign(coerced, (0, codegen_1._)`+${data}`);
+              || (${dataType} === "string" && ${data} && ${data}.trim() && ${data} == +${data} && !(${data} % 1))`).assign(coerced, (0, codegen_1._)`+${data}`);
           return;
         case "boolean":
           gen.elseIf((0, codegen_1._)`${data} === "false" || ${data} === 0 || ${data} === null`).assign(coerced, false).elseIf((0, codegen_1._)`${data} === "true" || ${data} === 1`).assign(coerced, true);
@@ -18406,7 +18417,7 @@ function requireDefaults() {
   });
   defaults.assignDefaults = void 0;
   const codegen_1 = requireCodegen();
-  const util_1 = util$a;
+  const util_1 = util$4;
   function assignDefaults(it, ty) {
     const {
       properties,
@@ -18445,7 +18456,7 @@ function requireDefaults() {
   return defaults;
 }
 
-var keyword$1 = {};
+var keyword = {};
 
 var code = {};
 
@@ -18458,9 +18469,9 @@ function requireCode() {
   });
   code.validateUnion = code.validateArray = code.usePattern = code.callValidateCode = code.schemaProperties = code.allSchemaProperties = code.noPropertyInData = code.propertyInData = code.isOwnProperty = code.hasPropFunc = code.reportMissingProp = code.checkMissingProp = code.checkReportMissingProp = void 0;
   const codegen_1 = requireCodegen();
-  const util_1 = util$a;
+  const util_1 = util$4;
   const names_1 = requireNames();
-  const util_2 = util$a;
+  const util_2 = util$4;
   function checkReportMissingProp(cxt, prop) {
     const {
       gen,
@@ -18621,12 +18632,12 @@ function requireCode() {
 
 var hasRequiredKeyword;
 function requireKeyword() {
-  if (hasRequiredKeyword) return keyword$1;
+  if (hasRequiredKeyword) return keyword;
   hasRequiredKeyword = 1;
-  Object.defineProperty(keyword$1, "__esModule", {
+  Object.defineProperty(keyword, "__esModule", {
     value: true
   });
-  keyword$1.validateKeywordUsage = keyword$1.validSchemaType = keyword$1.funcKeywordCode = keyword$1.macroKeywordCode = void 0;
+  keyword.validateKeywordUsage = keyword.validSchemaType = keyword.funcKeywordCode = keyword.macroKeywordCode = void 0;
   const codegen_1 = requireCodegen();
   const names_1 = requireNames();
   const code_1 = requireCode();
@@ -18652,7 +18663,7 @@ function requireKeyword() {
     }, valid);
     cxt.pass(valid, () => cxt.error(true));
   }
-  keyword$1.macroKeywordCode = macroKeywordCode;
+  keyword.macroKeywordCode = macroKeywordCode;
   function funcKeywordCode(cxt, def) {
     var _a;
     const {
@@ -18701,7 +18712,7 @@ function requireKeyword() {
       gen.if((0, codegen_1.not)((_a = def.valid) !== null && _a !== void 0 ? _a : valid), errors);
     }
   }
-  keyword$1.funcKeywordCode = funcKeywordCode;
+  keyword.funcKeywordCode = funcKeywordCode;
   function modifyData(cxt) {
     const {
       gen,
@@ -18737,7 +18748,7 @@ function requireKeyword() {
     // TODO add tests
     return !schemaType.length || schemaType.some(st => st === "array" ? Array.isArray(schema) : st === "object" ? schema && typeof schema == "object" && !Array.isArray(schema) : typeof schema == st || allowUndefined && typeof schema == "undefined");
   }
-  keyword$1.validSchemaType = validSchemaType;
+  keyword.validSchemaType = validSchemaType;
   function validateKeywordUsage({
     schema,
     opts,
@@ -18760,8 +18771,8 @@ function requireKeyword() {
       }
     }
   }
-  keyword$1.validateKeywordUsage = validateKeywordUsage;
-  return keyword$1;
+  keyword.validateKeywordUsage = validateKeywordUsage;
+  return keyword;
 }
 
 var subschema = {};
@@ -18775,7 +18786,7 @@ function requireSubschema() {
   });
   subschema.extendSubschemaMode = subschema.extendSubschemaData = subschema.getSubschema = void 0;
   const codegen_1 = requireCodegen();
-  const util_1 = util$a;
+  const util_1 = util$4;
   function getSubschema(it, {
     keyword,
     schemaProp,
@@ -18874,7 +18885,7 @@ function requireSubschema() {
   return subschema;
 }
 
-var resolve$5 = {};
+var resolve$1 = {};
 
 // do not edit .js files directly - edit src/index.jst
 
@@ -18907,9 +18918,9 @@ var fastDeepEqual = function equal(a, b) {
   return a !== a && b !== b;
 };
 
-var jsonSchemaTraverse$1 = {exports: {}};
+var jsonSchemaTraverse = {exports: {}};
 
-var traverse$3 = jsonSchemaTraverse$1.exports = function (schema, opts, cb) {
+var traverse$1 = jsonSchemaTraverse.exports = function (schema, opts, cb) {
   // Legacy support for v0.3.1 and earlier.
   if (typeof opts == 'function') {
     cb = opts;
@@ -18918,9 +18929,9 @@ var traverse$3 = jsonSchemaTraverse$1.exports = function (schema, opts, cb) {
   cb = opts.cb || cb;
   var pre = typeof cb == 'function' ? cb : cb.pre || function () {};
   var post = cb.post || function () {};
-  _traverse$1(opts, pre, post, schema, '', schema);
+  _traverse(opts, pre, post, schema, '', schema);
 };
-traverse$3.keywords = {
+traverse$1.keywords = {
   additionalItems: true,
   items: true,
   contains: true,
@@ -18931,20 +18942,20 @@ traverse$3.keywords = {
   then: true,
   else: true
 };
-traverse$3.arrayKeywords = {
+traverse$1.arrayKeywords = {
   items: true,
   allOf: true,
   anyOf: true,
   oneOf: true
 };
-traverse$3.propsKeywords = {
+traverse$1.propsKeywords = {
   $defs: true,
   definitions: true,
   properties: true,
   patternProperties: true,
   dependencies: true
 };
-traverse$3.skipKeywords = {
+traverse$1.skipKeywords = {
   default: true,
   enum: true,
   const: true,
@@ -18964,47 +18975,47 @@ traverse$3.skipKeywords = {
   maxProperties: true,
   minProperties: true
 };
-function _traverse$1(opts, pre, post, schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex) {
+function _traverse(opts, pre, post, schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex) {
   if (schema && typeof schema == 'object' && !Array.isArray(schema)) {
     pre(schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex);
     for (var key in schema) {
       var sch = schema[key];
       if (Array.isArray(sch)) {
-        if (key in traverse$3.arrayKeywords) {
-          for (var i = 0; i < sch.length; i++) _traverse$1(opts, pre, post, sch[i], jsonPtr + '/' + key + '/' + i, rootSchema, jsonPtr, key, schema, i);
+        if (key in traverse$1.arrayKeywords) {
+          for (var i = 0; i < sch.length; i++) _traverse(opts, pre, post, sch[i], jsonPtr + '/' + key + '/' + i, rootSchema, jsonPtr, key, schema, i);
         }
-      } else if (key in traverse$3.propsKeywords) {
+      } else if (key in traverse$1.propsKeywords) {
         if (sch && typeof sch == 'object') {
-          for (var prop in sch) _traverse$1(opts, pre, post, sch[prop], jsonPtr + '/' + key + '/' + escapeJsonPtr$1(prop), rootSchema, jsonPtr, key, schema, prop);
+          for (var prop in sch) _traverse(opts, pre, post, sch[prop], jsonPtr + '/' + key + '/' + escapeJsonPtr(prop), rootSchema, jsonPtr, key, schema, prop);
         }
-      } else if (key in traverse$3.keywords || opts.allKeys && !(key in traverse$3.skipKeywords)) {
-        _traverse$1(opts, pre, post, sch, jsonPtr + '/' + key, rootSchema, jsonPtr, key, schema);
+      } else if (key in traverse$1.keywords || opts.allKeys && !(key in traverse$1.skipKeywords)) {
+        _traverse(opts, pre, post, sch, jsonPtr + '/' + key, rootSchema, jsonPtr, key, schema);
       }
     }
     post(schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex);
   }
 }
-function escapeJsonPtr$1(str) {
+function escapeJsonPtr(str) {
   return str.replace(/~/g, '~0').replace(/\//g, '~1');
 }
-var jsonSchemaTraverseExports$1 = jsonSchemaTraverse$1.exports;
+var jsonSchemaTraverseExports = jsonSchemaTraverse.exports;
 
-Object.defineProperty(resolve$5, "__esModule", {
+Object.defineProperty(resolve$1, "__esModule", {
   value: true
 });
-resolve$5.getSchemaRefs = resolve$5.resolveUrl = resolve$5.normalizeId = resolve$5._getFullPath = resolve$5.getFullPath = resolve$5.inlineRef = void 0;
-const util_1$p = util$a;
-const equal$4 = fastDeepEqual;
-const traverse$2 = jsonSchemaTraverseExports$1;
+resolve$1.getSchemaRefs = resolve$1.resolveUrl = resolve$1.normalizeId = resolve$1._getFullPath = resolve$1.getFullPath = resolve$1.inlineRef = void 0;
+const util_1$p = util$4;
+const equal$2 = fastDeepEqual;
+const traverse = jsonSchemaTraverseExports;
 // TODO refactor to use keyword definitions
-const SIMPLE_INLINED$1 = new Set(["type", "format", "pattern", "maxLength", "minLength", "maxProperties", "minProperties", "maxItems", "minItems", "maximum", "minimum", "uniqueItems", "multipleOf", "required", "enum", "const"]);
-function inlineRef$1(schema, limit = true) {
+const SIMPLE_INLINED = new Set(["type", "format", "pattern", "maxLength", "minLength", "maxProperties", "minProperties", "maxItems", "minItems", "maximum", "minimum", "uniqueItems", "multipleOf", "required", "enum", "const"]);
+function inlineRef(schema, limit = true) {
   if (typeof schema == "boolean") return true;
   if (limit === true) return !hasRef(schema);
   if (!limit) return false;
-  return countKeys$1(schema) <= limit;
+  return countKeys(schema) <= limit;
 }
-resolve$5.inlineRef = inlineRef$1;
+resolve$1.inlineRef = inlineRef;
 const REF_KEYWORDS = new Set(["$ref", "$recursiveRef", "$recursiveAnchor", "$dynamicRef", "$dynamicAnchor"]);
 function hasRef(schema) {
   for (const key in schema) {
@@ -19015,40 +19026,40 @@ function hasRef(schema) {
   }
   return false;
 }
-function countKeys$1(schema) {
+function countKeys(schema) {
   let count = 0;
   for (const key in schema) {
     if (key === "$ref") return Infinity;
     count++;
-    if (SIMPLE_INLINED$1.has(key)) continue;
+    if (SIMPLE_INLINED.has(key)) continue;
     if (typeof schema[key] == "object") {
-      (0, util_1$p.eachItem)(schema[key], sch => count += countKeys$1(sch));
+      (0, util_1$p.eachItem)(schema[key], sch => count += countKeys(sch));
     }
     if (count === Infinity) return Infinity;
   }
   return count;
 }
-function getFullPath$1(resolver, id = "", normalize) {
-  if (normalize !== false) id = normalizeId$1(id);
+function getFullPath(resolver, id = "", normalize) {
+  if (normalize !== false) id = normalizeId(id);
   const p = resolver.parse(id);
-  return _getFullPath$1(resolver, p);
+  return _getFullPath(resolver, p);
 }
-resolve$5.getFullPath = getFullPath$1;
-function _getFullPath$1(resolver, p) {
+resolve$1.getFullPath = getFullPath;
+function _getFullPath(resolver, p) {
   const serialized = resolver.serialize(p);
   return serialized.split("#")[0] + "#";
 }
-resolve$5._getFullPath = _getFullPath$1;
-const TRAILING_SLASH_HASH$1 = /#\/?$/;
-function normalizeId$1(id) {
-  return id ? id.replace(TRAILING_SLASH_HASH$1, "") : "";
+resolve$1._getFullPath = _getFullPath;
+const TRAILING_SLASH_HASH = /#\/?$/;
+function normalizeId(id) {
+  return id ? id.replace(TRAILING_SLASH_HASH, "") : "";
 }
-resolve$5.normalizeId = normalizeId$1;
-function resolveUrl$1(resolver, baseId, id) {
-  id = normalizeId$1(id);
+resolve$1.normalizeId = normalizeId;
+function resolveUrl(resolver, baseId, id) {
+  id = normalizeId(id);
   return resolver.resolve(baseId, id);
 }
-resolve$5.resolveUrl = resolveUrl$1;
+resolve$1.resolveUrl = resolveUrl;
 const ANCHOR = /^[a-z_][-a-z0-9._]*$/i;
 function getSchemaRefs(schema, baseId) {
   if (typeof schema == "boolean") return {};
@@ -19056,14 +19067,14 @@ function getSchemaRefs(schema, baseId) {
     schemaId,
     uriResolver
   } = this.opts;
-  const schId = normalizeId$1(schema[schemaId] || baseId);
+  const schId = normalizeId(schema[schemaId] || baseId);
   const baseIds = {
     "": schId
   };
-  const pathPrefix = getFullPath$1(uriResolver, schId, false);
+  const pathPrefix = getFullPath(uriResolver, schId, false);
   const localRefs = {};
   const schemaRefs = new Set();
-  traverse$2(schema, {
+  traverse(schema, {
     allKeys: true
   }, (sch, jsonPtr, _, parentJsonPtr) => {
     if (parentJsonPtr === undefined) return;
@@ -19076,14 +19087,14 @@ function getSchemaRefs(schema, baseId) {
     function addRef(ref) {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       const _resolve = this.opts.uriResolver.resolve;
-      ref = normalizeId$1(baseId ? _resolve(baseId, ref) : ref);
+      ref = normalizeId(baseId ? _resolve(baseId, ref) : ref);
       if (schemaRefs.has(ref)) throw ambiguos(ref);
       schemaRefs.add(ref);
       let schOrRef = this.refs[ref];
       if (typeof schOrRef == "string") schOrRef = this.refs[schOrRef];
       if (typeof schOrRef == "object") {
         checkAmbiguosRef(sch, schOrRef.schema, ref);
-      } else if (ref !== normalizeId$1(fullPath)) {
+      } else if (ref !== normalizeId(fullPath)) {
         if (ref[0] === "#") {
           checkAmbiguosRef(sch, localRefs[ref], ref);
           localRefs[ref] = sch;
@@ -19102,22 +19113,22 @@ function getSchemaRefs(schema, baseId) {
   });
   return localRefs;
   function checkAmbiguosRef(sch1, sch2, ref) {
-    if (sch2 !== undefined && !equal$4(sch1, sch2)) throw ambiguos(ref);
+    if (sch2 !== undefined && !equal$2(sch1, sch2)) throw ambiguos(ref);
   }
   function ambiguos(ref) {
     return new Error(`reference "${ref}" resolves to more than one schema`);
   }
 }
-resolve$5.getSchemaRefs = getSchemaRefs;
+resolve$1.getSchemaRefs = getSchemaRefs;
 
 var hasRequiredValidate;
 function requireValidate() {
-  if (hasRequiredValidate) return validate$2;
+  if (hasRequiredValidate) return validate;
   hasRequiredValidate = 1;
-  Object.defineProperty(validate$2, "__esModule", {
+  Object.defineProperty(validate, "__esModule", {
     value: true
   });
-  validate$2.getData = validate$2.KeywordCxt = validate$2.validateFunctionCode = void 0;
+  validate.getData = validate.KeywordCxt = validate.validateFunctionCode = void 0;
   const boolSchema_1 = requireBoolSchema();
   const dataType_1 = dataType;
   const applicability_1 = requireApplicability();
@@ -19127,8 +19138,8 @@ function requireValidate() {
   const subschema_1 = requireSubschema();
   const codegen_1 = requireCodegen();
   const names_1 = requireNames();
-  const resolve_1 = resolve$5;
-  const util_1 = util$a;
+  const resolve_1 = resolve$1;
+  const util_1 = util$4;
   const errors_1 = requireErrors();
   // schema compilation - generates validation function, subschemaCode (below) is used for subschemas
   function validateFunctionCode(it) {
@@ -19141,7 +19152,7 @@ function requireValidate() {
     }
     validateFunction(it, () => (0, boolSchema_1.topBoolOrEmptySchema)(it));
   }
-  validate$2.validateFunctionCode = validateFunctionCode;
+  validate.validateFunctionCode = validateFunctionCode;
   function validateFunction({
     gen,
     validateName,
@@ -19610,7 +19621,7 @@ function requireValidate() {
       }
     }
   }
-  validate$2.KeywordCxt = KeywordCxt;
+  validate.KeywordCxt = KeywordCxt;
   function keywordCode(it, keyword, def, ruleType) {
     const cxt = new KeywordCxt(it, def, keyword);
     if ("code" in def) {
@@ -19663,8 +19674,8 @@ function requireValidate() {
       return `Cannot access ${pointerType} ${up} levels up, current level is ${dataLevel}`;
     }
   }
-  validate$2.getData = getData;
-  return validate$2;
+  validate.getData = getData;
+  return validate;
 }
 
 var validation_error = {};
@@ -19696,7 +19707,7 @@ function requireRef_error() {
   Object.defineProperty(ref_error, "__esModule", {
     value: true
   });
-  const resolve_1 = resolve$5;
+  const resolve_1 = resolve$1;
   class MissingRefError extends Error {
     constructor(resolver, baseId, ref, msg) {
       super(msg || `can't resolve reference ${ref} from id ${baseId}`);
@@ -19708,17 +19719,17 @@ function requireRef_error() {
   return ref_error;
 }
 
-var compile$2 = {};
+var compile = {};
 
-Object.defineProperty(compile$2, "__esModule", {
+Object.defineProperty(compile, "__esModule", {
   value: true
 });
-compile$2.resolveSchema = compile$2.getCompilingSchema = compile$2.resolveRef = compile$2.compileSchema = compile$2.SchemaEnv = void 0;
+compile.resolveSchema = compile.getCompilingSchema = compile.resolveRef = compile.compileSchema = compile.SchemaEnv = void 0;
 const codegen_1$r = requireCodegen();
 const validation_error_1 = requireValidation_error();
 const names_1$5 = requireNames();
-const resolve_1$1 = resolve$5;
-const util_1$o = util$a;
+const resolve_1 = resolve$1;
+const util_1$o = util$4;
 const validate_1$1 = requireValidate();
 class SchemaEnv {
   constructor(env) {
@@ -19730,7 +19741,7 @@ class SchemaEnv {
     this.schema = env.schema;
     this.schemaId = env.schemaId;
     this.root = env.root || this;
-    this.baseId = (_a = env.baseId) !== null && _a !== void 0 ? _a : (0, resolve_1$1.normalizeId)(schema === null || schema === void 0 ? void 0 : schema[env.schemaId || "$id"]);
+    this.baseId = (_a = env.baseId) !== null && _a !== void 0 ? _a : (0, resolve_1.normalizeId)(schema === null || schema === void 0 ? void 0 : schema[env.schemaId || "$id"]);
     this.schemaPath = env.schemaPath;
     this.localRefs = env.localRefs;
     this.meta = env.meta;
@@ -19738,15 +19749,15 @@ class SchemaEnv {
     this.refs = {};
   }
 }
-compile$2.SchemaEnv = SchemaEnv;
+compile.SchemaEnv = SchemaEnv;
 // let codeSize = 0
 // let nodeCount = 0
 // Compiles schema in SchemaEnv
-function compileSchema$1(sch) {
+function compileSchema(sch) {
   // TODO refactor - remove compilations
   const _sch = getCompilingSchema.call(this, sch);
   if (_sch) return _sch;
-  const rootId = (0, resolve_1$1.getFullPath)(this.opts.uriResolver, sch.root.baseId); // TODO if getFullPath removed 1 tests fails
+  const rootId = (0, resolve_1.getFullPath)(this.opts.uriResolver, sch.root.baseId); // TODO if getFullPath removed 1 tests fails
   const {
     es5,
     lines
@@ -19849,13 +19860,13 @@ function compileSchema$1(sch) {
     this._compilations.delete(sch);
   }
 }
-compile$2.compileSchema = compileSchema$1;
+compile.compileSchema = compileSchema;
 function resolveRef(root, baseId, ref) {
   var _a;
-  ref = (0, resolve_1$1.resolveUrl)(this.opts.uriResolver, baseId, ref);
+  ref = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, ref);
   const schOrFunc = root.refs[ref];
   if (schOrFunc) return schOrFunc;
-  let _sch = resolve$4.call(this, root, ref);
+  let _sch = resolve.call(this, root, ref);
   if (_sch === undefined) {
     const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref]; // TODO maybe localRefs should hold SchemaEnv
     const {
@@ -19871,10 +19882,10 @@ function resolveRef(root, baseId, ref) {
   if (_sch === undefined) return;
   return root.refs[ref] = inlineOrCompile.call(this, _sch);
 }
-compile$2.resolveRef = resolveRef;
+compile.resolveRef = resolveRef;
 function inlineOrCompile(sch) {
-  if ((0, resolve_1$1.inlineRef)(sch.schema, this.opts.inlineRefs)) return sch.schema;
-  return sch.validate ? sch : compileSchema$1.call(this, sch);
+  if ((0, resolve_1.inlineRef)(sch.schema, this.opts.inlineRefs)) return sch.schema;
+  return sch.validate ? sch : compileSchema.call(this, sch);
 }
 // Index of schema compilation in the currently compiled list
 function getCompilingSchema(schEnv) {
@@ -19882,42 +19893,42 @@ function getCompilingSchema(schEnv) {
     if (sameSchemaEnv(sch, schEnv)) return sch;
   }
 }
-compile$2.getCompilingSchema = getCompilingSchema;
+compile.getCompilingSchema = getCompilingSchema;
 function sameSchemaEnv(s1, s2) {
   return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
 }
 // resolve and compile the references ($ref)
 // TODO returns AnySchemaObject (if the schema can be inlined) or validation function
-function resolve$4(root,
+function resolve(root,
 // information about the root schema for the current schema
 ref // reference to resolve
 ) {
   let sch;
   while (typeof (sch = this.refs[ref]) == "string") ref = sch;
-  return sch || this.schemas[ref] || resolveSchema$1.call(this, root, ref);
+  return sch || this.schemas[ref] || resolveSchema.call(this, root, ref);
 }
 // Resolve schema, its root and baseId
-function resolveSchema$1(root,
+function resolveSchema(root,
 // root object with properties schema, refs TODO below SchemaEnv is assigned to it
 ref // reference to resolve
 ) {
   const p = this.opts.uriResolver.parse(ref);
-  const refPath = (0, resolve_1$1._getFullPath)(this.opts.uriResolver, p);
-  let baseId = (0, resolve_1$1.getFullPath)(this.opts.uriResolver, root.baseId, undefined);
+  const refPath = (0, resolve_1._getFullPath)(this.opts.uriResolver, p);
+  let baseId = (0, resolve_1.getFullPath)(this.opts.uriResolver, root.baseId, undefined);
   // TODO `Object.keys(root.schema).length > 0` should not be needed - but removing breaks 2 tests
   if (Object.keys(root.schema).length > 0 && refPath === baseId) {
-    return getJsonPointer$1.call(this, p, root);
+    return getJsonPointer.call(this, p, root);
   }
-  const id = (0, resolve_1$1.normalizeId)(refPath);
+  const id = (0, resolve_1.normalizeId)(refPath);
   const schOrRef = this.refs[id] || this.schemas[id];
   if (typeof schOrRef == "string") {
-    const sch = resolveSchema$1.call(this, root, schOrRef);
+    const sch = resolveSchema.call(this, root, schOrRef);
     if (typeof (sch === null || sch === void 0 ? void 0 : sch.schema) !== "object") return;
-    return getJsonPointer$1.call(this, p, sch);
+    return getJsonPointer.call(this, p, sch);
   }
   if (typeof (schOrRef === null || schOrRef === void 0 ? void 0 : schOrRef.schema) !== "object") return;
-  if (!schOrRef.validate) compileSchema$1.call(this, schOrRef);
-  if (id === (0, resolve_1$1.normalizeId)(ref)) {
+  if (!schOrRef.validate) compileSchema.call(this, schOrRef);
+  if (id === (0, resolve_1.normalizeId)(ref)) {
     const {
       schema
     } = schOrRef;
@@ -19925,7 +19936,7 @@ ref // reference to resolve
       schemaId
     } = this.opts;
     const schId = schema[schemaId];
-    if (schId) baseId = (0, resolve_1$1.resolveUrl)(this.opts.uriResolver, baseId, schId);
+    if (schId) baseId = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, schId);
     return new SchemaEnv({
       schema,
       schemaId,
@@ -19933,11 +19944,11 @@ ref // reference to resolve
       baseId
     });
   }
-  return getJsonPointer$1.call(this, p, schOrRef);
+  return getJsonPointer.call(this, p, schOrRef);
 }
-compile$2.resolveSchema = resolveSchema$1;
-const PREVENT_SCOPE_CHANGE$1 = new Set(["properties", "patternProperties", "enum", "dependencies", "definitions"]);
-function getJsonPointer$1(parsedRef, {
+compile.resolveSchema = resolveSchema;
+const PREVENT_SCOPE_CHANGE = new Set(["properties", "patternProperties", "enum", "dependencies", "definitions"]);
+function getJsonPointer(parsedRef, {
   baseId,
   schema,
   root
@@ -19951,14 +19962,14 @@ function getJsonPointer$1(parsedRef, {
     schema = partSchema;
     // TODO PREVENT_SCOPE_CHANGE could be defined in keyword def?
     const schId = typeof schema === "object" && schema[this.opts.schemaId];
-    if (!PREVENT_SCOPE_CHANGE$1.has(part) && schId) {
-      baseId = (0, resolve_1$1.resolveUrl)(this.opts.uriResolver, baseId, schId);
+    if (!PREVENT_SCOPE_CHANGE.has(part) && schId) {
+      baseId = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, schId);
     }
   }
   let env;
   if (typeof schema != "boolean" && schema.$ref && !(0, util_1$o.schemaHasRulesButRef)(schema, this.RULES)) {
-    const $ref = (0, resolve_1$1.resolveUrl)(this.opts.uriResolver, baseId, schema.$ref);
-    env = resolveSchema$1.call(this, root, $ref);
+    const $ref = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, schema.$ref);
+    env = resolveSchema.call(this, root, $ref);
   }
   // even though resolution failed we need to return SchemaEnv to throw exception
   // so that compileAsync loads missing schema.
@@ -19975,13 +19986,13 @@ function getJsonPointer$1(parsedRef, {
   return undefined;
 }
 
-var $id$b = "https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#";
-var description$4 = "Meta-schema for $data reference (JSON AnySchema extension proposal)";
-var type$h = "object";
-var required$7 = [
+var $id$a = "https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#";
+var description$2 = "Meta-schema for $data reference (JSON AnySchema extension proposal)";
+var type$f = "object";
+var required$5 = [
 	"$data"
 ];
-var properties$i = {
+var properties$f = {
 	$data: {
 		type: "string",
 		anyOf: [
@@ -19994,17 +20005,17 @@ var properties$i = {
 		]
 	}
 };
-var additionalProperties$5 = false;
+var additionalProperties$4 = false;
 var require$$9 = {
-	$id: $id$b,
-	description: description$4,
-	type: type$h,
-	required: required$7,
-	properties: properties$i,
-	additionalProperties: additionalProperties$5
+	$id: $id$a,
+	description: description$2,
+	type: type$f,
+	required: required$5,
+	properties: properties$f,
+	additionalProperties: additionalProperties$4
 };
 
-var uri$2 = {};
+var uri$1 = {};
 
 var uri_all = {exports: {}};
 
@@ -21348,12 +21359,12 @@ var uri_all = {exports: {}};
 })(uri_all, uri_all.exports);
 var uri_allExports = uri_all.exports;
 
-Object.defineProperty(uri$2, "__esModule", {
+Object.defineProperty(uri$1, "__esModule", {
   value: true
 });
-const uri$1 = uri_allExports;
-uri$1.code = 'require("ajv/dist/runtime/uri").default';
-uri$2.default = uri$1;
+const uri = uri_allExports;
+uri.code = 'require("ajv/dist/runtime/uri").default';
+uri$1.default = uri;
 
 (function (exports) {
 
@@ -21407,14 +21418,14 @@ uri$2.default = uri$1;
   });
   const validation_error_1 = requireValidation_error();
   const ref_error_1 = requireRef_error();
-  const rules_1 = rules$2;
-  const compile_1 = compile$2;
+  const rules_1 = rules;
+  const compile_1 = compile;
   const codegen_2 = requireCodegen();
-  const resolve_1 = resolve$5;
+  const resolve_1 = resolve$1;
   const dataType_1 = dataType;
-  const util_1 = util$a;
+  const util_1 = util$4;
   const $dataRefSchema = require$$9;
-  const uri_1 = uri$2;
+  const uri_1 = uri$1;
   const defaultRegExp = (str, flags) => new RegExp(str, flags);
   defaultRegExp.code = "new RegExp";
   const META_IGNORE_OPTIONS = ["removeAdditional", "useDefaults", "coerceTypes"];
@@ -22014,18 +22025,18 @@ var draft4 = {};
 
 var core$5 = {};
 
-var ref$2 = {};
+var ref$1 = {};
 
-Object.defineProperty(ref$2, "__esModule", {
+Object.defineProperty(ref$1, "__esModule", {
   value: true
 });
-ref$2.callRef = ref$2.getValidate = void 0;
+ref$1.callRef = ref$1.getValidate = void 0;
 const ref_error_1 = requireRef_error();
 const code_1$8 = requireCode();
 const codegen_1$q = requireCodegen();
 const names_1$4 = requireNames();
-const compile_1$3 = compile$2;
-const util_1$n = util$a;
+const compile_1$2 = compile;
+const util_1$n = util$4;
 const def$D = {
   keyword: "$ref",
   schemaType: "string",
@@ -22046,9 +22057,9 @@ const def$D = {
       root
     } = env;
     if (($ref === "#" || $ref === "#/") && baseId === root.baseId) return callRootRef();
-    const schOrEnv = compile_1$3.resolveRef.call(self, root, baseId, $ref);
+    const schOrEnv = compile_1$2.resolveRef.call(self, root, baseId, $ref);
     if (schOrEnv === undefined) throw new ref_error_1.default(it.opts.uriResolver, baseId, $ref);
-    if (schOrEnv instanceof compile_1$3.SchemaEnv) return callValidate(schOrEnv);
+    if (schOrEnv instanceof compile_1$2.SchemaEnv) return callValidate(schOrEnv);
     return inlineRefSchema(schOrEnv);
     function callRootRef() {
       if (env === root) return callRef(cxt, validateName, env, env.$async);
@@ -22091,7 +22102,7 @@ function getValidate(cxt, sch) {
     ref: sch
   })}.validate`;
 }
-ref$2.getValidate = getValidate;
+ref$1.getValidate = getValidate;
 function callRef(cxt, v, sch, $async) {
   const {
     gen,
@@ -22153,13 +22164,13 @@ function callRef(cxt, v, sch, $async) {
     }
   }
 }
-ref$2.callRef = callRef;
-ref$2.default = def$D;
+ref$1.callRef = callRef;
+ref$1.default = def$D;
 
 Object.defineProperty(core$5, "__esModule", {
   value: true
 });
-const ref_1$3 = ref$2;
+const ref_1$3 = ref$1;
 const core$4 = ["$schema", "id", "$defs", {
   keyword: "$comment"
 }, "definitions", ref_1$3.default];
@@ -22172,7 +22183,7 @@ var limitNumber$1 = {};
 Object.defineProperty(limitNumber$1, "__esModule", {
   value: true
 });
-const core_1$2 = core$6;
+const core_1$3 = core$6;
 const codegen_1$p = requireCodegen();
 const ops$1 = codegen_1$p.operators;
 const KWDs$2 = {
@@ -22202,8 +22213,8 @@ const KWDs$2 = {
   }
 };
 const error$l = {
-  message: cxt => core_1$2.str`must be ${kwdOp(cxt).okStr} ${cxt.schemaCode}`,
-  params: cxt => core_1$2._`{comparison: ${kwdOp(cxt).okStr}, limit: ${cxt.schemaCode}}`
+  message: cxt => core_1$3.str`must be ${kwdOp(cxt).okStr} ${cxt.schemaCode}`,
+  params: cxt => core_1$3._`{comparison: ${kwdOp(cxt).okStr}, limit: ${cxt.schemaCode}}`
 };
 const def$C = {
   keyword: Object.keys(KWDs$2),
@@ -22216,7 +22227,7 @@ const def$C = {
       data,
       schemaCode
     } = cxt;
-    cxt.fail$data(core_1$2._`${data} ${kwdOp(cxt).fail} ${schemaCode} || isNaN(${data})`);
+    cxt.fail$data(core_1$3._`${data} ${kwdOp(cxt).fail} ${schemaCode} || isNaN(${data})`);
   }
 };
 function kwdOp(cxt) {
@@ -22252,9 +22263,9 @@ const def$B = {
 };
 limitNumberExclusive.default = def$B;
 
-var multipleOf$1 = {};
+var multipleOf = {};
 
-Object.defineProperty(multipleOf$1, "__esModule", {
+Object.defineProperty(multipleOf, "__esModule", {
   value: true
 });
 const codegen_1$o = requireCodegen();
@@ -22286,18 +22297,18 @@ const def$A = {
     cxt.fail$data((0, codegen_1$o._)`(${schemaCode} === 0 || (${res} = ${data}/${schemaCode}, ${invalid}))`);
   }
 };
-multipleOf$1.default = def$A;
+multipleOf.default = def$A;
 
 var limitLength = {};
 
-var ucs2length$3 = {};
+var ucs2length$1 = {};
 
-Object.defineProperty(ucs2length$3, "__esModule", {
+Object.defineProperty(ucs2length$1, "__esModule", {
   value: true
 });
 // https://mathiasbynens.be/notes/javascript-encoding
 // https://github.com/bestiejs/punycode.js - punycode.ucs2.decode
-function ucs2length$2(str) {
+function ucs2length(str) {
   const len = str.length;
   let length = 0;
   let pos = 0;
@@ -22314,15 +22325,15 @@ function ucs2length$2(str) {
 
   return length;
 }
-ucs2length$3.default = ucs2length$2;
-ucs2length$2.code = 'require("ajv/dist/runtime/ucs2length").default';
+ucs2length$1.default = ucs2length;
+ucs2length.code = 'require("ajv/dist/runtime/ucs2length").default';
 
 Object.defineProperty(limitLength, "__esModule", {
   value: true
 });
 const codegen_1$n = requireCodegen();
-const util_1$m = util$a;
-const ucs2length_1 = ucs2length$3;
+const util_1$m = util$4;
+const ucs2length_1 = ucs2length$1;
 const error$j = {
   message({
     keyword,
@@ -22355,9 +22366,9 @@ const def$z = {
 };
 limitLength.default = def$z;
 
-var pattern$1 = {};
+var pattern = {};
 
-Object.defineProperty(pattern$1, "__esModule", {
+Object.defineProperty(pattern, "__esModule", {
   value: true
 });
 const code_1$7 = requireCode();
@@ -22390,7 +22401,7 @@ const def$y = {
     cxt.fail$data((0, codegen_1$m._)`!${regExp}.test(${data})`);
   }
 };
-pattern$1.default = def$y;
+pattern.default = def$y;
 
 var limitProperties = {};
 
@@ -22428,14 +22439,14 @@ const def$x = {
 };
 limitProperties.default = def$x;
 
-var required$6 = {};
+var required$4 = {};
 
-Object.defineProperty(required$6, "__esModule", {
+Object.defineProperty(required$4, "__esModule", {
   value: true
 });
 const code_1$6 = requireCode();
 const codegen_1$k = requireCodegen();
-const util_1$l = util$a;
+const util_1$l = util$4;
 const error$g = {
   message: ({
     params: {
@@ -22525,7 +22536,7 @@ const def$w = {
     }
   }
 };
-required$6.default = def$w;
+required$4.default = def$w;
 
 var limitItems = {};
 
@@ -22563,25 +22574,25 @@ const def$v = {
 };
 limitItems.default = def$v;
 
-var uniqueItems$1 = {};
+var uniqueItems = {};
 
-var equal$3 = {};
+var equal$1 = {};
 
-Object.defineProperty(equal$3, "__esModule", {
+Object.defineProperty(equal$1, "__esModule", {
   value: true
 });
 // https://github.com/ajv-validator/ajv/issues/889
-const equal$2 = fastDeepEqual;
-equal$2.code = 'require("ajv/dist/runtime/equal").default';
-equal$3.default = equal$2;
+const equal = fastDeepEqual;
+equal.code = 'require("ajv/dist/runtime/equal").default';
+equal$1.default = equal;
 
-Object.defineProperty(uniqueItems$1, "__esModule", {
+Object.defineProperty(uniqueItems, "__esModule", {
   value: true
 });
 const dataType_1 = dataType;
 const codegen_1$i = requireCodegen();
-const util_1$k = util$a;
-const equal_1$2 = equal$3;
+const util_1$k = util$4;
+const equal_1$2 = equal$1;
 const error$e = {
   message: ({
     params: {
@@ -22655,16 +22666,16 @@ const def$u = {
     }
   }
 };
-uniqueItems$1.default = def$u;
+uniqueItems.default = def$u;
 
-var _const$1 = {};
+var _const = {};
 
-Object.defineProperty(_const$1, "__esModule", {
+Object.defineProperty(_const, "__esModule", {
   value: true
 });
 const codegen_1$h = requireCodegen();
-const util_1$j = util$a;
-const equal_1$1 = equal$3;
+const util_1$j = util$4;
+const equal_1$1 = equal$1;
 const error$d = {
   message: "must be equal to constant",
   params: ({
@@ -22690,16 +22701,16 @@ const def$t = {
     }
   }
 };
-_const$1.default = def$t;
+_const.default = def$t;
 
-var _enum$1 = {};
+var _enum = {};
 
-Object.defineProperty(_enum$1, "__esModule", {
+Object.defineProperty(_enum, "__esModule", {
   value: true
 });
 const codegen_1$g = requireCodegen();
-const util_1$i = util$a;
-const equal_1 = equal$3;
+const util_1$i = util$4;
+const equal_1 = equal$1;
 const error$c = {
   message: "must be equal to one of the allowed values",
   params: ({
@@ -22745,22 +22756,22 @@ const def$s = {
     }
   }
 };
-_enum$1.default = def$s;
+_enum.default = def$s;
 
 Object.defineProperty(validation$4, "__esModule", {
   value: true
 });
 const limitNumber_1$1 = limitNumber$1;
 const limitNumberExclusive_1 = limitNumberExclusive;
-const multipleOf_1$1 = multipleOf$1;
+const multipleOf_1$1 = multipleOf;
 const limitLength_1$1 = limitLength;
-const pattern_1$1 = pattern$1;
+const pattern_1$1 = pattern;
 const limitProperties_1$1 = limitProperties;
-const required_1$1 = required$6;
+const required_1$1 = required$4;
 const limitItems_1$1 = limitItems;
-const uniqueItems_1$1 = uniqueItems$1;
-const const_1$1 = _const$1;
-const enum_1$1 = _enum$1;
+const uniqueItems_1$1 = uniqueItems;
+const const_1$1 = _const;
+const enum_1$1 = _enum;
 const validation$3 = [
 // number
 limitNumber_1$1.default, limitNumberExclusive_1.default, multipleOf_1$1.default,
@@ -22789,7 +22800,7 @@ Object.defineProperty(additionalItems, "__esModule", {
 });
 additionalItems.validateAdditionalItems = void 0;
 const codegen_1$f = requireCodegen();
-const util_1$h = util$a;
+const util_1$h = util$4;
 const error$b = {
   message: ({
     params: {
@@ -22859,14 +22870,14 @@ additionalItems.default = def$r;
 
 var prefixItems = {};
 
-var items$1 = {};
+var items = {};
 
-Object.defineProperty(items$1, "__esModule", {
+Object.defineProperty(items, "__esModule", {
   value: true
 });
-items$1.validateTuple = void 0;
+items.validateTuple = void 0;
 const codegen_1$e = requireCodegen();
-const util_1$g = util$a;
+const util_1$g = util$4;
 const code_1$5 = requireCode();
 const def$q = {
   keyword: "items",
@@ -22920,13 +22931,13 @@ function validateTuple(cxt, extraItems, schArr = cxt.schema) {
     }
   }
 }
-items$1.validateTuple = validateTuple;
-items$1.default = def$q;
+items.validateTuple = validateTuple;
+items.default = def$q;
 
 Object.defineProperty(prefixItems, "__esModule", {
   value: true
 });
-const items_1$1 = items$1;
+const items_1$1 = items;
 const def$p = {
   keyword: "prefixItems",
   type: "array",
@@ -22942,7 +22953,7 @@ Object.defineProperty(items2020, "__esModule", {
   value: true
 });
 const codegen_1$d = requireCodegen();
-const util_1$f = util$a;
+const util_1$f = util$4;
 const code_1$4 = requireCode();
 const additionalItems_1$1 = additionalItems;
 const error$a = {
@@ -22979,13 +22990,13 @@ const def$o = {
 };
 items2020.default = def$o;
 
-var contains$2 = {};
+var contains = {};
 
-Object.defineProperty(contains$2, "__esModule", {
+Object.defineProperty(contains, "__esModule", {
   value: true
 });
 const codegen_1$c = requireCodegen();
-const util_1$e = util$a;
+const util_1$e = util$4;
 const error$9 = {
   message: ({
     params: {
@@ -23086,9 +23097,9 @@ const def$n = {
     }
   }
 };
-contains$2.default = def$n;
+contains.default = def$n;
 
-var dependencies$3 = {};
+var dependencies$1 = {};
 
 (function (exports) {
 
@@ -23097,7 +23108,7 @@ var dependencies$3 = {};
   });
   exports.validateSchemaDeps = exports.validatePropertyDeps = exports.error = void 0;
   const codegen_1 = requireCodegen();
-  const util_1 = util$a;
+  const util_1 = util$4;
   const code_1 = requireCode();
   exports.error = {
     message: ({
@@ -23201,15 +23212,15 @@ var dependencies$3 = {};
   }
   exports.validateSchemaDeps = validateSchemaDeps;
   exports.default = def;
-})(dependencies$3);
+})(dependencies$1);
 
-var propertyNames$1 = {};
+var propertyNames = {};
 
-Object.defineProperty(propertyNames$1, "__esModule", {
+Object.defineProperty(propertyNames, "__esModule", {
   value: true
 });
 const codegen_1$b = requireCodegen();
-const util_1$d = util$a;
+const util_1$d = util$4;
 const error$8 = {
   message: "property name must be valid",
   params: ({
@@ -23249,17 +23260,17 @@ const def$m = {
     cxt.ok(valid);
   }
 };
-propertyNames$1.default = def$m;
+propertyNames.default = def$m;
 
-var additionalProperties$4 = {};
+var additionalProperties$3 = {};
 
-Object.defineProperty(additionalProperties$4, "__esModule", {
+Object.defineProperty(additionalProperties$3, "__esModule", {
   value: true
 });
 const code_1$3 = requireCode();
 const codegen_1$a = requireCodegen();
 const names_1$3 = requireNames();
-const util_1$c = util$a;
+const util_1$c = util$4;
 const error$7 = {
   message: "must NOT have additional properties",
   params: ({
@@ -23362,17 +23373,17 @@ const def$l = {
     }
   }
 };
-additionalProperties$4.default = def$l;
+additionalProperties$3.default = def$l;
 
-var properties$h = {};
+var properties$e = {};
 
-Object.defineProperty(properties$h, "__esModule", {
+Object.defineProperty(properties$e, "__esModule", {
   value: true
 });
 const validate_1 = requireValidate();
 const code_1$2 = requireCode();
-const util_1$b = util$a;
-const additionalProperties_1$1 = additionalProperties$4;
+const util_1$b = util$4;
+const additionalProperties_1$1 = additionalProperties$3;
 const def$k = {
   keyword: "properties",
   type: "object",
@@ -23422,7 +23433,7 @@ const def$k = {
     }
   }
 };
-properties$h.default = def$k;
+properties$e.default = def$k;
 
 var patternProperties$2 = {};
 
@@ -23431,8 +23442,8 @@ Object.defineProperty(patternProperties$2, "__esModule", {
 });
 const code_1$1 = requireCode();
 const codegen_1$9 = requireCodegen();
-const util_1$a = util$a;
-const util_2 = util$a;
+const util_1$a = util$4;
+const util_2 = util$4;
 const def$j = {
   keyword: "patternProperties",
   type: "object",
@@ -23507,12 +23518,12 @@ const def$j = {
 };
 patternProperties$2.default = def$j;
 
-var not$1 = {};
+var not = {};
 
-Object.defineProperty(not$1, "__esModule", {
+Object.defineProperty(not, "__esModule", {
   value: true
 });
-const util_1$9 = util$a;
+const util_1$9 = util$4;
 const def$i = {
   keyword: "not",
   schemaType: ["object", "boolean"],
@@ -23540,11 +23551,11 @@ const def$i = {
     message: "must NOT be valid"
   }
 };
-not$1.default = def$i;
+not.default = def$i;
 
-var anyOf$2 = {};
+var anyOf$1 = {};
 
-Object.defineProperty(anyOf$2, "__esModule", {
+Object.defineProperty(anyOf$1, "__esModule", {
   value: true
 });
 const code_1 = requireCode();
@@ -23557,15 +23568,15 @@ const def$h = {
     message: "must match a schema in anyOf"
   }
 };
-anyOf$2.default = def$h;
+anyOf$1.default = def$h;
 
-var oneOf$1 = {};
+var oneOf = {};
 
-Object.defineProperty(oneOf$1, "__esModule", {
+Object.defineProperty(oneOf, "__esModule", {
   value: true
 });
 const codegen_1$8 = requireCodegen();
-const util_1$8 = util$a;
+const util_1$8 = util$4;
 const error$6 = {
   message: "must match exactly one schema in oneOf",
   params: ({
@@ -23621,14 +23632,14 @@ const def$g = {
     }
   }
 };
-oneOf$1.default = def$g;
+oneOf.default = def$g;
 
-var allOf$2 = {};
+var allOf$1 = {};
 
-Object.defineProperty(allOf$2, "__esModule", {
+Object.defineProperty(allOf$1, "__esModule", {
   value: true
 });
-const util_1$7 = util$a;
+const util_1$7 = util$4;
 const def$f = {
   keyword: "allOf",
   schemaType: "array",
@@ -23652,15 +23663,15 @@ const def$f = {
     });
   }
 };
-allOf$2.default = def$f;
+allOf$1.default = def$f;
 
-var _if$1 = {};
+var _if = {};
 
-Object.defineProperty(_if$1, "__esModule", {
+Object.defineProperty(_if, "__esModule", {
   value: true
 });
 const codegen_1$7 = requireCodegen();
-const util_1$6 = util$a;
+const util_1$6 = util$4;
 const error$5 = {
   message: ({
     params
@@ -23729,14 +23740,14 @@ function hasSchema(it, keyword) {
   const schema = it.schema[keyword];
   return schema !== undefined && !(0, util_1$6.alwaysValidSchema)(it, schema);
 }
-_if$1.default = def$e;
+_if.default = def$e;
 
 var thenElse = {};
 
 Object.defineProperty(thenElse, "__esModule", {
   value: true
 });
-const util_1$5 = util$a;
+const util_1$5 = util$4;
 const def$d = {
   keyword: ["then", "else"],
   schemaType: ["object", "boolean"],
@@ -23755,19 +23766,19 @@ Object.defineProperty(applicator$1, "__esModule", {
 });
 const additionalItems_1 = additionalItems;
 const prefixItems_1 = prefixItems;
-const items_1 = items$1;
+const items_1 = items;
 const items2020_1 = items2020;
-const contains_1 = contains$2;
-const dependencies_1$2 = dependencies$3;
-const propertyNames_1 = propertyNames$1;
-const additionalProperties_1 = additionalProperties$4;
-const properties_1 = properties$h;
+const contains_1 = contains;
+const dependencies_1$2 = dependencies$1;
+const propertyNames_1 = propertyNames;
+const additionalProperties_1 = additionalProperties$3;
+const properties_1 = properties$e;
 const patternProperties_1 = patternProperties$2;
-const not_1 = not$1;
-const anyOf_1 = anyOf$2;
-const oneOf_1 = oneOf$1;
-const allOf_1 = allOf$2;
-const if_1 = _if$1;
+const not_1 = not;
+const anyOf_1 = anyOf$1;
+const oneOf_1 = oneOf;
+const allOf_1 = allOf$1;
+const if_1 = _if;
 const thenElse_1 = thenElse;
 function getApplicator(draft2020 = false) {
   const applicator = [
@@ -23782,11 +23793,11 @@ function getApplicator(draft2020 = false) {
 }
 applicator$1.default = getApplicator;
 
-var format$4 = {};
-
 var format$3 = {};
 
-Object.defineProperty(format$3, "__esModule", {
+var format$2 = {};
+
+Object.defineProperty(format$2, "__esModule", {
   value: true
 });
 const codegen_1$6 = requireCodegen();
@@ -23883,24 +23894,24 @@ const def$c = {
     }
   }
 };
-format$3.default = def$c;
+format$2.default = def$c;
 
-Object.defineProperty(format$4, "__esModule", {
+Object.defineProperty(format$3, "__esModule", {
   value: true
 });
-const format_1$2 = format$3;
-const format$2 = [format_1$2.default];
-format$4.default = format$2;
+const format_1$3 = format$2;
+const format$1 = [format_1$3.default];
+format$3.default = format$1;
 
 Object.defineProperty(draft4, "__esModule", {
   value: true
 });
-const core_1$1 = core$5;
-const validation_1$1 = validation$4;
-const applicator_1$1 = applicator$1;
-const format_1$1 = format$4;
+const core_1$2 = core$5;
+const validation_1$2 = validation$4;
+const applicator_1$2 = applicator$1;
+const format_1$2 = format$3;
 const metadataVocabulary = ["title", "description", "default"];
-const draft4Vocabularies = [core_1$1.default, validation_1$1.default, applicator_1$1.default(), format_1$1.default, metadataVocabulary];
+const draft4Vocabularies = [core_1$2.default, validation_1$2.default, applicator_1$2.default(), format_1$2.default, metadataVocabulary];
 draft4.default = draft4Vocabularies;
 
 var discriminator = {};
@@ -23924,8 +23935,8 @@ Object.defineProperty(discriminator, "__esModule", {
 });
 const codegen_1$5 = requireCodegen();
 const types_1 = types;
-const compile_1$2 = compile$2;
-const util_1$4 = util$a;
+const compile_1$1 = compile;
+const util_1$4 = util$4;
 const error$3 = {
   message: ({
     params: {
@@ -24004,8 +24015,8 @@ const def$b = {
       for (let i = 0; i < oneOf.length; i++) {
         let sch = oneOf[i];
         if ((sch === null || sch === void 0 ? void 0 : sch.$ref) && !(0, util_1$4.schemaHasRulesButRef)(sch, it.self.RULES)) {
-          sch = compile_1$2.resolveRef.call(it.self, it.schemaEnv.root, it.baseId, sch === null || sch === void 0 ? void 0 : sch.$ref);
-          if (sch instanceof compile_1$2.SchemaEnv) sch = sch.schema;
+          sch = compile_1$1.resolveRef.call(it.self, it.schemaEnv.root, it.baseId, sch === null || sch === void 0 ? void 0 : sch.$ref);
+          if (sch instanceof compile_1$1.SchemaEnv) sch = sch.schema;
         }
         const propSch = (_a = sch === null || sch === void 0 ? void 0 : sch.properties) === null || _a === void 0 ? void 0 : _a[tagName];
         if (typeof propSch != "object") {
@@ -24043,10 +24054,10 @@ const def$b = {
 };
 discriminator.default = def$b;
 
-var id$5 = "http://json-schema.org/draft-04/schema#";
-var $schema$f = "http://json-schema.org/draft-04/schema#";
-var description$3 = "Core schema meta-schema";
-var definitions$5 = {
+var id$4 = "http://json-schema.org/draft-04/schema#";
+var $schema$d = "http://json-schema.org/draft-04/schema#";
+var description$1 = "Core schema meta-schema";
+var definitions$4 = {
 	schemaArray: {
 		type: "array",
 		minItems: 1,
@@ -24088,8 +24099,8 @@ var definitions$5 = {
 		uniqueItems: true
 	}
 };
-var type$g = "object";
-var properties$g = {
+var type$e = "object";
+var properties$d = {
 	id: {
 		type: "string",
 		format: "uri"
@@ -24260,7 +24271,7 @@ var properties$g = {
 		$ref: "#"
 	}
 };
-var dependencies$2 = {
+var dependencies = {
 	exclusiveMaximum: [
 		"maximum"
 	],
@@ -24268,14 +24279,14 @@ var dependencies$2 = {
 		"minimum"
 	]
 };
-var require$$3$2 = {
-	id: id$5,
-	$schema: $schema$f,
-	description: description$3,
-	definitions: definitions$5,
-	type: type$g,
-	properties: properties$g,
-	dependencies: dependencies$2,
+var require$$3$3 = {
+	id: id$4,
+	$schema: $schema$d,
+	description: description$1,
+	definitions: definitions$4,
+	type: type$e,
+	properties: properties$d,
+	dependencies: dependencies,
 	"default": {
 }
 };
@@ -24289,7 +24300,7 @@ var require$$3$2 = {
   const core_1 = core$6;
   const draft4_1 = draft4;
   const discriminator_1 = discriminator;
-  const draft4MetaSchema = require$$3$2;
+  const draft4MetaSchema = require$$3$3;
   const META_SUPPORT_DATA = ["/properties"];
   const META_SCHEMA_ID = "http://json-schema.org/draft-04/schema";
   class Ajv extends core_1.default {
@@ -24364,8 +24375,8 @@ var require$$3$2 = {
       return core_3.CodeGen;
     }
   });
-})(dist, dist.exports);
-var distExports = dist.exports;
+})(dist$1, dist$1.exports);
+var distExports$1 = dist$1.exports;
 
 var _2020 = {exports: {}};
 
@@ -24373,9 +24384,9 @@ var draft2020 = {};
 
 var core$3 = {};
 
-var id$4 = {};
+var id$3 = {};
 
-Object.defineProperty(id$4, "__esModule", {
+Object.defineProperty(id$3, "__esModule", {
   value: true
 });
 const def$a = {
@@ -24384,13 +24395,13 @@ const def$a = {
     throw new Error('NOT SUPPORTED: keyword "id", use "$id" for schema ID');
   }
 };
-id$4.default = def$a;
+id$3.default = def$a;
 
 Object.defineProperty(core$3, "__esModule", {
   value: true
 });
-const id_1 = id$4;
-const ref_1$2 = ref$2;
+const id_1 = id$3;
+const ref_1$2 = ref$1;
 const core$2 = ["$schema", "$id", "$defs", "$vocabulary", {
   keyword: "$comment"
 }, "definitions", id_1.default, ref_1$2.default];
@@ -24458,15 +24469,15 @@ Object.defineProperty(validation$2, "__esModule", {
   value: true
 });
 const limitNumber_1 = limitNumber;
-const multipleOf_1 = multipleOf$1;
+const multipleOf_1 = multipleOf;
 const limitLength_1 = limitLength;
-const pattern_1 = pattern$1;
+const pattern_1 = pattern;
 const limitProperties_1 = limitProperties;
-const required_1 = required$6;
+const required_1 = required$4;
 const limitItems_1 = limitItems;
-const uniqueItems_1 = uniqueItems$1;
-const const_1 = _const$1;
-const enum_1 = _enum$1;
+const uniqueItems_1 = uniqueItems;
+const const_1 = _const;
+const enum_1 = _enum;
 const validation$1 = [
 // number
 limitNumber_1.default, multipleOf_1.default,
@@ -24496,8 +24507,8 @@ Object.defineProperty(dynamicAnchor$1, "__esModule", {
 dynamicAnchor$1.dynamicAnchor = void 0;
 const codegen_1$3 = requireCodegen();
 const names_1$2 = requireNames();
-const compile_1$1 = compile$2;
-const ref_1$1 = ref$2;
+const compile_1 = compile;
+const ref_1$1 = ref$1;
 const def$8 = {
   keyword: "$dynamicAnchor",
   schemaType: "string",
@@ -24529,7 +24540,7 @@ function _getValidate(cxt) {
   const {
     schemaId
   } = self.opts;
-  const sch = new compile_1$1.SchemaEnv({
+  const sch = new compile_1.SchemaEnv({
     schema,
     schemaId,
     root,
@@ -24537,7 +24548,7 @@ function _getValidate(cxt) {
     localRefs,
     meta
   });
-  compile_1$1.compileSchema.call(self, sch);
+  compile_1.compileSchema.call(self, sch);
   return (0, ref_1$1.getValidate)(cxt, sch);
 }
 dynamicAnchor$1.default = def$8;
@@ -24550,7 +24561,7 @@ Object.defineProperty(dynamicRef$1, "__esModule", {
 dynamicRef$1.dynamicRef = void 0;
 const codegen_1$2 = requireCodegen();
 const names_1$1 = requireNames();
-const ref_1 = ref$2;
+const ref_1 = ref$1;
 const def$7 = {
   keyword: "$dynamicRef",
   schemaType: "string",
@@ -24601,7 +24612,7 @@ Object.defineProperty(recursiveAnchor, "__esModule", {
   value: true
 });
 const dynamicAnchor_1$1 = dynamicAnchor$1;
-const util_1$3 = util$a;
+const util_1$3 = util$4;
 const def$6 = {
   keyword: "$recursiveAnchor",
   schemaType: "boolean",
@@ -24634,14 +24645,14 @@ const recursiveRef_1 = recursiveRef;
 const dynamic = [dynamicAnchor_1.default, dynamicRef_1.default, recursiveAnchor_1.default, recursiveRef_1.default];
 dynamic$1.default = dynamic;
 
-var next$2 = {};
+var next$3 = {};
 
 var dependentRequired = {};
 
 Object.defineProperty(dependentRequired, "__esModule", {
   value: true
 });
-const dependencies_1$1 = dependencies$3;
+const dependencies_1$1 = dependencies$1;
 const def$4 = {
   keyword: "dependentRequired",
   type: "object",
@@ -24656,7 +24667,7 @@ var dependentSchemas = {};
 Object.defineProperty(dependentSchemas, "__esModule", {
   value: true
 });
-const dependencies_1 = dependencies$3;
+const dependencies_1 = dependencies$1;
 const def$3 = {
   keyword: "dependentSchemas",
   type: "object",
@@ -24670,7 +24681,7 @@ var limitContains = {};
 Object.defineProperty(limitContains, "__esModule", {
   value: true
 });
-const util_1$2 = util$a;
+const util_1$2 = util$4;
 const def$2 = {
   keyword: ["maxContains", "minContains"],
   type: "array",
@@ -24687,14 +24698,14 @@ const def$2 = {
 };
 limitContains.default = def$2;
 
-Object.defineProperty(next$2, "__esModule", {
+Object.defineProperty(next$3, "__esModule", {
   value: true
 });
 const dependentRequired_1 = dependentRequired;
 const dependentSchemas_1 = dependentSchemas;
 const limitContains_1 = limitContains;
-const next$1 = [dependentRequired_1.default, dependentSchemas_1.default, limitContains_1.default];
-next$2.default = next$1;
+const next$2 = [dependentRequired_1.default, dependentSchemas_1.default, limitContains_1.default];
+next$3.default = next$2;
 
 var unevaluated$2 = {};
 
@@ -24704,7 +24715,7 @@ Object.defineProperty(unevaluatedProperties$1, "__esModule", {
   value: true
 });
 const codegen_1$1 = requireCodegen();
-const util_1$1 = util$a;
+const util_1$1 = util$4;
 const names_1 = requireNames();
 const error$1 = {
   message: "must NOT have unevaluated properties",
@@ -24778,7 +24789,7 @@ Object.defineProperty(unevaluatedItems, "__esModule", {
   value: true
 });
 const codegen_1 = requireCodegen();
-const util_1 = util$a;
+const util_1 = util$4;
 const error = {
   message: ({
     params: {
@@ -24851,21 +24862,21 @@ metadata$1.contentVocabulary = ["contentMediaType", "contentEncoding", "contentS
 Object.defineProperty(draft2020, "__esModule", {
   value: true
 });
-const core_1 = core$3;
-const validation_1 = validation$2;
-const applicator_1 = applicator$1;
+const core_1$1 = core$3;
+const validation_1$1 = validation$2;
+const applicator_1$1 = applicator$1;
 const dynamic_1 = dynamic$1;
-const next_1 = next$2;
+const next_1 = next$3;
 const unevaluated_1 = unevaluated$2;
-const format_1 = format$4;
-const metadata_1 = metadata$1;
-const draft2020Vocabularies = [dynamic_1.default, core_1.default, validation_1.default, (0, applicator_1.default)(true), format_1.default, metadata_1.metadataVocabulary, metadata_1.contentVocabulary, next_1.default, unevaluated_1.default];
+const format_1$1 = format$3;
+const metadata_1$1 = metadata$1;
+const draft2020Vocabularies = [dynamic_1.default, core_1$1.default, validation_1$1.default, (0, applicator_1$1.default)(true), format_1$1.default, metadata_1$1.metadataVocabulary, metadata_1$1.contentVocabulary, next_1.default, unevaluated_1.default];
 draft2020.default = draft2020Vocabularies;
 
 var jsonSchema202012 = {};
 
-var $schema$e = "https://json-schema.org/draft/2020-12/schema";
-var $id$a = "https://json-schema.org/draft/2020-12/schema";
+var $schema$c = "https://json-schema.org/draft/2020-12/schema";
+var $id$9 = "https://json-schema.org/draft/2020-12/schema";
 var $vocabulary$7 = {
 	"https://json-schema.org/draft/2020-12/vocab/core": true,
 	"https://json-schema.org/draft/2020-12/vocab/applicator": true,
@@ -24877,7 +24888,7 @@ var $vocabulary$7 = {
 };
 var $dynamicAnchor$7 = "meta";
 var title$9 = "Core and Validation specifications meta-schema";
-var allOf$1 = [
+var allOf = [
 	{
 		$ref: "meta/core"
 	},
@@ -24900,12 +24911,12 @@ var allOf$1 = [
 		$ref: "meta/content"
 	}
 ];
-var type$f = [
+var type$d = [
 	"object",
 	"boolean"
 ];
 var $comment = "This meta-schema also defines keywords that have appeared in previous drafts in order to prevent incompatible extensions as they remain in common use.";
-var properties$f = {
+var properties$c = {
 	definitions: {
 		$comment: "\"definitions\" has been replaced by \"$defs\".",
 		type: "object",
@@ -24945,29 +24956,29 @@ var properties$f = {
 	}
 };
 var require$$0$1 = {
-	$schema: $schema$e,
-	$id: $id$a,
+	$schema: $schema$c,
+	$id: $id$9,
 	$vocabulary: $vocabulary$7,
 	$dynamicAnchor: $dynamicAnchor$7,
 	title: title$9,
-	allOf: allOf$1,
-	type: type$f,
+	allOf: allOf,
+	type: type$d,
 	$comment: $comment,
-	properties: properties$f
+	properties: properties$c
 };
 
-var $schema$d = "https://json-schema.org/draft/2020-12/schema";
-var $id$9 = "https://json-schema.org/draft/2020-12/meta/applicator";
+var $schema$b = "https://json-schema.org/draft/2020-12/schema";
+var $id$8 = "https://json-schema.org/draft/2020-12/meta/applicator";
 var $vocabulary$6 = {
 	"https://json-schema.org/draft/2020-12/vocab/applicator": true
 };
 var $dynamicAnchor$6 = "meta";
 var title$8 = "Applicator vocabulary meta-schema";
-var type$e = [
+var type$c = [
 	"object",
 	"boolean"
 ];
-var properties$e = {
+var properties$b = {
 	prefixItems: {
 		$ref: "#/$defs/schemaArray"
 	},
@@ -25042,28 +25053,28 @@ var $defs$3 = {
 	}
 };
 var require$$1$1 = {
-	$schema: $schema$d,
-	$id: $id$9,
+	$schema: $schema$b,
+	$id: $id$8,
 	$vocabulary: $vocabulary$6,
 	$dynamicAnchor: $dynamicAnchor$6,
 	title: title$8,
-	type: type$e,
-	properties: properties$e,
+	type: type$c,
+	properties: properties$b,
 	$defs: $defs$3
 };
 
-var $schema$c = "https://json-schema.org/draft/2020-12/schema";
-var $id$8 = "https://json-schema.org/draft/2020-12/meta/unevaluated";
+var $schema$a = "https://json-schema.org/draft/2020-12/schema";
+var $id$7 = "https://json-schema.org/draft/2020-12/meta/unevaluated";
 var $vocabulary$5 = {
 	"https://json-schema.org/draft/2020-12/vocab/unevaluated": true
 };
 var $dynamicAnchor$5 = "meta";
 var title$7 = "Unevaluated applicator vocabulary meta-schema";
-var type$d = [
+var type$b = [
 	"object",
 	"boolean"
 ];
-var properties$d = {
+var properties$a = {
 	unevaluatedItems: {
 		$dynamicRef: "#meta"
 	},
@@ -25072,27 +25083,27 @@ var properties$d = {
 	}
 };
 var require$$2$1 = {
-	$schema: $schema$c,
-	$id: $id$8,
+	$schema: $schema$a,
+	$id: $id$7,
 	$vocabulary: $vocabulary$5,
 	$dynamicAnchor: $dynamicAnchor$5,
 	title: title$7,
-	type: type$d,
-	properties: properties$d
+	type: type$b,
+	properties: properties$a
 };
 
-var $schema$b = "https://json-schema.org/draft/2020-12/schema";
-var $id$7 = "https://json-schema.org/draft/2020-12/meta/content";
+var $schema$9 = "https://json-schema.org/draft/2020-12/schema";
+var $id$6 = "https://json-schema.org/draft/2020-12/meta/content";
 var $vocabulary$4 = {
 	"https://json-schema.org/draft/2020-12/vocab/content": true
 };
 var $dynamicAnchor$4 = "meta";
 var title$6 = "Content vocabulary meta-schema";
-var type$c = [
+var type$a = [
 	"object",
 	"boolean"
 ];
-var properties$c = {
+var properties$9 = {
 	contentEncoding: {
 		type: "string"
 	},
@@ -25103,28 +25114,28 @@ var properties$c = {
 		$dynamicRef: "#meta"
 	}
 };
-var require$$3$1 = {
-	$schema: $schema$b,
-	$id: $id$7,
+var require$$3$2 = {
+	$schema: $schema$9,
+	$id: $id$6,
 	$vocabulary: $vocabulary$4,
 	$dynamicAnchor: $dynamicAnchor$4,
 	title: title$6,
-	type: type$c,
-	properties: properties$c
+	type: type$a,
+	properties: properties$9
 };
 
-var $schema$a = "https://json-schema.org/draft/2020-12/schema";
-var $id$6 = "https://json-schema.org/draft/2020-12/meta/core";
+var $schema$8 = "https://json-schema.org/draft/2020-12/schema";
+var $id$5 = "https://json-schema.org/draft/2020-12/meta/core";
 var $vocabulary$3 = {
 	"https://json-schema.org/draft/2020-12/vocab/core": true
 };
 var $dynamicAnchor$3 = "meta";
 var title$5 = "Core vocabulary meta-schema";
-var type$b = [
+var type$9 = [
 	"object",
 	"boolean"
 ];
-var properties$b = {
+var properties$8 = {
 	$id: {
 		$ref: "#/$defs/uriReferenceString",
 		$comment: "Non-empty fragments not allowed.",
@@ -25179,54 +25190,54 @@ var $defs$2 = {
 	}
 };
 var require$$4 = {
-	$schema: $schema$a,
-	$id: $id$6,
+	$schema: $schema$8,
+	$id: $id$5,
 	$vocabulary: $vocabulary$3,
 	$dynamicAnchor: $dynamicAnchor$3,
 	title: title$5,
-	type: type$b,
-	properties: properties$b,
+	type: type$9,
+	properties: properties$8,
 	$defs: $defs$2
 };
 
-var $schema$9 = "https://json-schema.org/draft/2020-12/schema";
-var $id$5 = "https://json-schema.org/draft/2020-12/meta/format-annotation";
+var $schema$7 = "https://json-schema.org/draft/2020-12/schema";
+var $id$4 = "https://json-schema.org/draft/2020-12/meta/format-annotation";
 var $vocabulary$2 = {
 	"https://json-schema.org/draft/2020-12/vocab/format-annotation": true
 };
 var $dynamicAnchor$2 = "meta";
 var title$4 = "Format vocabulary meta-schema for annotation results";
-var type$a = [
+var type$8 = [
 	"object",
 	"boolean"
 ];
-var properties$a = {
+var properties$7 = {
 	format: {
 		type: "string"
 	}
 };
 var require$$5 = {
-	$schema: $schema$9,
-	$id: $id$5,
+	$schema: $schema$7,
+	$id: $id$4,
 	$vocabulary: $vocabulary$2,
 	$dynamicAnchor: $dynamicAnchor$2,
 	title: title$4,
-	type: type$a,
-	properties: properties$a
+	type: type$8,
+	properties: properties$7
 };
 
-var $schema$8 = "https://json-schema.org/draft/2020-12/schema";
-var $id$4 = "https://json-schema.org/draft/2020-12/meta/meta-data";
+var $schema$6 = "https://json-schema.org/draft/2020-12/schema";
+var $id$3 = "https://json-schema.org/draft/2020-12/meta/meta-data";
 var $vocabulary$1 = {
 	"https://json-schema.org/draft/2020-12/vocab/meta-data": true
 };
 var $dynamicAnchor$1 = "meta";
 var title$3 = "Meta-data vocabulary meta-schema";
-var type$9 = [
+var type$7 = [
 	"object",
 	"boolean"
 ];
-var properties$9 = {
+var properties$6 = {
 	title: {
 		type: "string"
 	},
@@ -25252,27 +25263,27 @@ var properties$9 = {
 	}
 };
 var require$$6 = {
-	$schema: $schema$8,
-	$id: $id$4,
+	$schema: $schema$6,
+	$id: $id$3,
 	$vocabulary: $vocabulary$1,
 	$dynamicAnchor: $dynamicAnchor$1,
 	title: title$3,
-	type: type$9,
-	properties: properties$9
+	type: type$7,
+	properties: properties$6
 };
 
-var $schema$7 = "https://json-schema.org/draft/2020-12/schema";
-var $id$3 = "https://json-schema.org/draft/2020-12/meta/validation";
+var $schema$5 = "https://json-schema.org/draft/2020-12/schema";
+var $id$2 = "https://json-schema.org/draft/2020-12/meta/validation";
 var $vocabulary = {
 	"https://json-schema.org/draft/2020-12/vocab/validation": true
 };
 var $dynamicAnchor = "meta";
 var title$2 = "Validation vocabulary meta-schema";
-var type$8 = [
+var type$6 = [
 	"object",
 	"boolean"
 ];
-var properties$8 = {
+var properties$5 = {
 	type: {
 		anyOf: [
 			{
@@ -25383,33 +25394,33 @@ var $defs$1 = {
 	}
 };
 var require$$7 = {
-	$schema: $schema$7,
-	$id: $id$3,
+	$schema: $schema$5,
+	$id: $id$2,
 	$vocabulary: $vocabulary,
 	$dynamicAnchor: $dynamicAnchor,
 	title: title$2,
-	type: type$8,
-	properties: properties$8,
+	type: type$6,
+	properties: properties$5,
 	$defs: $defs$1
 };
 
 Object.defineProperty(jsonSchema202012, "__esModule", {
   value: true
 });
-const metaSchema$1 = require$$0$1;
+const metaSchema = require$$0$1;
 const applicator = require$$1$1;
 const unevaluated = require$$2$1;
-const content = require$$3$1;
+const content = require$$3$2;
 const core$1 = require$$4;
-const format$1 = require$$5;
+const format = require$$5;
 const metadata = require$$6;
 const validation = require$$7;
-const META_SUPPORT_DATA$1 = ["/properties"];
+const META_SUPPORT_DATA = ["/properties"];
 function addMetaSchema2020($data) {
-  [metaSchema$1, applicator, unevaluated, content, core$1, with$data(this, format$1), metadata, with$data(this, validation)].forEach(sch => this.addMetaSchema(sch, undefined, false));
+  [metaSchema, applicator, unevaluated, content, core$1, with$data(this, format), metadata, with$data(this, validation)].forEach(sch => this.addMetaSchema(sch, undefined, false));
   return this;
   function with$data(ajv, sch) {
-    return $data ? ajv.$dataMetaSchema(sch, META_SUPPORT_DATA$1) : sch;
+    return $data ? ajv.$dataMetaSchema(sch, META_SUPPORT_DATA) : sch;
   }
 }
 jsonSchema202012.default = addMetaSchema2020;
@@ -25521,15 +25532,15 @@ var _2020Exports = _2020.exports;
 
 var lib$3 = {exports: {}};
 
-var id$3 = "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/schemas/v1.2/apiDeclaration.json#";
-var $schema$6 = "http://json-schema.org/draft-04/schema#";
-var type$7 = "object";
-var required$5 = [
+var id$2 = "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/schemas/v1.2/apiDeclaration.json#";
+var $schema$4 = "http://json-schema.org/draft-04/schema#";
+var type$5 = "object";
+var required$3 = [
 	"swaggerVersion",
 	"basePath",
 	"apis"
 ];
-var properties$7 = {
+var properties$4 = {
 	swaggerVersion: {
 		"enum": [
 			"1.2"
@@ -25570,8 +25581,8 @@ var properties$7 = {
 		$ref: "authorizationObject.json#"
 	}
 };
-var additionalProperties$3 = false;
-var definitions$4 = {
+var additionalProperties$2 = false;
+var definitions$3 = {
 	apiObject: {
 		type: "object",
 		required: [
@@ -25606,31 +25617,31 @@ var definitions$4 = {
 	}
 };
 var require$$0 = {
-	id: id$3,
-	$schema: $schema$6,
-	type: type$7,
-	required: required$5,
-	properties: properties$7,
-	additionalProperties: additionalProperties$3,
-	definitions: definitions$4
+	id: id$2,
+	$schema: $schema$4,
+	type: type$5,
+	required: required$3,
+	properties: properties$4,
+	additionalProperties: additionalProperties$2,
+	definitions: definitions$3
 };
 
 var title$1 = "A JSON Schema for Swagger 2.0 API.";
-var id$2 = "http://swagger.io/v2/schema.json#";
-var $schema$5 = "http://json-schema.org/draft-04/schema#";
-var type$6 = "object";
-var required$4 = [
+var id$1 = "http://swagger.io/v2/schema.json#";
+var $schema$3 = "http://json-schema.org/draft-04/schema#";
+var type$4 = "object";
+var required$2 = [
 	"swagger",
 	"info",
 	"paths"
 ];
-var additionalProperties$2 = false;
+var additionalProperties$1 = false;
 var patternProperties$1 = {
 	"^x-": {
 		$ref: "#/definitions/vendorExtension"
 	}
 };
-var properties$6 = {
+var properties$3 = {
 	swagger: {
 		type: "string",
 		"enum": [
@@ -25699,7 +25710,7 @@ var properties$6 = {
 		$ref: "#/definitions/externalDocs"
 	}
 };
-var definitions$3 = {
+var definitions$2 = {
 	info: {
 		type: "object",
 		description: "General information about the API.",
@@ -27227,26 +27238,26 @@ var definitions$3 = {
 };
 var require$$1 = {
 	title: title$1,
-	id: id$2,
-	$schema: $schema$5,
-	type: type$6,
-	required: required$4,
-	additionalProperties: additionalProperties$2,
+	id: id$1,
+	$schema: $schema$3,
+	type: type$4,
+	required: required$2,
+	additionalProperties: additionalProperties$1,
 	patternProperties: patternProperties$1,
-	properties: properties$6,
-	definitions: definitions$3
+	properties: properties$3,
+	definitions: definitions$2
 };
 
-var id$1 = "https://spec.openapis.org/oas/3.0/schema/2019-04-02";
-var $schema$4 = "http://json-schema.org/draft-04/schema#";
-var description$2 = "Validation schema for OpenAPI Specification 3.0.X.";
-var type$5 = "object";
-var required$3 = [
+var id = "https://spec.openapis.org/oas/3.0/schema/2019-04-02";
+var $schema$2 = "http://json-schema.org/draft-04/schema#";
+var description = "Validation schema for OpenAPI Specification 3.0.X.";
+var type$3 = "object";
+var required$1 = [
 	"openapi",
 	"info",
 	"paths"
 ];
-var properties$5 = {
+var properties$2 = {
 	openapi: {
 		type: "string",
 		pattern: "^3\\.0\\.\\d(-.+)?$"
@@ -27287,8 +27298,8 @@ var patternProperties = {
 	"^x-": {
 	}
 };
-var additionalProperties$1 = false;
-var definitions$2 = {
+var additionalProperties = false;
+var definitions$1 = {
 	Reference: {
 		type: "object",
 		required: [
@@ -28890,21 +28901,21 @@ var definitions$2 = {
 	}
 };
 var require$$2 = {
-	id: id$1,
-	$schema: $schema$4,
-	description: description$2,
-	type: type$5,
-	required: required$3,
-	properties: properties$5,
+	id: id,
+	$schema: $schema$2,
+	description: description,
+	type: type$3,
+	required: required$1,
+	properties: properties$2,
 	patternProperties: patternProperties,
-	additionalProperties: additionalProperties$1,
-	definitions: definitions$2
+	additionalProperties: additionalProperties,
+	definitions: definitions$1
 };
 
-var $id$2 = "https://spec.openapis.org/oas/3.1/schema/2021-04-15";
-var $schema$3 = "https://json-schema.org/draft/2020-12/schema";
-var type$4 = "object";
-var properties$4 = {
+var $id$1 = "https://spec.openapis.org/oas/3.1/schema/2021-04-15";
+var $schema$1 = "https://json-schema.org/draft/2020-12/schema";
+var type$2 = "object";
+var properties$1 = {
 	openapi: {
 		type: "string",
 		pattern: "^3\\.1\\.\\d+(-.+)?$"
@@ -28950,11 +28961,11 @@ var properties$4 = {
 		$ref: "#/$defs/external-documentation"
 	}
 };
-var required$2 = [
+var required = [
 	"openapi",
 	"info"
 ];
-var anyOf$1 = [
+var anyOf = [
 	{
 		required: [
 			"paths"
@@ -30242,13 +30253,13 @@ var $defs = {
 		}
 	}
 };
-var require$$3 = {
-	$id: $id$2,
-	$schema: $schema$3,
-	type: type$4,
-	properties: properties$4,
-	required: required$2,
-	anyOf: anyOf$1,
+var require$$3$1 = {
+	$id: $id$1,
+	$schema: $schema$1,
+	type: type$2,
+	properties: properties$1,
+	required: required,
+	anyOf: anyOf,
 	$ref: $ref,
 	unevaluatedProperties: unevaluatedProperties,
 	$defs: $defs
@@ -30275,7 +30286,7 @@ var require$$3 = {
   /**
    * JSON Schema for OpenAPI Specification v3.1
    */
-  exports.openapiV31 = require$$3;
+  exports.openapiV31 = require$$3$1;
   /**
    * JSON Schemas for every version of the OpenAPI Specification
    */
@@ -30295,23 +30306,23 @@ var require$$3 = {
 })(lib$3, lib$3.exports);
 var libExports$1 = lib$3.exports;
 
-const util$9 = util$c;
+const util$3 = util$6;
 const {
   ono: ono$8
 } = require$$6$1;
-const AjvDraft4 = distExports;
-const Ajv$2 = _2020Exports;
+const AjvDraft4 = distExports$1;
+const Ajv$1 = _2020Exports;
 const {
   openapi
 } = libExports$1;
-var schema$1 = validateSchema$3;
+var schema$1 = validateSchema$2;
 
 /**
  * Validates the given Swagger API against the Swagger 2.0 or OpenAPI 3.0 and 3.1 schemas.
  *
  * @param {SwaggerObject} api
  */
-function validateSchema$3(api) {
+function validateSchema$2(api) {
   let ajv;
 
   // Choose the appropriate schema (Swagger or OpenAPI)
@@ -30366,7 +30377,7 @@ function initializeAjv(draft04 = true) {
   if (draft04) {
     return new AjvDraft4(opts);
   }
-  return new Ajv$2(opts);
+  return new Ajv$1(opts);
 }
 
 /**
@@ -30380,14 +30391,14 @@ function formatAjvError(errors, indent) {
   indent = indent || "  ";
   let message = "";
   for (let error of errors) {
-    message += util$9.format(`${indent}#${error.instancePath.length ? error.instancePath : "/"} ${error.message}\n`);
+    message += util$3.format(`${indent}#${error.instancePath.length ? error.instancePath : "/"} ${error.message}\n`);
   }
   return message;
 }
 
 var lib$2 = ["get", "put", "post", "delete", "options", "head", "patch"];
 
-const util$8 = util$c;
+const util$2 = util$6;
 const {
   ono: ono$7
 } = require$$6$1;
@@ -30530,7 +30541,7 @@ function validateBodyParameters(params, operationId) {
  */
 function validatePathParameters(params, pathId, operationId) {
   // Find all {placeholders} in the path string
-  let placeholders = pathId.match(util$8.swaggerParamRegExp) || [];
+  let placeholders = pathId.match(util$2.swaggerParamRegExp) || [];
 
   // Check for duplicates
   for (let i = 0; i < placeholders.length; i++) {
@@ -30583,7 +30594,7 @@ function validateParameterTypes(params, api, operation, operationId) {
         schema = param;
         validTypes = primitiveTypes;
     }
-    validateSchema$2(schema, parameterId, validTypes);
+    validateSchema$1(schema, parameterId, validTypes);
     validateRequiredPropertiesExist(schema, parameterId);
     if (schema.type === "file") {
       // "file" params must consume at least one of these MIME types
@@ -30632,14 +30643,14 @@ function validateResponse(code, response, responseId) {
   for (let headerName of headers) {
     let header = response.headers[headerName];
     let headerId = responseId + "/headers/" + headerName;
-    validateSchema$2(header, headerId, primitiveTypes);
+    validateSchema$1(header, headerId, primitiveTypes);
   }
   if (response.schema) {
     let validTypes = schemaTypes.concat("file");
     if (validTypes.indexOf(response.schema.type) === -1) {
       throw ono$7.syntax(`Validation failed. ${responseId} has an invalid response schema type (${response.schema.type})`);
     } else {
-      validateSchema$2(response.schema, responseId + "/schema", validTypes);
+      validateSchema$1(response.schema, responseId + "/schema", validTypes);
     }
   }
 }
@@ -30651,7 +30662,7 @@ function validateResponse(code, response, responseId) {
  * @param {string}    schemaId    - A value that uniquely identifies the schema object
  * @param {string[]}  validTypes  - An array of the allowed schema types
  */
-function validateSchema$2(schema, schemaId, validTypes) {
+function validateSchema$1(schema, schemaId, validTypes) {
   if (validTypes.indexOf(schema.type) === -1) {
     throw ono$7.syntax(`Validation failed. ${schemaId} has an invalid type (${schema.type})`);
   }
@@ -31023,13 +31034,13 @@ function Type$h(tag, options) {
     throw new YAMLException$3('Unknown kind "' + this.kind + '" is specified for "' + tag + '" YAML type.');
   }
 }
-var type$3 = Type$h;
+var type$1 = Type$h;
 
 /*eslint-disable max-len*/
 
 var common$4 = common$6;
 var YAMLException$2 = exception;
-var Type$g = type$3;
+var Type$g = type$1;
 function compileList(schema, name, result) {
   var exclude = [];
   schema.include.forEach(function (includedSchema) {
@@ -31112,7 +31123,7 @@ Schema$5.create = function createSchema() {
 };
 var schema = Schema$5;
 
-var Type$f = type$3;
+var Type$f = type$1;
 var str = new Type$f('tag:yaml.org,2002:str', {
   kind: 'scalar',
   construct: function (data) {
@@ -31120,7 +31131,7 @@ var str = new Type$f('tag:yaml.org,2002:str', {
   }
 });
 
-var Type$e = type$3;
+var Type$e = type$1;
 var seq = new Type$e('tag:yaml.org,2002:seq', {
   kind: 'sequence',
   construct: function (data) {
@@ -31128,7 +31139,7 @@ var seq = new Type$e('tag:yaml.org,2002:seq', {
   }
 });
 
-var Type$d = type$3;
+var Type$d = type$1;
 var map = new Type$d('tag:yaml.org,2002:map', {
   kind: 'mapping',
   construct: function (data) {
@@ -31141,7 +31152,7 @@ var failsafe = new Schema$4({
   explicit: [str, seq, map]
 });
 
-var Type$c = type$3;
+var Type$c = type$1;
 function resolveYamlNull(data) {
   if (data === null) return true;
   var max = data.length;
@@ -31175,7 +31186,7 @@ var _null = new Type$c('tag:yaml.org,2002:null', {
   defaultStyle: 'lowercase'
 });
 
-var Type$b = type$3;
+var Type$b = type$1;
 function resolveYamlBoolean(data) {
   if (data === null) return false;
   var max = data.length;
@@ -31184,14 +31195,14 @@ function resolveYamlBoolean(data) {
 function constructYamlBoolean(data) {
   return data === 'true' || data === 'True' || data === 'TRUE';
 }
-function isBoolean$1(object) {
+function isBoolean(object) {
   return Object.prototype.toString.call(object) === '[object Boolean]';
 }
 var bool = new Type$b('tag:yaml.org,2002:bool', {
   kind: 'scalar',
   resolve: resolveYamlBoolean,
   construct: constructYamlBoolean,
-  predicate: isBoolean$1,
+  predicate: isBoolean,
   represent: {
     lowercase: function (object) {
       return object ? 'true' : 'false';
@@ -31207,7 +31218,7 @@ var bool = new Type$b('tag:yaml.org,2002:bool', {
 });
 
 var common$3 = common$6;
-var Type$a = type$3;
+var Type$a = type$1;
 function isHexCode(c) {
   return 0x30 /* 0 */ <= c && c <= 0x39 /* 9 */ || 0x41 /* A */ <= c && c <= 0x46 /* F */ || 0x61 /* a */ <= c && c <= 0x66 /* f */;
 }
@@ -31364,7 +31375,7 @@ var int = new Type$a('tag:yaml.org,2002:int', {
 });
 
 var common$2 = common$6;
-var Type$9 = type$3;
+var Type$9 = type$1;
 var YAML_FLOAT_PATTERN = new RegExp(
 // 2.5e4, 2.5 and integers
 '^(?:[-+]?(?:0|[1-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?' +
@@ -31453,14 +31464,14 @@ function representYamlFloat(object, style) {
 
   return SCIENTIFIC_WITHOUT_DOT.test(res) ? res.replace('e', '.e') : res;
 }
-function isFloat$3(object) {
+function isFloat(object) {
   return Object.prototype.toString.call(object) === '[object Number]' && (object % 1 !== 0 || common$2.isNegativeZero(object));
 }
 var float = new Type$9('tag:yaml.org,2002:float', {
   kind: 'scalar',
   resolve: resolveYamlFloat,
   construct: constructYamlFloat,
-  predicate: isFloat$3,
+  predicate: isFloat,
   represent: representYamlFloat,
   defaultStyle: 'lowercase'
 });
@@ -31476,7 +31487,7 @@ var core = new Schema$2({
   include: [json]
 });
 
-var Type$8 = type$3;
+var Type$8 = type$1;
 var YAML_DATE_REGEXP = new RegExp('^([0-9][0-9][0-9][0-9])' +
 // [1] year
 '-([0-9][0-9])' +
@@ -31573,11 +31584,11 @@ var timestamp = new Type$8('tag:yaml.org,2002:timestamp', {
   represent: representYamlTimestamp
 });
 
-var Type$7 = type$3;
+var Type$7 = type$1;
 function resolveYamlMerge(data) {
   return data === '<<' || data === null;
 }
-var merge$2 = new Type$7('tag:yaml.org,2002:merge', {
+var merge$1 = new Type$7('tag:yaml.org,2002:merge', {
   kind: 'scalar',
   resolve: resolveYamlMerge
 });
@@ -31594,7 +31605,7 @@ try {
   var _require$1 = commonjsRequire;
   NodeBuffer = _require$1('buffer').Buffer;
 } catch (__) {}
-var Type$6 = type$3;
+var Type$6 = type$1;
 
 // [ 64, 65, 66 ] -> [ padding, CR, LF ]
 var BASE64_MAP = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\n\r';
@@ -31704,18 +31715,18 @@ function representYamlBinary(object /*, style*/) {
   }
   return result;
 }
-function isBinary$2(object) {
+function isBinary(object) {
   return NodeBuffer && NodeBuffer.isBuffer(object);
 }
 var binary$1 = new Type$6('tag:yaml.org,2002:binary', {
   kind: 'scalar',
   resolve: resolveYamlBinary,
   construct: constructYamlBinary,
-  predicate: isBinary$2,
+  predicate: isBinary,
   represent: representYamlBinary
 });
 
-var Type$5 = type$3;
+var Type$5 = type$1;
 var _hasOwnProperty$3 = Object.prototype.hasOwnProperty;
 var _toString$2 = Object.prototype.toString;
 function resolveYamlOmap(data) {
@@ -31750,7 +31761,7 @@ var omap = new Type$5('tag:yaml.org,2002:omap', {
   construct: constructYamlOmap
 });
 
-var Type$4 = type$3;
+var Type$4 = type$1;
 var _toString$1 = Object.prototype.toString;
 function resolveYamlPairs(data) {
   if (data === null) return true;
@@ -31792,7 +31803,7 @@ var pairs = new Type$4('tag:yaml.org,2002:pairs', {
   construct: constructYamlPairs
 });
 
-var Type$3 = type$3;
+var Type$3 = type$1;
 var _hasOwnProperty$2 = Object.prototype.hasOwnProperty;
 function resolveYamlSet(data) {
   if (data === null) return true;
@@ -31817,11 +31828,11 @@ var set = new Type$3('tag:yaml.org,2002:set', {
 var Schema$1 = schema;
 var default_safe = new Schema$1({
   include: [core],
-  implicit: [timestamp, merge$2],
+  implicit: [timestamp, merge$1],
   explicit: [binary$1, omap, pairs, set]
 });
 
-var Type$2 = type$3;
+var Type$2 = type$1;
 function resolveJavascriptUndefined() {
   return true;
 }
@@ -31843,7 +31854,7 @@ var _undefined = new Type$2('tag:yaml.org,2002:js/undefined', {
   represent: representJavascriptUndefined
 });
 
-var Type$1 = type$3;
+var Type$1 = type$1;
 function resolveJavascriptRegExp(data) {
   if (data === null) return false;
   if (data.length === 0) return false;
@@ -31909,7 +31920,7 @@ try {
   /* global window */
   if (typeof window !== 'undefined') esprima = window.esprima;
 }
-var Type = type$3;
+var Type = type$1;
 function resolveJavascriptFunction(data) {
   if (data === null) return false;
   try {
@@ -32057,9 +32068,9 @@ function charFromCodepoint(c) {
 }
 var simpleEscapeCheck = new Array(256); // integer, for fast access
 var simpleEscapeMap = new Array(256);
-for (var i$1 = 0; i$1 < 256; i$1++) {
-  simpleEscapeCheck[i$1] = simpleEscapeSequence(i$1) ? 1 : 0;
-  simpleEscapeMap[i$1] = simpleEscapeSequence(i$1);
+for (var i = 0; i < 256; i++) {
+  simpleEscapeCheck[i] = simpleEscapeSequence(i) ? 1 : 0;
+  simpleEscapeMap[i] = simpleEscapeSequence(i);
 }
 function State$1(input, options) {
   this.input = input;
@@ -33960,7 +33971,7 @@ function deprecated(name) {
     throw new Error('Function ' + name + ' is deprecated and cannot be used.');
   };
 }
-jsYaml$1.Type = type$3;
+jsYaml$1.Type = type$1;
 jsYaml$1.Schema = schema;
 jsYaml$1.FAILSAFE_SCHEMA = failsafe;
 jsYaml$1.JSON_SCHEMA = json;
@@ -34398,8 +34409,8 @@ var options$1 = $RefParserOptions$1;
  * @constructor
  */
 function $RefParserOptions$1(options) {
-  merge$1(this, $RefParserOptions$1.defaults);
-  merge$1(this, options);
+  merge(this, $RefParserOptions$1.defaults);
+  merge(this, options);
 }
 $RefParserOptions$1.defaults = {
   /**
@@ -34460,7 +34471,7 @@ $RefParserOptions$1.defaults = {
  * @param {?object} source - The options that are being merged
  * @returns {object}
  */
-function merge$1(target, source) {
+function merge(target, source) {
   if (isMergeable(source)) {
     let keys = Object.keys(source);
     for (let i = 0; i < keys.length; i++) {
@@ -34469,7 +34480,7 @@ function merge$1(target, source) {
       let targetSetting = target[key];
       if (isMergeable(sourceSetting)) {
         // It's a nested object, so merge it recursively
-        target[key] = merge$1(targetSetting || {}, sourceSetting);
+        target[key] = merge(targetSetting || {}, sourceSetting);
       } else if (sourceSetting !== undefined) {
         // It's a scalar value, function, or array. No merging necessary. Just overwrite the target value.
         target[key] = sourceSetting;
@@ -34538,7 +34549,7 @@ function normalizeArgs$2(args) {
 const $RefParserOptions = options$1;
 const schemaValidator = schema$1;
 const specValidator = spec;
-const util$7 = require$$1__default;
+const util$1 = require$$1__default;
 var options = ParserOptions;
 
 /**
@@ -34564,12 +34575,23 @@ ParserOptions.defaults = {
     spec: specValidator
   }
 };
-util$7.inherits(ParserOptions, $RefParserOptions);
+util$1.inherits(ParserOptions, $RefParserOptions);
 
-var next = commonjsGlobal.process && process.nextTick || commonjsGlobal.setImmediate || function (f) {
-  setTimeout(f, 0);
-};
-var callMeMaybe = function maybe(cb, promise) {
+function makeNext() {
+  if (typeof process === 'object' && typeof process.nextTick === 'function') {
+    return process.nextTick;
+  } else if (typeof setImmediate === 'function') {
+    return setImmediate;
+  } else {
+    return function next(f) {
+      setTimeout(f, 0);
+    };
+  }
+}
+var next$1 = makeNext();
+
+var next = next$1;
+var maybe$2 = function maybe(cb, promise) {
   if (cb) {
     promise.then(function (result) {
       next(function () {
@@ -34867,12 +34889,12 @@ function requirePointer() {
   return pointer;
 }
 
-var ref$1;
+var ref;
 var hasRequiredRef;
 function requireRef() {
-  if (hasRequiredRef) return ref$1;
+  if (hasRequiredRef) return ref;
   hasRequiredRef = 1;
-  ref$1 = $Ref;
+  ref = $Ref;
   const Pointer = requirePointer();
   const {
     InvalidPointerError,
@@ -35151,7 +35173,7 @@ function requireRef() {
       return resolvedValue;
     }
   };
-  return ref$1;
+  return ref;
 }
 
 const {
@@ -35611,7 +35633,7 @@ function parseFile(file, options, $refs) {
     plugins.sort(parsers);
     plugins.run(parsers, "parse", file, $refs).then(onParsed, onError);
     function onParsed(parser) {
-      if (!parser.plugin.allowEmpty && isEmpty$1(parser.result)) {
+      if (!parser.plugin.allowEmpty && isEmpty(parser.result)) {
         reject(ono$3.syntax(`Error parsing "${file.url}" as ${parser.plugin.name}. \nParsed value is empty`));
       } else {
         resolve(parser);
@@ -35638,7 +35660,7 @@ function parseFile(file, options, $refs) {
  * @param {*} value
  * @returns {boolean}
  */
-function isEmpty$1(value) {
+function isEmpty(value) {
   return value === undefined || typeof value === "object" && Object.keys(value).length === 0 || typeof value === "string" && value.trim().length === 0 || Buffer.isBuffer(value) && value.length === 0;
 }
 
@@ -36171,7 +36193,7 @@ const {
   isHandledError,
   JSONParserErrorGroup
 } = errors;
-const maybe$1 = callMeMaybe;
+const maybe$1 = maybe$2;
 const {
   ono: ono$1
 } = require$$6$1;
@@ -36430,12 +36452,12 @@ function finalize(parser) {
 var libExports = lib$1.exports;
 
 /* eslint-disable no-unused-vars */
-const validateSchema$1 = schema$1;
+const validateSchema = schema$1;
 const validateSpec = spec;
 const normalizeArgs = normalizeArgs_1;
-const util$6 = util$c;
+const util = util$6;
 const Options = options;
-const maybe = callMeMaybe;
+const maybe = maybe$2;
 const {
   ono
 } = require$$6$1;
@@ -36453,7 +36475,7 @@ var lib = SwaggerParser;
 function SwaggerParser() {
   $RefParser.apply(this, arguments);
 }
-util$6.inherits(SwaggerParser, $RefParser);
+util.inherits(SwaggerParser, $RefParser);
 SwaggerParser.parse = $RefParser.parse;
 SwaggerParser.resolve = $RefParser.resolve;
 SwaggerParser.bundle = $RefParser.bundle;
@@ -36525,7 +36547,7 @@ SwaggerParser.prototype.parse = async function (path, api, options, callback) {
 
       // This is an OpenAPI v3 schema, check if the "servers" have any relative paths and
       // fix them if the content was pulled from a web resource
-      util$6.fixOasRelativeServers(schema, args.path);
+      util.fixOasRelativeServers(schema, args.path);
     }
 
     // Looks good!
@@ -36578,7 +36600,7 @@ SwaggerParser.prototype.validate = async function (path, api, options, callback)
     if (args.options.validate.schema) {
       // Validate the API against the Swagger schema
       // NOTE: This is safe to do, because we haven't dereferenced circular $refs yet
-      validateSchema$1(me.api);
+      validateSchema(me.api);
       if (me.$refs.circular) {
         if (circular$RefOption === true) {
           // The API has circular references,
@@ -36640,7 +36662,7 @@ var validateAndDereferenceSpec = /*#__PURE__*/function () {
 
 var isOpenApi3Content = function isOpenApi3Content(specContent) {
   var openapiProperty = specContent.openapi;
-  return isString$2(openapiProperty) && openapiProperty.indexOf('3.') === 0;
+  return isString$1(openapiProperty) && openapiProperty.indexOf('3.') === 0;
 };
 
 var validateSpecFormat$1 = function validateSpecFormat(content, pathOrUrl) {
@@ -36731,8 +36753,8 @@ var toParsedParameter = function toParsedParameter(parameter, name) {
     required: parameter.value.required || false,
     schema: {
       "enum": parameter.value["enum"],
-      exclusiveMaximum: parameter.value.exclusiveMaximum,
-      exclusiveMinimum: parameter.value.exclusiveMinimum,
+      exclusiveMaximum: parameter.value.exclusiveMaximum ? parameter.value.maximum : undefined,
+      exclusiveMinimum: parameter.value.exclusiveMinimum ? parameter.value.minimum : undefined,
       format: parameter.value.format,
       items: parameter.value.items,
       maxItems: parameter.value.maxItems,
@@ -37128,4472 +37150,25 @@ var result = {
   }
 };
 
-// https://mathiasbynens.be/notes/javascript-encoding
-// https://github.com/bestiejs/punycode.js - punycode.ucs2.decode
-var ucs2length$1 = function ucs2length(str) {
-  var length = 0,
-    len = str.length,
-    pos = 0,
-    value;
-  while (pos < len) {
-    length++;
-    value = str.charCodeAt(pos++);
-    if (value >= 0xD800 && value <= 0xDBFF && pos < len) {
-      // high surrogate, and there is a next character
-      value = str.charCodeAt(pos);
-      if ((value & 0xFC00) == 0xDC00) pos++; // low surrogate
-    }
-  }
+var ajv = {exports: {}};
 
-  return length;
-};
+var draft7 = {};
 
-var util$5 = {
-  copy: copy,
-  checkDataType: checkDataType,
-  checkDataTypes: checkDataTypes,
-  coerceToTypes: coerceToTypes,
-  toHash: toHash$1,
-  getProperty: getProperty,
-  escapeQuotes: escapeQuotes,
-  equal: fastDeepEqual,
-  ucs2length: ucs2length$1,
-  varOccurences: varOccurences,
-  varReplace: varReplace,
-  schemaHasRules: schemaHasRules,
-  schemaHasRulesExcept: schemaHasRulesExcept,
-  schemaUnknownRules: schemaUnknownRules,
-  toQuotedString: toQuotedString,
-  getPathExpr: getPathExpr,
-  getPath: getPath,
-  getData: getData,
-  unescapeFragment: unescapeFragment,
-  unescapeJsonPointer: unescapeJsonPointer,
-  escapeFragment: escapeFragment,
-  escapeJsonPointer: escapeJsonPointer
-};
-function copy(o, to) {
-  to = to || {};
-  for (var key in o) to[key] = o[key];
-  return to;
-}
-function checkDataType(dataType, data, strictNumbers, negate) {
-  var EQUAL = negate ? ' !== ' : ' === ',
-    AND = negate ? ' || ' : ' && ',
-    OK = negate ? '!' : '',
-    NOT = negate ? '' : '!';
-  switch (dataType) {
-    case 'null':
-      return data + EQUAL + 'null';
-    case 'array':
-      return OK + 'Array.isArray(' + data + ')';
-    case 'object':
-      return '(' + OK + data + AND + 'typeof ' + data + EQUAL + '"object"' + AND + NOT + 'Array.isArray(' + data + '))';
-    case 'integer':
-      return '(typeof ' + data + EQUAL + '"number"' + AND + NOT + '(' + data + ' % 1)' + AND + data + EQUAL + data + (strictNumbers ? AND + OK + 'isFinite(' + data + ')' : '') + ')';
-    case 'number':
-      return '(typeof ' + data + EQUAL + '"' + dataType + '"' + (strictNumbers ? AND + OK + 'isFinite(' + data + ')' : '') + ')';
-    default:
-      return 'typeof ' + data + EQUAL + '"' + dataType + '"';
-  }
-}
-function checkDataTypes(dataTypes, data, strictNumbers) {
-  switch (dataTypes.length) {
-    case 1:
-      return checkDataType(dataTypes[0], data, strictNumbers, true);
-    default:
-      var code = '';
-      var types = toHash$1(dataTypes);
-      if (types.array && types.object) {
-        code = types.null ? '(' : '(!' + data + ' || ';
-        code += 'typeof ' + data + ' !== "object")';
-        delete types.null;
-        delete types.array;
-        delete types.object;
-      }
-      if (types.number) delete types.integer;
-      for (var t in types) code += (code ? ' && ' : '') + checkDataType(t, data, strictNumbers, true);
-      return code;
-  }
-}
-var COERCE_TO_TYPES = toHash$1(['string', 'number', 'integer', 'boolean', 'null']);
-function coerceToTypes(optionCoerceTypes, dataTypes) {
-  if (Array.isArray(dataTypes)) {
-    var types = [];
-    for (var i = 0; i < dataTypes.length; i++) {
-      var t = dataTypes[i];
-      if (COERCE_TO_TYPES[t]) types[types.length] = t;else if (optionCoerceTypes === 'array' && t === 'array') types[types.length] = t;
-    }
-    if (types.length) return types;
-  } else if (COERCE_TO_TYPES[dataTypes]) {
-    return [dataTypes];
-  } else if (optionCoerceTypes === 'array' && dataTypes === 'array') {
-    return ['array'];
-  }
-}
-function toHash$1(arr) {
-  var hash = {};
-  for (var i = 0; i < arr.length; i++) hash[arr[i]] = true;
-  return hash;
-}
-var IDENTIFIER$1 = /^[a-z$_][a-z$_0-9]*$/i;
-var SINGLE_QUOTE = /'|\\/g;
-function getProperty(key) {
-  return typeof key == 'number' ? '[' + key + ']' : IDENTIFIER$1.test(key) ? '.' + key : "['" + escapeQuotes(key) + "']";
-}
-function escapeQuotes(str) {
-  return str.replace(SINGLE_QUOTE, '\\$&').replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\f/g, '\\f').replace(/\t/g, '\\t');
-}
-function varOccurences(str, dataVar) {
-  dataVar += '[^0-9]';
-  var matches = str.match(new RegExp(dataVar, 'g'));
-  return matches ? matches.length : 0;
-}
-function varReplace(str, dataVar, expr) {
-  dataVar += '([^0-9])';
-  expr = expr.replace(/\$/g, '$$$$');
-  return str.replace(new RegExp(dataVar, 'g'), expr + '$1');
-}
-function schemaHasRules(schema, rules) {
-  if (typeof schema == 'boolean') return !schema;
-  for (var key in schema) if (rules[key]) return true;
-}
-function schemaHasRulesExcept(schema, rules, exceptKeyword) {
-  if (typeof schema == 'boolean') return !schema && exceptKeyword != 'not';
-  for (var key in schema) if (key != exceptKeyword && rules[key]) return true;
-}
-function schemaUnknownRules(schema, rules) {
-  if (typeof schema == 'boolean') return;
-  for (var key in schema) if (!rules[key]) return key;
-}
-function toQuotedString(str) {
-  return '\'' + escapeQuotes(str) + '\'';
-}
-function getPathExpr(currentPath, expr, jsonPointers, isNumber) {
-  var path = jsonPointers // false by default
-  ? '\'/\' + ' + expr + (isNumber ? '' : '.replace(/~/g, \'~0\').replace(/\\//g, \'~1\')') : isNumber ? '\'[\' + ' + expr + ' + \']\'' : '\'[\\\'\' + ' + expr + ' + \'\\\']\'';
-  return joinPaths(currentPath, path);
-}
-function getPath(currentPath, prop, jsonPointers) {
-  var path = jsonPointers // false by default
-  ? toQuotedString('/' + escapeJsonPointer(prop)) : toQuotedString(getProperty(prop));
-  return joinPaths(currentPath, path);
-}
-var JSON_POINTER$1 = /^\/(?:[^~]|~0|~1)*$/;
-var RELATIVE_JSON_POINTER$1 = /^([0-9]+)(#|\/(?:[^~]|~0|~1)*)?$/;
-function getData($data, lvl, paths) {
-  var up, jsonPointer, data, matches;
-  if ($data === '') return 'rootData';
-  if ($data[0] == '/') {
-    if (!JSON_POINTER$1.test($data)) throw new Error('Invalid JSON-pointer: ' + $data);
-    jsonPointer = $data;
-    data = 'rootData';
-  } else {
-    matches = $data.match(RELATIVE_JSON_POINTER$1);
-    if (!matches) throw new Error('Invalid JSON-pointer: ' + $data);
-    up = +matches[1];
-    jsonPointer = matches[2];
-    if (jsonPointer == '#') {
-      if (up >= lvl) throw new Error('Cannot access property/index ' + up + ' levels up, current level is ' + lvl);
-      return paths[lvl - up];
-    }
-    if (up > lvl) throw new Error('Cannot access data ' + up + ' levels up, current level is ' + lvl);
-    data = 'data' + (lvl - up || '');
-    if (!jsonPointer) return data;
-  }
-  var expr = data;
-  var segments = jsonPointer.split('/');
-  for (var i = 0; i < segments.length; i++) {
-    var segment = segments[i];
-    if (segment) {
-      data += getProperty(unescapeJsonPointer(segment));
-      expr += ' && ' + data;
-    }
-  }
-  return expr;
-}
-function joinPaths(a, b) {
-  if (a == '""') return b;
-  return (a + ' + ' + b).replace(/([^\\])' \+ '/g, '$1');
-}
-function unescapeFragment(str) {
-  return unescapeJsonPointer(decodeURIComponent(str));
-}
-function escapeFragment(str) {
-  return encodeURIComponent(escapeJsonPointer(str));
-}
-function escapeJsonPointer(str) {
-  return str.replace(/~/g, '~0').replace(/\//g, '~1');
-}
-function unescapeJsonPointer(str) {
-  return str.replace(/~1/g, '/').replace(/~0/g, '~');
-}
+Object.defineProperty(draft7, "__esModule", {
+  value: true
+});
+const core_1 = core$3;
+const validation_1 = validation$2;
+const applicator_1 = applicator$1;
+const format_1 = format$3;
+const metadata_1 = metadata$1;
+const draft7Vocabularies = [core_1.default, validation_1.default, (0, applicator_1.default)(), format_1.default, metadata_1.metadataVocabulary, metadata_1.contentVocabulary];
+draft7.default = draft7Vocabularies;
 
-var util$4 = util$5;
-var schema_obj = SchemaObject$2;
-function SchemaObject$2(obj) {
-  util$4.copy(obj, this);
-}
-
-var jsonSchemaTraverse = {exports: {}};
-
-var traverse$1 = jsonSchemaTraverse.exports = function (schema, opts, cb) {
-  // Legacy support for v0.3.1 and earlier.
-  if (typeof opts == 'function') {
-    cb = opts;
-    opts = {};
-  }
-  cb = opts.cb || cb;
-  var pre = typeof cb == 'function' ? cb : cb.pre || function () {};
-  var post = cb.post || function () {};
-  _traverse(opts, pre, post, schema, '', schema);
-};
-traverse$1.keywords = {
-  additionalItems: true,
-  items: true,
-  contains: true,
-  additionalProperties: true,
-  propertyNames: true,
-  not: true
-};
-traverse$1.arrayKeywords = {
-  items: true,
-  allOf: true,
-  anyOf: true,
-  oneOf: true
-};
-traverse$1.propsKeywords = {
-  definitions: true,
-  properties: true,
-  patternProperties: true,
-  dependencies: true
-};
-traverse$1.skipKeywords = {
-  default: true,
-  enum: true,
-  const: true,
-  required: true,
-  maximum: true,
-  minimum: true,
-  exclusiveMaximum: true,
-  exclusiveMinimum: true,
-  multipleOf: true,
-  maxLength: true,
-  minLength: true,
-  pattern: true,
-  format: true,
-  maxItems: true,
-  minItems: true,
-  uniqueItems: true,
-  maxProperties: true,
-  minProperties: true
-};
-function _traverse(opts, pre, post, schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex) {
-  if (schema && typeof schema == 'object' && !Array.isArray(schema)) {
-    pre(schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex);
-    for (var key in schema) {
-      var sch = schema[key];
-      if (Array.isArray(sch)) {
-        if (key in traverse$1.arrayKeywords) {
-          for (var i = 0; i < sch.length; i++) _traverse(opts, pre, post, sch[i], jsonPtr + '/' + key + '/' + i, rootSchema, jsonPtr, key, schema, i);
-        }
-      } else if (key in traverse$1.propsKeywords) {
-        if (sch && typeof sch == 'object') {
-          for (var prop in sch) _traverse(opts, pre, post, sch[prop], jsonPtr + '/' + key + '/' + escapeJsonPtr(prop), rootSchema, jsonPtr, key, schema, prop);
-        }
-      } else if (key in traverse$1.keywords || opts.allKeys && !(key in traverse$1.skipKeywords)) {
-        _traverse(opts, pre, post, sch, jsonPtr + '/' + key, rootSchema, jsonPtr, key, schema);
-      }
-    }
-    post(schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex);
-  }
-}
-function escapeJsonPtr(str) {
-  return str.replace(/~/g, '~0').replace(/\//g, '~1');
-}
-var jsonSchemaTraverseExports = jsonSchemaTraverse.exports;
-
-var URI$1 = uri_allExports,
-  equal$1 = fastDeepEqual,
-  util$3 = util$5,
-  SchemaObject$1 = schema_obj,
-  traverse = jsonSchemaTraverseExports;
-var resolve_1 = resolve$3;
-resolve$3.normalizeId = normalizeId;
-resolve$3.fullPath = getFullPath;
-resolve$3.url = resolveUrl;
-resolve$3.ids = resolveIds;
-resolve$3.inlineRef = inlineRef;
-resolve$3.schema = resolveSchema;
-
-/**
- * [resolve and compile the references ($ref)]
- * @this   Ajv
- * @param  {Function} compile reference to schema compilation funciton (localCompile)
- * @param  {Object} root object with information about the root schema for the current schema
- * @param  {String} ref reference to resolve
- * @return {Object|Function} schema object (if the schema can be inlined) or validation function
- */
-function resolve$3(compile, root, ref) {
-  /* jshint validthis: true */
-  var refVal = this._refs[ref];
-  if (typeof refVal == 'string') {
-    if (this._refs[refVal]) refVal = this._refs[refVal];else return resolve$3.call(this, compile, root, refVal);
-  }
-  refVal = refVal || this._schemas[ref];
-  if (refVal instanceof SchemaObject$1) {
-    return inlineRef(refVal.schema, this._opts.inlineRefs) ? refVal.schema : refVal.validate || this._compile(refVal);
-  }
-  var res = resolveSchema.call(this, root, ref);
-  var schema, v, baseId;
-  if (res) {
-    schema = res.schema;
-    root = res.root;
-    baseId = res.baseId;
-  }
-  if (schema instanceof SchemaObject$1) {
-    v = schema.validate || compile.call(this, schema.schema, root, undefined, baseId);
-  } else if (schema !== undefined) {
-    v = inlineRef(schema, this._opts.inlineRefs) ? schema : compile.call(this, schema, root, undefined, baseId);
-  }
-  return v;
-}
-
-/**
- * Resolve schema, its root and baseId
- * @this Ajv
- * @param  {Object} root root object with properties schema, refVal, refs
- * @param  {String} ref  reference to resolve
- * @return {Object} object with properties schema, root, baseId
- */
-function resolveSchema(root, ref) {
-  /* jshint validthis: true */
-  var p = URI$1.parse(ref),
-    refPath = _getFullPath(p),
-    baseId = getFullPath(this._getId(root.schema));
-  if (Object.keys(root.schema).length === 0 || refPath !== baseId) {
-    var id = normalizeId(refPath);
-    var refVal = this._refs[id];
-    if (typeof refVal == 'string') {
-      return resolveRecursive.call(this, root, refVal, p);
-    } else if (refVal instanceof SchemaObject$1) {
-      if (!refVal.validate) this._compile(refVal);
-      root = refVal;
-    } else {
-      refVal = this._schemas[id];
-      if (refVal instanceof SchemaObject$1) {
-        if (!refVal.validate) this._compile(refVal);
-        if (id == normalizeId(ref)) return {
-          schema: refVal,
-          root: root,
-          baseId: baseId
-        };
-        root = refVal;
-      } else {
-        return;
-      }
-    }
-    if (!root.schema) return;
-    baseId = getFullPath(this._getId(root.schema));
-  }
-  return getJsonPointer.call(this, p, baseId, root.schema, root);
-}
-
-/* @this Ajv */
-function resolveRecursive(root, ref, parsedRef) {
-  /* jshint validthis: true */
-  var res = resolveSchema.call(this, root, ref);
-  if (res) {
-    var schema = res.schema;
-    var baseId = res.baseId;
-    root = res.root;
-    var id = this._getId(schema);
-    if (id) baseId = resolveUrl(baseId, id);
-    return getJsonPointer.call(this, parsedRef, baseId, schema, root);
-  }
-}
-var PREVENT_SCOPE_CHANGE = util$3.toHash(['properties', 'patternProperties', 'enum', 'dependencies', 'definitions']);
-/* @this Ajv */
-function getJsonPointer(parsedRef, baseId, schema, root) {
-  /* jshint validthis: true */
-  parsedRef.fragment = parsedRef.fragment || '';
-  if (parsedRef.fragment.slice(0, 1) != '/') return;
-  var parts = parsedRef.fragment.split('/');
-  for (var i = 1; i < parts.length; i++) {
-    var part = parts[i];
-    if (part) {
-      part = util$3.unescapeFragment(part);
-      schema = schema[part];
-      if (schema === undefined) break;
-      var id;
-      if (!PREVENT_SCOPE_CHANGE[part]) {
-        id = this._getId(schema);
-        if (id) baseId = resolveUrl(baseId, id);
-        if (schema.$ref) {
-          var $ref = resolveUrl(baseId, schema.$ref);
-          var res = resolveSchema.call(this, root, $ref);
-          if (res) {
-            schema = res.schema;
-            root = res.root;
-            baseId = res.baseId;
-          }
-        }
-      }
-    }
-  }
-  if (schema !== undefined && schema !== root.schema) return {
-    schema: schema,
-    root: root,
-    baseId: baseId
-  };
-}
-var SIMPLE_INLINED = util$3.toHash(['type', 'format', 'pattern', 'maxLength', 'minLength', 'maxProperties', 'minProperties', 'maxItems', 'minItems', 'maximum', 'minimum', 'uniqueItems', 'multipleOf', 'required', 'enum']);
-function inlineRef(schema, limit) {
-  if (limit === false) return false;
-  if (limit === undefined || limit === true) return checkNoRef(schema);else if (limit) return countKeys(schema) <= limit;
-}
-function checkNoRef(schema) {
-  var item;
-  if (Array.isArray(schema)) {
-    for (var i = 0; i < schema.length; i++) {
-      item = schema[i];
-      if (typeof item == 'object' && !checkNoRef(item)) return false;
-    }
-  } else {
-    for (var key in schema) {
-      if (key == '$ref') return false;
-      item = schema[key];
-      if (typeof item == 'object' && !checkNoRef(item)) return false;
-    }
-  }
-  return true;
-}
-function countKeys(schema) {
-  var count = 0,
-    item;
-  if (Array.isArray(schema)) {
-    for (var i = 0; i < schema.length; i++) {
-      item = schema[i];
-      if (typeof item == 'object') count += countKeys(item);
-      if (count == Infinity) return Infinity;
-    }
-  } else {
-    for (var key in schema) {
-      if (key == '$ref') return Infinity;
-      if (SIMPLE_INLINED[key]) {
-        count++;
-      } else {
-        item = schema[key];
-        if (typeof item == 'object') count += countKeys(item) + 1;
-        if (count == Infinity) return Infinity;
-      }
-    }
-  }
-  return count;
-}
-function getFullPath(id, normalize) {
-  if (normalize !== false) id = normalizeId(id);
-  var p = URI$1.parse(id);
-  return _getFullPath(p);
-}
-function _getFullPath(p) {
-  return URI$1.serialize(p).split('#')[0] + '#';
-}
-var TRAILING_SLASH_HASH = /#\/?$/;
-function normalizeId(id) {
-  return id ? id.replace(TRAILING_SLASH_HASH, '') : '';
-}
-function resolveUrl(baseId, id) {
-  id = normalizeId(id);
-  return URI$1.resolve(baseId, id);
-}
-
-/* @this Ajv */
-function resolveIds(schema) {
-  var schemaId = normalizeId(this._getId(schema));
-  var baseIds = {
-    '': schemaId
-  };
-  var fullPaths = {
-    '': getFullPath(schemaId, false)
-  };
-  var localRefs = {};
-  var self = this;
-  traverse(schema, {
-    allKeys: true
-  }, function (sch, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex) {
-    if (jsonPtr === '') return;
-    var id = self._getId(sch);
-    var baseId = baseIds[parentJsonPtr];
-    var fullPath = fullPaths[parentJsonPtr] + '/' + parentKeyword;
-    if (keyIndex !== undefined) fullPath += '/' + (typeof keyIndex == 'number' ? keyIndex : util$3.escapeFragment(keyIndex));
-    if (typeof id == 'string') {
-      id = baseId = normalizeId(baseId ? URI$1.resolve(baseId, id) : id);
-      var refVal = self._refs[id];
-      if (typeof refVal == 'string') refVal = self._refs[refVal];
-      if (refVal && refVal.schema) {
-        if (!equal$1(sch, refVal.schema)) throw new Error('id "' + id + '" resolves to more than one schema');
-      } else if (id != normalizeId(fullPath)) {
-        if (id[0] == '#') {
-          if (localRefs[id] && !equal$1(sch, localRefs[id])) throw new Error('id "' + id + '" resolves to more than one schema');
-          localRefs[id] = sch;
-        } else {
-          self._refs[id] = fullPath;
-        }
-      }
-    }
-    baseIds[jsonPtr] = baseId;
-    fullPaths[jsonPtr] = fullPath;
-  });
-  return localRefs;
-}
-
-var resolve$2 = resolve_1;
-var error_classes = {
-  Validation: errorSubclass(ValidationError$1),
-  MissingRef: errorSubclass(MissingRefError$1)
-};
-function ValidationError$1(errors) {
-  this.message = 'validation failed';
-  this.errors = errors;
-  this.ajv = this.validation = true;
-}
-MissingRefError$1.message = function (baseId, ref) {
-  return 'can\'t resolve reference ' + ref + ' from id ' + baseId;
-};
-function MissingRefError$1(baseId, ref, message) {
-  this.message = message || MissingRefError$1.message(baseId, ref);
-  this.missingRef = resolve$2.url(baseId, ref);
-  this.missingSchema = resolve$2.normalizeId(resolve$2.fullPath(this.missingRef));
-}
-function errorSubclass(Subclass) {
-  Subclass.prototype = Object.create(Error.prototype);
-  Subclass.prototype.constructor = Subclass;
-  return Subclass;
-}
-
-var fastJsonStableStringify = function (data, opts) {
-  if (!opts) opts = {};
-  if (typeof opts === 'function') opts = {
-    cmp: opts
-  };
-  var cycles = typeof opts.cycles === 'boolean' ? opts.cycles : false;
-  var cmp = opts.cmp && function (f) {
-    return function (node) {
-      return function (a, b) {
-        var aobj = {
-          key: a,
-          value: node[a]
-        };
-        var bobj = {
-          key: b,
-          value: node[b]
-        };
-        return f(aobj, bobj);
-      };
-    };
-  }(opts.cmp);
-  var seen = [];
-  return function stringify(node) {
-    if (node && node.toJSON && typeof node.toJSON === 'function') {
-      node = node.toJSON();
-    }
-    if (node === undefined) return;
-    if (typeof node == 'number') return isFinite(node) ? '' + node : 'null';
-    if (typeof node !== 'object') return JSON.stringify(node);
-    var i, out;
-    if (Array.isArray(node)) {
-      out = '[';
-      for (i = 0; i < node.length; i++) {
-        if (i) out += ',';
-        out += stringify(node[i]) || 'null';
-      }
-      return out + ']';
-    }
-    if (node === null) return 'null';
-    if (seen.indexOf(node) !== -1) {
-      if (cycles) return JSON.stringify('__cycle__');
-      throw new TypeError('Converting circular structure to JSON');
-    }
-    var seenIndex = seen.push(node) - 1;
-    var keys = Object.keys(node).sort(cmp && cmp(node));
-    out = '';
-    for (i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      var value = stringify(node[key]);
-      if (!value) continue;
-      if (out) out += ',';
-      out += JSON.stringify(key) + ':' + value;
-    }
-    seen.splice(seenIndex, 1);
-    return '{' + out + '}';
-  }(data);
-};
-
-var validate$1 = function generate_validate(it, $keyword, $ruleType) {
-  var out = '';
-  var $async = it.schema.$async === true,
-    $refKeywords = it.util.schemaHasRulesExcept(it.schema, it.RULES.all, '$ref'),
-    $id = it.self._getId(it.schema);
-  if (it.opts.strictKeywords) {
-    var $unknownKwd = it.util.schemaUnknownRules(it.schema, it.RULES.keywords);
-    if ($unknownKwd) {
-      var $keywordsMsg = 'unknown keyword: ' + $unknownKwd;
-      if (it.opts.strictKeywords === 'log') it.logger.warn($keywordsMsg);else throw new Error($keywordsMsg);
-    }
-  }
-  if (it.isTop) {
-    out += ' var validate = ';
-    if ($async) {
-      it.async = true;
-      out += 'async ';
-    }
-    out += 'function(data, dataPath, parentData, parentDataProperty, rootData) { \'use strict\'; ';
-    if ($id && (it.opts.sourceCode || it.opts.processCode)) {
-      out += ' ' + ('/\*# sourceURL=' + $id + ' */') + ' ';
-    }
-  }
-  if (typeof it.schema == 'boolean' || !($refKeywords || it.schema.$ref)) {
-    var $keyword = 'false schema';
-    var $lvl = it.level;
-    var $dataLvl = it.dataLevel;
-    var $schema = it.schema[$keyword];
-    var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-    var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-    var $breakOnError = !it.opts.allErrors;
-    var $errorKeyword;
-    var $data = 'data' + ($dataLvl || '');
-    var $valid = 'valid' + $lvl;
-    if (it.schema === false) {
-      if (it.isTop) {
-        $breakOnError = true;
-      } else {
-        out += ' var ' + $valid + ' = false; ';
-      }
-      var $$outStack = $$outStack || [];
-      $$outStack.push(out);
-      out = ''; /* istanbul ignore else */
-      if (it.createErrors !== false) {
-        out += ' { keyword: \'' + ($errorKeyword || 'false schema') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: {} ';
-        if (it.opts.messages !== false) {
-          out += ' , message: \'boolean schema is false\' ';
-        }
-        if (it.opts.verbose) {
-          out += ' , schema: false , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-        }
-        out += ' } ';
-      } else {
-        out += ' {} ';
-      }
-      var __err = out;
-      out = $$outStack.pop();
-      if (!it.compositeRule && $breakOnError) {
-        /* istanbul ignore if */
-        if (it.async) {
-          out += ' throw new ValidationError([' + __err + ']); ';
-        } else {
-          out += ' validate.errors = [' + __err + ']; return false; ';
-        }
-      } else {
-        out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-      }
-    } else {
-      if (it.isTop) {
-        if ($async) {
-          out += ' return data; ';
-        } else {
-          out += ' validate.errors = null; return true; ';
-        }
-      } else {
-        out += ' var ' + $valid + ' = true; ';
-      }
-    }
-    if (it.isTop) {
-      out += ' }; return validate; ';
-    }
-    return out;
-  }
-  if (it.isTop) {
-    var $top = it.isTop,
-      $lvl = it.level = 0,
-      $dataLvl = it.dataLevel = 0,
-      $data = 'data';
-    it.rootId = it.resolve.fullPath(it.self._getId(it.root.schema));
-    it.baseId = it.baseId || it.rootId;
-    delete it.isTop;
-    it.dataPathArr = [""];
-    if (it.schema.default !== undefined && it.opts.useDefaults && it.opts.strictDefaults) {
-      var $defaultMsg = 'default is ignored in the schema root';
-      if (it.opts.strictDefaults === 'log') it.logger.warn($defaultMsg);else throw new Error($defaultMsg);
-    }
-    out += ' var vErrors = null; ';
-    out += ' var errors = 0;     ';
-    out += ' if (rootData === undefined) rootData = data; ';
-  } else {
-    var $lvl = it.level,
-      $dataLvl = it.dataLevel,
-      $data = 'data' + ($dataLvl || '');
-    if ($id) it.baseId = it.resolve.url(it.baseId, $id);
-    if ($async && !it.async) throw new Error('async schema in sync schema');
-    out += ' var errs_' + $lvl + ' = errors;';
-  }
-  var $valid = 'valid' + $lvl,
-    $breakOnError = !it.opts.allErrors,
-    $closingBraces1 = '',
-    $closingBraces2 = '';
-  var $errorKeyword;
-  var $typeSchema = it.schema.type,
-    $typeIsArray = Array.isArray($typeSchema);
-  if ($typeSchema && it.opts.nullable && it.schema.nullable === true) {
-    if ($typeIsArray) {
-      if ($typeSchema.indexOf('null') == -1) $typeSchema = $typeSchema.concat('null');
-    } else if ($typeSchema != 'null') {
-      $typeSchema = [$typeSchema, 'null'];
-      $typeIsArray = true;
-    }
-  }
-  if ($typeIsArray && $typeSchema.length == 1) {
-    $typeSchema = $typeSchema[0];
-    $typeIsArray = false;
-  }
-  if (it.schema.$ref && $refKeywords) {
-    if (it.opts.extendRefs == 'fail') {
-      throw new Error('$ref: validation keywords used in schema at path "' + it.errSchemaPath + '" (see option extendRefs)');
-    } else if (it.opts.extendRefs !== true) {
-      $refKeywords = false;
-      it.logger.warn('$ref: keywords ignored in schema at path "' + it.errSchemaPath + '"');
-    }
-  }
-  if (it.schema.$comment && it.opts.$comment) {
-    out += ' ' + it.RULES.all.$comment.code(it, '$comment');
-  }
-  if ($typeSchema) {
-    if (it.opts.coerceTypes) {
-      var $coerceToTypes = it.util.coerceToTypes(it.opts.coerceTypes, $typeSchema);
-    }
-    var $rulesGroup = it.RULES.types[$typeSchema];
-    if ($coerceToTypes || $typeIsArray || $rulesGroup === true || $rulesGroup && !$shouldUseGroup($rulesGroup)) {
-      var $schemaPath = it.schemaPath + '.type',
-        $errSchemaPath = it.errSchemaPath + '/type';
-      var $schemaPath = it.schemaPath + '.type',
-        $errSchemaPath = it.errSchemaPath + '/type',
-        $method = $typeIsArray ? 'checkDataTypes' : 'checkDataType';
-      out += ' if (' + it.util[$method]($typeSchema, $data, it.opts.strictNumbers, true) + ') { ';
-      if ($coerceToTypes) {
-        var $dataType = 'dataType' + $lvl,
-          $coerced = 'coerced' + $lvl;
-        out += ' var ' + $dataType + ' = typeof ' + $data + '; var ' + $coerced + ' = undefined; ';
-        if (it.opts.coerceTypes == 'array') {
-          out += ' if (' + $dataType + ' == \'object\' && Array.isArray(' + $data + ') && ' + $data + '.length == 1) { ' + $data + ' = ' + $data + '[0]; ' + $dataType + ' = typeof ' + $data + '; if (' + it.util.checkDataType(it.schema.type, $data, it.opts.strictNumbers) + ') ' + $coerced + ' = ' + $data + '; } ';
-        }
-        out += ' if (' + $coerced + ' !== undefined) ; ';
-        var arr1 = $coerceToTypes;
-        if (arr1) {
-          var $type,
-            $i = -1,
-            l1 = arr1.length - 1;
-          while ($i < l1) {
-            $type = arr1[$i += 1];
-            if ($type == 'string') {
-              out += ' else if (' + $dataType + ' == \'number\' || ' + $dataType + ' == \'boolean\') ' + $coerced + ' = \'\' + ' + $data + '; else if (' + $data + ' === null) ' + $coerced + ' = \'\'; ';
-            } else if ($type == 'number' || $type == 'integer') {
-              out += ' else if (' + $dataType + ' == \'boolean\' || ' + $data + ' === null || (' + $dataType + ' == \'string\' && ' + $data + ' && ' + $data + ' == +' + $data + ' ';
-              if ($type == 'integer') {
-                out += ' && !(' + $data + ' % 1)';
-              }
-              out += ')) ' + $coerced + ' = +' + $data + '; ';
-            } else if ($type == 'boolean') {
-              out += ' else if (' + $data + ' === \'false\' || ' + $data + ' === 0 || ' + $data + ' === null) ' + $coerced + ' = false; else if (' + $data + ' === \'true\' || ' + $data + ' === 1) ' + $coerced + ' = true; ';
-            } else if ($type == 'null') {
-              out += ' else if (' + $data + ' === \'\' || ' + $data + ' === 0 || ' + $data + ' === false) ' + $coerced + ' = null; ';
-            } else if (it.opts.coerceTypes == 'array' && $type == 'array') {
-              out += ' else if (' + $dataType + ' == \'string\' || ' + $dataType + ' == \'number\' || ' + $dataType + ' == \'boolean\' || ' + $data + ' == null) ' + $coerced + ' = [' + $data + ']; ';
-            }
-          }
-        }
-        out += ' else {   ';
-        var $$outStack = $$outStack || [];
-        $$outStack.push(out);
-        out = ''; /* istanbul ignore else */
-        if (it.createErrors !== false) {
-          out += ' { keyword: \'' + ($errorKeyword || 'type') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { type: \'';
-          if ($typeIsArray) {
-            out += '' + $typeSchema.join(",");
-          } else {
-            out += '' + $typeSchema;
-          }
-          out += '\' } ';
-          if (it.opts.messages !== false) {
-            out += ' , message: \'should be ';
-            if ($typeIsArray) {
-              out += '' + $typeSchema.join(",");
-            } else {
-              out += '' + $typeSchema;
-            }
-            out += '\' ';
-          }
-          if (it.opts.verbose) {
-            out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-          }
-          out += ' } ';
-        } else {
-          out += ' {} ';
-        }
-        var __err = out;
-        out = $$outStack.pop();
-        if (!it.compositeRule && $breakOnError) {
-          /* istanbul ignore if */
-          if (it.async) {
-            out += ' throw new ValidationError([' + __err + ']); ';
-          } else {
-            out += ' validate.errors = [' + __err + ']; return false; ';
-          }
-        } else {
-          out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-        }
-        out += ' } if (' + $coerced + ' !== undefined) {  ';
-        var $parentData = $dataLvl ? 'data' + ($dataLvl - 1 || '') : 'parentData',
-          $parentDataProperty = $dataLvl ? it.dataPathArr[$dataLvl] : 'parentDataProperty';
-        out += ' ' + $data + ' = ' + $coerced + '; ';
-        if (!$dataLvl) {
-          out += 'if (' + $parentData + ' !== undefined)';
-        }
-        out += ' ' + $parentData + '[' + $parentDataProperty + '] = ' + $coerced + '; } ';
-      } else {
-        var $$outStack = $$outStack || [];
-        $$outStack.push(out);
-        out = ''; /* istanbul ignore else */
-        if (it.createErrors !== false) {
-          out += ' { keyword: \'' + ($errorKeyword || 'type') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { type: \'';
-          if ($typeIsArray) {
-            out += '' + $typeSchema.join(",");
-          } else {
-            out += '' + $typeSchema;
-          }
-          out += '\' } ';
-          if (it.opts.messages !== false) {
-            out += ' , message: \'should be ';
-            if ($typeIsArray) {
-              out += '' + $typeSchema.join(",");
-            } else {
-              out += '' + $typeSchema;
-            }
-            out += '\' ';
-          }
-          if (it.opts.verbose) {
-            out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-          }
-          out += ' } ';
-        } else {
-          out += ' {} ';
-        }
-        var __err = out;
-        out = $$outStack.pop();
-        if (!it.compositeRule && $breakOnError) {
-          /* istanbul ignore if */
-          if (it.async) {
-            out += ' throw new ValidationError([' + __err + ']); ';
-          } else {
-            out += ' validate.errors = [' + __err + ']; return false; ';
-          }
-        } else {
-          out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-        }
-      }
-      out += ' } ';
-    }
-  }
-  if (it.schema.$ref && !$refKeywords) {
-    out += ' ' + it.RULES.all.$ref.code(it, '$ref') + ' ';
-    if ($breakOnError) {
-      out += ' } if (errors === ';
-      if ($top) {
-        out += '0';
-      } else {
-        out += 'errs_' + $lvl;
-      }
-      out += ') { ';
-      $closingBraces2 += '}';
-    }
-  } else {
-    var arr2 = it.RULES;
-    if (arr2) {
-      var $rulesGroup,
-        i2 = -1,
-        l2 = arr2.length - 1;
-      while (i2 < l2) {
-        $rulesGroup = arr2[i2 += 1];
-        if ($shouldUseGroup($rulesGroup)) {
-          if ($rulesGroup.type) {
-            out += ' if (' + it.util.checkDataType($rulesGroup.type, $data, it.opts.strictNumbers) + ') { ';
-          }
-          if (it.opts.useDefaults) {
-            if ($rulesGroup.type == 'object' && it.schema.properties) {
-              var $schema = it.schema.properties,
-                $schemaKeys = Object.keys($schema);
-              var arr3 = $schemaKeys;
-              if (arr3) {
-                var $propertyKey,
-                  i3 = -1,
-                  l3 = arr3.length - 1;
-                while (i3 < l3) {
-                  $propertyKey = arr3[i3 += 1];
-                  var $sch = $schema[$propertyKey];
-                  if ($sch.default !== undefined) {
-                    var $passData = $data + it.util.getProperty($propertyKey);
-                    if (it.compositeRule) {
-                      if (it.opts.strictDefaults) {
-                        var $defaultMsg = 'default is ignored for: ' + $passData;
-                        if (it.opts.strictDefaults === 'log') it.logger.warn($defaultMsg);else throw new Error($defaultMsg);
-                      }
-                    } else {
-                      out += ' if (' + $passData + ' === undefined ';
-                      if (it.opts.useDefaults == 'empty') {
-                        out += ' || ' + $passData + ' === null || ' + $passData + ' === \'\' ';
-                      }
-                      out += ' ) ' + $passData + ' = ';
-                      if (it.opts.useDefaults == 'shared') {
-                        out += ' ' + it.useDefault($sch.default) + ' ';
-                      } else {
-                        out += ' ' + JSON.stringify($sch.default) + ' ';
-                      }
-                      out += '; ';
-                    }
-                  }
-                }
-              }
-            } else if ($rulesGroup.type == 'array' && Array.isArray(it.schema.items)) {
-              var arr4 = it.schema.items;
-              if (arr4) {
-                var $sch,
-                  $i = -1,
-                  l4 = arr4.length - 1;
-                while ($i < l4) {
-                  $sch = arr4[$i += 1];
-                  if ($sch.default !== undefined) {
-                    var $passData = $data + '[' + $i + ']';
-                    if (it.compositeRule) {
-                      if (it.opts.strictDefaults) {
-                        var $defaultMsg = 'default is ignored for: ' + $passData;
-                        if (it.opts.strictDefaults === 'log') it.logger.warn($defaultMsg);else throw new Error($defaultMsg);
-                      }
-                    } else {
-                      out += ' if (' + $passData + ' === undefined ';
-                      if (it.opts.useDefaults == 'empty') {
-                        out += ' || ' + $passData + ' === null || ' + $passData + ' === \'\' ';
-                      }
-                      out += ' ) ' + $passData + ' = ';
-                      if (it.opts.useDefaults == 'shared') {
-                        out += ' ' + it.useDefault($sch.default) + ' ';
-                      } else {
-                        out += ' ' + JSON.stringify($sch.default) + ' ';
-                      }
-                      out += '; ';
-                    }
-                  }
-                }
-              }
-            }
-          }
-          var arr5 = $rulesGroup.rules;
-          if (arr5) {
-            var $rule,
-              i5 = -1,
-              l5 = arr5.length - 1;
-            while (i5 < l5) {
-              $rule = arr5[i5 += 1];
-              if ($shouldUseRule($rule)) {
-                var $code = $rule.code(it, $rule.keyword, $rulesGroup.type);
-                if ($code) {
-                  out += ' ' + $code + ' ';
-                  if ($breakOnError) {
-                    $closingBraces1 += '}';
-                  }
-                }
-              }
-            }
-          }
-          if ($breakOnError) {
-            out += ' ' + $closingBraces1 + ' ';
-            $closingBraces1 = '';
-          }
-          if ($rulesGroup.type) {
-            out += ' } ';
-            if ($typeSchema && $typeSchema === $rulesGroup.type && !$coerceToTypes) {
-              out += ' else { ';
-              var $schemaPath = it.schemaPath + '.type',
-                $errSchemaPath = it.errSchemaPath + '/type';
-              var $$outStack = $$outStack || [];
-              $$outStack.push(out);
-              out = ''; /* istanbul ignore else */
-              if (it.createErrors !== false) {
-                out += ' { keyword: \'' + ($errorKeyword || 'type') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { type: \'';
-                if ($typeIsArray) {
-                  out += '' + $typeSchema.join(",");
-                } else {
-                  out += '' + $typeSchema;
-                }
-                out += '\' } ';
-                if (it.opts.messages !== false) {
-                  out += ' , message: \'should be ';
-                  if ($typeIsArray) {
-                    out += '' + $typeSchema.join(",");
-                  } else {
-                    out += '' + $typeSchema;
-                  }
-                  out += '\' ';
-                }
-                if (it.opts.verbose) {
-                  out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-                }
-                out += ' } ';
-              } else {
-                out += ' {} ';
-              }
-              var __err = out;
-              out = $$outStack.pop();
-              if (!it.compositeRule && $breakOnError) {
-                /* istanbul ignore if */
-                if (it.async) {
-                  out += ' throw new ValidationError([' + __err + ']); ';
-                } else {
-                  out += ' validate.errors = [' + __err + ']; return false; ';
-                }
-              } else {
-                out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-              }
-              out += ' } ';
-            }
-          }
-          if ($breakOnError) {
-            out += ' if (errors === ';
-            if ($top) {
-              out += '0';
-            } else {
-              out += 'errs_' + $lvl;
-            }
-            out += ') { ';
-            $closingBraces2 += '}';
-          }
-        }
-      }
-    }
-  }
-  if ($breakOnError) {
-    out += ' ' + $closingBraces2 + ' ';
-  }
-  if ($top) {
-    if ($async) {
-      out += ' if (errors === 0) return data;           ';
-      out += ' else throw new ValidationError(vErrors); ';
-    } else {
-      out += ' validate.errors = vErrors; ';
-      out += ' return errors === 0;       ';
-    }
-    out += ' }; return validate;';
-  } else {
-    out += ' var ' + $valid + ' = errors === errs_' + $lvl + ';';
-  }
-  function $shouldUseGroup($rulesGroup) {
-    var rules = $rulesGroup.rules;
-    for (var i = 0; i < rules.length; i++) if ($shouldUseRule(rules[i])) return true;
-  }
-  function $shouldUseRule($rule) {
-    return it.schema[$rule.keyword] !== undefined || $rule.implements && $ruleImplementsSomeKeyword($rule);
-  }
-  function $ruleImplementsSomeKeyword($rule) {
-    var impl = $rule.implements;
-    for (var i = 0; i < impl.length; i++) if (it.schema[impl[i]] !== undefined) return true;
-  }
-  return out;
-};
-
-var resolve$1 = resolve_1,
-  util$2 = util$5,
-  errorClasses$1 = error_classes,
-  stableStringify$1 = fastJsonStableStringify;
-var validateGenerator = validate$1;
-
-/**
- * Functions below are used inside compiled validations function
- */
-
-var ucs2length = util$2.ucs2length;
-var equal = fastDeepEqual;
-
-// this error is thrown by async schemas to return validation errors via exception
-var ValidationError = errorClasses$1.Validation;
-var compile_1 = compile$1;
-
-/**
- * Compiles schema to validation function
- * @this   Ajv
- * @param  {Object} schema schema object
- * @param  {Object} root object with information about the root schema for this schema
- * @param  {Object} localRefs the hash of local references inside the schema (created by resolve.id), used for inline resolution
- * @param  {String} baseId base ID for IDs in the schema
- * @return {Function} validation function
- */
-function compile$1(schema, root, localRefs, baseId) {
-  /* jshint validthis: true, evil: true */
-  /* eslint no-shadow: 0 */
-  var self = this,
-    opts = this._opts,
-    refVal = [undefined],
-    refs = {},
-    patterns = [],
-    patternsHash = {},
-    defaults = [],
-    defaultsHash = {},
-    customRules = [];
-  root = root || {
-    schema: schema,
-    refVal: refVal,
-    refs: refs
-  };
-  var c = checkCompiling.call(this, schema, root, baseId);
-  var compilation = this._compilations[c.index];
-  if (c.compiling) return compilation.callValidate = callValidate;
-  var formats = this._formats;
-  var RULES = this.RULES;
-  try {
-    var v = localCompile(schema, root, localRefs, baseId);
-    compilation.validate = v;
-    var cv = compilation.callValidate;
-    if (cv) {
-      cv.schema = v.schema;
-      cv.errors = null;
-      cv.refs = v.refs;
-      cv.refVal = v.refVal;
-      cv.root = v.root;
-      cv.$async = v.$async;
-      if (opts.sourceCode) cv.source = v.source;
-    }
-    return v;
-  } finally {
-    endCompiling.call(this, schema, root, baseId);
-  }
-
-  /* @this   {*} - custom context, see passContext option */
-  function callValidate() {
-    /* jshint validthis: true */
-    var validate = compilation.validate;
-    var result = validate.apply(this, arguments);
-    callValidate.errors = validate.errors;
-    return result;
-  }
-  function localCompile(_schema, _root, localRefs, baseId) {
-    var isRoot = !_root || _root && _root.schema == _schema;
-    if (_root.schema != root.schema) return compile$1.call(self, _schema, _root, localRefs, baseId);
-    var $async = _schema.$async === true;
-    var sourceCode = validateGenerator({
-      isTop: true,
-      schema: _schema,
-      isRoot: isRoot,
-      baseId: baseId,
-      root: _root,
-      schemaPath: '',
-      errSchemaPath: '#',
-      errorPath: '""',
-      MissingRefError: errorClasses$1.MissingRef,
-      RULES: RULES,
-      validate: validateGenerator,
-      util: util$2,
-      resolve: resolve$1,
-      resolveRef: resolveRef,
-      usePattern: usePattern,
-      useDefault: useDefault,
-      useCustomRule: useCustomRule,
-      opts: opts,
-      formats: formats,
-      logger: self.logger,
-      self: self
-    });
-    sourceCode = vars(refVal, refValCode) + vars(patterns, patternCode) + vars(defaults, defaultCode) + vars(customRules, customRuleCode$1) + sourceCode;
-    if (opts.processCode) sourceCode = opts.processCode(sourceCode, _schema);
-    // console.log('\n\n\n *** \n', JSON.stringify(sourceCode));
-    var validate;
-    try {
-      var makeValidate = new Function('self', 'RULES', 'formats', 'root', 'refVal', 'defaults', 'customRules', 'equal', 'ucs2length', 'ValidationError', sourceCode);
-      validate = makeValidate(self, RULES, formats, root, refVal, defaults, customRules, equal, ucs2length, ValidationError);
-      refVal[0] = validate;
-    } catch (e) {
-      self.logger.error('Error compiling schema, function code:', sourceCode);
-      throw e;
-    }
-    validate.schema = _schema;
-    validate.errors = null;
-    validate.refs = refs;
-    validate.refVal = refVal;
-    validate.root = isRoot ? validate : _root;
-    if ($async) validate.$async = true;
-    if (opts.sourceCode === true) {
-      validate.source = {
-        code: sourceCode,
-        patterns: patterns,
-        defaults: defaults
-      };
-    }
-    return validate;
-  }
-  function resolveRef(baseId, ref, isRoot) {
-    ref = resolve$1.url(baseId, ref);
-    var refIndex = refs[ref];
-    var _refVal, refCode;
-    if (refIndex !== undefined) {
-      _refVal = refVal[refIndex];
-      refCode = 'refVal[' + refIndex + ']';
-      return resolvedRef(_refVal, refCode);
-    }
-    if (!isRoot && root.refs) {
-      var rootRefId = root.refs[ref];
-      if (rootRefId !== undefined) {
-        _refVal = root.refVal[rootRefId];
-        refCode = addLocalRef(ref, _refVal);
-        return resolvedRef(_refVal, refCode);
-      }
-    }
-    refCode = addLocalRef(ref);
-    var v = resolve$1.call(self, localCompile, root, ref);
-    if (v === undefined) {
-      var localSchema = localRefs && localRefs[ref];
-      if (localSchema) {
-        v = resolve$1.inlineRef(localSchema, opts.inlineRefs) ? localSchema : compile$1.call(self, localSchema, root, localRefs, baseId);
-      }
-    }
-    if (v === undefined) {
-      removeLocalRef(ref);
-    } else {
-      replaceLocalRef(ref, v);
-      return resolvedRef(v, refCode);
-    }
-  }
-  function addLocalRef(ref, v) {
-    var refId = refVal.length;
-    refVal[refId] = v;
-    refs[ref] = refId;
-    return 'refVal' + refId;
-  }
-  function removeLocalRef(ref) {
-    delete refs[ref];
-  }
-  function replaceLocalRef(ref, v) {
-    var refId = refs[ref];
-    refVal[refId] = v;
-  }
-  function resolvedRef(refVal, code) {
-    return typeof refVal == 'object' || typeof refVal == 'boolean' ? {
-      code: code,
-      schema: refVal,
-      inline: true
-    } : {
-      code: code,
-      $async: refVal && !!refVal.$async
-    };
-  }
-  function usePattern(regexStr) {
-    var index = patternsHash[regexStr];
-    if (index === undefined) {
-      index = patternsHash[regexStr] = patterns.length;
-      patterns[index] = regexStr;
-    }
-    return 'pattern' + index;
-  }
-  function useDefault(value) {
-    switch (typeof value) {
-      case 'boolean':
-      case 'number':
-        return '' + value;
-      case 'string':
-        return util$2.toQuotedString(value);
-      case 'object':
-        if (value === null) return 'null';
-        var valueStr = stableStringify$1(value);
-        var index = defaultsHash[valueStr];
-        if (index === undefined) {
-          index = defaultsHash[valueStr] = defaults.length;
-          defaults[index] = value;
-        }
-        return 'default' + index;
-    }
-  }
-  function useCustomRule(rule, schema, parentSchema, it) {
-    if (self._opts.validateSchema !== false) {
-      var deps = rule.definition.dependencies;
-      if (deps && !deps.every(function (keyword) {
-        return Object.prototype.hasOwnProperty.call(parentSchema, keyword);
-      })) throw new Error('parent schema must have all required keywords: ' + deps.join(','));
-      var validateSchema = rule.definition.validateSchema;
-      if (validateSchema) {
-        var valid = validateSchema(schema);
-        if (!valid) {
-          var message = 'keyword schema is invalid: ' + self.errorsText(validateSchema.errors);
-          if (self._opts.validateSchema == 'log') self.logger.error(message);else throw new Error(message);
-        }
-      }
-    }
-    var compile = rule.definition.compile,
-      inline = rule.definition.inline,
-      macro = rule.definition.macro;
-    var validate;
-    if (compile) {
-      validate = compile.call(self, schema, parentSchema, it);
-    } else if (macro) {
-      validate = macro.call(self, schema, parentSchema, it);
-      if (opts.validateSchema !== false) self.validateSchema(validate, true);
-    } else if (inline) {
-      validate = inline.call(self, it, rule.keyword, schema, parentSchema);
-    } else {
-      validate = rule.definition.validate;
-      if (!validate) return;
-    }
-    if (validate === undefined) throw new Error('custom keyword "' + rule.keyword + '"failed to compile');
-    var index = customRules.length;
-    customRules[index] = validate;
-    return {
-      code: 'customRule' + index,
-      validate: validate
-    };
-  }
-}
-
-/**
- * Checks if the schema is currently compiled
- * @this   Ajv
- * @param  {Object} schema schema to compile
- * @param  {Object} root root object
- * @param  {String} baseId base schema ID
- * @return {Object} object with properties "index" (compilation index) and "compiling" (boolean)
- */
-function checkCompiling(schema, root, baseId) {
-  /* jshint validthis: true */
-  var index = compIndex.call(this, schema, root, baseId);
-  if (index >= 0) return {
-    index: index,
-    compiling: true
-  };
-  index = this._compilations.length;
-  this._compilations[index] = {
-    schema: schema,
-    root: root,
-    baseId: baseId
-  };
-  return {
-    index: index,
-    compiling: false
-  };
-}
-
-/**
- * Removes the schema from the currently compiled list
- * @this   Ajv
- * @param  {Object} schema schema to compile
- * @param  {Object} root root object
- * @param  {String} baseId base schema ID
- */
-function endCompiling(schema, root, baseId) {
-  /* jshint validthis: true */
-  var i = compIndex.call(this, schema, root, baseId);
-  if (i >= 0) this._compilations.splice(i, 1);
-}
-
-/**
- * Index of schema compilation in the currently compiled list
- * @this   Ajv
- * @param  {Object} schema schema to compile
- * @param  {Object} root root object
- * @param  {String} baseId base schema ID
- * @return {Integer} compilation index
- */
-function compIndex(schema, root, baseId) {
-  /* jshint validthis: true */
-  for (var i = 0; i < this._compilations.length; i++) {
-    var c = this._compilations[i];
-    if (c.schema == schema && c.root == root && c.baseId == baseId) return i;
-  }
-  return -1;
-}
-function patternCode(i, patterns) {
-  return 'var pattern' + i + ' = new RegExp(' + util$2.toQuotedString(patterns[i]) + ');';
-}
-function defaultCode(i) {
-  return 'var default' + i + ' = defaults[' + i + '];';
-}
-function refValCode(i, refVal) {
-  return refVal[i] === undefined ? '' : 'var refVal' + i + ' = refVal[' + i + '];';
-}
-function customRuleCode$1(i) {
-  return 'var customRule' + i + ' = customRules[' + i + '];';
-}
-function vars(arr, statement) {
-  if (!arr.length) return '';
-  var code = '';
-  for (var i = 0; i < arr.length; i++) code += statement(i, arr);
-  return code;
-}
-
-var cache = {exports: {}};
-
-var Cache$1 = cache.exports = function Cache() {
-  this._cache = {};
-};
-Cache$1.prototype.put = function Cache_put(key, value) {
-  this._cache[key] = value;
-};
-Cache$1.prototype.get = function Cache_get(key) {
-  return this._cache[key];
-};
-Cache$1.prototype.del = function Cache_del(key) {
-  delete this._cache[key];
-};
-Cache$1.prototype.clear = function Cache_clear() {
-  this._cache = {};
-};
-var cacheExports = cache.exports;
-
-var util$1 = util$5;
-var DATE = /^(\d\d\d\d)-(\d\d)-(\d\d)$/;
-var DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-var TIME = /^(\d\d):(\d\d):(\d\d)(\.\d+)?(z|[+-]\d\d(?::?\d\d)?)?$/i;
-var HOSTNAME = /^(?=.{1,253}\.?$)[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[-0-9a-z]{0,61}[0-9a-z])?)*\.?$/i;
-var URI = /^(?:[a-z][a-z0-9+\-.]*:)(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)(?:\?(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;
-var URIREF = /^(?:[a-z][a-z0-9+\-.]*:)?(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'"()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?(?:\?(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;
-// uri-template: https://tools.ietf.org/html/rfc6570
-var URITEMPLATE = /^(?:(?:[^\x00-\x20"'<>%\\^`{|}]|%[0-9a-f]{2})|\{[+#./;?&=,!@|]?(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?(?:,(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?)*\})*$/i;
-// For the source: https://gist.github.com/dperini/729294
-// For test cases: https://mathiasbynens.be/demo/url-regex
-// @todo Delete current URL in favour of the commented out URL rule when this issue is fixed https://github.com/eslint/eslint/issues/7983.
-// var URL = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u{00a1}-\u{ffff}0-9]+-)*[a-z\u{00a1}-\u{ffff}0-9]+)(?:\.(?:[a-z\u{00a1}-\u{ffff}0-9]+-)*[a-z\u{00a1}-\u{ffff}0-9]+)*(?:\.(?:[a-z\u{00a1}-\u{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/iu;
-var URL = /^(?:(?:http[s\u017F]?|ftp):\/\/)(?:(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+(?::(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?@)?(?:(?!10(?:\.[0-9]{1,3}){3})(?!127(?:\.[0-9]{1,3}){3})(?!169\.254(?:\.[0-9]{1,3}){2})(?!192\.168(?:\.[0-9]{1,3}){2})(?!172\.(?:1[6-9]|2[0-9]|3[01])(?:\.[0-9]{1,3}){2})(?:[1-9][0-9]?|1[0-9][0-9]|2[01][0-9]|22[0-3])(?:\.(?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){2}(?:\.(?:[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-4]))|(?:(?:(?:[0-9a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+-)*(?:[0-9a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)(?:\.(?:(?:[0-9a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+-)*(?:[0-9a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)*(?:\.(?:(?:[a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]){2,})))(?::[0-9]{2,5})?(?:\/(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?$/i;
-var UUID = /^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
-var JSON_POINTER = /^(?:\/(?:[^~/]|~0|~1)*)*$/;
-var JSON_POINTER_URI_FRAGMENT = /^#(?:\/(?:[a-z0-9_\-.!$&'()*+,;:=@]|%[0-9a-f]{2}|~0|~1)*)*$/i;
-var RELATIVE_JSON_POINTER = /^(?:0|[1-9][0-9]*)(?:#|(?:\/(?:[^~/]|~0|~1)*)*)$/;
-var formats_1 = formats$1;
-function formats$1(mode) {
-  mode = mode == 'full' ? 'full' : 'fast';
-  return util$1.copy(formats$1[mode]);
-}
-formats$1.fast = {
-  // date: http://tools.ietf.org/html/rfc3339#section-5.6
-  date: /^\d\d\d\d-[0-1]\d-[0-3]\d$/,
-  // date-time: http://tools.ietf.org/html/rfc3339#section-5.6
-  time: /^(?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)?$/i,
-  'date-time': /^\d\d\d\d-[0-1]\d-[0-3]\d[t\s](?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)$/i,
-  // uri: https://github.com/mafintosh/is-my-json-valid/blob/master/formats.js
-  uri: /^(?:[a-z][a-z0-9+\-.]*:)(?:\/?\/)?[^\s]*$/i,
-  'uri-reference': /^(?:(?:[a-z][a-z0-9+\-.]*:)?\/?\/)?(?:[^\\\s#][^\s#]*)?(?:#[^\\\s]*)?$/i,
-  'uri-template': URITEMPLATE,
-  url: URL,
-  // email (sources from jsen validator):
-  // http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address#answer-8829363
-  // http://www.w3.org/TR/html5/forms.html#valid-e-mail-address (search for 'willful violation')
-  email: /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i,
-  hostname: HOSTNAME,
-  // optimized https://www.safaribooksonline.com/library/view/regular-expressions-cookbook/9780596802837/ch07s16.html
-  ipv4: /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/,
-  // optimized http://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
-  ipv6: /^\s*(?:(?:(?:[0-9a-f]{1,4}:){7}(?:[0-9a-f]{1,4}|:))|(?:(?:[0-9a-f]{1,4}:){6}(?::[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){5}(?:(?:(?::[0-9a-f]{1,4}){1,2})|:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){4}(?:(?:(?::[0-9a-f]{1,4}){1,3})|(?:(?::[0-9a-f]{1,4})?:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){3}(?:(?:(?::[0-9a-f]{1,4}){1,4})|(?:(?::[0-9a-f]{1,4}){0,2}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){2}(?:(?:(?::[0-9a-f]{1,4}){1,5})|(?:(?::[0-9a-f]{1,4}){0,3}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){1}(?:(?:(?::[0-9a-f]{1,4}){1,6})|(?:(?::[0-9a-f]{1,4}){0,4}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?::(?:(?:(?::[0-9a-f]{1,4}){1,7})|(?:(?::[0-9a-f]{1,4}){0,5}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(?:%.+)?\s*$/i,
-  regex: regex,
-  // uuid: http://tools.ietf.org/html/rfc4122
-  uuid: UUID,
-  // JSON-pointer: https://tools.ietf.org/html/rfc6901
-  // uri fragment: https://tools.ietf.org/html/rfc3986#appendix-A
-  'json-pointer': JSON_POINTER,
-  'json-pointer-uri-fragment': JSON_POINTER_URI_FRAGMENT,
-  // relative JSON-pointer: http://tools.ietf.org/html/draft-luff-relative-json-pointer-00
-  'relative-json-pointer': RELATIVE_JSON_POINTER
-};
-formats$1.full = {
-  date: date,
-  time: time,
-  'date-time': date_time,
-  uri: uri,
-  'uri-reference': URIREF,
-  'uri-template': URITEMPLATE,
-  url: URL,
-  email: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i,
-  hostname: HOSTNAME,
-  ipv4: /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/,
-  ipv6: /^\s*(?:(?:(?:[0-9a-f]{1,4}:){7}(?:[0-9a-f]{1,4}|:))|(?:(?:[0-9a-f]{1,4}:){6}(?::[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){5}(?:(?:(?::[0-9a-f]{1,4}){1,2})|:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){4}(?:(?:(?::[0-9a-f]{1,4}){1,3})|(?:(?::[0-9a-f]{1,4})?:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){3}(?:(?:(?::[0-9a-f]{1,4}){1,4})|(?:(?::[0-9a-f]{1,4}){0,2}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){2}(?:(?:(?::[0-9a-f]{1,4}){1,5})|(?:(?::[0-9a-f]{1,4}){0,3}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){1}(?:(?:(?::[0-9a-f]{1,4}){1,6})|(?:(?::[0-9a-f]{1,4}){0,4}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?::(?:(?:(?::[0-9a-f]{1,4}){1,7})|(?:(?::[0-9a-f]{1,4}){0,5}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(?:%.+)?\s*$/i,
-  regex: regex,
-  uuid: UUID,
-  'json-pointer': JSON_POINTER,
-  'json-pointer-uri-fragment': JSON_POINTER_URI_FRAGMENT,
-  'relative-json-pointer': RELATIVE_JSON_POINTER
-};
-function isLeapYear(year) {
-  // https://tools.ietf.org/html/rfc3339#appendix-C
-  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-}
-function date(str) {
-  // full-date from http://tools.ietf.org/html/rfc3339#section-5.6
-  var matches = str.match(DATE);
-  if (!matches) return false;
-  var year = +matches[1];
-  var month = +matches[2];
-  var day = +matches[3];
-  return month >= 1 && month <= 12 && day >= 1 && day <= (month == 2 && isLeapYear(year) ? 29 : DAYS[month]);
-}
-function time(str, full) {
-  var matches = str.match(TIME);
-  if (!matches) return false;
-  var hour = matches[1];
-  var minute = matches[2];
-  var second = matches[3];
-  var timeZone = matches[5];
-  return (hour <= 23 && minute <= 59 && second <= 59 || hour == 23 && minute == 59 && second == 60) && (!full || timeZone);
-}
-var DATE_TIME_SEPARATOR = /t|\s/i;
-function date_time(str) {
-  // http://tools.ietf.org/html/rfc3339#section-5.6
-  var dateTime = str.split(DATE_TIME_SEPARATOR);
-  return dateTime.length == 2 && date(dateTime[0]) && time(dateTime[1], true);
-}
-var NOT_URI_FRAGMENT = /\/|:/;
-function uri(str) {
-  // http://jmrware.com/articles/2009/uri_regexp/URI_regex.html + optional protocol + required "."
-  return NOT_URI_FRAGMENT.test(str) && URI.test(str);
-}
-var Z_ANCHOR = /[^\\]\\Z/;
-function regex(str) {
-  if (Z_ANCHOR.test(str)) return false;
-  try {
-    new RegExp(str);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-var ref = function generate_ref(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $async, $refCode;
-  if ($schema == '#' || $schema == '#/') {
-    if (it.isRoot) {
-      $async = it.async;
-      $refCode = 'validate';
-    } else {
-      $async = it.root.schema.$async === true;
-      $refCode = 'root.refVal[0]';
-    }
-  } else {
-    var $refVal = it.resolveRef(it.baseId, $schema, it.isRoot);
-    if ($refVal === undefined) {
-      var $message = it.MissingRefError.message(it.baseId, $schema);
-      if (it.opts.missingRefs == 'fail') {
-        it.logger.error($message);
-        var $$outStack = $$outStack || [];
-        $$outStack.push(out);
-        out = ''; /* istanbul ignore else */
-        if (it.createErrors !== false) {
-          out += ' { keyword: \'' + '$ref' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { ref: \'' + it.util.escapeQuotes($schema) + '\' } ';
-          if (it.opts.messages !== false) {
-            out += ' , message: \'can\\\'t resolve reference ' + it.util.escapeQuotes($schema) + '\' ';
-          }
-          if (it.opts.verbose) {
-            out += ' , schema: ' + it.util.toQuotedString($schema) + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-          }
-          out += ' } ';
-        } else {
-          out += ' {} ';
-        }
-        var __err = out;
-        out = $$outStack.pop();
-        if (!it.compositeRule && $breakOnError) {
-          /* istanbul ignore if */
-          if (it.async) {
-            out += ' throw new ValidationError([' + __err + ']); ';
-          } else {
-            out += ' validate.errors = [' + __err + ']; return false; ';
-          }
-        } else {
-          out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-        }
-        if ($breakOnError) {
-          out += ' if (false) { ';
-        }
-      } else if (it.opts.missingRefs == 'ignore') {
-        it.logger.warn($message);
-        if ($breakOnError) {
-          out += ' if (true) { ';
-        }
-      } else {
-        throw new it.MissingRefError(it.baseId, $schema, $message);
-      }
-    } else if ($refVal.inline) {
-      var $it = it.util.copy(it);
-      $it.level++;
-      var $nextValid = 'valid' + $it.level;
-      $it.schema = $refVal.schema;
-      $it.schemaPath = '';
-      $it.errSchemaPath = $schema;
-      var $code = it.validate($it).replace(/validate\.schema/g, $refVal.code);
-      out += ' ' + $code + ' ';
-      if ($breakOnError) {
-        out += ' if (' + $nextValid + ') { ';
-      }
-    } else {
-      $async = $refVal.$async === true || it.async && $refVal.$async !== false;
-      $refCode = $refVal.code;
-    }
-  }
-  if ($refCode) {
-    var $$outStack = $$outStack || [];
-    $$outStack.push(out);
-    out = '';
-    if (it.opts.passContext) {
-      out += ' ' + $refCode + '.call(this, ';
-    } else {
-      out += ' ' + $refCode + '( ';
-    }
-    out += ' ' + $data + ', (dataPath || \'\')';
-    if (it.errorPath != '""') {
-      out += ' + ' + it.errorPath;
-    }
-    var $parentData = $dataLvl ? 'data' + ($dataLvl - 1 || '') : 'parentData',
-      $parentDataProperty = $dataLvl ? it.dataPathArr[$dataLvl] : 'parentDataProperty';
-    out += ' , ' + $parentData + ' , ' + $parentDataProperty + ', rootData)  ';
-    var __callValidate = out;
-    out = $$outStack.pop();
-    if ($async) {
-      if (!it.async) throw new Error('async schema referenced by sync schema');
-      if ($breakOnError) {
-        out += ' var ' + $valid + '; ';
-      }
-      out += ' try { await ' + __callValidate + '; ';
-      if ($breakOnError) {
-        out += ' ' + $valid + ' = true; ';
-      }
-      out += ' } catch (e) { if (!(e instanceof ValidationError)) throw e; if (vErrors === null) vErrors = e.errors; else vErrors = vErrors.concat(e.errors); errors = vErrors.length; ';
-      if ($breakOnError) {
-        out += ' ' + $valid + ' = false; ';
-      }
-      out += ' } ';
-      if ($breakOnError) {
-        out += ' if (' + $valid + ') { ';
-      }
-    } else {
-      out += ' if (!' + __callValidate + ') { if (vErrors === null) vErrors = ' + $refCode + '.errors; else vErrors = vErrors.concat(' + $refCode + '.errors); errors = vErrors.length; } ';
-      if ($breakOnError) {
-        out += ' else { ';
-      }
-    }
-  }
-  return out;
-};
-
-var allOf = function generate_allOf(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $it = it.util.copy(it);
-  var $closingBraces = '';
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  var $currentBaseId = $it.baseId,
-    $allSchemasEmpty = true;
-  var arr1 = $schema;
-  if (arr1) {
-    var $sch,
-      $i = -1,
-      l1 = arr1.length - 1;
-    while ($i < l1) {
-      $sch = arr1[$i += 1];
-      if (it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 || $sch === false : it.util.schemaHasRules($sch, it.RULES.all)) {
-        $allSchemasEmpty = false;
-        $it.schema = $sch;
-        $it.schemaPath = $schemaPath + '[' + $i + ']';
-        $it.errSchemaPath = $errSchemaPath + '/' + $i;
-        out += '  ' + it.validate($it) + ' ';
-        $it.baseId = $currentBaseId;
-        if ($breakOnError) {
-          out += ' if (' + $nextValid + ') { ';
-          $closingBraces += '}';
-        }
-      }
-    }
-  }
-  if ($breakOnError) {
-    if ($allSchemasEmpty) {
-      out += ' if (true) { ';
-    } else {
-      out += ' ' + $closingBraces.slice(0, -1) + ' ';
-    }
-  }
-  return out;
-};
-
-var anyOf = function generate_anyOf(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  var $closingBraces = '';
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  var $noEmptySchema = $schema.every(function ($sch) {
-    return it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 || $sch === false : it.util.schemaHasRules($sch, it.RULES.all);
-  });
-  if ($noEmptySchema) {
-    var $currentBaseId = $it.baseId;
-    out += ' var ' + $errs + ' = errors; var ' + $valid + ' = false;  ';
-    var $wasComposite = it.compositeRule;
-    it.compositeRule = $it.compositeRule = true;
-    var arr1 = $schema;
-    if (arr1) {
-      var $sch,
-        $i = -1,
-        l1 = arr1.length - 1;
-      while ($i < l1) {
-        $sch = arr1[$i += 1];
-        $it.schema = $sch;
-        $it.schemaPath = $schemaPath + '[' + $i + ']';
-        $it.errSchemaPath = $errSchemaPath + '/' + $i;
-        out += '  ' + it.validate($it) + ' ';
-        $it.baseId = $currentBaseId;
-        out += ' ' + $valid + ' = ' + $valid + ' || ' + $nextValid + '; if (!' + $valid + ') { ';
-        $closingBraces += '}';
-      }
-    }
-    it.compositeRule = $it.compositeRule = $wasComposite;
-    out += ' ' + $closingBraces + ' if (!' + $valid + ') {   var err =   '; /* istanbul ignore else */
-    if (it.createErrors !== false) {
-      out += ' { keyword: \'' + 'anyOf' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: {} ';
-      if (it.opts.messages !== false) {
-        out += ' , message: \'should match some schema in anyOf\' ';
-      }
-      if (it.opts.verbose) {
-        out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-      }
-      out += ' } ';
-    } else {
-      out += ' {} ';
-    }
-    out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-    if (!it.compositeRule && $breakOnError) {
-      /* istanbul ignore if */
-      if (it.async) {
-        out += ' throw new ValidationError(vErrors); ';
-      } else {
-        out += ' validate.errors = vErrors; return false; ';
-      }
-    }
-    out += ' } else {  errors = ' + $errs + '; if (vErrors !== null) { if (' + $errs + ') vErrors.length = ' + $errs + '; else vErrors = null; } ';
-    if (it.opts.allErrors) {
-      out += ' } ';
-    }
-  } else {
-    if ($breakOnError) {
-      out += ' if (true) { ';
-    }
-  }
-  return out;
-};
-
-var comment = function generate_comment(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $schema = it.schema[$keyword];
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  !it.opts.allErrors;
-  var $comment = it.util.toQuotedString($schema);
-  if (it.opts.$comment === true) {
-    out += ' console.log(' + $comment + ');';
-  } else if (typeof it.opts.$comment == 'function') {
-    out += ' self._opts.$comment(' + $comment + ', ' + it.util.toQuotedString($errSchemaPath) + ', validate.root.schema);';
-  }
-  return out;
-};
-
-var _const = function generate_const(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $isData = it.opts.$data && $schema && $schema.$data;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-  }
-  if (!$isData) {
-    out += ' var schema' + $lvl + ' = validate.schema' + $schemaPath + ';';
-  }
-  out += 'var ' + $valid + ' = equal(' + $data + ', schema' + $lvl + '); if (!' + $valid + ') {   ';
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + 'const' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { allowedValue: schema' + $lvl + ' } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should be equal to constant\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += ' }';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var contains$1 = function generate_contains(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  var $closingBraces = '';
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  var $idx = 'i' + $lvl,
-    $dataNxt = $it.dataLevel = it.dataLevel + 1,
-    $nextData = 'data' + $dataNxt,
-    $currentBaseId = it.baseId,
-    $nonEmptySchema = it.opts.strictKeywords ? typeof $schema == 'object' && Object.keys($schema).length > 0 || $schema === false : it.util.schemaHasRules($schema, it.RULES.all);
-  out += 'var ' + $errs + ' = errors;var ' + $valid + ';';
-  if ($nonEmptySchema) {
-    var $wasComposite = it.compositeRule;
-    it.compositeRule = $it.compositeRule = true;
-    $it.schema = $schema;
-    $it.schemaPath = $schemaPath;
-    $it.errSchemaPath = $errSchemaPath;
-    out += ' var ' + $nextValid + ' = false; for (var ' + $idx + ' = 0; ' + $idx + ' < ' + $data + '.length; ' + $idx + '++) { ';
-    $it.errorPath = it.util.getPathExpr(it.errorPath, $idx, it.opts.jsonPointers, true);
-    var $passData = $data + '[' + $idx + ']';
-    $it.dataPathArr[$dataNxt] = $idx;
-    var $code = it.validate($it);
-    $it.baseId = $currentBaseId;
-    if (it.util.varOccurences($code, $nextData) < 2) {
-      out += ' ' + it.util.varReplace($code, $nextData, $passData) + ' ';
-    } else {
-      out += ' var ' + $nextData + ' = ' + $passData + '; ' + $code + ' ';
-    }
-    out += ' if (' + $nextValid + ') break; }  ';
-    it.compositeRule = $it.compositeRule = $wasComposite;
-    out += ' ' + $closingBraces + ' if (!' + $nextValid + ') {';
-  } else {
-    out += ' if (' + $data + '.length == 0) {';
-  }
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + 'contains' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: {} ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should contain a valid item\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += ' } else { ';
-  if ($nonEmptySchema) {
-    out += '  errors = ' + $errs + '; if (vErrors !== null) { if (' + $errs + ') vErrors.length = ' + $errs + '; else vErrors = null; } ';
-  }
-  if (it.opts.allErrors) {
-    out += ' } ';
-  }
-  return out;
-};
-
-var dependencies$1 = function generate_dependencies(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  var $closingBraces = '';
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  var $schemaDeps = {},
-    $propertyDeps = {},
-    $ownProperties = it.opts.ownProperties;
-  for ($property in $schema) {
-    if ($property == '__proto__') continue;
-    var $sch = $schema[$property];
-    var $deps = Array.isArray($sch) ? $propertyDeps : $schemaDeps;
-    $deps[$property] = $sch;
-  }
-  out += 'var ' + $errs + ' = errors;';
-  var $currentErrorPath = it.errorPath;
-  out += 'var missing' + $lvl + ';';
-  for (var $property in $propertyDeps) {
-    $deps = $propertyDeps[$property];
-    if ($deps.length) {
-      out += ' if ( ' + $data + it.util.getProperty($property) + ' !== undefined ';
-      if ($ownProperties) {
-        out += ' && Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($property) + '\') ';
-      }
-      if ($breakOnError) {
-        out += ' && ( ';
-        var arr1 = $deps;
-        if (arr1) {
-          var $propertyKey,
-            $i = -1,
-            l1 = arr1.length - 1;
-          while ($i < l1) {
-            $propertyKey = arr1[$i += 1];
-            if ($i) {
-              out += ' || ';
-            }
-            var $prop = it.util.getProperty($propertyKey),
-              $useData = $data + $prop;
-            out += ' ( ( ' + $useData + ' === undefined ';
-            if ($ownProperties) {
-              out += ' || ! Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($propertyKey) + '\') ';
-            }
-            out += ') && (missing' + $lvl + ' = ' + it.util.toQuotedString(it.opts.jsonPointers ? $propertyKey : $prop) + ') ) ';
-          }
-        }
-        out += ')) {  ';
-        var $propertyPath = 'missing' + $lvl,
-          $missingProperty = '\' + ' + $propertyPath + ' + \'';
-        if (it.opts._errorDataPathProperty) {
-          it.errorPath = it.opts.jsonPointers ? it.util.getPathExpr($currentErrorPath, $propertyPath, true) : $currentErrorPath + ' + ' + $propertyPath;
-        }
-        var $$outStack = $$outStack || [];
-        $$outStack.push(out);
-        out = ''; /* istanbul ignore else */
-        if (it.createErrors !== false) {
-          out += ' { keyword: \'' + 'dependencies' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { property: \'' + it.util.escapeQuotes($property) + '\', missingProperty: \'' + $missingProperty + '\', depsCount: ' + $deps.length + ', deps: \'' + it.util.escapeQuotes($deps.length == 1 ? $deps[0] : $deps.join(", ")) + '\' } ';
-          if (it.opts.messages !== false) {
-            out += ' , message: \'should have ';
-            if ($deps.length == 1) {
-              out += 'property ' + it.util.escapeQuotes($deps[0]);
-            } else {
-              out += 'properties ' + it.util.escapeQuotes($deps.join(", "));
-            }
-            out += ' when property ' + it.util.escapeQuotes($property) + ' is present\' ';
-          }
-          if (it.opts.verbose) {
-            out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-          }
-          out += ' } ';
-        } else {
-          out += ' {} ';
-        }
-        var __err = out;
-        out = $$outStack.pop();
-        if (!it.compositeRule && $breakOnError) {
-          /* istanbul ignore if */
-          if (it.async) {
-            out += ' throw new ValidationError([' + __err + ']); ';
-          } else {
-            out += ' validate.errors = [' + __err + ']; return false; ';
-          }
-        } else {
-          out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-        }
-      } else {
-        out += ' ) { ';
-        var arr2 = $deps;
-        if (arr2) {
-          var $propertyKey,
-            i2 = -1,
-            l2 = arr2.length - 1;
-          while (i2 < l2) {
-            $propertyKey = arr2[i2 += 1];
-            var $prop = it.util.getProperty($propertyKey),
-              $missingProperty = it.util.escapeQuotes($propertyKey),
-              $useData = $data + $prop;
-            if (it.opts._errorDataPathProperty) {
-              it.errorPath = it.util.getPath($currentErrorPath, $propertyKey, it.opts.jsonPointers);
-            }
-            out += ' if ( ' + $useData + ' === undefined ';
-            if ($ownProperties) {
-              out += ' || ! Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($propertyKey) + '\') ';
-            }
-            out += ') {  var err =   '; /* istanbul ignore else */
-            if (it.createErrors !== false) {
-              out += ' { keyword: \'' + 'dependencies' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { property: \'' + it.util.escapeQuotes($property) + '\', missingProperty: \'' + $missingProperty + '\', depsCount: ' + $deps.length + ', deps: \'' + it.util.escapeQuotes($deps.length == 1 ? $deps[0] : $deps.join(", ")) + '\' } ';
-              if (it.opts.messages !== false) {
-                out += ' , message: \'should have ';
-                if ($deps.length == 1) {
-                  out += 'property ' + it.util.escapeQuotes($deps[0]);
-                } else {
-                  out += 'properties ' + it.util.escapeQuotes($deps.join(", "));
-                }
-                out += ' when property ' + it.util.escapeQuotes($property) + ' is present\' ';
-              }
-              if (it.opts.verbose) {
-                out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-              }
-              out += ' } ';
-            } else {
-              out += ' {} ';
-            }
-            out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; } ';
-          }
-        }
-      }
-      out += ' }   ';
-      if ($breakOnError) {
-        $closingBraces += '}';
-        out += ' else { ';
-      }
-    }
-  }
-  it.errorPath = $currentErrorPath;
-  var $currentBaseId = $it.baseId;
-  for (var $property in $schemaDeps) {
-    var $sch = $schemaDeps[$property];
-    if (it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 || $sch === false : it.util.schemaHasRules($sch, it.RULES.all)) {
-      out += ' ' + $nextValid + ' = true; if ( ' + $data + it.util.getProperty($property) + ' !== undefined ';
-      if ($ownProperties) {
-        out += ' && Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($property) + '\') ';
-      }
-      out += ') { ';
-      $it.schema = $sch;
-      $it.schemaPath = $schemaPath + it.util.getProperty($property);
-      $it.errSchemaPath = $errSchemaPath + '/' + it.util.escapeFragment($property);
-      out += '  ' + it.validate($it) + ' ';
-      $it.baseId = $currentBaseId;
-      out += ' }  ';
-      if ($breakOnError) {
-        out += ' if (' + $nextValid + ') { ';
-        $closingBraces += '}';
-      }
-    }
-  }
-  if ($breakOnError) {
-    out += '   ' + $closingBraces + ' if (' + $errs + ' == errors) {';
-  }
-  return out;
-};
-
-var _enum = function generate_enum(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $isData = it.opts.$data && $schema && $schema.$data;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-  }
-  var $i = 'i' + $lvl,
-    $vSchema = 'schema' + $lvl;
-  if (!$isData) {
-    out += ' var ' + $vSchema + ' = validate.schema' + $schemaPath + ';';
-  }
-  out += 'var ' + $valid + ';';
-  if ($isData) {
-    out += ' if (schema' + $lvl + ' === undefined) ' + $valid + ' = true; else if (!Array.isArray(schema' + $lvl + ')) ' + $valid + ' = false; else {';
-  }
-  out += '' + $valid + ' = false;for (var ' + $i + '=0; ' + $i + '<' + $vSchema + '.length; ' + $i + '++) if (equal(' + $data + ', ' + $vSchema + '[' + $i + '])) { ' + $valid + ' = true; break; }';
-  if ($isData) {
-    out += '  }  ';
-  }
-  out += ' if (!' + $valid + ') {   ';
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + 'enum' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { allowedValues: schema' + $lvl + ' } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should be equal to one of the allowed values\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += ' }';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var format = function generate_format(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  if (it.opts.format === false) {
-    if ($breakOnError) {
-      out += ' if (true) { ';
-    }
-    return out;
-  }
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  var $unknownFormats = it.opts.unknownFormats,
-    $allowUnknown = Array.isArray($unknownFormats);
-  if ($isData) {
-    var $format = 'format' + $lvl,
-      $isObject = 'isObject' + $lvl,
-      $formatType = 'formatType' + $lvl;
-    out += ' var ' + $format + ' = formats[' + $schemaValue + ']; var ' + $isObject + ' = typeof ' + $format + ' == \'object\' && !(' + $format + ' instanceof RegExp) && ' + $format + '.validate; var ' + $formatType + ' = ' + $isObject + ' && ' + $format + '.type || \'string\'; if (' + $isObject + ') { ';
-    if (it.async) {
-      out += ' var async' + $lvl + ' = ' + $format + '.async; ';
-    }
-    out += ' ' + $format + ' = ' + $format + '.validate; } if (  ';
-    if ($isData) {
-      out += ' (' + $schemaValue + ' !== undefined && typeof ' + $schemaValue + ' != \'string\') || ';
-    }
-    out += ' (';
-    if ($unknownFormats != 'ignore') {
-      out += ' (' + $schemaValue + ' && !' + $format + ' ';
-      if ($allowUnknown) {
-        out += ' && self._opts.unknownFormats.indexOf(' + $schemaValue + ') == -1 ';
-      }
-      out += ') || ';
-    }
-    out += ' (' + $format + ' && ' + $formatType + ' == \'' + $ruleType + '\' && !(typeof ' + $format + ' == \'function\' ? ';
-    if (it.async) {
-      out += ' (async' + $lvl + ' ? await ' + $format + '(' + $data + ') : ' + $format + '(' + $data + ')) ';
-    } else {
-      out += ' ' + $format + '(' + $data + ') ';
-    }
-    out += ' : ' + $format + '.test(' + $data + '))))) {';
-  } else {
-    var $format = it.formats[$schema];
-    if (!$format) {
-      if ($unknownFormats == 'ignore') {
-        it.logger.warn('unknown format "' + $schema + '" ignored in schema at path "' + it.errSchemaPath + '"');
-        if ($breakOnError) {
-          out += ' if (true) { ';
-        }
-        return out;
-      } else if ($allowUnknown && $unknownFormats.indexOf($schema) >= 0) {
-        if ($breakOnError) {
-          out += ' if (true) { ';
-        }
-        return out;
-      } else {
-        throw new Error('unknown format "' + $schema + '" is used in schema at path "' + it.errSchemaPath + '"');
-      }
-    }
-    var $isObject = typeof $format == 'object' && !($format instanceof RegExp) && $format.validate;
-    var $formatType = $isObject && $format.type || 'string';
-    if ($isObject) {
-      var $async = $format.async === true;
-      $format = $format.validate;
-    }
-    if ($formatType != $ruleType) {
-      if ($breakOnError) {
-        out += ' if (true) { ';
-      }
-      return out;
-    }
-    if ($async) {
-      if (!it.async) throw new Error('async format in sync schema');
-      var $formatRef = 'formats' + it.util.getProperty($schema) + '.validate';
-      out += ' if (!(await ' + $formatRef + '(' + $data + '))) { ';
-    } else {
-      out += ' if (! ';
-      var $formatRef = 'formats' + it.util.getProperty($schema);
-      if ($isObject) $formatRef += '.validate';
-      if (typeof $format == 'function') {
-        out += ' ' + $formatRef + '(' + $data + ') ';
-      } else {
-        out += ' ' + $formatRef + '.test(' + $data + ') ';
-      }
-      out += ') { ';
-    }
-  }
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + 'format' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { format:  ';
-    if ($isData) {
-      out += '' + $schemaValue;
-    } else {
-      out += '' + it.util.toQuotedString($schema);
-    }
-    out += '  } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should match format "';
-      if ($isData) {
-        out += '\' + ' + $schemaValue + ' + \'';
-      } else {
-        out += '' + it.util.escapeQuotes($schema);
-      }
-      out += '"\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema:  ';
-      if ($isData) {
-        out += 'validate.schema' + $schemaPath;
-      } else {
-        out += '' + it.util.toQuotedString($schema);
-      }
-      out += '         , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += ' } ';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var _if = function generate_if(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  var $thenSch = it.schema['then'],
-    $elseSch = it.schema['else'],
-    $thenPresent = $thenSch !== undefined && (it.opts.strictKeywords ? typeof $thenSch == 'object' && Object.keys($thenSch).length > 0 || $thenSch === false : it.util.schemaHasRules($thenSch, it.RULES.all)),
-    $elsePresent = $elseSch !== undefined && (it.opts.strictKeywords ? typeof $elseSch == 'object' && Object.keys($elseSch).length > 0 || $elseSch === false : it.util.schemaHasRules($elseSch, it.RULES.all)),
-    $currentBaseId = $it.baseId;
-  if ($thenPresent || $elsePresent) {
-    var $ifClause;
-    $it.createErrors = false;
-    $it.schema = $schema;
-    $it.schemaPath = $schemaPath;
-    $it.errSchemaPath = $errSchemaPath;
-    out += ' var ' + $errs + ' = errors; var ' + $valid + ' = true;  ';
-    var $wasComposite = it.compositeRule;
-    it.compositeRule = $it.compositeRule = true;
-    out += '  ' + it.validate($it) + ' ';
-    $it.baseId = $currentBaseId;
-    $it.createErrors = true;
-    out += '  errors = ' + $errs + '; if (vErrors !== null) { if (' + $errs + ') vErrors.length = ' + $errs + '; else vErrors = null; }  ';
-    it.compositeRule = $it.compositeRule = $wasComposite;
-    if ($thenPresent) {
-      out += ' if (' + $nextValid + ') {  ';
-      $it.schema = it.schema['then'];
-      $it.schemaPath = it.schemaPath + '.then';
-      $it.errSchemaPath = it.errSchemaPath + '/then';
-      out += '  ' + it.validate($it) + ' ';
-      $it.baseId = $currentBaseId;
-      out += ' ' + $valid + ' = ' + $nextValid + '; ';
-      if ($thenPresent && $elsePresent) {
-        $ifClause = 'ifClause' + $lvl;
-        out += ' var ' + $ifClause + ' = \'then\'; ';
-      } else {
-        $ifClause = '\'then\'';
-      }
-      out += ' } ';
-      if ($elsePresent) {
-        out += ' else { ';
-      }
-    } else {
-      out += ' if (!' + $nextValid + ') { ';
-    }
-    if ($elsePresent) {
-      $it.schema = it.schema['else'];
-      $it.schemaPath = it.schemaPath + '.else';
-      $it.errSchemaPath = it.errSchemaPath + '/else';
-      out += '  ' + it.validate($it) + ' ';
-      $it.baseId = $currentBaseId;
-      out += ' ' + $valid + ' = ' + $nextValid + '; ';
-      if ($thenPresent && $elsePresent) {
-        $ifClause = 'ifClause' + $lvl;
-        out += ' var ' + $ifClause + ' = \'else\'; ';
-      } else {
-        $ifClause = '\'else\'';
-      }
-      out += ' } ';
-    }
-    out += ' if (!' + $valid + ') {   var err =   '; /* istanbul ignore else */
-    if (it.createErrors !== false) {
-      out += ' { keyword: \'' + 'if' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { failingKeyword: ' + $ifClause + ' } ';
-      if (it.opts.messages !== false) {
-        out += ' , message: \'should match "\' + ' + $ifClause + ' + \'" schema\' ';
-      }
-      if (it.opts.verbose) {
-        out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-      }
-      out += ' } ';
-    } else {
-      out += ' {} ';
-    }
-    out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-    if (!it.compositeRule && $breakOnError) {
-      /* istanbul ignore if */
-      if (it.async) {
-        out += ' throw new ValidationError(vErrors); ';
-      } else {
-        out += ' validate.errors = vErrors; return false; ';
-      }
-    }
-    out += ' }   ';
-    if ($breakOnError) {
-      out += ' else { ';
-    }
-  } else {
-    if ($breakOnError) {
-      out += ' if (true) { ';
-    }
-  }
-  return out;
-};
-
-var items = function generate_items(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  var $closingBraces = '';
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  var $idx = 'i' + $lvl,
-    $dataNxt = $it.dataLevel = it.dataLevel + 1,
-    $nextData = 'data' + $dataNxt,
-    $currentBaseId = it.baseId;
-  out += 'var ' + $errs + ' = errors;var ' + $valid + ';';
-  if (Array.isArray($schema)) {
-    var $additionalItems = it.schema.additionalItems;
-    if ($additionalItems === false) {
-      out += ' ' + $valid + ' = ' + $data + '.length <= ' + $schema.length + '; ';
-      var $currErrSchemaPath = $errSchemaPath;
-      $errSchemaPath = it.errSchemaPath + '/additionalItems';
-      out += '  if (!' + $valid + ') {   ';
-      var $$outStack = $$outStack || [];
-      $$outStack.push(out);
-      out = ''; /* istanbul ignore else */
-      if (it.createErrors !== false) {
-        out += ' { keyword: \'' + 'additionalItems' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { limit: ' + $schema.length + ' } ';
-        if (it.opts.messages !== false) {
-          out += ' , message: \'should NOT have more than ' + $schema.length + ' items\' ';
-        }
-        if (it.opts.verbose) {
-          out += ' , schema: false , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-        }
-        out += ' } ';
-      } else {
-        out += ' {} ';
-      }
-      var __err = out;
-      out = $$outStack.pop();
-      if (!it.compositeRule && $breakOnError) {
-        /* istanbul ignore if */
-        if (it.async) {
-          out += ' throw new ValidationError([' + __err + ']); ';
-        } else {
-          out += ' validate.errors = [' + __err + ']; return false; ';
-        }
-      } else {
-        out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-      }
-      out += ' } ';
-      $errSchemaPath = $currErrSchemaPath;
-      if ($breakOnError) {
-        $closingBraces += '}';
-        out += ' else { ';
-      }
-    }
-    var arr1 = $schema;
-    if (arr1) {
-      var $sch,
-        $i = -1,
-        l1 = arr1.length - 1;
-      while ($i < l1) {
-        $sch = arr1[$i += 1];
-        if (it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 || $sch === false : it.util.schemaHasRules($sch, it.RULES.all)) {
-          out += ' ' + $nextValid + ' = true; if (' + $data + '.length > ' + $i + ') { ';
-          var $passData = $data + '[' + $i + ']';
-          $it.schema = $sch;
-          $it.schemaPath = $schemaPath + '[' + $i + ']';
-          $it.errSchemaPath = $errSchemaPath + '/' + $i;
-          $it.errorPath = it.util.getPathExpr(it.errorPath, $i, it.opts.jsonPointers, true);
-          $it.dataPathArr[$dataNxt] = $i;
-          var $code = it.validate($it);
-          $it.baseId = $currentBaseId;
-          if (it.util.varOccurences($code, $nextData) < 2) {
-            out += ' ' + it.util.varReplace($code, $nextData, $passData) + ' ';
-          } else {
-            out += ' var ' + $nextData + ' = ' + $passData + '; ' + $code + ' ';
-          }
-          out += ' }  ';
-          if ($breakOnError) {
-            out += ' if (' + $nextValid + ') { ';
-            $closingBraces += '}';
-          }
-        }
-      }
-    }
-    if (typeof $additionalItems == 'object' && (it.opts.strictKeywords ? typeof $additionalItems == 'object' && Object.keys($additionalItems).length > 0 || $additionalItems === false : it.util.schemaHasRules($additionalItems, it.RULES.all))) {
-      $it.schema = $additionalItems;
-      $it.schemaPath = it.schemaPath + '.additionalItems';
-      $it.errSchemaPath = it.errSchemaPath + '/additionalItems';
-      out += ' ' + $nextValid + ' = true; if (' + $data + '.length > ' + $schema.length + ') {  for (var ' + $idx + ' = ' + $schema.length + '; ' + $idx + ' < ' + $data + '.length; ' + $idx + '++) { ';
-      $it.errorPath = it.util.getPathExpr(it.errorPath, $idx, it.opts.jsonPointers, true);
-      var $passData = $data + '[' + $idx + ']';
-      $it.dataPathArr[$dataNxt] = $idx;
-      var $code = it.validate($it);
-      $it.baseId = $currentBaseId;
-      if (it.util.varOccurences($code, $nextData) < 2) {
-        out += ' ' + it.util.varReplace($code, $nextData, $passData) + ' ';
-      } else {
-        out += ' var ' + $nextData + ' = ' + $passData + '; ' + $code + ' ';
-      }
-      if ($breakOnError) {
-        out += ' if (!' + $nextValid + ') break; ';
-      }
-      out += ' } }  ';
-      if ($breakOnError) {
-        out += ' if (' + $nextValid + ') { ';
-        $closingBraces += '}';
-      }
-    }
-  } else if (it.opts.strictKeywords ? typeof $schema == 'object' && Object.keys($schema).length > 0 || $schema === false : it.util.schemaHasRules($schema, it.RULES.all)) {
-    $it.schema = $schema;
-    $it.schemaPath = $schemaPath;
-    $it.errSchemaPath = $errSchemaPath;
-    out += '  for (var ' + $idx + ' = ' + 0 + '; ' + $idx + ' < ' + $data + '.length; ' + $idx + '++) { ';
-    $it.errorPath = it.util.getPathExpr(it.errorPath, $idx, it.opts.jsonPointers, true);
-    var $passData = $data + '[' + $idx + ']';
-    $it.dataPathArr[$dataNxt] = $idx;
-    var $code = it.validate($it);
-    $it.baseId = $currentBaseId;
-    if (it.util.varOccurences($code, $nextData) < 2) {
-      out += ' ' + it.util.varReplace($code, $nextData, $passData) + ' ';
-    } else {
-      out += ' var ' + $nextData + ' = ' + $passData + '; ' + $code + ' ';
-    }
-    if ($breakOnError) {
-      out += ' if (!' + $nextValid + ') break; ';
-    }
-    out += ' }';
-  }
-  if ($breakOnError) {
-    out += ' ' + $closingBraces + ' if (' + $errs + ' == errors) {';
-  }
-  return out;
-};
-
-var _limit = function generate__limit(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $errorKeyword;
-  var $data = 'data' + ($dataLvl || '');
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  var $isMax = $keyword == 'maximum',
-    $exclusiveKeyword = $isMax ? 'exclusiveMaximum' : 'exclusiveMinimum',
-    $schemaExcl = it.schema[$exclusiveKeyword],
-    $isDataExcl = it.opts.$data && $schemaExcl && $schemaExcl.$data,
-    $op = $isMax ? '<' : '>',
-    $notOp = $isMax ? '>' : '<',
-    $errorKeyword = undefined;
-  if (!($isData || typeof $schema == 'number' || $schema === undefined)) {
-    throw new Error($keyword + ' must be number');
-  }
-  if (!($isDataExcl || $schemaExcl === undefined || typeof $schemaExcl == 'number' || typeof $schemaExcl == 'boolean')) {
-    throw new Error($exclusiveKeyword + ' must be number or boolean');
-  }
-  if ($isDataExcl) {
-    var $schemaValueExcl = it.util.getData($schemaExcl.$data, $dataLvl, it.dataPathArr),
-      $exclusive = 'exclusive' + $lvl,
-      $exclType = 'exclType' + $lvl,
-      $exclIsNumber = 'exclIsNumber' + $lvl,
-      $opExpr = 'op' + $lvl,
-      $opStr = '\' + ' + $opExpr + ' + \'';
-    out += ' var schemaExcl' + $lvl + ' = ' + $schemaValueExcl + '; ';
-    $schemaValueExcl = 'schemaExcl' + $lvl;
-    out += ' var ' + $exclusive + '; var ' + $exclType + ' = typeof ' + $schemaValueExcl + '; if (' + $exclType + ' != \'boolean\' && ' + $exclType + ' != \'undefined\' && ' + $exclType + ' != \'number\') { ';
-    var $errorKeyword = $exclusiveKeyword;
-    var $$outStack = $$outStack || [];
-    $$outStack.push(out);
-    out = ''; /* istanbul ignore else */
-    if (it.createErrors !== false) {
-      out += ' { keyword: \'' + ($errorKeyword || '_exclusiveLimit') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: {} ';
-      if (it.opts.messages !== false) {
-        out += ' , message: \'' + $exclusiveKeyword + ' should be boolean\' ';
-      }
-      if (it.opts.verbose) {
-        out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-      }
-      out += ' } ';
-    } else {
-      out += ' {} ';
-    }
-    var __err = out;
-    out = $$outStack.pop();
-    if (!it.compositeRule && $breakOnError) {
-      /* istanbul ignore if */
-      if (it.async) {
-        out += ' throw new ValidationError([' + __err + ']); ';
-      } else {
-        out += ' validate.errors = [' + __err + ']; return false; ';
-      }
-    } else {
-      out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-    }
-    out += ' } else if ( ';
-    if ($isData) {
-      out += ' (' + $schemaValue + ' !== undefined && typeof ' + $schemaValue + ' != \'number\') || ';
-    }
-    out += ' ' + $exclType + ' == \'number\' ? ( (' + $exclusive + ' = ' + $schemaValue + ' === undefined || ' + $schemaValueExcl + ' ' + $op + '= ' + $schemaValue + ') ? ' + $data + ' ' + $notOp + '= ' + $schemaValueExcl + ' : ' + $data + ' ' + $notOp + ' ' + $schemaValue + ' ) : ( (' + $exclusive + ' = ' + $schemaValueExcl + ' === true) ? ' + $data + ' ' + $notOp + '= ' + $schemaValue + ' : ' + $data + ' ' + $notOp + ' ' + $schemaValue + ' ) || ' + $data + ' !== ' + $data + ') { var op' + $lvl + ' = ' + $exclusive + ' ? \'' + $op + '\' : \'' + $op + '=\'; ';
-    if ($schema === undefined) {
-      $errorKeyword = $exclusiveKeyword;
-      $errSchemaPath = it.errSchemaPath + '/' + $exclusiveKeyword;
-      $schemaValue = $schemaValueExcl;
-      $isData = $isDataExcl;
-    }
-  } else {
-    var $exclIsNumber = typeof $schemaExcl == 'number',
-      $opStr = $op;
-    if ($exclIsNumber && $isData) {
-      var $opExpr = '\'' + $opStr + '\'';
-      out += ' if ( ';
-      if ($isData) {
-        out += ' (' + $schemaValue + ' !== undefined && typeof ' + $schemaValue + ' != \'number\') || ';
-      }
-      out += ' ( ' + $schemaValue + ' === undefined || ' + $schemaExcl + ' ' + $op + '= ' + $schemaValue + ' ? ' + $data + ' ' + $notOp + '= ' + $schemaExcl + ' : ' + $data + ' ' + $notOp + ' ' + $schemaValue + ' ) || ' + $data + ' !== ' + $data + ') { ';
-    } else {
-      if ($exclIsNumber && $schema === undefined) {
-        $exclusive = true;
-        $errorKeyword = $exclusiveKeyword;
-        $errSchemaPath = it.errSchemaPath + '/' + $exclusiveKeyword;
-        $schemaValue = $schemaExcl;
-        $notOp += '=';
-      } else {
-        if ($exclIsNumber) $schemaValue = Math[$isMax ? 'min' : 'max']($schemaExcl, $schema);
-        if ($schemaExcl === ($exclIsNumber ? $schemaValue : true)) {
-          $exclusive = true;
-          $errorKeyword = $exclusiveKeyword;
-          $errSchemaPath = it.errSchemaPath + '/' + $exclusiveKeyword;
-          $notOp += '=';
-        } else {
-          $exclusive = false;
-          $opStr += '=';
-        }
-      }
-      var $opExpr = '\'' + $opStr + '\'';
-      out += ' if ( ';
-      if ($isData) {
-        out += ' (' + $schemaValue + ' !== undefined && typeof ' + $schemaValue + ' != \'number\') || ';
-      }
-      out += ' ' + $data + ' ' + $notOp + ' ' + $schemaValue + ' || ' + $data + ' !== ' + $data + ') { ';
-    }
-  }
-  $errorKeyword = $errorKeyword || $keyword;
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + ($errorKeyword || '_limit') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { comparison: ' + $opExpr + ', limit: ' + $schemaValue + ', exclusive: ' + $exclusive + ' } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should be ' + $opStr + ' ';
-      if ($isData) {
-        out += '\' + ' + $schemaValue;
-      } else {
-        out += '' + $schemaValue + '\'';
-      }
-    }
-    if (it.opts.verbose) {
-      out += ' , schema:  ';
-      if ($isData) {
-        out += 'validate.schema' + $schemaPath;
-      } else {
-        out += '' + $schema;
-      }
-      out += '         , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += ' } ';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var _limitItems = function generate__limitItems(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $errorKeyword;
-  var $data = 'data' + ($dataLvl || '');
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  if (!($isData || typeof $schema == 'number')) {
-    throw new Error($keyword + ' must be number');
-  }
-  var $op = $keyword == 'maxItems' ? '>' : '<';
-  out += 'if ( ';
-  if ($isData) {
-    out += ' (' + $schemaValue + ' !== undefined && typeof ' + $schemaValue + ' != \'number\') || ';
-  }
-  out += ' ' + $data + '.length ' + $op + ' ' + $schemaValue + ') { ';
-  var $errorKeyword = $keyword;
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + ($errorKeyword || '_limitItems') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { limit: ' + $schemaValue + ' } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should NOT have ';
-      if ($keyword == 'maxItems') {
-        out += 'more';
-      } else {
-        out += 'fewer';
-      }
-      out += ' than ';
-      if ($isData) {
-        out += '\' + ' + $schemaValue + ' + \'';
-      } else {
-        out += '' + $schema;
-      }
-      out += ' items\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema:  ';
-      if ($isData) {
-        out += 'validate.schema' + $schemaPath;
-      } else {
-        out += '' + $schema;
-      }
-      out += '         , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += '} ';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var _limitLength = function generate__limitLength(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $errorKeyword;
-  var $data = 'data' + ($dataLvl || '');
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  if (!($isData || typeof $schema == 'number')) {
-    throw new Error($keyword + ' must be number');
-  }
-  var $op = $keyword == 'maxLength' ? '>' : '<';
-  out += 'if ( ';
-  if ($isData) {
-    out += ' (' + $schemaValue + ' !== undefined && typeof ' + $schemaValue + ' != \'number\') || ';
-  }
-  if (it.opts.unicode === false) {
-    out += ' ' + $data + '.length ';
-  } else {
-    out += ' ucs2length(' + $data + ') ';
-  }
-  out += ' ' + $op + ' ' + $schemaValue + ') { ';
-  var $errorKeyword = $keyword;
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + ($errorKeyword || '_limitLength') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { limit: ' + $schemaValue + ' } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should NOT be ';
-      if ($keyword == 'maxLength') {
-        out += 'longer';
-      } else {
-        out += 'shorter';
-      }
-      out += ' than ';
-      if ($isData) {
-        out += '\' + ' + $schemaValue + ' + \'';
-      } else {
-        out += '' + $schema;
-      }
-      out += ' characters\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema:  ';
-      if ($isData) {
-        out += 'validate.schema' + $schemaPath;
-      } else {
-        out += '' + $schema;
-      }
-      out += '         , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += '} ';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var _limitProperties = function generate__limitProperties(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $errorKeyword;
-  var $data = 'data' + ($dataLvl || '');
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  if (!($isData || typeof $schema == 'number')) {
-    throw new Error($keyword + ' must be number');
-  }
-  var $op = $keyword == 'maxProperties' ? '>' : '<';
-  out += 'if ( ';
-  if ($isData) {
-    out += ' (' + $schemaValue + ' !== undefined && typeof ' + $schemaValue + ' != \'number\') || ';
-  }
-  out += ' Object.keys(' + $data + ').length ' + $op + ' ' + $schemaValue + ') { ';
-  var $errorKeyword = $keyword;
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + ($errorKeyword || '_limitProperties') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { limit: ' + $schemaValue + ' } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should NOT have ';
-      if ($keyword == 'maxProperties') {
-        out += 'more';
-      } else {
-        out += 'fewer';
-      }
-      out += ' than ';
-      if ($isData) {
-        out += '\' + ' + $schemaValue + ' + \'';
-      } else {
-        out += '' + $schema;
-      }
-      out += ' properties\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema:  ';
-      if ($isData) {
-        out += 'validate.schema' + $schemaPath;
-      } else {
-        out += '' + $schema;
-      }
-      out += '         , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += '} ';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var multipleOf = function generate_multipleOf(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  if (!($isData || typeof $schema == 'number')) {
-    throw new Error($keyword + ' must be number');
-  }
-  out += 'var division' + $lvl + ';if (';
-  if ($isData) {
-    out += ' ' + $schemaValue + ' !== undefined && ( typeof ' + $schemaValue + ' != \'number\' || ';
-  }
-  out += ' (division' + $lvl + ' = ' + $data + ' / ' + $schemaValue + ', ';
-  if (it.opts.multipleOfPrecision) {
-    out += ' Math.abs(Math.round(division' + $lvl + ') - division' + $lvl + ') > 1e-' + it.opts.multipleOfPrecision + ' ';
-  } else {
-    out += ' division' + $lvl + ' !== parseInt(division' + $lvl + ') ';
-  }
-  out += ' ) ';
-  if ($isData) {
-    out += '  )  ';
-  }
-  out += ' ) {   ';
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + 'multipleOf' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { multipleOf: ' + $schemaValue + ' } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should be multiple of ';
-      if ($isData) {
-        out += '\' + ' + $schemaValue;
-      } else {
-        out += '' + $schemaValue + '\'';
-      }
-    }
-    if (it.opts.verbose) {
-      out += ' , schema:  ';
-      if ($isData) {
-        out += 'validate.schema' + $schemaPath;
-      } else {
-        out += '' + $schema;
-      }
-      out += '         , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += '} ';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var not = function generate_not(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  if (it.opts.strictKeywords ? typeof $schema == 'object' && Object.keys($schema).length > 0 || $schema === false : it.util.schemaHasRules($schema, it.RULES.all)) {
-    $it.schema = $schema;
-    $it.schemaPath = $schemaPath;
-    $it.errSchemaPath = $errSchemaPath;
-    out += ' var ' + $errs + ' = errors;  ';
-    var $wasComposite = it.compositeRule;
-    it.compositeRule = $it.compositeRule = true;
-    $it.createErrors = false;
-    var $allErrorsOption;
-    if ($it.opts.allErrors) {
-      $allErrorsOption = $it.opts.allErrors;
-      $it.opts.allErrors = false;
-    }
-    out += ' ' + it.validate($it) + ' ';
-    $it.createErrors = true;
-    if ($allErrorsOption) $it.opts.allErrors = $allErrorsOption;
-    it.compositeRule = $it.compositeRule = $wasComposite;
-    out += ' if (' + $nextValid + ') {   ';
-    var $$outStack = $$outStack || [];
-    $$outStack.push(out);
-    out = ''; /* istanbul ignore else */
-    if (it.createErrors !== false) {
-      out += ' { keyword: \'' + 'not' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: {} ';
-      if (it.opts.messages !== false) {
-        out += ' , message: \'should NOT be valid\' ';
-      }
-      if (it.opts.verbose) {
-        out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-      }
-      out += ' } ';
-    } else {
-      out += ' {} ';
-    }
-    var __err = out;
-    out = $$outStack.pop();
-    if (!it.compositeRule && $breakOnError) {
-      /* istanbul ignore if */
-      if (it.async) {
-        out += ' throw new ValidationError([' + __err + ']); ';
-      } else {
-        out += ' validate.errors = [' + __err + ']; return false; ';
-      }
-    } else {
-      out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-    }
-    out += ' } else {  errors = ' + $errs + '; if (vErrors !== null) { if (' + $errs + ') vErrors.length = ' + $errs + '; else vErrors = null; } ';
-    if (it.opts.allErrors) {
-      out += ' } ';
-    }
-  } else {
-    out += '  var err =   '; /* istanbul ignore else */
-    if (it.createErrors !== false) {
-      out += ' { keyword: \'' + 'not' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: {} ';
-      if (it.opts.messages !== false) {
-        out += ' , message: \'should NOT be valid\' ';
-      }
-      if (it.opts.verbose) {
-        out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-      }
-      out += ' } ';
-    } else {
-      out += ' {} ';
-    }
-    out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-    if ($breakOnError) {
-      out += ' if (false) { ';
-    }
-  }
-  return out;
-};
-
-var oneOf = function generate_oneOf(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  var $closingBraces = '';
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  var $currentBaseId = $it.baseId,
-    $prevValid = 'prevValid' + $lvl,
-    $passingSchemas = 'passingSchemas' + $lvl;
-  out += 'var ' + $errs + ' = errors , ' + $prevValid + ' = false , ' + $valid + ' = false , ' + $passingSchemas + ' = null; ';
-  var $wasComposite = it.compositeRule;
-  it.compositeRule = $it.compositeRule = true;
-  var arr1 = $schema;
-  if (arr1) {
-    var $sch,
-      $i = -1,
-      l1 = arr1.length - 1;
-    while ($i < l1) {
-      $sch = arr1[$i += 1];
-      if (it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 || $sch === false : it.util.schemaHasRules($sch, it.RULES.all)) {
-        $it.schema = $sch;
-        $it.schemaPath = $schemaPath + '[' + $i + ']';
-        $it.errSchemaPath = $errSchemaPath + '/' + $i;
-        out += '  ' + it.validate($it) + ' ';
-        $it.baseId = $currentBaseId;
-      } else {
-        out += ' var ' + $nextValid + ' = true; ';
-      }
-      if ($i) {
-        out += ' if (' + $nextValid + ' && ' + $prevValid + ') { ' + $valid + ' = false; ' + $passingSchemas + ' = [' + $passingSchemas + ', ' + $i + ']; } else { ';
-        $closingBraces += '}';
-      }
-      out += ' if (' + $nextValid + ') { ' + $valid + ' = ' + $prevValid + ' = true; ' + $passingSchemas + ' = ' + $i + '; }';
-    }
-  }
-  it.compositeRule = $it.compositeRule = $wasComposite;
-  out += '' + $closingBraces + 'if (!' + $valid + ') {   var err =   '; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + 'oneOf' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { passingSchemas: ' + $passingSchemas + ' } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should match exactly one schema in oneOf\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError(vErrors); ';
-    } else {
-      out += ' validate.errors = vErrors; return false; ';
-    }
-  }
-  out += '} else {  errors = ' + $errs + '; if (vErrors !== null) { if (' + $errs + ') vErrors.length = ' + $errs + '; else vErrors = null; }';
-  if (it.opts.allErrors) {
-    out += ' } ';
-  }
-  return out;
-};
-
-var pattern = function generate_pattern(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  var $regexp = $isData ? '(new RegExp(' + $schemaValue + '))' : it.usePattern($schema);
-  out += 'if ( ';
-  if ($isData) {
-    out += ' (' + $schemaValue + ' !== undefined && typeof ' + $schemaValue + ' != \'string\') || ';
-  }
-  out += ' !' + $regexp + '.test(' + $data + ') ) {   ';
-  var $$outStack = $$outStack || [];
-  $$outStack.push(out);
-  out = ''; /* istanbul ignore else */
-  if (it.createErrors !== false) {
-    out += ' { keyword: \'' + 'pattern' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { pattern:  ';
-    if ($isData) {
-      out += '' + $schemaValue;
-    } else {
-      out += '' + it.util.toQuotedString($schema);
-    }
-    out += '  } ';
-    if (it.opts.messages !== false) {
-      out += ' , message: \'should match pattern "';
-      if ($isData) {
-        out += '\' + ' + $schemaValue + ' + \'';
-      } else {
-        out += '' + it.util.escapeQuotes($schema);
-      }
-      out += '"\' ';
-    }
-    if (it.opts.verbose) {
-      out += ' , schema:  ';
-      if ($isData) {
-        out += 'validate.schema' + $schemaPath;
-      } else {
-        out += '' + it.util.toQuotedString($schema);
-      }
-      out += '         , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-    }
-    out += ' } ';
-  } else {
-    out += ' {} ';
-  }
-  var __err = out;
-  out = $$outStack.pop();
-  if (!it.compositeRule && $breakOnError) {
-    /* istanbul ignore if */
-    if (it.async) {
-      out += ' throw new ValidationError([' + __err + ']); ';
-    } else {
-      out += ' validate.errors = [' + __err + ']; return false; ';
-    }
-  } else {
-    out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-  }
-  out += '} ';
-  if ($breakOnError) {
-    out += ' else { ';
-  }
-  return out;
-};
-
-var properties$3 = function generate_properties(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  var $closingBraces = '';
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  var $key = 'key' + $lvl,
-    $idx = 'idx' + $lvl,
-    $dataNxt = $it.dataLevel = it.dataLevel + 1,
-    $nextData = 'data' + $dataNxt,
-    $dataProperties = 'dataProperties' + $lvl;
-  var $schemaKeys = Object.keys($schema || {}).filter(notProto),
-    $pProperties = it.schema.patternProperties || {},
-    $pPropertyKeys = Object.keys($pProperties).filter(notProto),
-    $aProperties = it.schema.additionalProperties,
-    $someProperties = $schemaKeys.length || $pPropertyKeys.length,
-    $noAdditional = $aProperties === false,
-    $additionalIsSchema = typeof $aProperties == 'object' && Object.keys($aProperties).length,
-    $removeAdditional = it.opts.removeAdditional,
-    $checkAdditional = $noAdditional || $additionalIsSchema || $removeAdditional,
-    $ownProperties = it.opts.ownProperties,
-    $currentBaseId = it.baseId;
-  var $required = it.schema.required;
-  if ($required && !(it.opts.$data && $required.$data) && $required.length < it.opts.loopRequired) {
-    var $requiredHash = it.util.toHash($required);
-  }
-  function notProto(p) {
-    return p !== '__proto__';
-  }
-  out += 'var ' + $errs + ' = errors;var ' + $nextValid + ' = true;';
-  if ($ownProperties) {
-    out += ' var ' + $dataProperties + ' = undefined;';
-  }
-  if ($checkAdditional) {
-    if ($ownProperties) {
-      out += ' ' + $dataProperties + ' = ' + $dataProperties + ' || Object.keys(' + $data + '); for (var ' + $idx + '=0; ' + $idx + '<' + $dataProperties + '.length; ' + $idx + '++) { var ' + $key + ' = ' + $dataProperties + '[' + $idx + ']; ';
-    } else {
-      out += ' for (var ' + $key + ' in ' + $data + ') { ';
-    }
-    if ($someProperties) {
-      out += ' var isAdditional' + $lvl + ' = !(false ';
-      if ($schemaKeys.length) {
-        if ($schemaKeys.length > 8) {
-          out += ' || validate.schema' + $schemaPath + '.hasOwnProperty(' + $key + ') ';
-        } else {
-          var arr1 = $schemaKeys;
-          if (arr1) {
-            var $propertyKey,
-              i1 = -1,
-              l1 = arr1.length - 1;
-            while (i1 < l1) {
-              $propertyKey = arr1[i1 += 1];
-              out += ' || ' + $key + ' == ' + it.util.toQuotedString($propertyKey) + ' ';
-            }
-          }
-        }
-      }
-      if ($pPropertyKeys.length) {
-        var arr2 = $pPropertyKeys;
-        if (arr2) {
-          var $pProperty,
-            $i = -1,
-            l2 = arr2.length - 1;
-          while ($i < l2) {
-            $pProperty = arr2[$i += 1];
-            out += ' || ' + it.usePattern($pProperty) + '.test(' + $key + ') ';
-          }
-        }
-      }
-      out += ' ); if (isAdditional' + $lvl + ') { ';
-    }
-    if ($removeAdditional == 'all') {
-      out += ' delete ' + $data + '[' + $key + ']; ';
-    } else {
-      var $currentErrorPath = it.errorPath;
-      var $additionalProperty = '\' + ' + $key + ' + \'';
-      if (it.opts._errorDataPathProperty) {
-        it.errorPath = it.util.getPathExpr(it.errorPath, $key, it.opts.jsonPointers);
-      }
-      if ($noAdditional) {
-        if ($removeAdditional) {
-          out += ' delete ' + $data + '[' + $key + ']; ';
-        } else {
-          out += ' ' + $nextValid + ' = false; ';
-          var $currErrSchemaPath = $errSchemaPath;
-          $errSchemaPath = it.errSchemaPath + '/additionalProperties';
-          var $$outStack = $$outStack || [];
-          $$outStack.push(out);
-          out = ''; /* istanbul ignore else */
-          if (it.createErrors !== false) {
-            out += ' { keyword: \'' + 'additionalProperties' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { additionalProperty: \'' + $additionalProperty + '\' } ';
-            if (it.opts.messages !== false) {
-              out += ' , message: \'';
-              if (it.opts._errorDataPathProperty) {
-                out += 'is an invalid additional property';
-              } else {
-                out += 'should NOT have additional properties';
-              }
-              out += '\' ';
-            }
-            if (it.opts.verbose) {
-              out += ' , schema: false , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-            }
-            out += ' } ';
-          } else {
-            out += ' {} ';
-          }
-          var __err = out;
-          out = $$outStack.pop();
-          if (!it.compositeRule && $breakOnError) {
-            /* istanbul ignore if */
-            if (it.async) {
-              out += ' throw new ValidationError([' + __err + ']); ';
-            } else {
-              out += ' validate.errors = [' + __err + ']; return false; ';
-            }
-          } else {
-            out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-          }
-          $errSchemaPath = $currErrSchemaPath;
-          if ($breakOnError) {
-            out += ' break; ';
-          }
-        }
-      } else if ($additionalIsSchema) {
-        if ($removeAdditional == 'failing') {
-          out += ' var ' + $errs + ' = errors;  ';
-          var $wasComposite = it.compositeRule;
-          it.compositeRule = $it.compositeRule = true;
-          $it.schema = $aProperties;
-          $it.schemaPath = it.schemaPath + '.additionalProperties';
-          $it.errSchemaPath = it.errSchemaPath + '/additionalProperties';
-          $it.errorPath = it.opts._errorDataPathProperty ? it.errorPath : it.util.getPathExpr(it.errorPath, $key, it.opts.jsonPointers);
-          var $passData = $data + '[' + $key + ']';
-          $it.dataPathArr[$dataNxt] = $key;
-          var $code = it.validate($it);
-          $it.baseId = $currentBaseId;
-          if (it.util.varOccurences($code, $nextData) < 2) {
-            out += ' ' + it.util.varReplace($code, $nextData, $passData) + ' ';
-          } else {
-            out += ' var ' + $nextData + ' = ' + $passData + '; ' + $code + ' ';
-          }
-          out += ' if (!' + $nextValid + ') { errors = ' + $errs + '; if (validate.errors !== null) { if (errors) validate.errors.length = errors; else validate.errors = null; } delete ' + $data + '[' + $key + ']; }  ';
-          it.compositeRule = $it.compositeRule = $wasComposite;
-        } else {
-          $it.schema = $aProperties;
-          $it.schemaPath = it.schemaPath + '.additionalProperties';
-          $it.errSchemaPath = it.errSchemaPath + '/additionalProperties';
-          $it.errorPath = it.opts._errorDataPathProperty ? it.errorPath : it.util.getPathExpr(it.errorPath, $key, it.opts.jsonPointers);
-          var $passData = $data + '[' + $key + ']';
-          $it.dataPathArr[$dataNxt] = $key;
-          var $code = it.validate($it);
-          $it.baseId = $currentBaseId;
-          if (it.util.varOccurences($code, $nextData) < 2) {
-            out += ' ' + it.util.varReplace($code, $nextData, $passData) + ' ';
-          } else {
-            out += ' var ' + $nextData + ' = ' + $passData + '; ' + $code + ' ';
-          }
-          if ($breakOnError) {
-            out += ' if (!' + $nextValid + ') break; ';
-          }
-        }
-      }
-      it.errorPath = $currentErrorPath;
-    }
-    if ($someProperties) {
-      out += ' } ';
-    }
-    out += ' }  ';
-    if ($breakOnError) {
-      out += ' if (' + $nextValid + ') { ';
-      $closingBraces += '}';
-    }
-  }
-  var $useDefaults = it.opts.useDefaults && !it.compositeRule;
-  if ($schemaKeys.length) {
-    var arr3 = $schemaKeys;
-    if (arr3) {
-      var $propertyKey,
-        i3 = -1,
-        l3 = arr3.length - 1;
-      while (i3 < l3) {
-        $propertyKey = arr3[i3 += 1];
-        var $sch = $schema[$propertyKey];
-        if (it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 || $sch === false : it.util.schemaHasRules($sch, it.RULES.all)) {
-          var $prop = it.util.getProperty($propertyKey),
-            $passData = $data + $prop,
-            $hasDefault = $useDefaults && $sch.default !== undefined;
-          $it.schema = $sch;
-          $it.schemaPath = $schemaPath + $prop;
-          $it.errSchemaPath = $errSchemaPath + '/' + it.util.escapeFragment($propertyKey);
-          $it.errorPath = it.util.getPath(it.errorPath, $propertyKey, it.opts.jsonPointers);
-          $it.dataPathArr[$dataNxt] = it.util.toQuotedString($propertyKey);
-          var $code = it.validate($it);
-          $it.baseId = $currentBaseId;
-          if (it.util.varOccurences($code, $nextData) < 2) {
-            $code = it.util.varReplace($code, $nextData, $passData);
-            var $useData = $passData;
-          } else {
-            var $useData = $nextData;
-            out += ' var ' + $nextData + ' = ' + $passData + '; ';
-          }
-          if ($hasDefault) {
-            out += ' ' + $code + ' ';
-          } else {
-            if ($requiredHash && $requiredHash[$propertyKey]) {
-              out += ' if ( ' + $useData + ' === undefined ';
-              if ($ownProperties) {
-                out += ' || ! Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($propertyKey) + '\') ';
-              }
-              out += ') { ' + $nextValid + ' = false; ';
-              var $currentErrorPath = it.errorPath,
-                $currErrSchemaPath = $errSchemaPath,
-                $missingProperty = it.util.escapeQuotes($propertyKey);
-              if (it.opts._errorDataPathProperty) {
-                it.errorPath = it.util.getPath($currentErrorPath, $propertyKey, it.opts.jsonPointers);
-              }
-              $errSchemaPath = it.errSchemaPath + '/required';
-              var $$outStack = $$outStack || [];
-              $$outStack.push(out);
-              out = ''; /* istanbul ignore else */
-              if (it.createErrors !== false) {
-                out += ' { keyword: \'' + 'required' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { missingProperty: \'' + $missingProperty + '\' } ';
-                if (it.opts.messages !== false) {
-                  out += ' , message: \'';
-                  if (it.opts._errorDataPathProperty) {
-                    out += 'is a required property';
-                  } else {
-                    out += 'should have required property \\\'' + $missingProperty + '\\\'';
-                  }
-                  out += '\' ';
-                }
-                if (it.opts.verbose) {
-                  out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-                }
-                out += ' } ';
-              } else {
-                out += ' {} ';
-              }
-              var __err = out;
-              out = $$outStack.pop();
-              if (!it.compositeRule && $breakOnError) {
-                /* istanbul ignore if */
-                if (it.async) {
-                  out += ' throw new ValidationError([' + __err + ']); ';
-                } else {
-                  out += ' validate.errors = [' + __err + ']; return false; ';
-                }
-              } else {
-                out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-              }
-              $errSchemaPath = $currErrSchemaPath;
-              it.errorPath = $currentErrorPath;
-              out += ' } else { ';
-            } else {
-              if ($breakOnError) {
-                out += ' if ( ' + $useData + ' === undefined ';
-                if ($ownProperties) {
-                  out += ' || ! Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($propertyKey) + '\') ';
-                }
-                out += ') { ' + $nextValid + ' = true; } else { ';
-              } else {
-                out += ' if (' + $useData + ' !== undefined ';
-                if ($ownProperties) {
-                  out += ' &&   Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($propertyKey) + '\') ';
-                }
-                out += ' ) { ';
-              }
-            }
-            out += ' ' + $code + ' } ';
-          }
-        }
-        if ($breakOnError) {
-          out += ' if (' + $nextValid + ') { ';
-          $closingBraces += '}';
-        }
-      }
-    }
-  }
-  if ($pPropertyKeys.length) {
-    var arr4 = $pPropertyKeys;
-    if (arr4) {
-      var $pProperty,
-        i4 = -1,
-        l4 = arr4.length - 1;
-      while (i4 < l4) {
-        $pProperty = arr4[i4 += 1];
-        var $sch = $pProperties[$pProperty];
-        if (it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 || $sch === false : it.util.schemaHasRules($sch, it.RULES.all)) {
-          $it.schema = $sch;
-          $it.schemaPath = it.schemaPath + '.patternProperties' + it.util.getProperty($pProperty);
-          $it.errSchemaPath = it.errSchemaPath + '/patternProperties/' + it.util.escapeFragment($pProperty);
-          if ($ownProperties) {
-            out += ' ' + $dataProperties + ' = ' + $dataProperties + ' || Object.keys(' + $data + '); for (var ' + $idx + '=0; ' + $idx + '<' + $dataProperties + '.length; ' + $idx + '++) { var ' + $key + ' = ' + $dataProperties + '[' + $idx + ']; ';
-          } else {
-            out += ' for (var ' + $key + ' in ' + $data + ') { ';
-          }
-          out += ' if (' + it.usePattern($pProperty) + '.test(' + $key + ')) { ';
-          $it.errorPath = it.util.getPathExpr(it.errorPath, $key, it.opts.jsonPointers);
-          var $passData = $data + '[' + $key + ']';
-          $it.dataPathArr[$dataNxt] = $key;
-          var $code = it.validate($it);
-          $it.baseId = $currentBaseId;
-          if (it.util.varOccurences($code, $nextData) < 2) {
-            out += ' ' + it.util.varReplace($code, $nextData, $passData) + ' ';
-          } else {
-            out += ' var ' + $nextData + ' = ' + $passData + '; ' + $code + ' ';
-          }
-          if ($breakOnError) {
-            out += ' if (!' + $nextValid + ') break; ';
-          }
-          out += ' } ';
-          if ($breakOnError) {
-            out += ' else ' + $nextValid + ' = true; ';
-          }
-          out += ' }  ';
-          if ($breakOnError) {
-            out += ' if (' + $nextValid + ') { ';
-            $closingBraces += '}';
-          }
-        }
-      }
-    }
-  }
-  if ($breakOnError) {
-    out += ' ' + $closingBraces + ' if (' + $errs + ' == errors) {';
-  }
-  return out;
-};
-
-var propertyNames = function generate_propertyNames(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $errs = 'errs__' + $lvl;
-  var $it = it.util.copy(it);
-  var $closingBraces = '';
-  $it.level++;
-  var $nextValid = 'valid' + $it.level;
-  out += 'var ' + $errs + ' = errors;';
-  if (it.opts.strictKeywords ? typeof $schema == 'object' && Object.keys($schema).length > 0 || $schema === false : it.util.schemaHasRules($schema, it.RULES.all)) {
-    $it.schema = $schema;
-    $it.schemaPath = $schemaPath;
-    $it.errSchemaPath = $errSchemaPath;
-    var $key = 'key' + $lvl,
-      $idx = 'idx' + $lvl,
-      $i = 'i' + $lvl,
-      $invalidName = '\' + ' + $key + ' + \'',
-      $dataNxt = $it.dataLevel = it.dataLevel + 1,
-      $nextData = 'data' + $dataNxt,
-      $dataProperties = 'dataProperties' + $lvl,
-      $ownProperties = it.opts.ownProperties,
-      $currentBaseId = it.baseId;
-    if ($ownProperties) {
-      out += ' var ' + $dataProperties + ' = undefined; ';
-    }
-    if ($ownProperties) {
-      out += ' ' + $dataProperties + ' = ' + $dataProperties + ' || Object.keys(' + $data + '); for (var ' + $idx + '=0; ' + $idx + '<' + $dataProperties + '.length; ' + $idx + '++) { var ' + $key + ' = ' + $dataProperties + '[' + $idx + ']; ';
-    } else {
-      out += ' for (var ' + $key + ' in ' + $data + ') { ';
-    }
-    out += ' var startErrs' + $lvl + ' = errors; ';
-    var $passData = $key;
-    var $wasComposite = it.compositeRule;
-    it.compositeRule = $it.compositeRule = true;
-    var $code = it.validate($it);
-    $it.baseId = $currentBaseId;
-    if (it.util.varOccurences($code, $nextData) < 2) {
-      out += ' ' + it.util.varReplace($code, $nextData, $passData) + ' ';
-    } else {
-      out += ' var ' + $nextData + ' = ' + $passData + '; ' + $code + ' ';
-    }
-    it.compositeRule = $it.compositeRule = $wasComposite;
-    out += ' if (!' + $nextValid + ') { for (var ' + $i + '=startErrs' + $lvl + '; ' + $i + '<errors; ' + $i + '++) { vErrors[' + $i + '].propertyName = ' + $key + '; }   var err =   '; /* istanbul ignore else */
-    if (it.createErrors !== false) {
-      out += ' { keyword: \'' + 'propertyNames' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { propertyName: \'' + $invalidName + '\' } ';
-      if (it.opts.messages !== false) {
-        out += ' , message: \'property name \\\'' + $invalidName + '\\\' is invalid\' ';
-      }
-      if (it.opts.verbose) {
-        out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-      }
-      out += ' } ';
-    } else {
-      out += ' {} ';
-    }
-    out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-    if (!it.compositeRule && $breakOnError) {
-      /* istanbul ignore if */
-      if (it.async) {
-        out += ' throw new ValidationError(vErrors); ';
-      } else {
-        out += ' validate.errors = vErrors; return false; ';
-      }
-    }
-    if ($breakOnError) {
-      out += ' break; ';
-    }
-    out += ' } }';
-  }
-  if ($breakOnError) {
-    out += ' ' + $closingBraces + ' if (' + $errs + ' == errors) {';
-  }
-  return out;
-};
-
-var required$1 = function generate_required(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $isData = it.opts.$data && $schema && $schema.$data;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-  }
-  var $vSchema = 'schema' + $lvl;
-  if (!$isData) {
-    if ($schema.length < it.opts.loopRequired && it.schema.properties && Object.keys(it.schema.properties).length) {
-      var $required = [];
-      var arr1 = $schema;
-      if (arr1) {
-        var $property,
-          i1 = -1,
-          l1 = arr1.length - 1;
-        while (i1 < l1) {
-          $property = arr1[i1 += 1];
-          var $propertySch = it.schema.properties[$property];
-          if (!($propertySch && (it.opts.strictKeywords ? typeof $propertySch == 'object' && Object.keys($propertySch).length > 0 || $propertySch === false : it.util.schemaHasRules($propertySch, it.RULES.all)))) {
-            $required[$required.length] = $property;
-          }
-        }
-      }
-    } else {
-      var $required = $schema;
-    }
-  }
-  if ($isData || $required.length) {
-    var $currentErrorPath = it.errorPath,
-      $loopRequired = $isData || $required.length >= it.opts.loopRequired,
-      $ownProperties = it.opts.ownProperties;
-    if ($breakOnError) {
-      out += ' var missing' + $lvl + '; ';
-      if ($loopRequired) {
-        if (!$isData) {
-          out += ' var ' + $vSchema + ' = validate.schema' + $schemaPath + '; ';
-        }
-        var $i = 'i' + $lvl,
-          $propertyPath = 'schema' + $lvl + '[' + $i + ']',
-          $missingProperty = '\' + ' + $propertyPath + ' + \'';
-        if (it.opts._errorDataPathProperty) {
-          it.errorPath = it.util.getPathExpr($currentErrorPath, $propertyPath, it.opts.jsonPointers);
-        }
-        out += ' var ' + $valid + ' = true; ';
-        if ($isData) {
-          out += ' if (schema' + $lvl + ' === undefined) ' + $valid + ' = true; else if (!Array.isArray(schema' + $lvl + ')) ' + $valid + ' = false; else {';
-        }
-        out += ' for (var ' + $i + ' = 0; ' + $i + ' < ' + $vSchema + '.length; ' + $i + '++) { ' + $valid + ' = ' + $data + '[' + $vSchema + '[' + $i + ']] !== undefined ';
-        if ($ownProperties) {
-          out += ' &&   Object.prototype.hasOwnProperty.call(' + $data + ', ' + $vSchema + '[' + $i + ']) ';
-        }
-        out += '; if (!' + $valid + ') break; } ';
-        if ($isData) {
-          out += '  }  ';
-        }
-        out += '  if (!' + $valid + ') {   ';
-        var $$outStack = $$outStack || [];
-        $$outStack.push(out);
-        out = ''; /* istanbul ignore else */
-        if (it.createErrors !== false) {
-          out += ' { keyword: \'' + 'required' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { missingProperty: \'' + $missingProperty + '\' } ';
-          if (it.opts.messages !== false) {
-            out += ' , message: \'';
-            if (it.opts._errorDataPathProperty) {
-              out += 'is a required property';
-            } else {
-              out += 'should have required property \\\'' + $missingProperty + '\\\'';
-            }
-            out += '\' ';
-          }
-          if (it.opts.verbose) {
-            out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-          }
-          out += ' } ';
-        } else {
-          out += ' {} ';
-        }
-        var __err = out;
-        out = $$outStack.pop();
-        if (!it.compositeRule && $breakOnError) {
-          /* istanbul ignore if */
-          if (it.async) {
-            out += ' throw new ValidationError([' + __err + ']); ';
-          } else {
-            out += ' validate.errors = [' + __err + ']; return false; ';
-          }
-        } else {
-          out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-        }
-        out += ' } else { ';
-      } else {
-        out += ' if ( ';
-        var arr2 = $required;
-        if (arr2) {
-          var $propertyKey,
-            $i = -1,
-            l2 = arr2.length - 1;
-          while ($i < l2) {
-            $propertyKey = arr2[$i += 1];
-            if ($i) {
-              out += ' || ';
-            }
-            var $prop = it.util.getProperty($propertyKey),
-              $useData = $data + $prop;
-            out += ' ( ( ' + $useData + ' === undefined ';
-            if ($ownProperties) {
-              out += ' || ! Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($propertyKey) + '\') ';
-            }
-            out += ') && (missing' + $lvl + ' = ' + it.util.toQuotedString(it.opts.jsonPointers ? $propertyKey : $prop) + ') ) ';
-          }
-        }
-        out += ') {  ';
-        var $propertyPath = 'missing' + $lvl,
-          $missingProperty = '\' + ' + $propertyPath + ' + \'';
-        if (it.opts._errorDataPathProperty) {
-          it.errorPath = it.opts.jsonPointers ? it.util.getPathExpr($currentErrorPath, $propertyPath, true) : $currentErrorPath + ' + ' + $propertyPath;
-        }
-        var $$outStack = $$outStack || [];
-        $$outStack.push(out);
-        out = ''; /* istanbul ignore else */
-        if (it.createErrors !== false) {
-          out += ' { keyword: \'' + 'required' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { missingProperty: \'' + $missingProperty + '\' } ';
-          if (it.opts.messages !== false) {
-            out += ' , message: \'';
-            if (it.opts._errorDataPathProperty) {
-              out += 'is a required property';
-            } else {
-              out += 'should have required property \\\'' + $missingProperty + '\\\'';
-            }
-            out += '\' ';
-          }
-          if (it.opts.verbose) {
-            out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-          }
-          out += ' } ';
-        } else {
-          out += ' {} ';
-        }
-        var __err = out;
-        out = $$outStack.pop();
-        if (!it.compositeRule && $breakOnError) {
-          /* istanbul ignore if */
-          if (it.async) {
-            out += ' throw new ValidationError([' + __err + ']); ';
-          } else {
-            out += ' validate.errors = [' + __err + ']; return false; ';
-          }
-        } else {
-          out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-        }
-        out += ' } else { ';
-      }
-    } else {
-      if ($loopRequired) {
-        if (!$isData) {
-          out += ' var ' + $vSchema + ' = validate.schema' + $schemaPath + '; ';
-        }
-        var $i = 'i' + $lvl,
-          $propertyPath = 'schema' + $lvl + '[' + $i + ']',
-          $missingProperty = '\' + ' + $propertyPath + ' + \'';
-        if (it.opts._errorDataPathProperty) {
-          it.errorPath = it.util.getPathExpr($currentErrorPath, $propertyPath, it.opts.jsonPointers);
-        }
-        if ($isData) {
-          out += ' if (' + $vSchema + ' && !Array.isArray(' + $vSchema + ')) {  var err =   '; /* istanbul ignore else */
-          if (it.createErrors !== false) {
-            out += ' { keyword: \'' + 'required' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { missingProperty: \'' + $missingProperty + '\' } ';
-            if (it.opts.messages !== false) {
-              out += ' , message: \'';
-              if (it.opts._errorDataPathProperty) {
-                out += 'is a required property';
-              } else {
-                out += 'should have required property \\\'' + $missingProperty + '\\\'';
-              }
-              out += '\' ';
-            }
-            if (it.opts.verbose) {
-              out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-            }
-            out += ' } ';
-          } else {
-            out += ' {} ';
-          }
-          out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; } else if (' + $vSchema + ' !== undefined) { ';
-        }
-        out += ' for (var ' + $i + ' = 0; ' + $i + ' < ' + $vSchema + '.length; ' + $i + '++) { if (' + $data + '[' + $vSchema + '[' + $i + ']] === undefined ';
-        if ($ownProperties) {
-          out += ' || ! Object.prototype.hasOwnProperty.call(' + $data + ', ' + $vSchema + '[' + $i + ']) ';
-        }
-        out += ') {  var err =   '; /* istanbul ignore else */
-        if (it.createErrors !== false) {
-          out += ' { keyword: \'' + 'required' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { missingProperty: \'' + $missingProperty + '\' } ';
-          if (it.opts.messages !== false) {
-            out += ' , message: \'';
-            if (it.opts._errorDataPathProperty) {
-              out += 'is a required property';
-            } else {
-              out += 'should have required property \\\'' + $missingProperty + '\\\'';
-            }
-            out += '\' ';
-          }
-          if (it.opts.verbose) {
-            out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-          }
-          out += ' } ';
-        } else {
-          out += ' {} ';
-        }
-        out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; } } ';
-        if ($isData) {
-          out += '  }  ';
-        }
-      } else {
-        var arr3 = $required;
-        if (arr3) {
-          var $propertyKey,
-            i3 = -1,
-            l3 = arr3.length - 1;
-          while (i3 < l3) {
-            $propertyKey = arr3[i3 += 1];
-            var $prop = it.util.getProperty($propertyKey),
-              $missingProperty = it.util.escapeQuotes($propertyKey),
-              $useData = $data + $prop;
-            if (it.opts._errorDataPathProperty) {
-              it.errorPath = it.util.getPath($currentErrorPath, $propertyKey, it.opts.jsonPointers);
-            }
-            out += ' if ( ' + $useData + ' === undefined ';
-            if ($ownProperties) {
-              out += ' || ! Object.prototype.hasOwnProperty.call(' + $data + ', \'' + it.util.escapeQuotes($propertyKey) + '\') ';
-            }
-            out += ') {  var err =   '; /* istanbul ignore else */
-            if (it.createErrors !== false) {
-              out += ' { keyword: \'' + 'required' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { missingProperty: \'' + $missingProperty + '\' } ';
-              if (it.opts.messages !== false) {
-                out += ' , message: \'';
-                if (it.opts._errorDataPathProperty) {
-                  out += 'is a required property';
-                } else {
-                  out += 'should have required property \\\'' + $missingProperty + '\\\'';
-                }
-                out += '\' ';
-              }
-              if (it.opts.verbose) {
-                out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-              }
-              out += ' } ';
-            } else {
-              out += ' {} ';
-            }
-            out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; } ';
-          }
-        }
-      }
-    }
-    it.errorPath = $currentErrorPath;
-  } else if ($breakOnError) {
-    out += ' if (true) {';
-  }
-  return out;
-};
-
-var uniqueItems = function generate_uniqueItems(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  if (($schema || $isData) && it.opts.uniqueItems !== false) {
-    if ($isData) {
-      out += ' var ' + $valid + '; if (' + $schemaValue + ' === false || ' + $schemaValue + ' === undefined) ' + $valid + ' = true; else if (typeof ' + $schemaValue + ' != \'boolean\') ' + $valid + ' = false; else { ';
-    }
-    out += ' var i = ' + $data + '.length , ' + $valid + ' = true , j; if (i > 1) { ';
-    var $itemType = it.schema.items && it.schema.items.type,
-      $typeIsArray = Array.isArray($itemType);
-    if (!$itemType || $itemType == 'object' || $itemType == 'array' || $typeIsArray && ($itemType.indexOf('object') >= 0 || $itemType.indexOf('array') >= 0)) {
-      out += ' outer: for (;i--;) { for (j = i; j--;) { if (equal(' + $data + '[i], ' + $data + '[j])) { ' + $valid + ' = false; break outer; } } } ';
-    } else {
-      out += ' var itemIndices = {}, item; for (;i--;) { var item = ' + $data + '[i]; ';
-      var $method = 'checkDataType' + ($typeIsArray ? 's' : '');
-      out += ' if (' + it.util[$method]($itemType, 'item', it.opts.strictNumbers, true) + ') continue; ';
-      if ($typeIsArray) {
-        out += ' if (typeof item == \'string\') item = \'"\' + item; ';
-      }
-      out += ' if (typeof itemIndices[item] == \'number\') { ' + $valid + ' = false; j = itemIndices[item]; break; } itemIndices[item] = i; } ';
-    }
-    out += ' } ';
-    if ($isData) {
-      out += '  }  ';
-    }
-    out += ' if (!' + $valid + ') {   ';
-    var $$outStack = $$outStack || [];
-    $$outStack.push(out);
-    out = ''; /* istanbul ignore else */
-    if (it.createErrors !== false) {
-      out += ' { keyword: \'' + 'uniqueItems' + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { i: i, j: j } ';
-      if (it.opts.messages !== false) {
-        out += ' , message: \'should NOT have duplicate items (items ## \' + j + \' and \' + i + \' are identical)\' ';
-      }
-      if (it.opts.verbose) {
-        out += ' , schema:  ';
-        if ($isData) {
-          out += 'validate.schema' + $schemaPath;
-        } else {
-          out += '' + $schema;
-        }
-        out += '         , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-      }
-      out += ' } ';
-    } else {
-      out += ' {} ';
-    }
-    var __err = out;
-    out = $$outStack.pop();
-    if (!it.compositeRule && $breakOnError) {
-      /* istanbul ignore if */
-      if (it.async) {
-        out += ' throw new ValidationError([' + __err + ']); ';
-      } else {
-        out += ' validate.errors = [' + __err + ']; return false; ';
-      }
-    } else {
-      out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-    }
-    out += ' } ';
-    if ($breakOnError) {
-      out += ' else { ';
-    }
-  } else {
-    if ($breakOnError) {
-      out += ' if (true) { ';
-    }
-  }
-  return out;
-};
-
-//all requires must be explicit because browserify won't work with dynamic requires
-var dotjs = {
-  '$ref': ref,
-  allOf: allOf,
-  anyOf: anyOf,
-  '$comment': comment,
-  const: _const,
-  contains: contains$1,
-  dependencies: dependencies$1,
-  'enum': _enum,
-  format: format,
-  'if': _if,
-  items: items,
-  maximum: _limit,
-  minimum: _limit,
-  maxItems: _limitItems,
-  minItems: _limitItems,
-  maxLength: _limitLength,
-  minLength: _limitLength,
-  maxProperties: _limitProperties,
-  minProperties: _limitProperties,
-  multipleOf: multipleOf,
-  not: not,
-  oneOf: oneOf,
-  pattern: pattern,
-  properties: properties$3,
-  propertyNames: propertyNames,
-  required: required$1,
-  uniqueItems: uniqueItems,
-  validate: validate$1
-};
-
-var ruleModules = dotjs,
-  toHash = util$5.toHash;
-var rules$1 = function rules() {
-  var RULES = [{
-    type: 'number',
-    rules: [{
-      'maximum': ['exclusiveMaximum']
-    }, {
-      'minimum': ['exclusiveMinimum']
-    }, 'multipleOf', 'format']
-  }, {
-    type: 'string',
-    rules: ['maxLength', 'minLength', 'pattern', 'format']
-  }, {
-    type: 'array',
-    rules: ['maxItems', 'minItems', 'items', 'contains', 'uniqueItems']
-  }, {
-    type: 'object',
-    rules: ['maxProperties', 'minProperties', 'required', 'dependencies', 'propertyNames', {
-      'properties': ['additionalProperties', 'patternProperties']
-    }]
-  }, {
-    rules: ['$ref', 'const', 'enum', 'not', 'anyOf', 'oneOf', 'allOf', 'if']
-  }];
-  var ALL = ['type', '$comment'];
-  var KEYWORDS = ['$schema', '$id', 'id', '$data', '$async', 'title', 'description', 'default', 'definitions', 'examples', 'readOnly', 'writeOnly', 'contentMediaType', 'contentEncoding', 'additionalItems', 'then', 'else'];
-  var TYPES = ['number', 'integer', 'string', 'array', 'object', 'boolean', 'null'];
-  RULES.all = toHash(ALL);
-  RULES.types = toHash(TYPES);
-  RULES.forEach(function (group) {
-    group.rules = group.rules.map(function (keyword) {
-      var implKeywords;
-      if (typeof keyword == 'object') {
-        var key = Object.keys(keyword)[0];
-        implKeywords = keyword[key];
-        keyword = key;
-        implKeywords.forEach(function (k) {
-          ALL.push(k);
-          RULES.all[k] = true;
-        });
-      }
-      ALL.push(keyword);
-      var rule = RULES.all[keyword] = {
-        keyword: keyword,
-        code: ruleModules[keyword],
-        implements: implKeywords
-      };
-      return rule;
-    });
-    RULES.all.$comment = {
-      keyword: '$comment',
-      code: ruleModules.$comment
-    };
-    if (group.type) RULES.types[group.type] = group;
-  });
-  RULES.keywords = toHash(ALL.concat(KEYWORDS));
-  RULES.custom = {};
-  return RULES;
-};
-
-var KEYWORDS = ['multipleOf', 'maximum', 'exclusiveMaximum', 'minimum', 'exclusiveMinimum', 'maxLength', 'minLength', 'pattern', 'additionalItems', 'maxItems', 'minItems', 'uniqueItems', 'maxProperties', 'minProperties', 'required', 'additionalProperties', 'enum', 'format', 'const'];
-var data = function (metaSchema, keywordsJsonPointers) {
-  for (var i = 0; i < keywordsJsonPointers.length; i++) {
-    metaSchema = JSON.parse(JSON.stringify(metaSchema));
-    var segments = keywordsJsonPointers[i].split('/');
-    var keywords = metaSchema;
-    var j;
-    for (j = 1; j < segments.length; j++) keywords = keywords[segments[j]];
-    for (j = 0; j < KEYWORDS.length; j++) {
-      var key = KEYWORDS[j];
-      var schema = keywords[key];
-      if (schema) {
-        keywords[key] = {
-          anyOf: [schema, {
-            $ref: 'https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#'
-          }]
-        };
-      }
-    }
-  }
-  return metaSchema;
-};
-
-var MissingRefError = error_classes.MissingRef;
-var async = compileAsync;
-
-/**
- * Creates validating function for passed schema with asynchronous loading of missing schemas.
- * `loadSchema` option should be a function that accepts schema uri and returns promise that resolves with the schema.
- * @this  Ajv
- * @param {Object}   schema schema object
- * @param {Boolean}  meta optional true to compile meta-schema; this parameter can be skipped
- * @param {Function} callback an optional node-style callback, it is called with 2 parameters: error (or null) and validating function.
- * @return {Promise} promise that resolves with a validating function.
- */
-function compileAsync(schema, meta, callback) {
-  /* eslint no-shadow: 0 */
-  /* global Promise */
-  /* jshint validthis: true */
-  var self = this;
-  if (typeof this._opts.loadSchema != 'function') throw new Error('options.loadSchema should be a function');
-  if (typeof meta == 'function') {
-    callback = meta;
-    meta = undefined;
-  }
-  var p = loadMetaSchemaOf(schema).then(function () {
-    var schemaObj = self._addSchema(schema, undefined, meta);
-    return schemaObj.validate || _compileAsync(schemaObj);
-  });
-  if (callback) {
-    p.then(function (v) {
-      callback(null, v);
-    }, callback);
-  }
-  return p;
-  function loadMetaSchemaOf(sch) {
-    var $schema = sch.$schema;
-    return $schema && !self.getSchema($schema) ? compileAsync.call(self, {
-      $ref: $schema
-    }, true) : Promise.resolve();
-  }
-  function _compileAsync(schemaObj) {
-    try {
-      return self._compile(schemaObj);
-    } catch (e) {
-      if (e instanceof MissingRefError) return loadMissingSchema(e);
-      throw e;
-    }
-    function loadMissingSchema(e) {
-      var ref = e.missingSchema;
-      if (added(ref)) throw new Error('Schema ' + ref + ' is loaded but ' + e.missingRef + ' cannot be resolved');
-      var schemaPromise = self._loadingSchemas[ref];
-      if (!schemaPromise) {
-        schemaPromise = self._loadingSchemas[ref] = self._opts.loadSchema(ref);
-        schemaPromise.then(removePromise, removePromise);
-      }
-      return schemaPromise.then(function (sch) {
-        if (!added(ref)) {
-          return loadMetaSchemaOf(sch).then(function () {
-            if (!added(ref)) self.addSchema(sch, ref, undefined, meta);
-          });
-        }
-      }).then(function () {
-        return _compileAsync(schemaObj);
-      });
-      function removePromise() {
-        delete self._loadingSchemas[ref];
-      }
-      function added(ref) {
-        return self._refs[ref] || self._schemas[ref];
-      }
-    }
-  }
-}
-
-var custom = function generate_custom(it, $keyword, $ruleType) {
-  var out = ' ';
-  var $lvl = it.level;
-  var $dataLvl = it.dataLevel;
-  var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
-  var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
-  var $errorKeyword;
-  var $data = 'data' + ($dataLvl || '');
-  var $valid = 'valid' + $lvl;
-  var $errs = 'errs__' + $lvl;
-  var $isData = it.opts.$data && $schema && $schema.$data,
-    $schemaValue;
-  if ($isData) {
-    out += ' var schema' + $lvl + ' = ' + it.util.getData($schema.$data, $dataLvl, it.dataPathArr) + '; ';
-    $schemaValue = 'schema' + $lvl;
-  } else {
-    $schemaValue = $schema;
-  }
-  var $rule = this,
-    $definition = 'definition' + $lvl,
-    $rDef = $rule.definition,
-    $closingBraces = '';
-  var $compile, $inline, $macro, $ruleValidate, $validateCode;
-  if ($isData && $rDef.$data) {
-    $validateCode = 'keywordValidate' + $lvl;
-    var $validateSchema = $rDef.validateSchema;
-    out += ' var ' + $definition + ' = RULES.custom[\'' + $keyword + '\'].definition; var ' + $validateCode + ' = ' + $definition + '.validate;';
-  } else {
-    $ruleValidate = it.useCustomRule($rule, $schema, it.schema, it);
-    if (!$ruleValidate) return;
-    $schemaValue = 'validate.schema' + $schemaPath;
-    $validateCode = $ruleValidate.code;
-    $compile = $rDef.compile;
-    $inline = $rDef.inline;
-    $macro = $rDef.macro;
-  }
-  var $ruleErrs = $validateCode + '.errors',
-    $i = 'i' + $lvl,
-    $ruleErr = 'ruleErr' + $lvl,
-    $asyncKeyword = $rDef.async;
-  if ($asyncKeyword && !it.async) throw new Error('async keyword in sync schema');
-  if (!($inline || $macro)) {
-    out += '' + $ruleErrs + ' = null;';
-  }
-  out += 'var ' + $errs + ' = errors;var ' + $valid + ';';
-  if ($isData && $rDef.$data) {
-    $closingBraces += '}';
-    out += ' if (' + $schemaValue + ' === undefined) { ' + $valid + ' = true; } else { ';
-    if ($validateSchema) {
-      $closingBraces += '}';
-      out += ' ' + $valid + ' = ' + $definition + '.validateSchema(' + $schemaValue + '); if (' + $valid + ') { ';
-    }
-  }
-  if ($inline) {
-    if ($rDef.statements) {
-      out += ' ' + $ruleValidate.validate + ' ';
-    } else {
-      out += ' ' + $valid + ' = ' + $ruleValidate.validate + '; ';
-    }
-  } else if ($macro) {
-    var $it = it.util.copy(it);
-    var $closingBraces = '';
-    $it.level++;
-    var $nextValid = 'valid' + $it.level;
-    $it.schema = $ruleValidate.validate;
-    $it.schemaPath = '';
-    var $wasComposite = it.compositeRule;
-    it.compositeRule = $it.compositeRule = true;
-    var $code = it.validate($it).replace(/validate\.schema/g, $validateCode);
-    it.compositeRule = $it.compositeRule = $wasComposite;
-    out += ' ' + $code;
-  } else {
-    var $$outStack = $$outStack || [];
-    $$outStack.push(out);
-    out = '';
-    out += '  ' + $validateCode + '.call( ';
-    if (it.opts.passContext) {
-      out += 'this';
-    } else {
-      out += 'self';
-    }
-    if ($compile || $rDef.schema === false) {
-      out += ' , ' + $data + ' ';
-    } else {
-      out += ' , ' + $schemaValue + ' , ' + $data + ' , validate.schema' + it.schemaPath + ' ';
-    }
-    out += ' , (dataPath || \'\')';
-    if (it.errorPath != '""') {
-      out += ' + ' + it.errorPath;
-    }
-    var $parentData = $dataLvl ? 'data' + ($dataLvl - 1 || '') : 'parentData',
-      $parentDataProperty = $dataLvl ? it.dataPathArr[$dataLvl] : 'parentDataProperty';
-    out += ' , ' + $parentData + ' , ' + $parentDataProperty + ' , rootData )  ';
-    var def_callRuleValidate = out;
-    out = $$outStack.pop();
-    if ($rDef.errors === false) {
-      out += ' ' + $valid + ' = ';
-      if ($asyncKeyword) {
-        out += 'await ';
-      }
-      out += '' + def_callRuleValidate + '; ';
-    } else {
-      if ($asyncKeyword) {
-        $ruleErrs = 'customErrors' + $lvl;
-        out += ' var ' + $ruleErrs + ' = null; try { ' + $valid + ' = await ' + def_callRuleValidate + '; } catch (e) { ' + $valid + ' = false; if (e instanceof ValidationError) ' + $ruleErrs + ' = e.errors; else throw e; } ';
-      } else {
-        out += ' ' + $ruleErrs + ' = null; ' + $valid + ' = ' + def_callRuleValidate + '; ';
-      }
-    }
-  }
-  if ($rDef.modifying) {
-    out += ' if (' + $parentData + ') ' + $data + ' = ' + $parentData + '[' + $parentDataProperty + '];';
-  }
-  out += '' + $closingBraces;
-  if ($rDef.valid) {
-    if ($breakOnError) {
-      out += ' if (true) { ';
-    }
-  } else {
-    out += ' if ( ';
-    if ($rDef.valid === undefined) {
-      out += ' !';
-      if ($macro) {
-        out += '' + $nextValid;
-      } else {
-        out += '' + $valid;
-      }
-    } else {
-      out += ' ' + !$rDef.valid + ' ';
-    }
-    out += ') { ';
-    $errorKeyword = $rule.keyword;
-    var $$outStack = $$outStack || [];
-    $$outStack.push(out);
-    out = '';
-    var $$outStack = $$outStack || [];
-    $$outStack.push(out);
-    out = ''; /* istanbul ignore else */
-    if (it.createErrors !== false) {
-      out += ' { keyword: \'' + ($errorKeyword || 'custom') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { keyword: \'' + $rule.keyword + '\' } ';
-      if (it.opts.messages !== false) {
-        out += ' , message: \'should pass "' + $rule.keyword + '" keyword validation\' ';
-      }
-      if (it.opts.verbose) {
-        out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-      }
-      out += ' } ';
-    } else {
-      out += ' {} ';
-    }
-    var __err = out;
-    out = $$outStack.pop();
-    if (!it.compositeRule && $breakOnError) {
-      /* istanbul ignore if */
-      if (it.async) {
-        out += ' throw new ValidationError([' + __err + ']); ';
-      } else {
-        out += ' validate.errors = [' + __err + ']; return false; ';
-      }
-    } else {
-      out += ' var err = ' + __err + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-    }
-    var def_customError = out;
-    out = $$outStack.pop();
-    if ($inline) {
-      if ($rDef.errors) {
-        if ($rDef.errors != 'full') {
-          out += '  for (var ' + $i + '=' + $errs + '; ' + $i + '<errors; ' + $i + '++) { var ' + $ruleErr + ' = vErrors[' + $i + ']; if (' + $ruleErr + '.dataPath === undefined) ' + $ruleErr + '.dataPath = (dataPath || \'\') + ' + it.errorPath + '; if (' + $ruleErr + '.schemaPath === undefined) { ' + $ruleErr + '.schemaPath = "' + $errSchemaPath + '"; } ';
-          if (it.opts.verbose) {
-            out += ' ' + $ruleErr + '.schema = ' + $schemaValue + '; ' + $ruleErr + '.data = ' + $data + '; ';
-          }
-          out += ' } ';
-        }
-      } else {
-        if ($rDef.errors === false) {
-          out += ' ' + def_customError + ' ';
-        } else {
-          out += ' if (' + $errs + ' == errors) { ' + def_customError + ' } else {  for (var ' + $i + '=' + $errs + '; ' + $i + '<errors; ' + $i + '++) { var ' + $ruleErr + ' = vErrors[' + $i + ']; if (' + $ruleErr + '.dataPath === undefined) ' + $ruleErr + '.dataPath = (dataPath || \'\') + ' + it.errorPath + '; if (' + $ruleErr + '.schemaPath === undefined) { ' + $ruleErr + '.schemaPath = "' + $errSchemaPath + '"; } ';
-          if (it.opts.verbose) {
-            out += ' ' + $ruleErr + '.schema = ' + $schemaValue + '; ' + $ruleErr + '.data = ' + $data + '; ';
-          }
-          out += ' } } ';
-        }
-      }
-    } else if ($macro) {
-      out += '   var err =   '; /* istanbul ignore else */
-      if (it.createErrors !== false) {
-        out += ' { keyword: \'' + ($errorKeyword || 'custom') + '\' , dataPath: (dataPath || \'\') + ' + it.errorPath + ' , schemaPath: ' + it.util.toQuotedString($errSchemaPath) + ' , params: { keyword: \'' + $rule.keyword + '\' } ';
-        if (it.opts.messages !== false) {
-          out += ' , message: \'should pass "' + $rule.keyword + '" keyword validation\' ';
-        }
-        if (it.opts.verbose) {
-          out += ' , schema: validate.schema' + $schemaPath + ' , parentSchema: validate.schema' + it.schemaPath + ' , data: ' + $data + ' ';
-        }
-        out += ' } ';
-      } else {
-        out += ' {} ';
-      }
-      out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
-      if (!it.compositeRule && $breakOnError) {
-        /* istanbul ignore if */
-        if (it.async) {
-          out += ' throw new ValidationError(vErrors); ';
-        } else {
-          out += ' validate.errors = vErrors; return false; ';
-        }
-      }
-    } else {
-      if ($rDef.errors === false) {
-        out += ' ' + def_customError + ' ';
-      } else {
-        out += ' if (Array.isArray(' + $ruleErrs + ')) { if (vErrors === null) vErrors = ' + $ruleErrs + '; else vErrors = vErrors.concat(' + $ruleErrs + '); errors = vErrors.length;  for (var ' + $i + '=' + $errs + '; ' + $i + '<errors; ' + $i + '++) { var ' + $ruleErr + ' = vErrors[' + $i + ']; if (' + $ruleErr + '.dataPath === undefined) ' + $ruleErr + '.dataPath = (dataPath || \'\') + ' + it.errorPath + ';  ' + $ruleErr + '.schemaPath = "' + $errSchemaPath + '";  ';
-        if (it.opts.verbose) {
-          out += ' ' + $ruleErr + '.schema = ' + $schemaValue + '; ' + $ruleErr + '.data = ' + $data + '; ';
-        }
-        out += ' } } else { ' + def_customError + ' } ';
-      }
-    }
-    out += ' } ';
-    if ($breakOnError) {
-      out += ' else { ';
-    }
-  }
-  return out;
-};
-
-var $schema$2 = "http://json-schema.org/draft-07/schema#";
-var $id$1 = "http://json-schema.org/draft-07/schema#";
+var $schema = "http://json-schema.org/draft-07/schema#";
+var $id = "http://json-schema.org/draft-07/schema#";
 var title = "Core schema meta-schema";
-var definitions$1 = {
+var definitions = {
 	schemaArray: {
 		type: "array",
 		minItems: 1,
@@ -41636,11 +37211,11 @@ var definitions$1 = {
 		]
 	}
 };
-var type$2 = [
+var type = [
 	"object",
 	"boolean"
 ];
-var properties$2 = {
+var properties = {
 	$id: {
 		type: "string",
 		format: "uri-reference"
@@ -41832,13184 +37407,446 @@ var properties$2 = {
 		$ref: "#"
 	}
 };
-var require$$13 = {
-	$schema: $schema$2,
-	$id: $id$1,
-	title: title,
-	definitions: definitions$1,
-	type: type$2,
-	properties: properties$2,
-	"default": true
-};
-
-var metaSchema = require$$13;
-var definition_schema = {
-  $id: 'https://github.com/ajv-validator/ajv/blob/master/lib/definition_schema.js',
-  definitions: {
-    simpleTypes: metaSchema.definitions.simpleTypes
-  },
-  type: 'object',
-  dependencies: {
-    schema: ['validate'],
-    $data: ['validate'],
-    statements: ['inline'],
-    valid: {
-      not: {
-        required: ['macro']
-      }
-    }
-  },
-  properties: {
-    type: metaSchema.properties.type,
-    schema: {
-      type: 'boolean'
-    },
-    statements: {
-      type: 'boolean'
-    },
-    dependencies: {
-      type: 'array',
-      items: {
-        type: 'string'
-      }
-    },
-    metaSchema: {
-      type: 'object'
-    },
-    modifying: {
-      type: 'boolean'
-    },
-    valid: {
-      type: 'boolean'
-    },
-    $data: {
-      type: 'boolean'
-    },
-    async: {
-      type: 'boolean'
-    },
-    errors: {
-      anyOf: [{
-        type: 'boolean'
-      }, {
-        const: 'full'
-      }]
-    }
-  }
-};
-
-var IDENTIFIER = /^[a-z_$][a-z0-9_$-]*$/i;
-var customRuleCode = custom;
-var definitionSchema = definition_schema;
-var keyword = {
-  add: addKeyword,
-  get: getKeyword,
-  remove: removeKeyword,
-  validate: validateKeyword
-};
-
-/**
- * Define custom keyword
- * @this  Ajv
- * @param {String} keyword custom keyword, should be unique (including different from all standard, custom and macro keywords).
- * @param {Object} definition keyword definition object with properties `type` (type(s) which the keyword applies to), `validate` or `compile`.
- * @return {Ajv} this for method chaining
- */
-function addKeyword(keyword, definition) {
-  /* jshint validthis: true */
-  /* eslint no-shadow: 0 */
-  var RULES = this.RULES;
-  if (RULES.keywords[keyword]) throw new Error('Keyword ' + keyword + ' is already defined');
-  if (!IDENTIFIER.test(keyword)) throw new Error('Keyword ' + keyword + ' is not a valid identifier');
-  if (definition) {
-    this.validateKeyword(definition, true);
-    var dataType = definition.type;
-    if (Array.isArray(dataType)) {
-      for (var i = 0; i < dataType.length; i++) _addRule(keyword, dataType[i], definition);
-    } else {
-      _addRule(keyword, dataType, definition);
-    }
-    var metaSchema = definition.metaSchema;
-    if (metaSchema) {
-      if (definition.$data && this._opts.$data) {
-        metaSchema = {
-          anyOf: [metaSchema, {
-            '$ref': 'https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#'
-          }]
-        };
-      }
-      definition.validateSchema = this.compile(metaSchema, true);
-    }
-  }
-  RULES.keywords[keyword] = RULES.all[keyword] = true;
-  function _addRule(keyword, dataType, definition) {
-    var ruleGroup;
-    for (var i = 0; i < RULES.length; i++) {
-      var rg = RULES[i];
-      if (rg.type == dataType) {
-        ruleGroup = rg;
-        break;
-      }
-    }
-    if (!ruleGroup) {
-      ruleGroup = {
-        type: dataType,
-        rules: []
-      };
-      RULES.push(ruleGroup);
-    }
-    var rule = {
-      keyword: keyword,
-      definition: definition,
-      custom: true,
-      code: customRuleCode,
-      implements: definition.implements
-    };
-    ruleGroup.rules.push(rule);
-    RULES.custom[keyword] = rule;
-  }
-  return this;
-}
-
-/**
- * Get keyword
- * @this  Ajv
- * @param {String} keyword pre-defined or custom keyword.
- * @return {Object|Boolean} custom keyword definition, `true` if it is a predefined keyword, `false` otherwise.
- */
-function getKeyword(keyword) {
-  /* jshint validthis: true */
-  var rule = this.RULES.custom[keyword];
-  return rule ? rule.definition : this.RULES.keywords[keyword] || false;
-}
-
-/**
- * Remove keyword
- * @this  Ajv
- * @param {String} keyword pre-defined or custom keyword.
- * @return {Ajv} this for method chaining
- */
-function removeKeyword(keyword) {
-  /* jshint validthis: true */
-  var RULES = this.RULES;
-  delete RULES.keywords[keyword];
-  delete RULES.all[keyword];
-  delete RULES.custom[keyword];
-  for (var i = 0; i < RULES.length; i++) {
-    var rules = RULES[i].rules;
-    for (var j = 0; j < rules.length; j++) {
-      if (rules[j].keyword == keyword) {
-        rules.splice(j, 1);
-        break;
-      }
-    }
-  }
-  return this;
-}
-
-/**
- * Validate keyword definition
- * @this  Ajv
- * @param {Object} definition keyword definition object.
- * @param {Boolean} throwError true to throw exception if definition is invalid
- * @return {boolean} validation result
- */
-function validateKeyword(definition, throwError) {
-  validateKeyword.errors = null;
-  var v = this._validateKeyword = this._validateKeyword || this.compile(definitionSchema, true);
-  if (v(definition)) return true;
-  validateKeyword.errors = v.errors;
-  if (throwError) throw new Error('custom keyword definition is invalid: ' + this.errorsText(v.errors));else return false;
-}
-
-var $schema$1 = "http://json-schema.org/draft-07/schema#";
-var $id = "https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#";
-var description$1 = "Meta-schema for $data reference (JSON Schema extension proposal)";
-var type$1 = "object";
-var required = [
-	"$data"
-];
-var properties$1 = {
-	$data: {
-		type: "string",
-		anyOf: [
-			{
-				format: "relative-json-pointer"
-			},
-			{
-				format: "json-pointer"
-			}
-		]
-	}
-};
-var additionalProperties = false;
-var require$$12 = {
-	$schema: $schema$1,
-	$id: $id,
-	description: description$1,
-	type: type$1,
-	required: required,
-	properties: properties$1,
-	additionalProperties: additionalProperties
-};
-
-var compileSchema = compile_1,
-  resolve = resolve_1,
-  Cache = cacheExports,
-  SchemaObject = schema_obj,
-  stableStringify = fastJsonStableStringify,
-  formats = formats_1,
-  rules = rules$1,
-  $dataMetaSchema = data,
-  util = util$5;
-var ajv = Ajv;
-Ajv.prototype.validate = validate;
-Ajv.prototype.compile = compile;
-Ajv.prototype.addSchema = addSchema;
-Ajv.prototype.addMetaSchema = addMetaSchema;
-Ajv.prototype.validateSchema = validateSchema;
-Ajv.prototype.getSchema = getSchema;
-Ajv.prototype.removeSchema = removeSchema;
-Ajv.prototype.addFormat = addFormat;
-Ajv.prototype.errorsText = errorsText;
-Ajv.prototype._addSchema = _addSchema;
-Ajv.prototype._compile = _compile;
-Ajv.prototype.compileAsync = async;
-var customKeyword = keyword;
-Ajv.prototype.addKeyword = customKeyword.add;
-Ajv.prototype.getKeyword = customKeyword.get;
-Ajv.prototype.removeKeyword = customKeyword.remove;
-Ajv.prototype.validateKeyword = customKeyword.validate;
-var errorClasses = error_classes;
-Ajv.ValidationError = errorClasses.Validation;
-Ajv.MissingRefError = errorClasses.MissingRef;
-Ajv.$dataMetaSchema = $dataMetaSchema;
-var META_SCHEMA_ID = 'http://json-schema.org/draft-07/schema';
-var META_IGNORE_OPTIONS = ['removeAdditional', 'useDefaults', 'coerceTypes', 'strictDefaults'];
-var META_SUPPORT_DATA = ['/properties'];
-
-/**
- * Creates validator instance.
- * Usage: `Ajv(opts)`
- * @param {Object} opts optional options
- * @return {Object} ajv instance
- */
-function Ajv(opts) {
-  if (!(this instanceof Ajv)) return new Ajv(opts);
-  opts = this._opts = util.copy(opts) || {};
-  setLogger(this);
-  this._schemas = {};
-  this._refs = {};
-  this._fragments = {};
-  this._formats = formats(opts.format);
-  this._cache = opts.cache || new Cache();
-  this._loadingSchemas = {};
-  this._compilations = [];
-  this.RULES = rules();
-  this._getId = chooseGetId(opts);
-  opts.loopRequired = opts.loopRequired || Infinity;
-  if (opts.errorDataPath == 'property') opts._errorDataPathProperty = true;
-  if (opts.serialize === undefined) opts.serialize = stableStringify;
-  this._metaOpts = getMetaSchemaOptions(this);
-  if (opts.formats) addInitialFormats(this);
-  if (opts.keywords) addInitialKeywords(this);
-  addDefaultMetaSchema(this);
-  if (typeof opts.meta == 'object') this.addMetaSchema(opts.meta);
-  if (opts.nullable) this.addKeyword('nullable', {
-    metaSchema: {
-      type: 'boolean'
-    }
-  });
-  addInitialSchemas(this);
-}
-
-/**
- * Validate data using schema
- * Schema will be compiled and cached (using serialized JSON as key. [fast-json-stable-stringify](https://github.com/epoberezkin/fast-json-stable-stringify) is used to serialize.
- * @this   Ajv
- * @param  {String|Object} schemaKeyRef key, ref or schema object
- * @param  {Any} data to be validated
- * @return {Boolean} validation result. Errors from the last validation will be available in `ajv.errors` (and also in compiled schema: `schema.errors`).
- */
-function validate(schemaKeyRef, data) {
-  var v;
-  if (typeof schemaKeyRef == 'string') {
-    v = this.getSchema(schemaKeyRef);
-    if (!v) throw new Error('no schema with key or ref "' + schemaKeyRef + '"');
-  } else {
-    var schemaObj = this._addSchema(schemaKeyRef);
-    v = schemaObj.validate || this._compile(schemaObj);
-  }
-  var valid = v(data);
-  if (v.$async !== true) this.errors = v.errors;
-  return valid;
-}
-
-/**
- * Create validating function for passed schema.
- * @this   Ajv
- * @param  {Object} schema schema object
- * @param  {Boolean} _meta true if schema is a meta-schema. Used internally to compile meta schemas of custom keywords.
- * @return {Function} validating function
- */
-function compile(schema, _meta) {
-  var schemaObj = this._addSchema(schema, undefined, _meta);
-  return schemaObj.validate || this._compile(schemaObj);
-}
-
-/**
- * Adds schema to the instance.
- * @this   Ajv
- * @param {Object|Array} schema schema or array of schemas. If array is passed, `key` and other parameters will be ignored.
- * @param {String} key Optional schema key. Can be passed to `validate` method instead of schema object or id/ref. One schema per instance can have empty `id` and `key`.
- * @param {Boolean} _skipValidation true to skip schema validation. Used internally, option validateSchema should be used instead.
- * @param {Boolean} _meta true if schema is a meta-schema. Used internally, addMetaSchema should be used instead.
- * @return {Ajv} this for method chaining
- */
-function addSchema(schema, key, _skipValidation, _meta) {
-  if (Array.isArray(schema)) {
-    for (var i = 0; i < schema.length; i++) this.addSchema(schema[i], undefined, _skipValidation, _meta);
-    return this;
-  }
-  var id = this._getId(schema);
-  if (id !== undefined && typeof id != 'string') throw new Error('schema id must be string');
-  key = resolve.normalizeId(key || id);
-  checkUnique(this, key);
-  this._schemas[key] = this._addSchema(schema, _skipValidation, _meta, true);
-  return this;
-}
-
-/**
- * Add schema that will be used to validate other schemas
- * options in META_IGNORE_OPTIONS are alway set to false
- * @this   Ajv
- * @param {Object} schema schema object
- * @param {String} key optional schema key
- * @param {Boolean} skipValidation true to skip schema validation, can be used to override validateSchema option for meta-schema
- * @return {Ajv} this for method chaining
- */
-function addMetaSchema(schema, key, skipValidation) {
-  this.addSchema(schema, key, skipValidation, true);
-  return this;
-}
-
-/**
- * Validate schema
- * @this   Ajv
- * @param {Object} schema schema to validate
- * @param {Boolean} throwOrLogError pass true to throw (or log) an error if invalid
- * @return {Boolean} true if schema is valid
- */
-function validateSchema(schema, throwOrLogError) {
-  var $schema = schema.$schema;
-  if ($schema !== undefined && typeof $schema != 'string') throw new Error('$schema must be a string');
-  $schema = $schema || this._opts.defaultMeta || defaultMeta(this);
-  if (!$schema) {
-    this.logger.warn('meta-schema not available');
-    this.errors = null;
-    return true;
-  }
-  var valid = this.validate($schema, schema);
-  if (!valid && throwOrLogError) {
-    var message = 'schema is invalid: ' + this.errorsText();
-    if (this._opts.validateSchema == 'log') this.logger.error(message);else throw new Error(message);
-  }
-  return valid;
-}
-function defaultMeta(self) {
-  var meta = self._opts.meta;
-  self._opts.defaultMeta = typeof meta == 'object' ? self._getId(meta) || meta : self.getSchema(META_SCHEMA_ID) ? META_SCHEMA_ID : undefined;
-  return self._opts.defaultMeta;
-}
-
-/**
- * Get compiled schema from the instance by `key` or `ref`.
- * @this   Ajv
- * @param  {String} keyRef `key` that was passed to `addSchema` or full schema reference (`schema.id` or resolved id).
- * @return {Function} schema validating function (with property `schema`).
- */
-function getSchema(keyRef) {
-  var schemaObj = _getSchemaObj(this, keyRef);
-  switch (typeof schemaObj) {
-    case 'object':
-      return schemaObj.validate || this._compile(schemaObj);
-    case 'string':
-      return this.getSchema(schemaObj);
-    case 'undefined':
-      return _getSchemaFragment(this, keyRef);
-  }
-}
-function _getSchemaFragment(self, ref) {
-  var res = resolve.schema.call(self, {
-    schema: {}
-  }, ref);
-  if (res) {
-    var schema = res.schema,
-      root = res.root,
-      baseId = res.baseId;
-    var v = compileSchema.call(self, schema, root, undefined, baseId);
-    self._fragments[ref] = new SchemaObject({
-      ref: ref,
-      fragment: true,
-      schema: schema,
-      root: root,
-      baseId: baseId,
-      validate: v
-    });
-    return v;
-  }
-}
-function _getSchemaObj(self, keyRef) {
-  keyRef = resolve.normalizeId(keyRef);
-  return self._schemas[keyRef] || self._refs[keyRef] || self._fragments[keyRef];
-}
-
-/**
- * Remove cached schema(s).
- * If no parameter is passed all schemas but meta-schemas are removed.
- * If RegExp is passed all schemas with key/id matching pattern but meta-schemas are removed.
- * Even if schema is referenced by other schemas it still can be removed as other schemas have local references.
- * @this   Ajv
- * @param  {String|Object|RegExp} schemaKeyRef key, ref, pattern to match key/ref or schema object
- * @return {Ajv} this for method chaining
- */
-function removeSchema(schemaKeyRef) {
-  if (schemaKeyRef instanceof RegExp) {
-    _removeAllSchemas(this, this._schemas, schemaKeyRef);
-    _removeAllSchemas(this, this._refs, schemaKeyRef);
-    return this;
-  }
-  switch (typeof schemaKeyRef) {
-    case 'undefined':
-      _removeAllSchemas(this, this._schemas);
-      _removeAllSchemas(this, this._refs);
-      this._cache.clear();
-      return this;
-    case 'string':
-      var schemaObj = _getSchemaObj(this, schemaKeyRef);
-      if (schemaObj) this._cache.del(schemaObj.cacheKey);
-      delete this._schemas[schemaKeyRef];
-      delete this._refs[schemaKeyRef];
-      return this;
-    case 'object':
-      var serialize = this._opts.serialize;
-      var cacheKey = serialize ? serialize(schemaKeyRef) : schemaKeyRef;
-      this._cache.del(cacheKey);
-      var id = this._getId(schemaKeyRef);
-      if (id) {
-        id = resolve.normalizeId(id);
-        delete this._schemas[id];
-        delete this._refs[id];
-      }
-  }
-  return this;
-}
-function _removeAllSchemas(self, schemas, regex) {
-  for (var keyRef in schemas) {
-    var schemaObj = schemas[keyRef];
-    if (!schemaObj.meta && (!regex || regex.test(keyRef))) {
-      self._cache.del(schemaObj.cacheKey);
-      delete schemas[keyRef];
-    }
-  }
-}
-
-/* @this   Ajv */
-function _addSchema(schema, skipValidation, meta, shouldAddSchema) {
-  if (typeof schema != 'object' && typeof schema != 'boolean') throw new Error('schema should be object or boolean');
-  var serialize = this._opts.serialize;
-  var cacheKey = serialize ? serialize(schema) : schema;
-  var cached = this._cache.get(cacheKey);
-  if (cached) return cached;
-  shouldAddSchema = shouldAddSchema || this._opts.addUsedSchema !== false;
-  var id = resolve.normalizeId(this._getId(schema));
-  if (id && shouldAddSchema) checkUnique(this, id);
-  var willValidate = this._opts.validateSchema !== false && !skipValidation;
-  var recursiveMeta;
-  if (willValidate && !(recursiveMeta = id && id == resolve.normalizeId(schema.$schema))) this.validateSchema(schema, true);
-  var localRefs = resolve.ids.call(this, schema);
-  var schemaObj = new SchemaObject({
-    id: id,
-    schema: schema,
-    localRefs: localRefs,
-    cacheKey: cacheKey,
-    meta: meta
-  });
-  if (id[0] != '#' && shouldAddSchema) this._refs[id] = schemaObj;
-  this._cache.put(cacheKey, schemaObj);
-  if (willValidate && recursiveMeta) this.validateSchema(schema, true);
-  return schemaObj;
-}
-
-/* @this   Ajv */
-function _compile(schemaObj, root) {
-  if (schemaObj.compiling) {
-    schemaObj.validate = callValidate;
-    callValidate.schema = schemaObj.schema;
-    callValidate.errors = null;
-    callValidate.root = root ? root : callValidate;
-    if (schemaObj.schema.$async === true) callValidate.$async = true;
-    return callValidate;
-  }
-  schemaObj.compiling = true;
-  var currentOpts;
-  if (schemaObj.meta) {
-    currentOpts = this._opts;
-    this._opts = this._metaOpts;
-  }
-  var v;
-  try {
-    v = compileSchema.call(this, schemaObj.schema, root, schemaObj.localRefs);
-  } catch (e) {
-    delete schemaObj.validate;
-    throw e;
-  } finally {
-    schemaObj.compiling = false;
-    if (schemaObj.meta) this._opts = currentOpts;
-  }
-  schemaObj.validate = v;
-  schemaObj.refs = v.refs;
-  schemaObj.refVal = v.refVal;
-  schemaObj.root = v.root;
-  return v;
-
-  /* @this   {*} - custom context, see passContext option */
-  function callValidate() {
-    /* jshint validthis: true */
-    var _validate = schemaObj.validate;
-    var result = _validate.apply(this, arguments);
-    callValidate.errors = _validate.errors;
-    return result;
-  }
-}
-function chooseGetId(opts) {
-  switch (opts.schemaId) {
-    case 'auto':
-      return _get$IdOrId;
-    case 'id':
-      return _getId;
-    default:
-      return _get$Id;
-  }
-}
-
-/* @this   Ajv */
-function _getId(schema) {
-  if (schema.$id) this.logger.warn('schema $id ignored', schema.$id);
-  return schema.id;
-}
-
-/* @this   Ajv */
-function _get$Id(schema) {
-  if (schema.id) this.logger.warn('schema id ignored', schema.id);
-  return schema.$id;
-}
-function _get$IdOrId(schema) {
-  if (schema.$id && schema.id && schema.$id != schema.id) throw new Error('schema $id is different from id');
-  return schema.$id || schema.id;
-}
-
-/**
- * Convert array of error message objects to string
- * @this   Ajv
- * @param  {Array<Object>} errors optional array of validation errors, if not passed errors from the instance are used.
- * @param  {Object} options optional options with properties `separator` and `dataVar`.
- * @return {String} human readable string with all errors descriptions
- */
-function errorsText(errors, options) {
-  errors = errors || this.errors;
-  if (!errors) return 'No errors';
-  options = options || {};
-  var separator = options.separator === undefined ? ', ' : options.separator;
-  var dataVar = options.dataVar === undefined ? 'data' : options.dataVar;
-  var text = '';
-  for (var i = 0; i < errors.length; i++) {
-    var e = errors[i];
-    if (e) text += dataVar + e.dataPath + ' ' + e.message + separator;
-  }
-  return text.slice(0, -separator.length);
-}
-
-/**
- * Add custom format
- * @this   Ajv
- * @param {String} name format name
- * @param {String|RegExp|Function} format string is converted to RegExp; function should return boolean (true when valid)
- * @return {Ajv} this for method chaining
- */
-function addFormat(name, format) {
-  if (typeof format == 'string') format = new RegExp(format);
-  this._formats[name] = format;
-  return this;
-}
-function addDefaultMetaSchema(self) {
-  var $dataSchema;
-  if (self._opts.$data) {
-    $dataSchema = require$$12;
-    self.addMetaSchema($dataSchema, $dataSchema.$id, true);
-  }
-  if (self._opts.meta === false) return;
-  var metaSchema = require$$13;
-  if (self._opts.$data) metaSchema = $dataMetaSchema(metaSchema, META_SUPPORT_DATA);
-  self.addMetaSchema(metaSchema, META_SCHEMA_ID, true);
-  self._refs['http://json-schema.org/schema'] = META_SCHEMA_ID;
-}
-function addInitialSchemas(self) {
-  var optsSchemas = self._opts.schemas;
-  if (!optsSchemas) return;
-  if (Array.isArray(optsSchemas)) self.addSchema(optsSchemas);else for (var key in optsSchemas) self.addSchema(optsSchemas[key], key);
-}
-function addInitialFormats(self) {
-  for (var name in self._opts.formats) {
-    var format = self._opts.formats[name];
-    self.addFormat(name, format);
-  }
-}
-function addInitialKeywords(self) {
-  for (var name in self._opts.keywords) {
-    var keyword = self._opts.keywords[name];
-    self.addKeyword(name, keyword);
-  }
-}
-function checkUnique(self, id) {
-  if (self._schemas[id] || self._refs[id]) throw new Error('schema with key or id "' + id + '" already exists');
-}
-function getMetaSchemaOptions(self) {
-  var metaOpts = util.copy(self._opts);
-  for (var i = 0; i < META_IGNORE_OPTIONS.length; i++) delete metaOpts[META_IGNORE_OPTIONS[i]];
-  return metaOpts;
-}
-function setLogger(self) {
-  var logger = self._opts.logger;
-  if (logger === false) {
-    self.logger = {
-      log: noop,
-      warn: noop,
-      error: noop
-    };
-  } else {
-    if (logger === undefined) logger = console;
-    if (!(typeof logger == 'object' && logger.log && logger.warn && logger.error)) throw new Error('logger must implement log, warn and error methods');
-    self.logger = logger;
-  }
-}
-function noop() {}
-var Ajv$1 = /*@__PURE__*/getDefaultExportFromCjs(ajv);
-
-var isBinary$1 = function isBinary() {
-  return true;
-};
-
-var validator$1 = {exports: {}};
-
-var toDate = {exports: {}};
-
-var assertString = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = assertString;
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-    return _typeof(obj);
-  }
-  function assertString(input) {
-    var isString = typeof input === 'string' || input instanceof String;
-    if (!isString) {
-      var invalidType = _typeof(input);
-      if (input === null) invalidType = 'null';else if (invalidType === 'object') invalidType = input.constructor.name;
-      throw new TypeError("Expected a string but received a ".concat(invalidType));
-    }
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(assertString, assertString.exports);
-var assertStringExports = assertString.exports;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = toDate;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function toDate(date) {
-    (0, _assertString.default)(date);
-    date = Date.parse(date);
-    return !isNaN(date) ? new Date(date) : null;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(toDate, toDate.exports);
-var toDateExports = toDate.exports;
-
-var toFloat = {exports: {}};
-
-var isFloat$2 = {};
-
-var alpha$1 = {};
-
-Object.defineProperty(alpha$1, "__esModule", {
-  value: true
-});
-alpha$1.commaDecimal = alpha$1.dotDecimal = alpha$1.bengaliLocales = alpha$1.farsiLocales = alpha$1.arabicLocales = alpha$1.englishLocales = alpha$1.decimal = alpha$1.alphanumeric = alpha$1.alpha = void 0;
-var alpha = {
-  'en-US': /^[A-Z]+$/i,
-  'az-AZ': /^[A-VXYZÇƏĞİıÖŞÜ]+$/i,
-  'bg-BG': /^[А-Я]+$/i,
-  'cs-CZ': /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]+$/i,
-  'da-DK': /^[A-ZÆØÅ]+$/i,
-  'de-DE': /^[A-ZÄÖÜß]+$/i,
-  'el-GR': /^[Α-ώ]+$/i,
-  'es-ES': /^[A-ZÁÉÍÑÓÚÜ]+$/i,
-  'fa-IR': /^[ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی]+$/i,
-  'fi-FI': /^[A-ZÅÄÖ]+$/i,
-  'fr-FR': /^[A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
-  'it-IT': /^[A-ZÀÉÈÌÎÓÒÙ]+$/i,
-  'ja-JP': /^[ぁ-んァ-ヶｦ-ﾟ一-龠ー・。、]+$/i,
-  'nb-NO': /^[A-ZÆØÅ]+$/i,
-  'nl-NL': /^[A-ZÁÉËÏÓÖÜÚ]+$/i,
-  'nn-NO': /^[A-ZÆØÅ]+$/i,
-  'hu-HU': /^[A-ZÁÉÍÓÖŐÚÜŰ]+$/i,
-  'pl-PL': /^[A-ZĄĆĘŚŁŃÓŻŹ]+$/i,
-  'pt-PT': /^[A-ZÃÁÀÂÄÇÉÊËÍÏÕÓÔÖÚÜ]+$/i,
-  'ru-RU': /^[А-ЯЁ]+$/i,
-  'sl-SI': /^[A-ZČĆĐŠŽ]+$/i,
-  'sk-SK': /^[A-ZÁČĎÉÍŇÓŠŤÚÝŽĹŔĽÄÔ]+$/i,
-  'sr-RS@latin': /^[A-ZČĆŽŠĐ]+$/i,
-  'sr-RS': /^[А-ЯЂЈЉЊЋЏ]+$/i,
-  'sv-SE': /^[A-ZÅÄÖ]+$/i,
-  'th-TH': /^[ก-๐\s]+$/i,
-  'tr-TR': /^[A-ZÇĞİıÖŞÜ]+$/i,
-  'uk-UA': /^[А-ЩЬЮЯЄIЇҐі]+$/i,
-  'vi-VN': /^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸ]+$/i,
-  'ko-KR': /^[ㄱ-ㅎㅏ-ㅣ가-힣]*$/,
-  'ku-IQ': /^[ئابپتجچحخدرڕزژسشعغفڤقکگلڵمنوۆھەیێيطؤثآإأكضصةظذ]+$/i,
-  ar: /^[ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/,
-  he: /^[א-ת]+$/,
-  fa: /^['آاءأؤئبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهةی']+$/i,
-  bn: /^['ঀঁংঃঅআইঈউঊঋঌএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযরলশষসহ়ঽািীুূৃৄেৈোৌ্ৎৗড়ঢ়য়ৠৡৢৣৰৱ৲৳৴৵৶৷৸৹৺৻']+$/,
-  'hi-IN': /^[\u0900-\u0961]+[\u0972-\u097F]*$/i,
-  'si-LK': /^[\u0D80-\u0DFF]+$/
-};
-alpha$1.alpha = alpha;
-var alphanumeric = {
-  'en-US': /^[0-9A-Z]+$/i,
-  'az-AZ': /^[0-9A-VXYZÇƏĞİıÖŞÜ]+$/i,
-  'bg-BG': /^[0-9А-Я]+$/i,
-  'cs-CZ': /^[0-9A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]+$/i,
-  'da-DK': /^[0-9A-ZÆØÅ]+$/i,
-  'de-DE': /^[0-9A-ZÄÖÜß]+$/i,
-  'el-GR': /^[0-9Α-ω]+$/i,
-  'es-ES': /^[0-9A-ZÁÉÍÑÓÚÜ]+$/i,
-  'fi-FI': /^[0-9A-ZÅÄÖ]+$/i,
-  'fr-FR': /^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
-  'it-IT': /^[0-9A-ZÀÉÈÌÎÓÒÙ]+$/i,
-  'ja-JP': /^[0-9０-９ぁ-んァ-ヶｦ-ﾟ一-龠ー・。、]+$/i,
-  'hu-HU': /^[0-9A-ZÁÉÍÓÖŐÚÜŰ]+$/i,
-  'nb-NO': /^[0-9A-ZÆØÅ]+$/i,
-  'nl-NL': /^[0-9A-ZÁÉËÏÓÖÜÚ]+$/i,
-  'nn-NO': /^[0-9A-ZÆØÅ]+$/i,
-  'pl-PL': /^[0-9A-ZĄĆĘŚŁŃÓŻŹ]+$/i,
-  'pt-PT': /^[0-9A-ZÃÁÀÂÄÇÉÊËÍÏÕÓÔÖÚÜ]+$/i,
-  'ru-RU': /^[0-9А-ЯЁ]+$/i,
-  'sl-SI': /^[0-9A-ZČĆĐŠŽ]+$/i,
-  'sk-SK': /^[0-9A-ZÁČĎÉÍŇÓŠŤÚÝŽĹŔĽÄÔ]+$/i,
-  'sr-RS@latin': /^[0-9A-ZČĆŽŠĐ]+$/i,
-  'sr-RS': /^[0-9А-ЯЂЈЉЊЋЏ]+$/i,
-  'sv-SE': /^[0-9A-ZÅÄÖ]+$/i,
-  'th-TH': /^[ก-๙\s]+$/i,
-  'tr-TR': /^[0-9A-ZÇĞİıÖŞÜ]+$/i,
-  'uk-UA': /^[0-9А-ЩЬЮЯЄIЇҐі]+$/i,
-  'ko-KR': /^[0-9ㄱ-ㅎㅏ-ㅣ가-힣]*$/,
-  'ku-IQ': /^[٠١٢٣٤٥٦٧٨٩0-9ئابپتجچحخدرڕزژسشعغفڤقکگلڵمنوۆھەیێيطؤثآإأكضصةظذ]+$/i,
-  'vi-VN': /^[0-9A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸ]+$/i,
-  ar: /^[٠١٢٣٤٥٦٧٨٩0-9ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/,
-  he: /^[0-9א-ת]+$/,
-  fa: /^['0-9آاءأؤئبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهةی۱۲۳۴۵۶۷۸۹۰']+$/i,
-  bn: /^['ঀঁংঃঅআইঈউঊঋঌএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযরলশষসহ়ঽািীুূৃৄেৈোৌ্ৎৗড়ঢ়য়ৠৡৢৣ০১২৩৪৫৬৭৮৯ৰৱ৲৳৴৵৶৷৸৹৺৻']+$/,
-  'hi-IN': /^[\u0900-\u0963]+[\u0966-\u097F]*$/i,
-  'si-LK': /^[0-9\u0D80-\u0DFF]+$/
-};
-alpha$1.alphanumeric = alphanumeric;
-var decimal = {
-  'en-US': '.',
-  ar: '٫'
-};
-alpha$1.decimal = decimal;
-var englishLocales = ['AU', 'GB', 'HK', 'IN', 'NZ', 'ZA', 'ZM'];
-alpha$1.englishLocales = englishLocales;
-for (var locale, i = 0; i < englishLocales.length; i++) {
-  locale = "en-".concat(englishLocales[i]);
-  alpha[locale] = alpha['en-US'];
-  alphanumeric[locale] = alphanumeric['en-US'];
-  decimal[locale] = decimal['en-US'];
-} // Source: http://www.localeplanet.com/java/
-
-var arabicLocales = ['AE', 'BH', 'DZ', 'EG', 'IQ', 'JO', 'KW', 'LB', 'LY', 'MA', 'QM', 'QA', 'SA', 'SD', 'SY', 'TN', 'YE'];
-alpha$1.arabicLocales = arabicLocales;
-for (var _locale, _i = 0; _i < arabicLocales.length; _i++) {
-  _locale = "ar-".concat(arabicLocales[_i]);
-  alpha[_locale] = alpha.ar;
-  alphanumeric[_locale] = alphanumeric.ar;
-  decimal[_locale] = decimal.ar;
-}
-var farsiLocales = ['IR', 'AF'];
-alpha$1.farsiLocales = farsiLocales;
-for (var _locale2, _i2 = 0; _i2 < farsiLocales.length; _i2++) {
-  _locale2 = "fa-".concat(farsiLocales[_i2]);
-  alphanumeric[_locale2] = alphanumeric.fa;
-  decimal[_locale2] = decimal.ar;
-}
-var bengaliLocales = ['BD', 'IN'];
-alpha$1.bengaliLocales = bengaliLocales;
-for (var _locale3, _i3 = 0; _i3 < bengaliLocales.length; _i3++) {
-  _locale3 = "bn-".concat(bengaliLocales[_i3]);
-  alpha[_locale3] = alpha.bn;
-  alphanumeric[_locale3] = alphanumeric.bn;
-  decimal[_locale3] = decimal['en-US'];
-} // Source: https://en.wikipedia.org/wiki/Decimal_mark
-
-var dotDecimal = ['ar-EG', 'ar-LB', 'ar-LY'];
-alpha$1.dotDecimal = dotDecimal;
-var commaDecimal = ['bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-ZM', 'es-ES', 'fr-CA', 'fr-FR', 'id-ID', 'it-IT', 'ku-IQ', 'hi-IN', 'hu-HU', 'nb-NO', 'nn-NO', 'nl-NL', 'pl-PL', 'pt-PT', 'ru-RU', 'si-LK', 'sl-SI', 'sr-RS@latin', 'sr-RS', 'sv-SE', 'tr-TR', 'uk-UA', 'vi-VN'];
-alpha$1.commaDecimal = commaDecimal;
-for (var _i4 = 0; _i4 < dotDecimal.length; _i4++) {
-  decimal[dotDecimal[_i4]] = decimal['en-US'];
-}
-for (var _i5 = 0; _i5 < commaDecimal.length; _i5++) {
-  decimal[commaDecimal[_i5]] = ',';
-}
-alpha['fr-CA'] = alpha['fr-FR'];
-alphanumeric['fr-CA'] = alphanumeric['fr-FR'];
-alpha['pt-BR'] = alpha['pt-PT'];
-alphanumeric['pt-BR'] = alphanumeric['pt-PT'];
-decimal['pt-BR'] = decimal['pt-PT']; // see #862
-
-alpha['pl-Pl'] = alpha['pl-PL'];
-alphanumeric['pl-Pl'] = alphanumeric['pl-PL'];
-decimal['pl-Pl'] = decimal['pl-PL']; // see #1455
-
-alpha['fa-AF'] = alpha.fa;
-
-Object.defineProperty(isFloat$2, "__esModule", {
-  value: true
-});
-isFloat$2.default = isFloat$1;
-isFloat$2.locales = void 0;
-var _assertString$a = _interopRequireDefault$a(assertStringExports);
-var _alpha$2 = alpha$1;
-function _interopRequireDefault$a(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-function isFloat$1(str, options) {
-  (0, _assertString$a.default)(str);
-  options = options || {};
-  var float = new RegExp("^(?:[-+])?(?:[0-9]+)?(?:\\".concat(options.locale ? _alpha$2.decimal[options.locale] : '.', "[0-9]*)?(?:[eE][\\+\\-]?(?:[0-9]+))?$"));
-  if (str === '' || str === '.' || str === ',' || str === '-' || str === '+') {
-    return false;
-  }
-  var value = parseFloat(str.replace(',', '.'));
-  return float.test(str) && (!options.hasOwnProperty('min') || value >= options.min) && (!options.hasOwnProperty('max') || value <= options.max) && (!options.hasOwnProperty('lt') || value < options.lt) && (!options.hasOwnProperty('gt') || value > options.gt);
-}
-var locales$5 = Object.keys(_alpha$2.decimal);
-isFloat$2.locales = locales$5;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = toFloat;
-  var _isFloat = _interopRequireDefault(isFloat$2);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function toFloat(str) {
-    if (!(0, _isFloat.default)(str)) return NaN;
-    return parseFloat(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(toFloat, toFloat.exports);
-var toFloatExports = toFloat.exports;
-
-var toInt = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = toInt;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function toInt(str, radix) {
-    (0, _assertString.default)(str);
-    return parseInt(str, radix || 10);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(toInt, toInt.exports);
-var toIntExports = toInt.exports;
-
-var toBoolean = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = toBoolean;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function toBoolean(str, strict) {
-    (0, _assertString.default)(str);
-    if (strict) {
-      return str === '1' || /^true$/i.test(str);
-    }
-    return str !== '0' && !/^false$/i.test(str) && str !== '';
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(toBoolean, toBoolean.exports);
-var toBooleanExports = toBoolean.exports;
-
-var equals = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = equals;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function equals(str, comparison) {
-    (0, _assertString.default)(str);
-    return str === comparison;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(equals, equals.exports);
-var equalsExports = equals.exports;
-
-var contains = {exports: {}};
-
-var toString$1 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = toString;
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-    return _typeof(obj);
-  }
-  function toString(input) {
-    if (_typeof(input) === 'object' && input !== null) {
-      if (typeof input.toString === 'function') {
-        input = input.toString();
-      } else {
-        input = '[object Object]';
-      }
-    } else if (input === null || typeof input === 'undefined' || isNaN(input) && !input.length) {
-      input = '';
-    }
-    return String(input);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(toString$1, toString$1.exports);
-var toStringExports = toString$1.exports;
-
-var merge = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = merge;
-  function merge() {
-    var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var defaults = arguments.length > 1 ? arguments[1] : undefined;
-    for (var key in defaults) {
-      if (typeof obj[key] === 'undefined') {
-        obj[key] = defaults[key];
-      }
-    }
-    return obj;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(merge, merge.exports);
-var mergeExports = merge.exports;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = contains;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _toString = _interopRequireDefault(toStringExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var defaulContainsOptions = {
-    ignoreCase: false,
-    minOccurrences: 1
-  };
-  function contains(str, elem, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, defaulContainsOptions);
-    if (options.ignoreCase) {
-      return str.toLowerCase().split((0, _toString.default)(elem).toLowerCase()).length > options.minOccurrences;
-    }
-    return str.split((0, _toString.default)(elem)).length > options.minOccurrences;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(contains, contains.exports);
-var containsExports = contains.exports;
-
-var matches = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = matches;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function matches(str, pattern, modifiers) {
-    (0, _assertString.default)(str);
-    if (Object.prototype.toString.call(pattern) !== '[object RegExp]') {
-      pattern = new RegExp(pattern, modifiers);
-    }
-    return !!str.match(pattern);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(matches, matches.exports);
-var matchesExports = matches.exports;
-
-var isEmail = {exports: {}};
-
-var isByteLength = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isByteLength;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-    return _typeof(obj);
-  }
-
-  /* eslint-disable prefer-rest-params */
-  function isByteLength(str, options) {
-    (0, _assertString.default)(str);
-    var min;
-    var max;
-    if (_typeof(options) === 'object') {
-      min = options.min || 0;
-      max = options.max;
-    } else {
-      // backwards compatibility: isByteLength(str, min [, max])
-      min = arguments[1];
-      max = arguments[2];
-    }
-    var len = encodeURI(str).split(/%..|./).length - 1;
-    return len >= min && (typeof max === 'undefined' || len <= max);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isByteLength, isByteLength.exports);
-var isByteLengthExports = isByteLength.exports;
-
-var isFQDN = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isFQDN;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var default_fqdn_options = {
-    require_tld: true,
-    allow_underscores: false,
-    allow_trailing_dot: false,
-    allow_numeric_tld: false,
-    allow_wildcard: false,
-    ignore_max_length: false
-  };
-  function isFQDN(str, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, default_fqdn_options);
-    /* Remove the optional trailing dot before checking validity */
-
-    if (options.allow_trailing_dot && str[str.length - 1] === '.') {
-      str = str.substring(0, str.length - 1);
-    }
-    /* Remove the optional wildcard before checking validity */
-
-    if (options.allow_wildcard === true && str.indexOf('*.') === 0) {
-      str = str.substring(2);
-    }
-    var parts = str.split('.');
-    var tld = parts[parts.length - 1];
-    if (options.require_tld) {
-      // disallow fqdns without tld
-      if (parts.length < 2) {
-        return false;
-      }
-      if (!options.allow_numeric_tld && !/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(tld)) {
-        return false;
-      } // disallow spaces
-
-      if (/\s/.test(tld)) {
-        return false;
-      }
-    } // reject numeric TLDs
-
-    if (!options.allow_numeric_tld && /^\d+$/.test(tld)) {
-      return false;
-    }
-    return parts.every(function (part) {
-      if (part.length > 63 && !options.ignore_max_length) {
-        return false;
-      }
-      if (!/^[a-z_\u00a1-\uffff0-9-]+$/i.test(part)) {
-        return false;
-      } // disallow full-width chars
-
-      if (/[\uff01-\uff5e]/.test(part)) {
-        return false;
-      } // disallow parts starting or ending with hyphen
-
-      if (/^-|-$/.test(part)) {
-        return false;
-      }
-      if (!options.allow_underscores && /_/.test(part)) {
-        return false;
-      }
-      return true;
-    });
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isFQDN, isFQDN.exports);
-var isFQDNExports = isFQDN.exports;
-
-var isIP = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isIP;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /**
-  11.3.  Examples
-  	   The following addresses
-  	             fe80::1234 (on the 1st link of the node)
-               ff02::5678 (on the 5th link of the node)
-               ff08::9abc (on the 10th organization of the node)
-  	   would be represented as follows:
-  	             fe80::1234%1
-               ff02::5678%5
-               ff08::9abc%10
-  	   (Here we assume a natural translation from a zone index to the
-     <zone_id> part, where the Nth zone of any scope is translated into
-     "N".)
-  	   If we use interface names as <zone_id>, those addresses could also be
-     represented as follows:
-  	            fe80::1234%ne0
-              ff02::5678%pvc1.3
-              ff08::9abc%interface10
-  	   where the interface "ne0" belongs to the 1st link, "pvc1.3" belongs
-     to the 5th link, and "interface10" belongs to the 10th organization.
-   * * */
-  var IPv4SegmentFormat = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
-  var IPv4AddressFormat = "(".concat(IPv4SegmentFormat, "[.]){3}").concat(IPv4SegmentFormat);
-  var IPv4AddressRegExp = new RegExp("^".concat(IPv4AddressFormat, "$"));
-  var IPv6SegmentFormat = '(?:[0-9a-fA-F]{1,4})';
-  var IPv6AddressRegExp = new RegExp('^(' + "(?:".concat(IPv6SegmentFormat, ":){7}(?:").concat(IPv6SegmentFormat, "|:)|") + "(?:".concat(IPv6SegmentFormat, ":){6}(?:").concat(IPv4AddressFormat, "|:").concat(IPv6SegmentFormat, "|:)|") + "(?:".concat(IPv6SegmentFormat, ":){5}(?::").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,2}|:)|") + "(?:".concat(IPv6SegmentFormat, ":){4}(?:(:").concat(IPv6SegmentFormat, "){0,1}:").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,3}|:)|") + "(?:".concat(IPv6SegmentFormat, ":){3}(?:(:").concat(IPv6SegmentFormat, "){0,2}:").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,4}|:)|") + "(?:".concat(IPv6SegmentFormat, ":){2}(?:(:").concat(IPv6SegmentFormat, "){0,3}:").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,5}|:)|") + "(?:".concat(IPv6SegmentFormat, ":){1}(?:(:").concat(IPv6SegmentFormat, "){0,4}:").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,6}|:)|") + "(?::((?::".concat(IPv6SegmentFormat, "){0,5}:").concat(IPv4AddressFormat, "|(?::").concat(IPv6SegmentFormat, "){1,7}|:))") + ')(%[0-9a-zA-Z-.:]{1,})?$');
-  function isIP(str) {
-    var version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    (0, _assertString.default)(str);
-    version = String(version);
-    if (!version) {
-      return isIP(str, 4) || isIP(str, 6);
-    }
-    if (version === '4') {
-      return IPv4AddressRegExp.test(str);
-    }
-    if (version === '6') {
-      return IPv6AddressRegExp.test(str);
-    }
-    return false;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isIP, isIP.exports);
-var isIPExports = isIP.exports;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isEmail;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  var _isByteLength = _interopRequireDefault(isByteLengthExports);
-  var _isFQDN = _interopRequireDefault(isFQDNExports);
-  var _isIP = _interopRequireDefault(isIPExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var default_email_options = {
-    allow_display_name: false,
-    require_display_name: false,
-    allow_utf8_local_part: true,
-    require_tld: true,
-    blacklisted_chars: '',
-    ignore_max_length: false,
-    host_blacklist: [],
-    host_whitelist: []
-  };
-  /* eslint-disable max-len */
-
-  /* eslint-disable no-control-regex */
-
-  var splitNameAddress = /^([^\x00-\x1F\x7F-\x9F\cX]+)</i;
-  var emailUserPart = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~]+$/i;
-  var gmailUserPart = /^[a-z\d]+$/;
-  var quotedEmailUser = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f]))*$/i;
-  var emailUserUtf8Part = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i;
-  var quotedEmailUserUtf8 = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*$/i;
-  var defaultMaxEmailLength = 254;
-  /* eslint-enable max-len */
-
-  /* eslint-enable no-control-regex */
-
-  /**
-   * Validate display name according to the RFC2822: https://tools.ietf.org/html/rfc2822#appendix-A.1.2
-   * @param {String} display_name
-   */
-
-  function validateDisplayName(display_name) {
-    var display_name_without_quotes = display_name.replace(/^"(.+)"$/, '$1'); // display name with only spaces is not valid
-
-    if (!display_name_without_quotes.trim()) {
-      return false;
-    } // check whether display name contains illegal character
-
-    var contains_illegal = /[\.";<>]/.test(display_name_without_quotes);
-    if (contains_illegal) {
-      // if contains illegal characters,
-      // must to be enclosed in double-quotes, otherwise it's not a valid display name
-      if (display_name_without_quotes === display_name) {
-        return false;
-      } // the quotes in display name must start with character symbol \
-
-      var all_start_with_back_slash = display_name_without_quotes.split('"').length === display_name_without_quotes.split('\\"').length;
-      if (!all_start_with_back_slash) {
-        return false;
-      }
-    }
-    return true;
-  }
-  function isEmail(str, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, default_email_options);
-    if (options.require_display_name || options.allow_display_name) {
-      var display_email = str.match(splitNameAddress);
-      if (display_email) {
-        var display_name = display_email[1]; // Remove display name and angle brackets to get email address
-        // Can be done in the regex but will introduce a ReDOS (See  #1597 for more info)
-
-        str = str.replace(display_name, '').replace(/(^<|>$)/g, ''); // sometimes need to trim the last space to get the display name
-        // because there may be a space between display name and email address
-        // eg. myname <address@gmail.com>
-        // the display name is `myname` instead of `myname `, so need to trim the last space
-
-        if (display_name.endsWith(' ')) {
-          display_name = display_name.slice(0, -1);
-        }
-        if (!validateDisplayName(display_name)) {
-          return false;
-        }
-      } else if (options.require_display_name) {
-        return false;
-      }
-    }
-    if (!options.ignore_max_length && str.length > defaultMaxEmailLength) {
-      return false;
-    }
-    var parts = str.split('@');
-    var domain = parts.pop();
-    var lower_domain = domain.toLowerCase();
-    if (options.host_blacklist.includes(lower_domain)) {
-      return false;
-    }
-    if (options.host_whitelist.length > 0 && !options.host_whitelist.includes(lower_domain)) {
-      return false;
-    }
-    var user = parts.join('@');
-    if (options.domain_specific_validation && (lower_domain === 'gmail.com' || lower_domain === 'googlemail.com')) {
-      /*
-        Previously we removed dots for gmail addresses before validating.
-        This was removed because it allows `multiple..dots@gmail.com`
-        to be reported as valid, but it is not.
-        Gmail only normalizes single dots, removing them from here is pointless,
-        should be done in normalizeEmail
-      */
-      user = user.toLowerCase(); // Removing sub-address from username before gmail validation
-
-      var username = user.split('+')[0]; // Dots are not included in gmail length restriction
-
-      if (!(0, _isByteLength.default)(username.replace(/\./g, ''), {
-        min: 6,
-        max: 30
-      })) {
-        return false;
-      }
-      var _user_parts = username.split('.');
-      for (var i = 0; i < _user_parts.length; i++) {
-        if (!gmailUserPart.test(_user_parts[i])) {
-          return false;
-        }
-      }
-    }
-    if (options.ignore_max_length === false && (!(0, _isByteLength.default)(user, {
-      max: 64
-    }) || !(0, _isByteLength.default)(domain, {
-      max: 254
-    }))) {
-      return false;
-    }
-    if (!(0, _isFQDN.default)(domain, {
-      require_tld: options.require_tld,
-      ignore_max_length: options.ignore_max_length
-    })) {
-      if (!options.allow_ip_domain) {
-        return false;
-      }
-      if (!(0, _isIP.default)(domain)) {
-        if (!domain.startsWith('[') || !domain.endsWith(']')) {
-          return false;
-        }
-        var noBracketdomain = domain.slice(1, -1);
-        if (noBracketdomain.length === 0 || !(0, _isIP.default)(noBracketdomain)) {
-          return false;
-        }
-      }
-    }
-    if (user[0] === '"') {
-      user = user.slice(1, user.length - 1);
-      return options.allow_utf8_local_part ? quotedEmailUserUtf8.test(user) : quotedEmailUser.test(user);
-    }
-    var pattern = options.allow_utf8_local_part ? emailUserUtf8Part : emailUserPart;
-    var user_parts = user.split('.');
-    for (var _i = 0; _i < user_parts.length; _i++) {
-      if (!pattern.test(user_parts[_i])) {
-        return false;
-      }
-    }
-    if (options.blacklisted_chars) {
-      if (user.search(new RegExp("[".concat(options.blacklisted_chars, "]+"), 'g')) !== -1) return false;
-    }
-    return true;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isEmail, isEmail.exports);
-var isEmailExports = isEmail.exports;
-
-var isURL = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isURL;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _isFQDN = _interopRequireDefault(isFQDNExports);
-  var _isIP = _interopRequireDefault(isIPExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-  }
-  function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for (var i = 0, arr2 = new Array(len); i < len; i++) {
-      arr2[i] = arr[i];
-    }
-    return arr2;
-  }
-  function _iterableToArrayLimit(arr, i) {
-    if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _e = undefined;
-    try {
-      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-        _arr.push(_s.value);
-        if (i && _arr.length === i) break;
-      }
-    } catch (err) {
-      _d = true;
-      _e = err;
-    } finally {
-      try {
-        if (!_n && _i["return"] != null) _i["return"]();
-      } finally {
-        if (_d) throw _e;
-      }
-    }
-    return _arr;
-  }
-  function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-  }
-
-  /*
-  options for isURL method
-  	require_protocol - if set as true isURL will return false if protocol is not present in the URL
-  require_valid_protocol - isURL will check if the URL's protocol is present in the protocols option
-  protocols - valid protocols can be modified with this option
-  require_host - if set as false isURL will not check if host is present in the URL
-  require_port - if set as true isURL will check if port is present in the URL
-  allow_protocol_relative_urls - if set as true protocol relative URLs will be allowed
-  validate_length - if set as false isURL will skip string length validation (IE maximum is 2083)
-  	*/
-  var default_url_options = {
-    protocols: ['http', 'https', 'ftp'],
-    require_tld: true,
-    require_protocol: false,
-    require_host: true,
-    require_port: false,
-    require_valid_protocol: true,
-    allow_underscores: false,
-    allow_trailing_dot: false,
-    allow_protocol_relative_urls: false,
-    allow_fragments: true,
-    allow_query_components: true,
-    validate_length: true
-  };
-  var wrapped_ipv6 = /^\[([^\]]+)\](?::([0-9]+))?$/;
-  function isRegExp(obj) {
-    return Object.prototype.toString.call(obj) === '[object RegExp]';
-  }
-  function checkHost(host, matches) {
-    for (var i = 0; i < matches.length; i++) {
-      var match = matches[i];
-      if (host === match || isRegExp(match) && match.test(host)) {
-        return true;
-      }
-    }
-    return false;
-  }
-  function isURL(url, options) {
-    (0, _assertString.default)(url);
-    if (!url || /[\s<>]/.test(url)) {
-      return false;
-    }
-    if (url.indexOf('mailto:') === 0) {
-      return false;
-    }
-    options = (0, _merge.default)(options, default_url_options);
-    if (options.validate_length && url.length >= 2083) {
-      return false;
-    }
-    if (!options.allow_fragments && url.includes('#')) {
-      return false;
-    }
-    if (!options.allow_query_components && (url.includes('?') || url.includes('&'))) {
-      return false;
-    }
-    var protocol, auth, host, hostname, port, port_str, split, ipv6;
-    split = url.split('#');
-    url = split.shift();
-    split = url.split('?');
-    url = split.shift();
-    split = url.split('://');
-    if (split.length > 1) {
-      protocol = split.shift().toLowerCase();
-      if (options.require_valid_protocol && options.protocols.indexOf(protocol) === -1) {
-        return false;
-      }
-    } else if (options.require_protocol) {
-      return false;
-    } else if (url.slice(0, 2) === '//') {
-      if (!options.allow_protocol_relative_urls) {
-        return false;
-      }
-      split[0] = url.slice(2);
-    }
-    url = split.join('://');
-    if (url === '') {
-      return false;
-    }
-    split = url.split('/');
-    url = split.shift();
-    if (url === '' && !options.require_host) {
-      return true;
-    }
-    split = url.split('@');
-    if (split.length > 1) {
-      if (options.disallow_auth) {
-        return false;
-      }
-      if (split[0] === '') {
-        return false;
-      }
-      auth = split.shift();
-      if (auth.indexOf(':') >= 0 && auth.split(':').length > 2) {
-        return false;
-      }
-      var _auth$split = auth.split(':'),
-        _auth$split2 = _slicedToArray(_auth$split, 2),
-        user = _auth$split2[0],
-        password = _auth$split2[1];
-      if (user === '' && password === '') {
-        return false;
-      }
-    }
-    hostname = split.join('@');
-    port_str = null;
-    ipv6 = null;
-    var ipv6_match = hostname.match(wrapped_ipv6);
-    if (ipv6_match) {
-      host = '';
-      ipv6 = ipv6_match[1];
-      port_str = ipv6_match[2] || null;
-    } else {
-      split = hostname.split(':');
-      host = split.shift();
-      if (split.length) {
-        port_str = split.join(':');
-      }
-    }
-    if (port_str !== null && port_str.length > 0) {
-      port = parseInt(port_str, 10);
-      if (!/^[0-9]+$/.test(port_str) || port <= 0 || port > 65535) {
-        return false;
-      }
-    } else if (options.require_port) {
-      return false;
-    }
-    if (options.host_whitelist) {
-      return checkHost(host, options.host_whitelist);
-    }
-    if (host === '' && !options.require_host) {
-      return true;
-    }
-    if (!(0, _isIP.default)(host) && !(0, _isFQDN.default)(host, options) && (!ipv6 || !(0, _isIP.default)(ipv6, 6))) {
-      return false;
-    }
-    host = host || ipv6;
-    if (options.host_blacklist && checkHost(host, options.host_blacklist)) {
-      return false;
-    }
-    return true;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isURL, isURL.exports);
-var isURLExports = isURL.exports;
-
-var isMACAddress = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isMACAddress;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var macAddress48 = /^(?:[0-9a-fA-F]{2}([-:\s]))([0-9a-fA-F]{2}\1){4}([0-9a-fA-F]{2})$/;
-  var macAddress48NoSeparators = /^([0-9a-fA-F]){12}$/;
-  var macAddress48WithDots = /^([0-9a-fA-F]{4}\.){2}([0-9a-fA-F]{4})$/;
-  var macAddress64 = /^(?:[0-9a-fA-F]{2}([-:\s]))([0-9a-fA-F]{2}\1){6}([0-9a-fA-F]{2})$/;
-  var macAddress64NoSeparators = /^([0-9a-fA-F]){16}$/;
-  var macAddress64WithDots = /^([0-9a-fA-F]{4}\.){3}([0-9a-fA-F]{4})$/;
-  function isMACAddress(str, options) {
-    (0, _assertString.default)(str);
-    if (options !== null && options !== void 0 && options.eui) {
-      options.eui = String(options.eui);
-    }
-    /**
-     * @deprecated `no_colons` TODO: remove it in the next major
-    */
-
-    if (options !== null && options !== void 0 && options.no_colons || options !== null && options !== void 0 && options.no_separators) {
-      if (options.eui === '48') {
-        return macAddress48NoSeparators.test(str);
-      }
-      if (options.eui === '64') {
-        return macAddress64NoSeparators.test(str);
-      }
-      return macAddress48NoSeparators.test(str) || macAddress64NoSeparators.test(str);
-    }
-    if ((options === null || options === void 0 ? void 0 : options.eui) === '48') {
-      return macAddress48.test(str) || macAddress48WithDots.test(str);
-    }
-    if ((options === null || options === void 0 ? void 0 : options.eui) === '64') {
-      return macAddress64.test(str) || macAddress64WithDots.test(str);
-    }
-    return isMACAddress(str, {
-      eui: '48'
-    }) || isMACAddress(str, {
-      eui: '64'
-    });
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isMACAddress, isMACAddress.exports);
-var isMACAddressExports = isMACAddress.exports;
-
-var isIPRange = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isIPRange;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _isIP = _interopRequireDefault(isIPExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var subnetMaybe = /^\d{1,3}$/;
-  var v4Subnet = 32;
-  var v6Subnet = 128;
-  function isIPRange(str) {
-    var version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    (0, _assertString.default)(str);
-    var parts = str.split('/'); // parts[0] -> ip, parts[1] -> subnet
-
-    if (parts.length !== 2) {
-      return false;
-    }
-    if (!subnetMaybe.test(parts[1])) {
-      return false;
-    } // Disallow preceding 0 i.e. 01, 02, ...
-
-    if (parts[1].length > 1 && parts[1].startsWith('0')) {
-      return false;
-    }
-    var isValidIP = (0, _isIP.default)(parts[0], version);
-    if (!isValidIP) {
-      return false;
-    } // Define valid subnet according to IP's version
-
-    var expectedSubnet = null;
-    switch (String(version)) {
-      case '4':
-        expectedSubnet = v4Subnet;
-        break;
-      case '6':
-        expectedSubnet = v6Subnet;
-        break;
-      default:
-        expectedSubnet = (0, _isIP.default)(parts[0], '6') ? v6Subnet : v4Subnet;
-    }
-    return parts[1] <= expectedSubnet && parts[1] >= 0;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isIPRange, isIPRange.exports);
-var isIPRangeExports = isIPRange.exports;
-
-var isDate = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isDate;
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-  }
-  function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-  function _iterableToArrayLimit(arr, i) {
-    if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _e = undefined;
-    try {
-      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-        _arr.push(_s.value);
-        if (i && _arr.length === i) break;
-      }
-    } catch (err) {
-      _d = true;
-      _e = err;
-    } finally {
-      try {
-        if (!_n && _i["return"] != null) _i["return"]();
-      } finally {
-        if (_d) throw _e;
-      }
-    }
-    return _arr;
-  }
-  function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-  }
-  function _createForOfIteratorHelper(o, allowArrayLike) {
-    var it;
-    if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-      if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-        if (it) o = it;
-        var i = 0;
-        var F = function F() {};
-        return {
-          s: F,
-          n: function n() {
-            if (i >= o.length) return {
-              done: true
-            };
-            return {
-              done: false,
-              value: o[i++]
-            };
-          },
-          e: function e(_e2) {
-            throw _e2;
-          },
-          f: F
-        };
-      }
-      throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-    }
-    var normalCompletion = true,
-      didErr = false,
-      err;
-    return {
-      s: function s() {
-        it = o[Symbol.iterator]();
-      },
-      n: function n() {
-        var step = it.next();
-        normalCompletion = step.done;
-        return step;
-      },
-      e: function e(_e3) {
-        didErr = true;
-        err = _e3;
-      },
-      f: function f() {
-        try {
-          if (!normalCompletion && it.return != null) it.return();
-        } finally {
-          if (didErr) throw err;
-        }
-      }
-    };
-  }
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for (var i = 0, arr2 = new Array(len); i < len; i++) {
-      arr2[i] = arr[i];
-    }
-    return arr2;
-  }
-  var default_date_options = {
-    format: 'YYYY/MM/DD',
-    delimiters: ['/', '-'],
-    strictMode: false
-  };
-  function isValidFormat(format) {
-    return /(^(y{4}|y{2})[.\/-](m{1,2})[.\/-](d{1,2})$)|(^(m{1,2})[.\/-](d{1,2})[.\/-]((y{4}|y{2})$))|(^(d{1,2})[.\/-](m{1,2})[.\/-]((y{4}|y{2})$))/gi.test(format);
-  }
-  function zip(date, format) {
-    var zippedArr = [],
-      len = Math.min(date.length, format.length);
-    for (var i = 0; i < len; i++) {
-      zippedArr.push([date[i], format[i]]);
-    }
-    return zippedArr;
-  }
-  function isDate(input, options) {
-    if (typeof options === 'string') {
-      // Allow backward compatbility for old format isDate(input [, format])
-      options = (0, _merge.default)({
-        format: options
-      }, default_date_options);
-    } else {
-      options = (0, _merge.default)(options, default_date_options);
-    }
-    if (typeof input === 'string' && isValidFormat(options.format)) {
-      var formatDelimiter = options.delimiters.find(function (delimiter) {
-        return options.format.indexOf(delimiter) !== -1;
-      });
-      var dateDelimiter = options.strictMode ? formatDelimiter : options.delimiters.find(function (delimiter) {
-        return input.indexOf(delimiter) !== -1;
-      });
-      var dateAndFormat = zip(input.split(dateDelimiter), options.format.toLowerCase().split(formatDelimiter));
-      var dateObj = {};
-      var _iterator = _createForOfIteratorHelper(dateAndFormat),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var _step$value = _slicedToArray(_step.value, 2),
-            dateWord = _step$value[0],
-            formatWord = _step$value[1];
-          if (dateWord.length !== formatWord.length) {
-            return false;
-          }
-          dateObj[formatWord.charAt(0)] = dateWord;
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-      return new Date("".concat(dateObj.m, "/").concat(dateObj.d, "/").concat(dateObj.y)).getDate() === +dateObj.d;
-    }
-    if (!options.strictMode) {
-      return Object.prototype.toString.call(input) === '[object Date]' && isFinite(input);
-    }
-    return false;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isDate, isDate.exports);
-var isDateExports = isDate.exports;
-
-var isTime = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isTime;
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var default_time_options = {
-    hourFormat: 'hour24',
-    mode: 'default'
-  };
-  var formats = {
-    hour24: {
-      default: /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/,
-      withSeconds: /^([01]?[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/
-    },
-    hour12: {
-      default: /^(0?[1-9]|1[0-2]):([0-5][0-9]) (A|P)M$/,
-      withSeconds: /^(0?[1-9]|1[0-2]):([0-5][0-9]):([0-5][0-9]) (A|P)M$/
-    }
-  };
-  function isTime(input, options) {
-    options = (0, _merge.default)(options, default_time_options);
-    if (typeof input !== 'string') return false;
-    return formats[options.hourFormat][options.mode].test(input);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isTime, isTime.exports);
-var isTimeExports = isTime.exports;
-
-var isBoolean = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isBoolean;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var defaultOptions = {
-    loose: false
-  };
-  var strictBooleans = ['true', 'false', '1', '0'];
-  var looseBooleans = [].concat(strictBooleans, ['yes', 'no']);
-  function isBoolean(str) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultOptions;
-    (0, _assertString.default)(str);
-    if (options.loose) {
-      return looseBooleans.includes(str.toLowerCase());
-    }
-    return strictBooleans.includes(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isBoolean, isBoolean.exports);
-var isBooleanExports = isBoolean.exports;
-
-var isLocale = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isLocale;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var localeReg = /^[A-Za-z]{2,4}([_-]([A-Za-z]{4}|[\d]{3}))?([_-]([A-Za-z]{2}|[\d]{3}))?$/;
-  function isLocale(str) {
-    (0, _assertString.default)(str);
-    if (str === 'en_US_POSIX' || str === 'ca_ES_VALENCIA') {
-      return true;
-    }
-    return localeReg.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isLocale, isLocale.exports);
-var isLocaleExports = isLocale.exports;
-
-var isAlpha$1 = {};
-
-Object.defineProperty(isAlpha$1, "__esModule", {
-  value: true
-});
-isAlpha$1.default = isAlpha;
-isAlpha$1.locales = void 0;
-var _assertString$9 = _interopRequireDefault$9(assertStringExports);
-var _alpha$1 = alpha$1;
-function _interopRequireDefault$9(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-function isAlpha(_str) {
-  var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en-US';
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  (0, _assertString$9.default)(_str);
-  var str = _str;
-  var ignore = options.ignore;
-  if (ignore) {
-    if (ignore instanceof RegExp) {
-      str = str.replace(ignore, '');
-    } else if (typeof ignore === 'string') {
-      str = str.replace(new RegExp("[".concat(ignore.replace(/[-[\]{}()*+?.,\\^$|#\\s]/g, '\\$&'), "]"), 'g'), ''); // escape regex for ignore
-    } else {
-      throw new Error('ignore should be instance of a String or RegExp');
-    }
-  }
-  if (locale in _alpha$1.alpha) {
-    return _alpha$1.alpha[locale].test(str);
-  }
-  throw new Error("Invalid locale '".concat(locale, "'"));
-}
-var locales$4 = Object.keys(_alpha$1.alpha);
-isAlpha$1.locales = locales$4;
-
-var isAlphanumeric$1 = {};
-
-Object.defineProperty(isAlphanumeric$1, "__esModule", {
-  value: true
-});
-isAlphanumeric$1.default = isAlphanumeric;
-isAlphanumeric$1.locales = void 0;
-var _assertString$8 = _interopRequireDefault$8(assertStringExports);
-var _alpha = alpha$1;
-function _interopRequireDefault$8(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-function isAlphanumeric(_str) {
-  var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en-US';
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  (0, _assertString$8.default)(_str);
-  var str = _str;
-  var ignore = options.ignore;
-  if (ignore) {
-    if (ignore instanceof RegExp) {
-      str = str.replace(ignore, '');
-    } else if (typeof ignore === 'string') {
-      str = str.replace(new RegExp("[".concat(ignore.replace(/[-[\]{}()*+?.,\\^$|#\\s]/g, '\\$&'), "]"), 'g'), ''); // escape regex for ignore
-    } else {
-      throw new Error('ignore should be instance of a String or RegExp');
-    }
-  }
-  if (locale in _alpha.alphanumeric) {
-    return _alpha.alphanumeric[locale].test(str);
-  }
-  throw new Error("Invalid locale '".concat(locale, "'"));
-}
-var locales$3 = Object.keys(_alpha.alphanumeric);
-isAlphanumeric$1.locales = locales$3;
-
-var isNumeric = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isNumeric;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _alpha = alpha$1;
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var numericNoSymbols = /^[0-9]+$/;
-  function isNumeric(str, options) {
-    (0, _assertString.default)(str);
-    if (options && options.no_symbols) {
-      return numericNoSymbols.test(str);
-    }
-    return new RegExp("^[+-]?([0-9]*[".concat((options || {}).locale ? _alpha.decimal[options.locale] : '.', "])?[0-9]+$")).test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isNumeric, isNumeric.exports);
-var isNumericExports = isNumeric.exports;
-
-var isPassportNumber = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isPassportNumber;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /**
-   * Reference:
-   * https://en.wikipedia.org/ -- Wikipedia
-   * https://docs.microsoft.com/en-us/microsoft-365/compliance/eu-passport-number -- EU Passport Number
-   * https://countrycode.org/ -- Country Codes
-   */
-  var passportRegexByCountryCode = {
-    AM: /^[A-Z]{2}\d{7}$/,
-    // ARMENIA
-    AR: /^[A-Z]{3}\d{6}$/,
-    // ARGENTINA
-    AT: /^[A-Z]\d{7}$/,
-    // AUSTRIA
-    AU: /^[A-Z]\d{7}$/,
-    // AUSTRALIA
-    AZ: /^[A-Z]{2,3}\d{7,8}$/,
-    // AZERBAIJAN
-    BE: /^[A-Z]{2}\d{6}$/,
-    // BELGIUM
-    BG: /^\d{9}$/,
-    // BULGARIA
-    BR: /^[A-Z]{2}\d{6}$/,
-    // BRAZIL
-    BY: /^[A-Z]{2}\d{7}$/,
-    // BELARUS
-    CA: /^[A-Z]{2}\d{6}$/,
-    // CANADA
-    CH: /^[A-Z]\d{7}$/,
-    // SWITZERLAND
-    CN: /^G\d{8}$|^E(?![IO])[A-Z0-9]\d{7}$/,
-    // CHINA [G=Ordinary, E=Electronic] followed by 8-digits, or E followed by any UPPERCASE letter (except I and O) followed by 7 digits
-    CY: /^[A-Z](\d{6}|\d{8})$/,
-    // CYPRUS
-    CZ: /^\d{8}$/,
-    // CZECH REPUBLIC
-    DE: /^[CFGHJKLMNPRTVWXYZ0-9]{9}$/,
-    // GERMANY
-    DK: /^\d{9}$/,
-    // DENMARK
-    DZ: /^\d{9}$/,
-    // ALGERIA
-    EE: /^([A-Z]\d{7}|[A-Z]{2}\d{7})$/,
-    // ESTONIA (K followed by 7-digits), e-passports have 2 UPPERCASE followed by 7 digits
-    ES: /^[A-Z0-9]{2}([A-Z0-9]?)\d{6}$/,
-    // SPAIN
-    FI: /^[A-Z]{2}\d{7}$/,
-    // FINLAND
-    FR: /^\d{2}[A-Z]{2}\d{5}$/,
-    // FRANCE
-    GB: /^\d{9}$/,
-    // UNITED KINGDOM
-    GR: /^[A-Z]{2}\d{7}$/,
-    // GREECE
-    HR: /^\d{9}$/,
-    // CROATIA
-    HU: /^[A-Z]{2}(\d{6}|\d{7})$/,
-    // HUNGARY
-    IE: /^[A-Z0-9]{2}\d{7}$/,
-    // IRELAND
-    IN: /^[A-Z]{1}-?\d{7}$/,
-    // INDIA
-    ID: /^[A-C]\d{7}$/,
-    // INDONESIA
-    IR: /^[A-Z]\d{8}$/,
-    // IRAN
-    IS: /^(A)\d{7}$/,
-    // ICELAND
-    IT: /^[A-Z0-9]{2}\d{7}$/,
-    // ITALY
-    JM: /^[Aa]\d{7}$/,
-    // JAMAICA
-    JP: /^[A-Z]{2}\d{7}$/,
-    // JAPAN
-    KR: /^[MS]\d{8}$/,
-    // SOUTH KOREA, REPUBLIC OF KOREA, [S=PS Passports, M=PM Passports]
-    KZ: /^[a-zA-Z]\d{7}$/,
-    // KAZAKHSTAN
-    LI: /^[a-zA-Z]\d{5}$/,
-    // LIECHTENSTEIN
-    LT: /^[A-Z0-9]{8}$/,
-    // LITHUANIA
-    LU: /^[A-Z0-9]{8}$/,
-    // LUXEMBURG
-    LV: /^[A-Z0-9]{2}\d{7}$/,
-    // LATVIA
-    LY: /^[A-Z0-9]{8}$/,
-    // LIBYA
-    MT: /^\d{7}$/,
-    // MALTA
-    MZ: /^([A-Z]{2}\d{7})|(\d{2}[A-Z]{2}\d{5})$/,
-    // MOZAMBIQUE
-    MY: /^[AHK]\d{8}$/,
-    // MALAYSIA
-    MX: /^\d{10,11}$/,
-    // MEXICO
-    NL: /^[A-Z]{2}[A-Z0-9]{6}\d$/,
-    // NETHERLANDS
-    NZ: /^([Ll]([Aa]|[Dd]|[Ff]|[Hh])|[Ee]([Aa]|[Pp])|[Nn])\d{6}$/,
-    // NEW ZEALAND
-    PH: /^([A-Z](\d{6}|\d{7}[A-Z]))|([A-Z]{2}(\d{6}|\d{7}))$/,
-    // PHILIPPINES
-    PK: /^[A-Z]{2}\d{7}$/,
-    // PAKISTAN
-    PL: /^[A-Z]{2}\d{7}$/,
-    // POLAND
-    PT: /^[A-Z]\d{6}$/,
-    // PORTUGAL
-    RO: /^\d{8,9}$/,
-    // ROMANIA
-    RU: /^\d{9}$/,
-    // RUSSIAN FEDERATION
-    SE: /^\d{8}$/,
-    // SWEDEN
-    SL: /^(P)[A-Z]\d{7}$/,
-    // SLOVENIA
-    SK: /^[0-9A-Z]\d{7}$/,
-    // SLOVAKIA
-    TH: /^[A-Z]{1,2}\d{6,7}$/,
-    // THAILAND
-    TR: /^[A-Z]\d{8}$/,
-    // TURKEY
-    UA: /^[A-Z]{2}\d{6}$/,
-    // UKRAINE
-    US: /^\d{9}$/ // UNITED STATES
-  };
-  /**
-   * Check if str is a valid passport number
-   * relative to provided ISO Country Code.
-   *
-   * @param {string} str
-   * @param {string} countryCode
-   * @return {boolean}
-   */
-
-  function isPassportNumber(str, countryCode) {
-    (0, _assertString.default)(str);
-    /** Remove All Whitespaces, Convert to UPPERCASE */
-
-    var normalizedStr = str.replace(/\s/g, '').toUpperCase();
-    return countryCode.toUpperCase() in passportRegexByCountryCode && passportRegexByCountryCode[countryCode].test(normalizedStr);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isPassportNumber, isPassportNumber.exports);
-var isPassportNumberExports = isPassportNumber.exports;
-
-var isPort = {exports: {}};
-
-var isInt = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isInt;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var int = /^(?:[-+]?(?:0|[1-9][0-9]*))$/;
-  var intLeadingZeroes = /^[-+]?[0-9]+$/;
-  function isInt(str, options) {
-    (0, _assertString.default)(str);
-    options = options || {}; // Get the regex to use for testing, based on whether
-    // leading zeroes are allowed or not.
-
-    var regex = options.hasOwnProperty('allow_leading_zeroes') && !options.allow_leading_zeroes ? int : intLeadingZeroes; // Check min/max/lt/gt
-
-    var minCheckPassed = !options.hasOwnProperty('min') || str >= options.min;
-    var maxCheckPassed = !options.hasOwnProperty('max') || str <= options.max;
-    var ltCheckPassed = !options.hasOwnProperty('lt') || str < options.lt;
-    var gtCheckPassed = !options.hasOwnProperty('gt') || str > options.gt;
-    return regex.test(str) && minCheckPassed && maxCheckPassed && ltCheckPassed && gtCheckPassed;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isInt, isInt.exports);
-var isIntExports = isInt.exports;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isPort;
-  var _isInt = _interopRequireDefault(isIntExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isPort(str) {
-    return (0, _isInt.default)(str, {
-      min: 0,
-      max: 65535
-    });
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isPort, isPort.exports);
-var isPortExports = isPort.exports;
-
-var isLowercase = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isLowercase;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isLowercase(str) {
-    (0, _assertString.default)(str);
-    return str === str.toLowerCase();
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isLowercase, isLowercase.exports);
-var isLowercaseExports = isLowercase.exports;
-
-var isUppercase = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isUppercase;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isUppercase(str) {
-    (0, _assertString.default)(str);
-    return str === str.toUpperCase();
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isUppercase, isUppercase.exports);
-var isUppercaseExports = isUppercase.exports;
-
-var isIMEI = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isIMEI;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var imeiRegexWithoutHypens = /^[0-9]{15}$/;
-  var imeiRegexWithHypens = /^\d{2}-\d{6}-\d{6}-\d{1}$/;
-  function isIMEI(str, options) {
-    (0, _assertString.default)(str);
-    options = options || {}; // default regex for checking imei is the one without hyphens
-
-    var imeiRegex = imeiRegexWithoutHypens;
-    if (options.allow_hyphens) {
-      imeiRegex = imeiRegexWithHypens;
-    }
-    if (!imeiRegex.test(str)) {
-      return false;
-    }
-    str = str.replace(/-/g, '');
-    var sum = 0,
-      mul = 2,
-      l = 14;
-    for (var i = 0; i < l; i++) {
-      var digit = str.substring(l - i - 1, l - i);
-      var tp = parseInt(digit, 10) * mul;
-      if (tp >= 10) {
-        sum += tp % 10 + 1;
-      } else {
-        sum += tp;
-      }
-      if (mul === 1) {
-        mul += 1;
-      } else {
-        mul -= 1;
-      }
-    }
-    var chk = (10 - sum % 10) % 10;
-    if (chk !== parseInt(str.substring(14, 15), 10)) {
-      return false;
-    }
-    return true;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isIMEI, isIMEI.exports);
-var isIMEIExports = isIMEI.exports;
-
-var isAscii = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isAscii;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /* eslint-disable no-control-regex */
-  var ascii = /^[\x00-\x7F]+$/;
-  /* eslint-enable no-control-regex */
-
-  function isAscii(str) {
-    (0, _assertString.default)(str);
-    return ascii.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isAscii, isAscii.exports);
-var isAsciiExports = isAscii.exports;
-
-var isFullWidth$1 = {};
-
-Object.defineProperty(isFullWidth$1, "__esModule", {
-  value: true
-});
-isFullWidth$1.default = isFullWidth;
-isFullWidth$1.fullWidth = void 0;
-var _assertString$7 = _interopRequireDefault$7(assertStringExports);
-function _interopRequireDefault$7(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-var fullWidth = /[^\u0020-\u007E\uFF61-\uFF9F\uFFA0-\uFFDC\uFFE8-\uFFEE0-9a-zA-Z]/;
-isFullWidth$1.fullWidth = fullWidth;
-function isFullWidth(str) {
-  (0, _assertString$7.default)(str);
-  return fullWidth.test(str);
-}
-
-var isHalfWidth$1 = {};
-
-Object.defineProperty(isHalfWidth$1, "__esModule", {
-  value: true
-});
-isHalfWidth$1.default = isHalfWidth;
-isHalfWidth$1.halfWidth = void 0;
-var _assertString$6 = _interopRequireDefault$6(assertStringExports);
-function _interopRequireDefault$6(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-var halfWidth = /[\u0020-\u007E\uFF61-\uFF9F\uFFA0-\uFFDC\uFFE8-\uFFEE0-9a-zA-Z]/;
-isHalfWidth$1.halfWidth = halfWidth;
-function isHalfWidth(str) {
-  (0, _assertString$6.default)(str);
-  return halfWidth.test(str);
-}
-
-var isVariableWidth = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isVariableWidth;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _isFullWidth = isFullWidth$1;
-  var _isHalfWidth = isHalfWidth$1;
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isVariableWidth(str) {
-    (0, _assertString.default)(str);
-    return _isFullWidth.fullWidth.test(str) && _isHalfWidth.halfWidth.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isVariableWidth, isVariableWidth.exports);
-var isVariableWidthExports = isVariableWidth.exports;
-
-var isMultibyte = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isMultibyte;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /* eslint-disable no-control-regex */
-  var multibyte = /[^\x00-\x7F]/;
-  /* eslint-enable no-control-regex */
-
-  function isMultibyte(str) {
-    (0, _assertString.default)(str);
-    return multibyte.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isMultibyte, isMultibyte.exports);
-var isMultibyteExports = isMultibyte.exports;
-
-var isSemVer = {exports: {}};
-
-var multilineRegex = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = multilineRegexp;
-
-  /**
-   * Build RegExp object from an array
-   * of multiple/multi-line regexp parts
-   *
-   * @param {string[]} parts
-   * @param {string} flags
-   * @return {object} - RegExp object
-   */
-  function multilineRegexp(parts, flags) {
-    var regexpAsStringLiteral = parts.join('');
-    return new RegExp(regexpAsStringLiteral, flags);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(multilineRegex, multilineRegex.exports);
-var multilineRegexExports = multilineRegex.exports;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isSemVer;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _multilineRegex = _interopRequireDefault(multilineRegexExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /**
-   * Regular Expression to match
-   * semantic versioning (SemVer)
-   * built from multi-line, multi-parts regexp
-   * Reference: https://semver.org/
-   */
-  var semanticVersioningRegex = (0, _multilineRegex.default)(['^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)', '(?:-((?:0|[1-9]\\d*|\\d*[a-z-][0-9a-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-z-][0-9a-z-]*))*))', '?(?:\\+([0-9a-z-]+(?:\\.[0-9a-z-]+)*))?$'], 'i');
-  function isSemVer(str) {
-    (0, _assertString.default)(str);
-    return semanticVersioningRegex.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isSemVer, isSemVer.exports);
-var isSemVerExports = isSemVer.exports;
-
-var isSurrogatePair = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isSurrogatePair;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var surrogatePair = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
-  function isSurrogatePair(str) {
-    (0, _assertString.default)(str);
-    return surrogatePair.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isSurrogatePair, isSurrogatePair.exports);
-var isSurrogatePairExports = isSurrogatePair.exports;
-
-var isDecimal$1 = {exports: {}};
-
-var includes = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = void 0;
-  var includes = function includes(arr, val) {
-    return arr.some(function (arrVal) {
-      return val === arrVal;
-    });
-  };
-  var _default = includes;
-  exports.default = _default;
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(includes, includes.exports);
-var includesExports = includes.exports;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isDecimal;
-  var _merge = _interopRequireDefault(mergeExports);
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _includes = _interopRequireDefault(includesExports);
-  var _alpha = alpha$1;
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function decimalRegExp(options) {
-    var regExp = new RegExp("^[-+]?([0-9]+)?(\\".concat(_alpha.decimal[options.locale], "[0-9]{").concat(options.decimal_digits, "})").concat(options.force_decimal ? '' : '?', "$"));
-    return regExp;
-  }
-  var default_decimal_options = {
-    force_decimal: false,
-    decimal_digits: '1,',
-    locale: 'en-US'
-  };
-  var blacklist = ['', '-', '+'];
-  function isDecimal(str, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, default_decimal_options);
-    if (options.locale in _alpha.decimal) {
-      return !(0, _includes.default)(blacklist, str.replace(/ /g, '')) && decimalRegExp(options).test(str);
-    }
-    throw new Error("Invalid locale '".concat(options.locale, "'"));
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isDecimal$1, isDecimal$1.exports);
-var isDecimalExports = isDecimal$1.exports;
-
-var isHexadecimal = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isHexadecimal;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var hexadecimal = /^(0x|0h)?[0-9A-F]+$/i;
-  function isHexadecimal(str) {
-    (0, _assertString.default)(str);
-    return hexadecimal.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isHexadecimal, isHexadecimal.exports);
-var isHexadecimalExports = isHexadecimal.exports;
-
-var isOctal$1 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isOctal;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var octal = /^(0o)?[0-7]+$/i;
-  function isOctal(str) {
-    (0, _assertString.default)(str);
-    return octal.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isOctal$1, isOctal$1.exports);
-var isOctalExports = isOctal$1.exports;
-
-var isDivisibleBy = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isDivisibleBy;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _toFloat = _interopRequireDefault(toFloatExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isDivisibleBy(str, num) {
-    (0, _assertString.default)(str);
-    return (0, _toFloat.default)(str) % parseInt(num, 10) === 0;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isDivisibleBy, isDivisibleBy.exports);
-var isDivisibleByExports = isDivisibleBy.exports;
-
-var isHexColor = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isHexColor;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var hexcolor = /^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$/i;
-  function isHexColor(str) {
-    (0, _assertString.default)(str);
-    return hexcolor.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isHexColor, isHexColor.exports);
-var isHexColorExports = isHexColor.exports;
-
-var isRgbColor = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isRgbColor;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var rgbColor = /^rgb\((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),){2}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\)$/;
-  var rgbaColor = /^rgba\((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),){3}(0?\.\d|1(\.0)?|0(\.0)?)\)$/;
-  var rgbColorPercent = /^rgb\((([0-9]%|[1-9][0-9]%|100%),){2}([0-9]%|[1-9][0-9]%|100%)\)$/;
-  var rgbaColorPercent = /^rgba\((([0-9]%|[1-9][0-9]%|100%),){3}(0?\.\d|1(\.0)?|0(\.0)?)\)$/;
-  function isRgbColor(str) {
-    var includePercentValues = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-    (0, _assertString.default)(str);
-    if (!includePercentValues) {
-      return rgbColor.test(str) || rgbaColor.test(str);
-    }
-    return rgbColor.test(str) || rgbaColor.test(str) || rgbColorPercent.test(str) || rgbaColorPercent.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isRgbColor, isRgbColor.exports);
-var isRgbColorExports = isRgbColor.exports;
-
-var isHSL = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isHSL;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var hslComma = /^hsla?\(((\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?))(deg|grad|rad|turn)?(,(\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?)%){2}(,((\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?)%?))?\)$/i;
-  var hslSpace = /^hsla?\(((\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?))(deg|grad|rad|turn)?(\s(\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?)%){2}\s?(\/\s((\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?)%?)\s?)?\)$/i;
-  function isHSL(str) {
-    (0, _assertString.default)(str); // Strip duplicate spaces before calling the validation regex (See  #1598 for more info)
-
-    var strippedStr = str.replace(/\s+/g, ' ').replace(/\s?(hsla?\(|\)|,)\s?/ig, '$1');
-    if (strippedStr.indexOf(',') !== -1) {
-      return hslComma.test(strippedStr);
-    }
-    return hslSpace.test(strippedStr);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isHSL, isHSL.exports);
-var isHSLExports = isHSL.exports;
-
-var isISRC = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isISRC;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  // see http://isrc.ifpi.org/en/isrc-standard/code-syntax
-  var isrc = /^[A-Z]{2}[0-9A-Z]{3}\d{2}\d{5}$/;
-  function isISRC(str) {
-    (0, _assertString.default)(str);
-    return isrc.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isISRC, isISRC.exports);
-var isISRCExports = isISRC.exports;
-
-var isIBAN$1 = {};
-
-Object.defineProperty(isIBAN$1, "__esModule", {
-  value: true
-});
-isIBAN$1.default = isIBAN;
-isIBAN$1.locales = void 0;
-var _assertString$5 = _interopRequireDefault$5(assertStringExports);
-function _interopRequireDefault$5(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-
-/**
- * List of country codes with
- * corresponding IBAN regular expression
- * Reference: https://en.wikipedia.org/wiki/International_Bank_Account_Number
- */
-var ibanRegexThroughCountryCode = {
-  AD: /^(AD[0-9]{2})\d{8}[A-Z0-9]{12}$/,
-  AE: /^(AE[0-9]{2})\d{3}\d{16}$/,
-  AL: /^(AL[0-9]{2})\d{8}[A-Z0-9]{16}$/,
-  AT: /^(AT[0-9]{2})\d{16}$/,
-  AZ: /^(AZ[0-9]{2})[A-Z0-9]{4}\d{20}$/,
-  BA: /^(BA[0-9]{2})\d{16}$/,
-  BE: /^(BE[0-9]{2})\d{12}$/,
-  BG: /^(BG[0-9]{2})[A-Z]{4}\d{6}[A-Z0-9]{8}$/,
-  BH: /^(BH[0-9]{2})[A-Z]{4}[A-Z0-9]{14}$/,
-  BR: /^(BR[0-9]{2})\d{23}[A-Z]{1}[A-Z0-9]{1}$/,
-  BY: /^(BY[0-9]{2})[A-Z0-9]{4}\d{20}$/,
-  CH: /^(CH[0-9]{2})\d{5}[A-Z0-9]{12}$/,
-  CR: /^(CR[0-9]{2})\d{18}$/,
-  CY: /^(CY[0-9]{2})\d{8}[A-Z0-9]{16}$/,
-  CZ: /^(CZ[0-9]{2})\d{20}$/,
-  DE: /^(DE[0-9]{2})\d{18}$/,
-  DK: /^(DK[0-9]{2})\d{14}$/,
-  DO: /^(DO[0-9]{2})[A-Z]{4}\d{20}$/,
-  EE: /^(EE[0-9]{2})\d{16}$/,
-  EG: /^(EG[0-9]{2})\d{25}$/,
-  ES: /^(ES[0-9]{2})\d{20}$/,
-  FI: /^(FI[0-9]{2})\d{14}$/,
-  FO: /^(FO[0-9]{2})\d{14}$/,
-  FR: /^(FR[0-9]{2})\d{10}[A-Z0-9]{11}\d{2}$/,
-  GB: /^(GB[0-9]{2})[A-Z]{4}\d{14}$/,
-  GE: /^(GE[0-9]{2})[A-Z0-9]{2}\d{16}$/,
-  GI: /^(GI[0-9]{2})[A-Z]{4}[A-Z0-9]{15}$/,
-  GL: /^(GL[0-9]{2})\d{14}$/,
-  GR: /^(GR[0-9]{2})\d{7}[A-Z0-9]{16}$/,
-  GT: /^(GT[0-9]{2})[A-Z0-9]{4}[A-Z0-9]{20}$/,
-  HR: /^(HR[0-9]{2})\d{17}$/,
-  HU: /^(HU[0-9]{2})\d{24}$/,
-  IE: /^(IE[0-9]{2})[A-Z0-9]{4}\d{14}$/,
-  IL: /^(IL[0-9]{2})\d{19}$/,
-  IQ: /^(IQ[0-9]{2})[A-Z]{4}\d{15}$/,
-  IR: /^(IR[0-9]{2})0\d{2}0\d{18}$/,
-  IS: /^(IS[0-9]{2})\d{22}$/,
-  IT: /^(IT[0-9]{2})[A-Z]{1}\d{10}[A-Z0-9]{12}$/,
-  JO: /^(JO[0-9]{2})[A-Z]{4}\d{22}$/,
-  KW: /^(KW[0-9]{2})[A-Z]{4}[A-Z0-9]{22}$/,
-  KZ: /^(KZ[0-9]{2})\d{3}[A-Z0-9]{13}$/,
-  LB: /^(LB[0-9]{2})\d{4}[A-Z0-9]{20}$/,
-  LC: /^(LC[0-9]{2})[A-Z]{4}[A-Z0-9]{24}$/,
-  LI: /^(LI[0-9]{2})\d{5}[A-Z0-9]{12}$/,
-  LT: /^(LT[0-9]{2})\d{16}$/,
-  LU: /^(LU[0-9]{2})\d{3}[A-Z0-9]{13}$/,
-  LV: /^(LV[0-9]{2})[A-Z]{4}[A-Z0-9]{13}$/,
-  MC: /^(MC[0-9]{2})\d{10}[A-Z0-9]{11}\d{2}$/,
-  MD: /^(MD[0-9]{2})[A-Z0-9]{20}$/,
-  ME: /^(ME[0-9]{2})\d{18}$/,
-  MK: /^(MK[0-9]{2})\d{3}[A-Z0-9]{10}\d{2}$/,
-  MR: /^(MR[0-9]{2})\d{23}$/,
-  MT: /^(MT[0-9]{2})[A-Z]{4}\d{5}[A-Z0-9]{18}$/,
-  MU: /^(MU[0-9]{2})[A-Z]{4}\d{19}[A-Z]{3}$/,
-  MZ: /^(MZ[0-9]{2})\d{21}$/,
-  NL: /^(NL[0-9]{2})[A-Z]{4}\d{10}$/,
-  NO: /^(NO[0-9]{2})\d{11}$/,
-  PK: /^(PK[0-9]{2})[A-Z0-9]{4}\d{16}$/,
-  PL: /^(PL[0-9]{2})\d{24}$/,
-  PS: /^(PS[0-9]{2})[A-Z0-9]{4}\d{21}$/,
-  PT: /^(PT[0-9]{2})\d{21}$/,
-  QA: /^(QA[0-9]{2})[A-Z]{4}[A-Z0-9]{21}$/,
-  RO: /^(RO[0-9]{2})[A-Z]{4}[A-Z0-9]{16}$/,
-  RS: /^(RS[0-9]{2})\d{18}$/,
-  SA: /^(SA[0-9]{2})\d{2}[A-Z0-9]{18}$/,
-  SC: /^(SC[0-9]{2})[A-Z]{4}\d{20}[A-Z]{3}$/,
-  SE: /^(SE[0-9]{2})\d{20}$/,
-  SI: /^(SI[0-9]{2})\d{15}$/,
-  SK: /^(SK[0-9]{2})\d{20}$/,
-  SM: /^(SM[0-9]{2})[A-Z]{1}\d{10}[A-Z0-9]{12}$/,
-  SV: /^(SV[0-9]{2})[A-Z0-9]{4}\d{20}$/,
-  TL: /^(TL[0-9]{2})\d{19}$/,
-  TN: /^(TN[0-9]{2})\d{20}$/,
-  TR: /^(TR[0-9]{2})\d{5}[A-Z0-9]{17}$/,
-  UA: /^(UA[0-9]{2})\d{6}[A-Z0-9]{19}$/,
-  VA: /^(VA[0-9]{2})\d{18}$/,
-  VG: /^(VG[0-9]{2})[A-Z0-9]{4}\d{16}$/,
-  XK: /^(XK[0-9]{2})\d{16}$/
-};
-/**
- * Check whether string has correct universal IBAN format
- * The IBAN consists of up to 34 alphanumeric characters, as follows:
- * Country Code using ISO 3166-1 alpha-2, two letters
- * check digits, two digits and
- * Basic Bank Account Number (BBAN), up to 30 alphanumeric characters.
- * NOTE: Permitted IBAN characters are: digits [0-9] and the 26 latin alphabetic [A-Z]
- *
- * @param {string} str - string under validation
- * @return {boolean}
- */
-
-function hasValidIbanFormat(str) {
-  // Strip white spaces and hyphens
-  var strippedStr = str.replace(/[\s\-]+/gi, '').toUpperCase();
-  var isoCountryCode = strippedStr.slice(0, 2).toUpperCase();
-  return isoCountryCode in ibanRegexThroughCountryCode && ibanRegexThroughCountryCode[isoCountryCode].test(strippedStr);
-}
-/**
-   * Check whether string has valid IBAN Checksum
-   * by performing basic mod-97 operation and
-   * the remainder should equal 1
-   * -- Start by rearranging the IBAN by moving the four initial characters to the end of the string
-   * -- Replace each letter in the string with two digits, A -> 10, B = 11, Z = 35
-   * -- Interpret the string as a decimal integer and
-   * -- compute the remainder on division by 97 (mod 97)
-   * Reference: https://en.wikipedia.org/wiki/International_Bank_Account_Number
-   *
-   * @param {string} str
-   * @return {boolean}
-   */
-
-function hasValidIbanChecksum(str) {
-  var strippedStr = str.replace(/[^A-Z0-9]+/gi, '').toUpperCase(); // Keep only digits and A-Z latin alphabetic
-
-  var rearranged = strippedStr.slice(4) + strippedStr.slice(0, 4);
-  var alphaCapsReplacedWithDigits = rearranged.replace(/[A-Z]/g, function (char) {
-    return char.charCodeAt(0) - 55;
-  });
-  var remainder = alphaCapsReplacedWithDigits.match(/\d{1,7}/g).reduce(function (acc, value) {
-    return Number(acc + value) % 97;
-  }, '');
-  return remainder === 1;
-}
-function isIBAN(str) {
-  (0, _assertString$5.default)(str);
-  return hasValidIbanFormat(str) && hasValidIbanChecksum(str);
-}
-var locales$2 = Object.keys(ibanRegexThroughCountryCode);
-isIBAN$1.locales = locales$2;
-
-var isBIC = {exports: {}};
-
-var isISO31661Alpha2$1 = {};
-
-Object.defineProperty(isISO31661Alpha2$1, "__esModule", {
-  value: true
-});
-isISO31661Alpha2$1.default = isISO31661Alpha2;
-isISO31661Alpha2$1.CountryCodes = void 0;
-var _assertString$4 = _interopRequireDefault$4(assertStringExports);
-function _interopRequireDefault$4(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-
-// from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-var validISO31661Alpha2CountriesCodes = new Set(['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HM', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'ZA', 'ZM', 'ZW']);
-function isISO31661Alpha2(str) {
-  (0, _assertString$4.default)(str);
-  return validISO31661Alpha2CountriesCodes.has(str.toUpperCase());
-}
-var CountryCodes = validISO31661Alpha2CountriesCodes;
-isISO31661Alpha2$1.CountryCodes = CountryCodes;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isBIC;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _isISO31661Alpha = isISO31661Alpha2$1;
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  // https://en.wikipedia.org/wiki/ISO_9362
-  var isBICReg = /^[A-Za-z]{6}[A-Za-z0-9]{2}([A-Za-z0-9]{3})?$/;
-  function isBIC(str) {
-    (0, _assertString.default)(str); // toUpperCase() should be removed when a new major version goes out that changes
-    // the regex to [A-Z] (per the spec).
-
-    var countryCode = str.slice(4, 6).toUpperCase();
-    if (!_isISO31661Alpha.CountryCodes.has(countryCode) && countryCode !== 'XK') {
-      return false;
-    }
-    return isBICReg.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isBIC, isBIC.exports);
-var isBICExports = isBIC.exports;
-
-var isMD5 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isMD5;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var md5 = /^[a-f0-9]{32}$/;
-  function isMD5(str) {
-    (0, _assertString.default)(str);
-    return md5.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isMD5, isMD5.exports);
-var isMD5Exports = isMD5.exports;
-
-var isHash = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isHash;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var lengths = {
-    md5: 32,
-    md4: 32,
-    sha1: 40,
-    sha256: 64,
-    sha384: 96,
-    sha512: 128,
-    ripemd128: 32,
-    ripemd160: 40,
-    tiger128: 32,
-    tiger160: 40,
-    tiger192: 48,
-    crc32: 8,
-    crc32b: 8
-  };
-  function isHash(str, algorithm) {
-    (0, _assertString.default)(str);
-    var hash = new RegExp("^[a-fA-F0-9]{".concat(lengths[algorithm], "}$"));
-    return hash.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isHash, isHash.exports);
-var isHashExports = isHash.exports;
-
-var isJWT = {exports: {}};
-
-var isBase64 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isBase64;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var notBase64 = /[^A-Z0-9+\/=]/i;
-  var urlSafeBase64 = /^[A-Z0-9_\-]*$/i;
-  var defaultBase64Options = {
-    urlSafe: false
-  };
-  function isBase64(str, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, defaultBase64Options);
-    var len = str.length;
-    if (options.urlSafe) {
-      return urlSafeBase64.test(str);
-    }
-    if (len % 4 !== 0 || notBase64.test(str)) {
-      return false;
-    }
-    var firstPaddingChar = str.indexOf('=');
-    return firstPaddingChar === -1 || firstPaddingChar === len - 1 || firstPaddingChar === len - 2 && str[len - 1] === '=';
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isBase64, isBase64.exports);
-var isBase64Exports = isBase64.exports;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isJWT;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _isBase = _interopRequireDefault(isBase64Exports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isJWT(str) {
-    (0, _assertString.default)(str);
-    var dotSplit = str.split('.');
-    var len = dotSplit.length;
-    if (len > 3 || len < 2) {
-      return false;
-    }
-    return dotSplit.reduce(function (acc, currElem) {
-      return acc && (0, _isBase.default)(currElem, {
-        urlSafe: true
-      });
-    }, true);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isJWT, isJWT.exports);
-var isJWTExports = isJWT.exports;
-
-var isJSON = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isJSON;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-    return _typeof(obj);
-  }
-  var default_json_options = {
-    allow_primitives: false
-  };
-  function isJSON(str, options) {
-    (0, _assertString.default)(str);
-    try {
-      options = (0, _merge.default)(options, default_json_options);
-      var primitives = [];
-      if (options.allow_primitives) {
-        primitives = [null, false, true];
-      }
-      var obj = JSON.parse(str);
-      return primitives.includes(obj) || !!obj && _typeof(obj) === 'object';
-    } catch (e) {
-      /* ignore */
-    }
-    return false;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isJSON, isJSON.exports);
-var isJSONExports = isJSON.exports;
-
-var isEmpty = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isEmpty;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var default_is_empty_options = {
-    ignore_whitespace: false
-  };
-  function isEmpty(str, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, default_is_empty_options);
-    return (options.ignore_whitespace ? str.trim().length : str.length) === 0;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isEmpty, isEmpty.exports);
-var isEmptyExports = isEmpty.exports;
-
-var isLength = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isLength;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-    return _typeof(obj);
-  }
-
-  /* eslint-disable prefer-rest-params */
-  function isLength(str, options) {
-    (0, _assertString.default)(str);
-    var min;
-    var max;
-    if (_typeof(options) === 'object') {
-      min = options.min || 0;
-      max = options.max;
-    } else {
-      // backwards compatibility: isLength(str, min [, max])
-      min = arguments[1] || 0;
-      max = arguments[2];
-    }
-    var presentationSequences = str.match(/(\uFE0F|\uFE0E)/g) || [];
-    var surrogatePairs = str.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g) || [];
-    var len = str.length - presentationSequences.length - surrogatePairs.length;
-    return len >= min && (typeof max === 'undefined' || len <= max);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isLength, isLength.exports);
-var isLengthExports = isLength.exports;
-
-var isUUID = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isUUID;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var uuid = {
-    1: /^[0-9A-F]{8}-[0-9A-F]{4}-1[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
-    2: /^[0-9A-F]{8}-[0-9A-F]{4}-2[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
-    3: /^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
-    4: /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
-    5: /^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
-    all: /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i
-  };
-  function isUUID(str, version) {
-    (0, _assertString.default)(str);
-    var pattern = uuid[![undefined, null].includes(version) ? version : 'all'];
-    return !!pattern && pattern.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isUUID, isUUID.exports);
-var isUUIDExports = isUUID.exports;
-
-var isMongoId = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isMongoId;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _isHexadecimal = _interopRequireDefault(isHexadecimalExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isMongoId(str) {
-    (0, _assertString.default)(str);
-    return (0, _isHexadecimal.default)(str) && str.length === 24;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isMongoId, isMongoId.exports);
-var isMongoIdExports = isMongoId.exports;
-
-var isAfter = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isAfter;
-  var _toDate = _interopRequireDefault(toDateExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isAfter(date, options) {
-    // For backwards compatibility:
-    // isAfter(str [, date]), i.e. `options` could be used as argument for the legacy `date`
-    var comparisonDate = (options === null || options === void 0 ? void 0 : options.comparisonDate) || options || Date().toString();
-    var comparison = (0, _toDate.default)(comparisonDate);
-    var original = (0, _toDate.default)(date);
-    return !!(original && comparison && original > comparison);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isAfter, isAfter.exports);
-var isAfterExports = isAfter.exports;
-
-var isBefore = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isBefore;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _toDate = _interopRequireDefault(toDateExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isBefore(str) {
-    var date = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : String(new Date());
-    (0, _assertString.default)(str);
-    var comparison = (0, _toDate.default)(date);
-    var original = (0, _toDate.default)(str);
-    return !!(original && comparison && original < comparison);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isBefore, isBefore.exports);
-var isBeforeExports = isBefore.exports;
-
-var isIn = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isIn;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _toString = _interopRequireDefault(toStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-    return _typeof(obj);
-  }
-  function isIn(str, options) {
-    (0, _assertString.default)(str);
-    var i;
-    if (Object.prototype.toString.call(options) === '[object Array]') {
-      var array = [];
-      for (i in options) {
-        // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
-        // istanbul ignore else
-        if ({}.hasOwnProperty.call(options, i)) {
-          array[i] = (0, _toString.default)(options[i]);
-        }
-      }
-      return array.indexOf(str) >= 0;
-    } else if (_typeof(options) === 'object') {
-      return options.hasOwnProperty(str);
-    } else if (options && typeof options.indexOf === 'function') {
-      return options.indexOf(str) >= 0;
-    }
-    return false;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isIn, isIn.exports);
-var isInExports = isIn.exports;
-
-var isLuhnNumber = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isLuhnNumber;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isLuhnNumber(str) {
-    (0, _assertString.default)(str);
-    var sanitized = str.replace(/[- ]+/g, '');
-    var sum = 0;
-    var digit;
-    var tmpNum;
-    var shouldDouble;
-    for (var i = sanitized.length - 1; i >= 0; i--) {
-      digit = sanitized.substring(i, i + 1);
-      tmpNum = parseInt(digit, 10);
-      if (shouldDouble) {
-        tmpNum *= 2;
-        if (tmpNum >= 10) {
-          sum += tmpNum % 10 + 1;
-        } else {
-          sum += tmpNum;
-        }
-      } else {
-        sum += tmpNum;
-      }
-      shouldDouble = !shouldDouble;
-    }
-    return !!(sum % 10 === 0 ? sanitized : false);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isLuhnNumber, isLuhnNumber.exports);
-var isLuhnNumberExports = isLuhnNumber.exports;
-
-var isCreditCard = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isCreditCard;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _isLuhnNumber = _interopRequireDefault(isLuhnNumberExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var cards = {
-    amex: /^3[47][0-9]{13}$/,
-    dinersclub: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
-    discover: /^6(?:011|5[0-9][0-9])[0-9]{12,15}$/,
-    jcb: /^(?:2131|1800|35\d{3})\d{11}$/,
-    mastercard: /^5[1-5][0-9]{2}|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/,
-    // /^[25][1-7][0-9]{14}$/;
-    unionpay: /^(6[27][0-9]{14}|^(81[0-9]{14,17}))$/,
-    visa: /^(?:4[0-9]{12})(?:[0-9]{3,6})?$/
-  };
-  /* eslint-disable max-len */
-
-  var allCards = /^(?:4[0-9]{12}(?:[0-9]{3,6})?|5[1-5][0-9]{14}|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}|6(?:011|5[0-9][0-9])[0-9]{12,15}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11}|6[27][0-9]{14}|^(81[0-9]{14,17}))$/;
-  /* eslint-enable max-len */
-
-  function isCreditCard(card) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    (0, _assertString.default)(card);
-    var provider = options.provider;
-    var sanitized = card.replace(/[- ]+/g, '');
-    if (provider && provider.toLowerCase() in cards) {
-      // specific provider in the list
-      if (!cards[provider.toLowerCase()].test(sanitized)) {
-        return false;
-      }
-    } else if (provider && !(provider.toLowerCase() in cards)) {
-      /* specific provider not in the list */
-      throw new Error("".concat(provider, " is not a valid credit card provider."));
-    } else if (!allCards.test(sanitized)) {
-      // no specific provider
-      return false;
-    }
-    return (0, _isLuhnNumber.default)(card);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isCreditCard, isCreditCard.exports);
-var isCreditCardExports = isCreditCard.exports;
-
-var isIdentityCard = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isIdentityCard;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _isInt = _interopRequireDefault(isIntExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var validators = {
-    PL: function PL(str) {
-      (0, _assertString.default)(str);
-      var weightOfDigits = {
-        1: 1,
-        2: 3,
-        3: 7,
-        4: 9,
-        5: 1,
-        6: 3,
-        7: 7,
-        8: 9,
-        9: 1,
-        10: 3,
-        11: 0
-      };
-      if (str != null && str.length === 11 && (0, _isInt.default)(str, {
-        allow_leading_zeroes: true
-      })) {
-        var digits = str.split('').slice(0, -1);
-        var sum = digits.reduce(function (acc, digit, index) {
-          return acc + Number(digit) * weightOfDigits[index + 1];
-        }, 0);
-        var modulo = sum % 10;
-        var lastDigit = Number(str.charAt(str.length - 1));
-        if (modulo === 0 && lastDigit === 0 || lastDigit === 10 - modulo) {
-          return true;
-        }
-      }
-      return false;
-    },
-    ES: function ES(str) {
-      (0, _assertString.default)(str);
-      var DNI = /^[0-9X-Z][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
-      var charsValue = {
-        X: 0,
-        Y: 1,
-        Z: 2
-      };
-      var controlDigits = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E']; // sanitize user input
-
-      var sanitized = str.trim().toUpperCase(); // validate the data structure
-
-      if (!DNI.test(sanitized)) {
-        return false;
-      } // validate the control digit
-
-      var number = sanitized.slice(0, -1).replace(/[X,Y,Z]/g, function (char) {
-        return charsValue[char];
-      });
-      return sanitized.endsWith(controlDigits[number % 23]);
-    },
-    FI: function FI(str) {
-      // https://dvv.fi/en/personal-identity-code#:~:text=control%20character%20for%20a-,personal,-identity%20code%20calculated
-      (0, _assertString.default)(str);
-      if (str.length !== 11) {
-        return false;
-      }
-      if (!str.match(/^\d{6}[\-A\+]\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]{1}$/)) {
-        return false;
-      }
-      var checkDigits = '0123456789ABCDEFHJKLMNPRSTUVWXY';
-      var idAsNumber = parseInt(str.slice(0, 6), 10) * 1000 + parseInt(str.slice(7, 10), 10);
-      var remainder = idAsNumber % 31;
-      var checkDigit = checkDigits[remainder];
-      return checkDigit === str.slice(10, 11);
-    },
-    IN: function IN(str) {
-      var DNI = /^[1-9]\d{3}\s?\d{4}\s?\d{4}$/; // multiplication table
-
-      var d = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 3, 4, 0, 6, 7, 8, 9, 5], [2, 3, 4, 0, 1, 7, 8, 9, 5, 6], [3, 4, 0, 1, 2, 8, 9, 5, 6, 7], [4, 0, 1, 2, 3, 9, 5, 6, 7, 8], [5, 9, 8, 7, 6, 0, 4, 3, 2, 1], [6, 5, 9, 8, 7, 1, 0, 4, 3, 2], [7, 6, 5, 9, 8, 2, 1, 0, 4, 3], [8, 7, 6, 5, 9, 3, 2, 1, 0, 4], [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]]; // permutation table
-
-      var p = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 5, 7, 6, 2, 8, 3, 0, 9, 4], [5, 8, 0, 3, 7, 9, 6, 1, 4, 2], [8, 9, 1, 6, 0, 4, 3, 5, 2, 7], [9, 4, 5, 3, 1, 2, 6, 8, 7, 0], [4, 2, 8, 6, 5, 7, 3, 9, 0, 1], [2, 7, 9, 3, 8, 0, 6, 4, 1, 5], [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]]; // sanitize user input
-
-      var sanitized = str.trim(); // validate the data structure
-
-      if (!DNI.test(sanitized)) {
-        return false;
-      }
-      var c = 0;
-      var invertedArray = sanitized.replace(/\s/g, '').split('').map(Number).reverse();
-      invertedArray.forEach(function (val, i) {
-        c = d[c][p[i % 8][val]];
-      });
-      return c === 0;
-    },
-    IR: function IR(str) {
-      if (!str.match(/^\d{10}$/)) return false;
-      str = "0000".concat(str).slice(str.length - 6);
-      if (parseInt(str.slice(3, 9), 10) === 0) return false;
-      var lastNumber = parseInt(str.slice(9, 10), 10);
-      var sum = 0;
-      for (var i = 0; i < 9; i++) {
-        sum += parseInt(str.slice(i, i + 1), 10) * (10 - i);
-      }
-      sum %= 11;
-      return sum < 2 && lastNumber === sum || sum >= 2 && lastNumber === 11 - sum;
-    },
-    IT: function IT(str) {
-      if (str.length !== 9) return false;
-      if (str === 'CA00000AA') return false; // https://it.wikipedia.org/wiki/Carta_d%27identit%C3%A0_elettronica_italiana
-
-      return str.search(/C[A-Z][0-9]{5}[A-Z]{2}/i) > -1;
-    },
-    NO: function NO(str) {
-      var sanitized = str.trim();
-      if (isNaN(Number(sanitized))) return false;
-      if (sanitized.length !== 11) return false;
-      if (sanitized === '00000000000') return false; // https://no.wikipedia.org/wiki/F%C3%B8dselsnummer
-
-      var f = sanitized.split('').map(Number);
-      var k1 = (11 - (3 * f[0] + 7 * f[1] + 6 * f[2] + 1 * f[3] + 8 * f[4] + 9 * f[5] + 4 * f[6] + 5 * f[7] + 2 * f[8]) % 11) % 11;
-      var k2 = (11 - (5 * f[0] + 4 * f[1] + 3 * f[2] + 2 * f[3] + 7 * f[4] + 6 * f[5] + 5 * f[6] + 4 * f[7] + 3 * f[8] + 2 * k1) % 11) % 11;
-      if (k1 !== f[9] || k2 !== f[10]) return false;
-      return true;
-    },
-    TH: function TH(str) {
-      if (!str.match(/^[1-8]\d{12}$/)) return false; // validate check digit
-
-      var sum = 0;
-      for (var i = 0; i < 12; i++) {
-        sum += parseInt(str[i], 10) * (13 - i);
-      }
-      return str[12] === ((11 - sum % 11) % 10).toString();
-    },
-    LK: function LK(str) {
-      var old_nic = /^[1-9]\d{8}[vx]$/i;
-      var new_nic = /^[1-9]\d{11}$/i;
-      if (str.length === 10 && old_nic.test(str)) return true;else if (str.length === 12 && new_nic.test(str)) return true;
-      return false;
-    },
-    'he-IL': function heIL(str) {
-      var DNI = /^\d{9}$/; // sanitize user input
-
-      var sanitized = str.trim(); // validate the data structure
-
-      if (!DNI.test(sanitized)) {
-        return false;
-      }
-      var id = sanitized;
-      var sum = 0,
-        incNum;
-      for (var i = 0; i < id.length; i++) {
-        incNum = Number(id[i]) * (i % 2 + 1); // Multiply number by 1 or 2
-
-        sum += incNum > 9 ? incNum - 9 : incNum; // Sum the digits up and add to total
-      }
-
-      return sum % 10 === 0;
-    },
-    'ar-LY': function arLY(str) {
-      // Libya National Identity Number NIN is 12 digits, the first digit is either 1 or 2
-      var NIN = /^(1|2)\d{11}$/; // sanitize user input
-
-      var sanitized = str.trim(); // validate the data structure
-
-      if (!NIN.test(sanitized)) {
-        return false;
-      }
-      return true;
-    },
-    'ar-TN': function arTN(str) {
-      var DNI = /^\d{8}$/; // sanitize user input
-
-      var sanitized = str.trim(); // validate the data structure
-
-      if (!DNI.test(sanitized)) {
-        return false;
-      }
-      return true;
-    },
-    'zh-CN': function zhCN(str) {
-      var provincesAndCities = ['11',
-      // 北京
-      '12',
-      // 天津
-      '13',
-      // 河北
-      '14',
-      // 山西
-      '15',
-      // 内蒙古
-      '21',
-      // 辽宁
-      '22',
-      // 吉林
-      '23',
-      // 黑龙江
-      '31',
-      // 上海
-      '32',
-      // 江苏
-      '33',
-      // 浙江
-      '34',
-      // 安徽
-      '35',
-      // 福建
-      '36',
-      // 江西
-      '37',
-      // 山东
-      '41',
-      // 河南
-      '42',
-      // 湖北
-      '43',
-      // 湖南
-      '44',
-      // 广东
-      '45',
-      // 广西
-      '46',
-      // 海南
-      '50',
-      // 重庆
-      '51',
-      // 四川
-      '52',
-      // 贵州
-      '53',
-      // 云南
-      '54',
-      // 西藏
-      '61',
-      // 陕西
-      '62',
-      // 甘肃
-      '63',
-      // 青海
-      '64',
-      // 宁夏
-      '65',
-      // 新疆
-      '71',
-      // 台湾
-      '81',
-      // 香港
-      '82',
-      // 澳门
-      '91' // 国外
-      ];
-
-      var powers = ['7', '9', '10', '5', '8', '4', '2', '1', '6', '3', '7', '9', '10', '5', '8', '4', '2'];
-      var parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
-      var checkAddressCode = function checkAddressCode(addressCode) {
-        return provincesAndCities.includes(addressCode);
-      };
-      var checkBirthDayCode = function checkBirthDayCode(birDayCode) {
-        var yyyy = parseInt(birDayCode.substring(0, 4), 10);
-        var mm = parseInt(birDayCode.substring(4, 6), 10);
-        var dd = parseInt(birDayCode.substring(6), 10);
-        var xdata = new Date(yyyy, mm - 1, dd);
-        if (xdata > new Date()) {
-          return false; // eslint-disable-next-line max-len
-        } else if (xdata.getFullYear() === yyyy && xdata.getMonth() === mm - 1 && xdata.getDate() === dd) {
-          return true;
-        }
-        return false;
-      };
-      var getParityBit = function getParityBit(idCardNo) {
-        var id17 = idCardNo.substring(0, 17);
-        var power = 0;
-        for (var i = 0; i < 17; i++) {
-          power += parseInt(id17.charAt(i), 10) * parseInt(powers[i], 10);
-        }
-        var mod = power % 11;
-        return parityBit[mod];
-      };
-      var checkParityBit = function checkParityBit(idCardNo) {
-        return getParityBit(idCardNo) === idCardNo.charAt(17).toUpperCase();
-      };
-      var check15IdCardNo = function check15IdCardNo(idCardNo) {
-        var check = /^[1-9]\d{7}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}$/.test(idCardNo);
-        if (!check) return false;
-        var addressCode = idCardNo.substring(0, 2);
-        check = checkAddressCode(addressCode);
-        if (!check) return false;
-        var birDayCode = "19".concat(idCardNo.substring(6, 12));
-        check = checkBirthDayCode(birDayCode);
-        if (!check) return false;
-        return true;
-      };
-      var check18IdCardNo = function check18IdCardNo(idCardNo) {
-        var check = /^[1-9]\d{5}[1-9]\d{3}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}(\d|x|X)$/.test(idCardNo);
-        if (!check) return false;
-        var addressCode = idCardNo.substring(0, 2);
-        check = checkAddressCode(addressCode);
-        if (!check) return false;
-        var birDayCode = idCardNo.substring(6, 14);
-        check = checkBirthDayCode(birDayCode);
-        if (!check) return false;
-        return checkParityBit(idCardNo);
-      };
-      var checkIdCardNo = function checkIdCardNo(idCardNo) {
-        var check = /^\d{15}|(\d{17}(\d|x|X))$/.test(idCardNo);
-        if (!check) return false;
-        if (idCardNo.length === 15) {
-          return check15IdCardNo(idCardNo);
-        }
-        return check18IdCardNo(idCardNo);
-      };
-      return checkIdCardNo(str);
-    },
-    'zh-HK': function zhHK(str) {
-      // sanitize user input
-      str = str.trim(); // HKID number starts with 1 or 2 letters, followed by 6 digits,
-      // then a checksum contained in square / round brackets or nothing
-
-      var regexHKID = /^[A-Z]{1,2}[0-9]{6}((\([0-9A]\))|(\[[0-9A]\])|([0-9A]))$/;
-      var regexIsDigit = /^[0-9]$/; // convert the user input to all uppercase and apply regex
-
-      str = str.toUpperCase();
-      if (!regexHKID.test(str)) return false;
-      str = str.replace(/\[|\]|\(|\)/g, '');
-      if (str.length === 8) str = "3".concat(str);
-      var checkSumVal = 0;
-      for (var i = 0; i <= 7; i++) {
-        var convertedChar = void 0;
-        if (!regexIsDigit.test(str[i])) convertedChar = (str[i].charCodeAt(0) - 55) % 11;else convertedChar = str[i];
-        checkSumVal += convertedChar * (9 - i);
-      }
-      checkSumVal %= 11;
-      var checkSumConverted;
-      if (checkSumVal === 0) checkSumConverted = '0';else if (checkSumVal === 1) checkSumConverted = 'A';else checkSumConverted = String(11 - checkSumVal);
-      if (checkSumConverted === str[str.length - 1]) return true;
-      return false;
-    },
-    'zh-TW': function zhTW(str) {
-      var ALPHABET_CODES = {
-        A: 10,
-        B: 11,
-        C: 12,
-        D: 13,
-        E: 14,
-        F: 15,
-        G: 16,
-        H: 17,
-        I: 34,
-        J: 18,
-        K: 19,
-        L: 20,
-        M: 21,
-        N: 22,
-        O: 35,
-        P: 23,
-        Q: 24,
-        R: 25,
-        S: 26,
-        T: 27,
-        U: 28,
-        V: 29,
-        W: 32,
-        X: 30,
-        Y: 31,
-        Z: 33
-      };
-      var sanitized = str.trim().toUpperCase();
-      if (!/^[A-Z][0-9]{9}$/.test(sanitized)) return false;
-      return Array.from(sanitized).reduce(function (sum, number, index) {
-        if (index === 0) {
-          var code = ALPHABET_CODES[number];
-          return code % 10 * 9 + Math.floor(code / 10);
-        }
-        if (index === 9) {
-          return (10 - sum % 10 - Number(number)) % 10 === 0;
-        }
-        return sum + Number(number) * (9 - index);
-      }, 0);
-    }
-  };
-  function isIdentityCard(str, locale) {
-    (0, _assertString.default)(str);
-    if (locale in validators) {
-      return validators[locale](str);
-    } else if (locale === 'any') {
-      for (var key in validators) {
-        // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
-        // istanbul ignore else
-        if (validators.hasOwnProperty(key)) {
-          var validator = validators[key];
-          if (validator(str)) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-    throw new Error("Invalid locale '".concat(locale, "'"));
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isIdentityCard, isIdentityCard.exports);
-var isIdentityCardExports = isIdentityCard.exports;
-
-var isEAN = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isEAN;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /**
-   * The most commonly used EAN standard is
-   * the thirteen-digit EAN-13, while the
-   * less commonly used 8-digit EAN-8 barcode was
-   * introduced for use on small packages.
-   * Also EAN/UCC-14 is used for Grouping of individual
-   * trade items above unit level(Intermediate, Carton or Pallet).
-   * For more info about EAN-14 checkout: https://www.gtin.info/itf-14-barcodes/
-   * EAN consists of:
-   * GS1 prefix, manufacturer code, product code and check digit
-   * Reference: https://en.wikipedia.org/wiki/International_Article_Number
-   * Reference: https://www.gtin.info/
-   */
-
-  /**
-   * Define EAN Lenghts; 8 for EAN-8; 13 for EAN-13; 14 for EAN-14
-   * and Regular Expression for valid EANs (EAN-8, EAN-13, EAN-14),
-   * with exact numberic matching of 8 or 13 or 14 digits [0-9]
-   */
-  var LENGTH_EAN_8 = 8;
-  var LENGTH_EAN_14 = 14;
-  var validEanRegex = /^(\d{8}|\d{13}|\d{14})$/;
-  /**
-   * Get position weight given:
-   * EAN length and digit index/position
-   *
-   * @param {number} length
-   * @param {number} index
-   * @return {number}
-   */
-
-  function getPositionWeightThroughLengthAndIndex(length, index) {
-    if (length === LENGTH_EAN_8 || length === LENGTH_EAN_14) {
-      return index % 2 === 0 ? 3 : 1;
-    }
-    return index % 2 === 0 ? 1 : 3;
-  }
-  /**
-   * Calculate EAN Check Digit
-   * Reference: https://en.wikipedia.org/wiki/International_Article_Number#Calculation_of_checksum_digit
-   *
-   * @param {string} ean
-   * @return {number}
-   */
-
-  function calculateCheckDigit(ean) {
-    var checksum = ean.slice(0, -1).split('').map(function (char, index) {
-      return Number(char) * getPositionWeightThroughLengthAndIndex(ean.length, index);
-    }).reduce(function (acc, partialSum) {
-      return acc + partialSum;
-    }, 0);
-    var remainder = 10 - checksum % 10;
-    return remainder < 10 ? remainder : 0;
-  }
-  /**
-   * Check if string is valid EAN:
-   * Matches EAN-8/EAN-13/EAN-14 regex
-   * Has valid check digit.
-   *
-   * @param {string} str
-   * @return {boolean}
-   */
-
-  function isEAN(str) {
-    (0, _assertString.default)(str);
-    var actualCheckDigit = Number(str.slice(-1));
-    return validEanRegex.test(str) && actualCheckDigit === calculateCheckDigit(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isEAN, isEAN.exports);
-var isEANExports = isEAN.exports;
-
-var isISIN = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isISIN;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var isin = /^[A-Z]{2}[0-9A-Z]{9}[0-9]$/; // this link details how the check digit is calculated:
-  // https://www.isin.org/isin-format/. it is a little bit
-  // odd in that it works with digits, not numbers. in order
-  // to make only one pass through the ISIN characters, the
-  // each alpha character is handled as 2 characters within
-  // the loop.
-
-  function isISIN(str) {
-    (0, _assertString.default)(str);
-    if (!isin.test(str)) {
-      return false;
-    }
-    var double = true;
-    var sum = 0; // convert values
-
-    for (var i = str.length - 2; i >= 0; i--) {
-      if (str[i] >= 'A' && str[i] <= 'Z') {
-        var value = str[i].charCodeAt(0) - 55;
-        var lo = value % 10;
-        var hi = Math.trunc(value / 10); // letters have two digits, so handle the low order
-        // and high order digits separately.
-
-        for (var _i = 0, _arr = [lo, hi]; _i < _arr.length; _i++) {
-          var digit = _arr[_i];
-          if (double) {
-            if (digit >= 5) {
-              sum += 1 + (digit - 5) * 2;
-            } else {
-              sum += digit * 2;
-            }
-          } else {
-            sum += digit;
-          }
-          double = !double;
-        }
-      } else {
-        var _digit = str[i].charCodeAt(0) - '0'.charCodeAt(0);
-        if (double) {
-          if (_digit >= 5) {
-            sum += 1 + (_digit - 5) * 2;
-          } else {
-            sum += _digit * 2;
-          }
-        } else {
-          sum += _digit;
-        }
-        double = !double;
-      }
-    }
-    var check = Math.trunc((sum + 9) / 10) * 10 - sum;
-    return +str[str.length - 1] === check;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isISIN, isISIN.exports);
-var isISINExports = isISIN.exports;
-
-var isISBN = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isISBN;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var possibleIsbn10 = /^(?:[0-9]{9}X|[0-9]{10})$/;
-  var possibleIsbn13 = /^(?:[0-9]{13})$/;
-  var factor = [1, 3];
-  function isISBN(isbn, options) {
-    (0, _assertString.default)(isbn); // For backwards compatibility:
-    // isISBN(str [, version]), i.e. `options` could be used as argument for the legacy `version`
-
-    var version = String((options === null || options === void 0 ? void 0 : options.version) || options);
-    if (!(options !== null && options !== void 0 && options.version || options)) {
-      return isISBN(isbn, {
-        version: 10
-      }) || isISBN(isbn, {
-        version: 13
-      });
-    }
-    var sanitizedIsbn = isbn.replace(/[\s-]+/g, '');
-    var checksum = 0;
-    if (version === '10') {
-      if (!possibleIsbn10.test(sanitizedIsbn)) {
-        return false;
-      }
-      for (var i = 0; i < version - 1; i++) {
-        checksum += (i + 1) * sanitizedIsbn.charAt(i);
-      }
-      if (sanitizedIsbn.charAt(9) === 'X') {
-        checksum += 10 * 10;
-      } else {
-        checksum += 10 * sanitizedIsbn.charAt(9);
-      }
-      if (checksum % 11 === 0) {
-        return true;
-      }
-    } else if (version === '13') {
-      if (!possibleIsbn13.test(sanitizedIsbn)) {
-        return false;
-      }
-      for (var _i = 0; _i < 12; _i++) {
-        checksum += factor[_i % 2] * sanitizedIsbn.charAt(_i);
-      }
-      if (sanitizedIsbn.charAt(12) - (10 - checksum % 10) % 10 === 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isISBN, isISBN.exports);
-var isISBNExports = isISBN.exports;
-
-var isISSN = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isISSN;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var issn = '^\\d{4}-?\\d{3}[\\dX]$';
-  function isISSN(str) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    (0, _assertString.default)(str);
-    var testIssn = issn;
-    testIssn = options.require_hyphen ? testIssn.replace('?', '') : testIssn;
-    testIssn = options.case_sensitive ? new RegExp(testIssn) : new RegExp(testIssn, 'i');
-    if (!testIssn.test(str)) {
-      return false;
-    }
-    var digits = str.replace('-', '').toUpperCase();
-    var checksum = 0;
-    for (var i = 0; i < digits.length; i++) {
-      var digit = digits[i];
-      checksum += (digit === 'X' ? 10 : +digit) * (8 - i);
-    }
-    return checksum % 11 === 0;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isISSN, isISSN.exports);
-var isISSNExports = isISSN.exports;
-
-var isTaxID = {exports: {}};
-
-var algorithms$1 = {};
-
-Object.defineProperty(algorithms$1, "__esModule", {
-  value: true
-});
-algorithms$1.iso7064Check = iso7064Check;
-algorithms$1.luhnCheck = luhnCheck;
-algorithms$1.reverseMultiplyAndSum = reverseMultiplyAndSum;
-algorithms$1.verhoeffCheck = verhoeffCheck;
-
-/**
- * Algorithmic validation functions
- * May be used as is or implemented in the workflow of other validators.
- */
-
-/*
- * ISO 7064 validation function
- * Called with a string of numbers (incl. check digit)
- * to validate according to ISO 7064 (MOD 11, 10).
- */
-function iso7064Check(str) {
-  var checkvalue = 10;
-  for (var i = 0; i < str.length - 1; i++) {
-    checkvalue = (parseInt(str[i], 10) + checkvalue) % 10 === 0 ? 10 * 2 % 11 : (parseInt(str[i], 10) + checkvalue) % 10 * 2 % 11;
-  }
-  checkvalue = checkvalue === 1 ? 0 : 11 - checkvalue;
-  return checkvalue === parseInt(str[10], 10);
-}
-/*
- * Luhn (mod 10) validation function
- * Called with a string of numbers (incl. check digit)
- * to validate according to the Luhn algorithm.
- */
-
-function luhnCheck(str) {
-  var checksum = 0;
-  var second = false;
-  for (var i = str.length - 1; i >= 0; i--) {
-    if (second) {
-      var product = parseInt(str[i], 10) * 2;
-      if (product > 9) {
-        // sum digits of product and add to checksum
-        checksum += product.toString().split('').map(function (a) {
-          return parseInt(a, 10);
-        }).reduce(function (a, b) {
-          return a + b;
-        }, 0);
-      } else {
-        checksum += product;
-      }
-    } else {
-      checksum += parseInt(str[i], 10);
-    }
-    second = !second;
-  }
-  return checksum % 10 === 0;
-}
-/*
- * Reverse TIN multiplication and summation helper function
- * Called with an array of single-digit integers and a base multiplier
- * to calculate the sum of the digits multiplied in reverse.
- * Normally used in variations of MOD 11 algorithmic checks.
- */
-
-function reverseMultiplyAndSum(digits, base) {
-  var total = 0;
-  for (var i = 0; i < digits.length; i++) {
-    total += digits[i] * (base - i);
-  }
-  return total;
-}
-/*
- * Verhoeff validation helper function
- * Called with a string of numbers
- * to validate according to the Verhoeff algorithm.
- */
-
-function verhoeffCheck(str) {
-  var d_table = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 3, 4, 0, 6, 7, 8, 9, 5], [2, 3, 4, 0, 1, 7, 8, 9, 5, 6], [3, 4, 0, 1, 2, 8, 9, 5, 6, 7], [4, 0, 1, 2, 3, 9, 5, 6, 7, 8], [5, 9, 8, 7, 6, 0, 4, 3, 2, 1], [6, 5, 9, 8, 7, 1, 0, 4, 3, 2], [7, 6, 5, 9, 8, 2, 1, 0, 4, 3], [8, 7, 6, 5, 9, 3, 2, 1, 0, 4], [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]];
-  var p_table = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 5, 7, 6, 2, 8, 3, 0, 9, 4], [5, 8, 0, 3, 7, 9, 6, 1, 4, 2], [8, 9, 1, 6, 0, 4, 3, 5, 2, 7], [9, 4, 5, 3, 1, 2, 6, 8, 7, 0], [4, 2, 8, 6, 5, 7, 3, 9, 0, 1], [2, 7, 9, 3, 8, 0, 6, 4, 1, 5], [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]]; // Copy (to prevent replacement) and reverse
-
-  var str_copy = str.split('').reverse().join('');
-  var checksum = 0;
-  for (var i = 0; i < str_copy.length; i++) {
-    checksum = d_table[checksum][p_table[i % 8][parseInt(str_copy[i], 10)]];
-  }
-  return checksum === 0;
-}
-
-(function (module, exports) {
-
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-    return _typeof(obj);
-  }
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isTaxID;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var algorithms = _interopRequireWildcard(algorithms$1);
-  var _isDate = _interopRequireDefault(isDateExports);
-  function _getRequireWildcardCache() {
-    if (typeof WeakMap !== "function") return null;
-    var cache = new WeakMap();
-    _getRequireWildcardCache = function _getRequireWildcardCache() {
-      return cache;
-    };
-    return cache;
-  }
-  function _interopRequireWildcard(obj) {
-    if (obj && obj.__esModule) {
-      return obj;
-    }
-    if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
-      return {
-        default: obj
-      };
-    }
-    var cache = _getRequireWildcardCache();
-    if (cache && cache.has(obj)) {
-      return cache.get(obj);
-    }
-    var newObj = {};
-    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-    for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-        if (desc && (desc.get || desc.set)) {
-          Object.defineProperty(newObj, key, desc);
-        } else {
-          newObj[key] = obj[key];
-        }
-      }
-    }
-    newObj.default = obj;
-    if (cache) {
-      cache.set(obj, newObj);
-    }
-    return newObj;
-  }
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-  }
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-  function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
-  }
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-  }
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for (var i = 0, arr2 = new Array(len); i < len; i++) {
-      arr2[i] = arr[i];
-    }
-    return arr2;
-  }
-
-  /**
-   * TIN Validation
-   * Validates Tax Identification Numbers (TINs) from the US, EU member states and the United Kingdom.
-   *
-   * EU-UK:
-   * National TIN validity is calculated using public algorithms as made available by DG TAXUD.
-   *
-   * See `https://ec.europa.eu/taxation_customs/tin/specs/FS-TIN%20Algorithms-Public.docx` for more information.
-   *
-   * US:
-   * An Employer Identification Number (EIN), also known as a Federal Tax Identification Number,
-   *  is used to identify a business entity.
-   *
-   * NOTES:
-   *  - Prefix 47 is being reserved for future use
-   *  - Prefixes 26, 27, 45, 46 and 47 were previously assigned by the Philadelphia campus.
-   *
-   * See `http://www.irs.gov/Businesses/Small-Businesses-&-Self-Employed/How-EINs-are-Assigned-and-Valid-EIN-Prefixes`
-   * for more information.
-   */
-  // Locale functions
-
-  /*
-   * bg-BG validation function
-   * (Edinen graždanski nomer (EGN/ЕГН), persons only)
-   * Checks if birth date (first six digits) is valid and calculates check (last) digit
-   */
-  function bgBgCheck(tin) {
-    // Extract full year, normalize month and check birth date validity
-    var century_year = tin.slice(0, 2);
-    var month = parseInt(tin.slice(2, 4), 10);
-    if (month > 40) {
-      month -= 40;
-      century_year = "20".concat(century_year);
-    } else if (month > 20) {
-      month -= 20;
-      century_year = "18".concat(century_year);
-    } else {
-      century_year = "19".concat(century_year);
-    }
-    if (month < 10) {
-      month = "0".concat(month);
-    }
-    var date = "".concat(century_year, "/").concat(month, "/").concat(tin.slice(4, 6));
-    if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-      return false;
-    } // split digits into an array for further processing
-
-    var digits = tin.split('').map(function (a) {
-      return parseInt(a, 10);
-    }); // Calculate checksum by multiplying digits with fixed values
-
-    var multip_lookup = [2, 4, 8, 5, 10, 9, 7, 3, 6];
-    var checksum = 0;
-    for (var i = 0; i < multip_lookup.length; i++) {
-      checksum += digits[i] * multip_lookup[i];
-    }
-    checksum = checksum % 11 === 10 ? 0 : checksum % 11;
-    return checksum === digits[9];
-  }
-  /**
-   * Check if an input is a valid Canadian SIN (Social Insurance Number)
-   *
-   * The Social Insurance Number (SIN) is a 9 digit number that
-   * you need to work in Canada or to have access to government programs and benefits.
-   *
-   * https://en.wikipedia.org/wiki/Social_Insurance_Number
-   * https://www.canada.ca/en/employment-social-development/services/sin.html
-   * https://www.codercrunch.com/challenge/819302488/sin-validator
-   *
-   * @param {string} input
-   * @return {boolean}
-   */
-
-  function isCanadianSIN(input) {
-    var digitsArray = input.split('');
-    var even = digitsArray.filter(function (_, idx) {
-      return idx % 2;
-    }).map(function (i) {
-      return Number(i) * 2;
-    }).join('').split('');
-    var total = digitsArray.filter(function (_, idx) {
-      return !(idx % 2);
-    }).concat(even).map(function (i) {
-      return Number(i);
-    }).reduce(function (acc, cur) {
-      return acc + cur;
-    });
-    return total % 10 === 0;
-  }
-  /*
-   * cs-CZ validation function
-   * (Rodné číslo (RČ), persons only)
-   * Checks if birth date (first six digits) is valid and divisibility by 11
-   * Material not in DG TAXUD document sourced from:
-   * -`https://lorenc.info/3MA381/overeni-spravnosti-rodneho-cisla.htm`
-   * -`https://www.mvcr.cz/clanek/rady-a-sluzby-dokumenty-rodne-cislo.aspx`
-   */
-
-  function csCzCheck(tin) {
-    tin = tin.replace(/\W/, ''); // Extract full year from TIN length
-
-    var full_year = parseInt(tin.slice(0, 2), 10);
-    if (tin.length === 10) {
-      if (full_year < 54) {
-        full_year = "20".concat(full_year);
-      } else {
-        full_year = "19".concat(full_year);
-      }
-    } else {
-      if (tin.slice(6) === '000') {
-        return false;
-      } // Three-zero serial not assigned before 1954
-
-      if (full_year < 54) {
-        full_year = "19".concat(full_year);
-      } else {
-        return false; // No 18XX years seen in any of the resources
-      }
-    } // Add missing zero if needed
-
-    if (full_year.length === 3) {
-      full_year = [full_year.slice(0, 2), '0', full_year.slice(2)].join('');
-    } // Extract month from TIN and normalize
-
-    var month = parseInt(tin.slice(2, 4), 10);
-    if (month > 50) {
-      month -= 50;
-    }
-    if (month > 20) {
-      // Month-plus-twenty was only introduced in 2004
-      if (parseInt(full_year, 10) < 2004) {
-        return false;
-      }
-      month -= 20;
-    }
-    if (month < 10) {
-      month = "0".concat(month);
-    } // Check date validity
-
-    var date = "".concat(full_year, "/").concat(month, "/").concat(tin.slice(4, 6));
-    if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-      return false;
-    } // Verify divisibility by 11
-
-    if (tin.length === 10) {
-      if (parseInt(tin, 10) % 11 !== 0) {
-        // Some numbers up to and including 1985 are still valid if
-        // check (last) digit equals 0 and modulo of first 9 digits equals 10
-        var checkdigit = parseInt(tin.slice(0, 9), 10) % 11;
-        if (parseInt(full_year, 10) < 1986 && checkdigit === 10) {
-          if (parseInt(tin.slice(9), 10) !== 0) {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-  /*
-   * de-AT validation function
-   * (Abgabenkontonummer, persons/entities)
-   * Verify TIN validity by calling luhnCheck()
-   */
-
-  function deAtCheck(tin) {
-    return algorithms.luhnCheck(tin);
-  }
-  /*
-   * de-DE validation function
-   * (Steueridentifikationsnummer (Steuer-IdNr.), persons only)
-   * Tests for single duplicate/triplicate value, then calculates ISO 7064 check (last) digit
-   * Partial implementation of spec (same result with both algorithms always)
-   */
-
-  function deDeCheck(tin) {
-    // Split digits into an array for further processing
-    var digits = tin.split('').map(function (a) {
-      return parseInt(a, 10);
-    }); // Fill array with strings of number positions
-
-    var occurences = [];
-    for (var i = 0; i < digits.length - 1; i++) {
-      occurences.push('');
-      for (var j = 0; j < digits.length - 1; j++) {
-        if (digits[i] === digits[j]) {
-          occurences[i] += j;
-        }
-      }
-    } // Remove digits with one occurence and test for only one duplicate/triplicate
-
-    occurences = occurences.filter(function (a) {
-      return a.length > 1;
-    });
-    if (occurences.length !== 2 && occurences.length !== 3) {
-      return false;
-    } // In case of triplicate value only two digits are allowed next to each other
-
-    if (occurences[0].length === 3) {
-      var trip_locations = occurences[0].split('').map(function (a) {
-        return parseInt(a, 10);
-      });
-      var recurrent = 0; // Amount of neighbour occurences
-
-      for (var _i = 0; _i < trip_locations.length - 1; _i++) {
-        if (trip_locations[_i] + 1 === trip_locations[_i + 1]) {
-          recurrent += 1;
-        }
-      }
-      if (recurrent === 2) {
-        return false;
-      }
-    }
-    return algorithms.iso7064Check(tin);
-  }
-  /*
-   * dk-DK validation function
-   * (CPR-nummer (personnummer), persons only)
-   * Checks if birth date (first six digits) is valid and assigned to century (seventh) digit,
-   * and calculates check (last) digit
-   */
-
-  function dkDkCheck(tin) {
-    tin = tin.replace(/\W/, ''); // Extract year, check if valid for given century digit and add century
-
-    var year = parseInt(tin.slice(4, 6), 10);
-    var century_digit = tin.slice(6, 7);
-    switch (century_digit) {
-      case '0':
-      case '1':
-      case '2':
-      case '3':
-        year = "19".concat(year);
-        break;
-      case '4':
-      case '9':
-        if (year < 37) {
-          year = "20".concat(year);
-        } else {
-          year = "19".concat(year);
-        }
-        break;
-      default:
-        if (year < 37) {
-          year = "20".concat(year);
-        } else if (year > 58) {
-          year = "18".concat(year);
-        } else {
-          return false;
-        }
-        break;
-    } // Add missing zero if needed
-
-    if (year.length === 3) {
-      year = [year.slice(0, 2), '0', year.slice(2)].join('');
-    } // Check date validity
-
-    var date = "".concat(year, "/").concat(tin.slice(2, 4), "/").concat(tin.slice(0, 2));
-    if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-      return false;
-    } // Split digits into an array for further processing
-
-    var digits = tin.split('').map(function (a) {
-      return parseInt(a, 10);
-    });
-    var checksum = 0;
-    var weight = 4; // Multiply by weight and add to checksum
-
-    for (var i = 0; i < 9; i++) {
-      checksum += digits[i] * weight;
-      weight -= 1;
-      if (weight === 1) {
-        weight = 7;
-      }
-    }
-    checksum %= 11;
-    if (checksum === 1) {
-      return false;
-    }
-    return checksum === 0 ? digits[9] === 0 : digits[9] === 11 - checksum;
-  }
-  /*
-   * el-CY validation function
-   * (Arithmos Forologikou Mitroou (AFM/ΑΦΜ), persons only)
-   * Verify TIN validity by calculating ASCII value of check (last) character
-   */
-
-  function elCyCheck(tin) {
-    // split digits into an array for further processing
-    var digits = tin.slice(0, 8).split('').map(function (a) {
-      return parseInt(a, 10);
-    });
-    var checksum = 0; // add digits in even places
-
-    for (var i = 1; i < digits.length; i += 2) {
-      checksum += digits[i];
-    } // add digits in odd places
-
-    for (var _i2 = 0; _i2 < digits.length; _i2 += 2) {
-      if (digits[_i2] < 2) {
-        checksum += 1 - digits[_i2];
-      } else {
-        checksum += 2 * (digits[_i2] - 2) + 5;
-        if (digits[_i2] > 4) {
-          checksum += 2;
-        }
-      }
-    }
-    return String.fromCharCode(checksum % 26 + 65) === tin.charAt(8);
-  }
-  /*
-   * el-GR validation function
-   * (Arithmos Forologikou Mitroou (AFM/ΑΦΜ), persons/entities)
-   * Verify TIN validity by calculating check (last) digit
-   * Algorithm not in DG TAXUD document- sourced from:
-   * - `http://epixeirisi.gr/%CE%9A%CE%A1%CE%99%CE%A3%CE%99%CE%9C%CE%91-%CE%98%CE%95%CE%9C%CE%91%CE%A4%CE%91-%CE%A6%CE%9F%CE%A1%CE%9F%CE%9B%CE%9F%CE%93%CE%99%CE%91%CE%A3-%CE%9A%CE%91%CE%99-%CE%9B%CE%9F%CE%93%CE%99%CE%A3%CE%A4%CE%99%CE%9A%CE%97%CE%A3/23791/%CE%91%CF%81%CE%B9%CE%B8%CE%BC%CF%8C%CF%82-%CE%A6%CE%BF%CF%81%CE%BF%CE%BB%CE%BF%CE%B3%CE%B9%CE%BA%CE%BF%CF%8D-%CE%9C%CE%B7%CF%84%CF%81%CF%8E%CE%BF%CF%85`
-   */
-
-  function elGrCheck(tin) {
-    // split digits into an array for further processing
-    var digits = tin.split('').map(function (a) {
-      return parseInt(a, 10);
-    });
-    var checksum = 0;
-    for (var i = 0; i < 8; i++) {
-      checksum += digits[i] * Math.pow(2, 8 - i);
-    }
-    return checksum % 11 % 10 === digits[8];
-  }
-  /*
-   * en-GB validation function (should go here if needed)
-   * (National Insurance Number (NINO) or Unique Taxpayer Reference (UTR),
-   * persons/entities respectively)
-   */
-
-  /*
-   * en-IE validation function
-   * (Personal Public Service Number (PPS No), persons only)
-   * Verify TIN validity by calculating check (second to last) character
-   */
-
-  function enIeCheck(tin) {
-    var checksum = algorithms.reverseMultiplyAndSum(tin.split('').slice(0, 7).map(function (a) {
-      return parseInt(a, 10);
-    }), 8);
-    if (tin.length === 9 && tin[8] !== 'W') {
-      checksum += (tin[8].charCodeAt(0) - 64) * 9;
-    }
-    checksum %= 23;
-    if (checksum === 0) {
-      return tin[7].toUpperCase() === 'W';
-    }
-    return tin[7].toUpperCase() === String.fromCharCode(64 + checksum);
-  } // Valid US IRS campus prefixes
-
-  var enUsCampusPrefix = {
-    andover: ['10', '12'],
-    atlanta: ['60', '67'],
-    austin: ['50', '53'],
-    brookhaven: ['01', '02', '03', '04', '05', '06', '11', '13', '14', '16', '21', '22', '23', '25', '34', '51', '52', '54', '55', '56', '57', '58', '59', '65'],
-    cincinnati: ['30', '32', '35', '36', '37', '38', '61'],
-    fresno: ['15', '24'],
-    internet: ['20', '26', '27', '45', '46', '47'],
-    kansas: ['40', '44'],
-    memphis: ['94', '95'],
-    ogden: ['80', '90'],
-    philadelphia: ['33', '39', '41', '42', '43', '46', '48', '62', '63', '64', '66', '68', '71', '72', '73', '74', '75', '76', '77', '81', '82', '83', '84', '85', '86', '87', '88', '91', '92', '93', '98', '99'],
-    sba: ['31']
-  }; // Return an array of all US IRS campus prefixes
-
-  function enUsGetPrefixes() {
-    var prefixes = [];
-    for (var location in enUsCampusPrefix) {
-      // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
-      // istanbul ignore else
-      if (enUsCampusPrefix.hasOwnProperty(location)) {
-        prefixes.push.apply(prefixes, _toConsumableArray(enUsCampusPrefix[location]));
-      }
-    }
-    return prefixes;
-  }
-  /*
-   * en-US validation function
-   * Verify that the TIN starts with a valid IRS campus prefix
-   */
-
-  function enUsCheck(tin) {
-    return enUsGetPrefixes().indexOf(tin.slice(0, 2)) !== -1;
-  }
-  /*
-   * es-ES validation function
-   * (Documento Nacional de Identidad (DNI)
-   * or Número de Identificación de Extranjero (NIE), persons only)
-   * Verify TIN validity by calculating check (last) character
-   */
-
-  function esEsCheck(tin) {
-    // Split characters into an array for further processing
-    var chars = tin.toUpperCase().split(''); // Replace initial letter if needed
-
-    if (isNaN(parseInt(chars[0], 10)) && chars.length > 1) {
-      var lead_replace = 0;
-      switch (chars[0]) {
-        case 'Y':
-          lead_replace = 1;
-          break;
-        case 'Z':
-          lead_replace = 2;
-          break;
-      }
-      chars.splice(0, 1, lead_replace); // Fill with zeros if smaller than proper
-    } else {
-      while (chars.length < 9) {
-        chars.unshift(0);
-      }
-    } // Calculate checksum and check according to lookup
-
-    var lookup = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'];
-    chars = chars.join('');
-    var checksum = parseInt(chars.slice(0, 8), 10) % 23;
-    return chars[8] === lookup[checksum];
-  }
-  /*
-   * et-EE validation function
-   * (Isikukood (IK), persons only)
-   * Checks if birth date (century digit and six following) is valid and calculates check (last) digit
-   * Material not in DG TAXUD document sourced from:
-   * - `https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/Estonia-TIN.pdf`
-   */
-
-  function etEeCheck(tin) {
-    // Extract year and add century
-    var full_year = tin.slice(1, 3);
-    var century_digit = tin.slice(0, 1);
-    switch (century_digit) {
-      case '1':
-      case '2':
-        full_year = "18".concat(full_year);
-        break;
-      case '3':
-      case '4':
-        full_year = "19".concat(full_year);
-        break;
-      default:
-        full_year = "20".concat(full_year);
-        break;
-    } // Check date validity
-
-    var date = "".concat(full_year, "/").concat(tin.slice(3, 5), "/").concat(tin.slice(5, 7));
-    if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-      return false;
-    } // Split digits into an array for further processing
-
-    var digits = tin.split('').map(function (a) {
-      return parseInt(a, 10);
-    });
-    var checksum = 0;
-    var weight = 1; // Multiply by weight and add to checksum
-
-    for (var i = 0; i < 10; i++) {
-      checksum += digits[i] * weight;
-      weight += 1;
-      if (weight === 10) {
-        weight = 1;
-      }
-    } // Do again if modulo 11 of checksum is 10
-
-    if (checksum % 11 === 10) {
-      checksum = 0;
-      weight = 3;
-      for (var _i3 = 0; _i3 < 10; _i3++) {
-        checksum += digits[_i3] * weight;
-        weight += 1;
-        if (weight === 10) {
-          weight = 1;
-        }
-      }
-      if (checksum % 11 === 10) {
-        return digits[10] === 0;
-      }
-    }
-    return checksum % 11 === digits[10];
-  }
-  /*
-   * fi-FI validation function
-   * (Henkilötunnus (HETU), persons only)
-   * Checks if birth date (first six digits plus century symbol) is valid
-   * and calculates check (last) digit
-   */
-
-  function fiFiCheck(tin) {
-    // Extract year and add century
-    var full_year = tin.slice(4, 6);
-    var century_symbol = tin.slice(6, 7);
-    switch (century_symbol) {
-      case '+':
-        full_year = "18".concat(full_year);
-        break;
-      case '-':
-        full_year = "19".concat(full_year);
-        break;
-      default:
-        full_year = "20".concat(full_year);
-        break;
-    } // Check date validity
-
-    var date = "".concat(full_year, "/").concat(tin.slice(2, 4), "/").concat(tin.slice(0, 2));
-    if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-      return false;
-    } // Calculate check character
-
-    var checksum = parseInt(tin.slice(0, 6) + tin.slice(7, 10), 10) % 31;
-    if (checksum < 10) {
-      return checksum === parseInt(tin.slice(10), 10);
-    }
-    checksum -= 10;
-    var letters_lookup = ['A', 'B', 'C', 'D', 'E', 'F', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y'];
-    return letters_lookup[checksum] === tin.slice(10);
-  }
-  /*
-   * fr/nl-BE validation function
-   * (Numéro national (N.N.), persons only)
-   * Checks if birth date (first six digits) is valid and calculates check (last two) digits
-   */
-
-  function frBeCheck(tin) {
-    // Zero month/day value is acceptable
-    if (tin.slice(2, 4) !== '00' || tin.slice(4, 6) !== '00') {
-      // Extract date from first six digits of TIN
-      var date = "".concat(tin.slice(0, 2), "/").concat(tin.slice(2, 4), "/").concat(tin.slice(4, 6));
-      if (!(0, _isDate.default)(date, 'YY/MM/DD')) {
-        return false;
-      }
-    }
-    var checksum = 97 - parseInt(tin.slice(0, 9), 10) % 97;
-    var checkdigits = parseInt(tin.slice(9, 11), 10);
-    if (checksum !== checkdigits) {
-      checksum = 97 - parseInt("2".concat(tin.slice(0, 9)), 10) % 97;
-      if (checksum !== checkdigits) {
-        return false;
-      }
-    }
-    return true;
-  }
-  /*
-   * fr-FR validation function
-   * (Numéro fiscal de référence (numéro SPI), persons only)
-   * Verify TIN validity by calculating check (last three) digits
-   */
-
-  function frFrCheck(tin) {
-    tin = tin.replace(/\s/g, '');
-    var checksum = parseInt(tin.slice(0, 10), 10) % 511;
-    var checkdigits = parseInt(tin.slice(10, 13), 10);
-    return checksum === checkdigits;
-  }
-  /*
-   * fr/lb-LU validation function
-   * (numéro d’identification personnelle, persons only)
-   * Verify birth date validity and run Luhn and Verhoeff checks
-   */
-
-  function frLuCheck(tin) {
-    // Extract date and check validity
-    var date = "".concat(tin.slice(0, 4), "/").concat(tin.slice(4, 6), "/").concat(tin.slice(6, 8));
-    if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-      return false;
-    } // Run Luhn check
-
-    if (!algorithms.luhnCheck(tin.slice(0, 12))) {
-      return false;
-    } // Remove Luhn check digit and run Verhoeff check
-
-    return algorithms.verhoeffCheck("".concat(tin.slice(0, 11)).concat(tin[12]));
-  }
-  /*
-   * hr-HR validation function
-   * (Osobni identifikacijski broj (OIB), persons/entities)
-   * Verify TIN validity by calling iso7064Check(digits)
-   */
-
-  function hrHrCheck(tin) {
-    return algorithms.iso7064Check(tin);
-  }
-  /*
-   * hu-HU validation function
-   * (Adóazonosító jel, persons only)
-   * Verify TIN validity by calculating check (last) digit
-   */
-
-  function huHuCheck(tin) {
-    // split digits into an array for further processing
-    var digits = tin.split('').map(function (a) {
-      return parseInt(a, 10);
-    });
-    var checksum = 8;
-    for (var i = 1; i < 9; i++) {
-      checksum += digits[i] * (i + 1);
-    }
-    return checksum % 11 === digits[9];
-  }
-  /*
-   * lt-LT validation function (should go here if needed)
-   * (Asmens kodas, persons/entities respectively)
-   * Current validation check is alias of etEeCheck- same format applies
-   */
-
-  /*
-   * it-IT first/last name validity check
-   * Accepts it-IT TIN-encoded names as a three-element character array and checks their validity
-   * Due to lack of clarity between resources ("Are only Italian consonants used?
-   * What happens if a person has X in their name?" etc.) only two test conditions
-   * have been implemented:
-   * Vowels may only be followed by other vowels or an X character
-   * and X characters after vowels may only be followed by other X characters.
-   */
-
-  function itItNameCheck(name) {
-    // true at the first occurence of a vowel
-    var vowelflag = false; // true at the first occurence of an X AFTER vowel
-    // (to properly handle last names with X as consonant)
-
-    var xflag = false;
-    for (var i = 0; i < 3; i++) {
-      if (!vowelflag && /[AEIOU]/.test(name[i])) {
-        vowelflag = true;
-      } else if (!xflag && vowelflag && name[i] === 'X') {
-        xflag = true;
-      } else if (i > 0) {
-        if (vowelflag && !xflag) {
-          if (!/[AEIOU]/.test(name[i])) {
-            return false;
-          }
-        }
-        if (xflag) {
-          if (!/X/.test(name[i])) {
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
-  /*
-   * it-IT validation function
-   * (Codice fiscale (TIN-IT), persons only)
-   * Verify name, birth date and codice catastale validity
-   * and calculate check character.
-   * Material not in DG-TAXUD document sourced from:
-   * `https://en.wikipedia.org/wiki/Italian_fiscal_code`
-   */
-
-  function itItCheck(tin) {
-    // Capitalize and split characters into an array for further processing
-    var chars = tin.toUpperCase().split(''); // Check first and last name validity calling itItNameCheck()
-
-    if (!itItNameCheck(chars.slice(0, 3))) {
-      return false;
-    }
-    if (!itItNameCheck(chars.slice(3, 6))) {
-      return false;
-    } // Convert letters in number spaces back to numbers if any
-
-    var number_locations = [6, 7, 9, 10, 12, 13, 14];
-    var number_replace = {
-      L: '0',
-      M: '1',
-      N: '2',
-      P: '3',
-      Q: '4',
-      R: '5',
-      S: '6',
-      T: '7',
-      U: '8',
-      V: '9'
-    };
-    for (var _i4 = 0, _number_locations = number_locations; _i4 < _number_locations.length; _i4++) {
-      var i = _number_locations[_i4];
-      if (chars[i] in number_replace) {
-        chars.splice(i, 1, number_replace[chars[i]]);
-      }
-    } // Extract month and day, and check date validity
-
-    var month_replace = {
-      A: '01',
-      B: '02',
-      C: '03',
-      D: '04',
-      E: '05',
-      H: '06',
-      L: '07',
-      M: '08',
-      P: '09',
-      R: '10',
-      S: '11',
-      T: '12'
-    };
-    var month = month_replace[chars[8]];
-    var day = parseInt(chars[9] + chars[10], 10);
-    if (day > 40) {
-      day -= 40;
-    }
-    if (day < 10) {
-      day = "0".concat(day);
-    }
-    var date = "".concat(chars[6]).concat(chars[7], "/").concat(month, "/").concat(day);
-    if (!(0, _isDate.default)(date, 'YY/MM/DD')) {
-      return false;
-    } // Calculate check character by adding up even and odd characters as numbers
-
-    var checksum = 0;
-    for (var _i5 = 1; _i5 < chars.length - 1; _i5 += 2) {
-      var char_to_int = parseInt(chars[_i5], 10);
-      if (isNaN(char_to_int)) {
-        char_to_int = chars[_i5].charCodeAt(0) - 65;
-      }
-      checksum += char_to_int;
-    }
-    var odd_convert = {
-      // Maps of characters at odd places
-      A: 1,
-      B: 0,
-      C: 5,
-      D: 7,
-      E: 9,
-      F: 13,
-      G: 15,
-      H: 17,
-      I: 19,
-      J: 21,
-      K: 2,
-      L: 4,
-      M: 18,
-      N: 20,
-      O: 11,
-      P: 3,
-      Q: 6,
-      R: 8,
-      S: 12,
-      T: 14,
-      U: 16,
-      V: 10,
-      W: 22,
-      X: 25,
-      Y: 24,
-      Z: 23,
-      0: 1,
-      1: 0
-    };
-    for (var _i6 = 0; _i6 < chars.length - 1; _i6 += 2) {
-      var _char_to_int = 0;
-      if (chars[_i6] in odd_convert) {
-        _char_to_int = odd_convert[chars[_i6]];
-      } else {
-        var multiplier = parseInt(chars[_i6], 10);
-        _char_to_int = 2 * multiplier + 1;
-        if (multiplier > 4) {
-          _char_to_int += 2;
-        }
-      }
-      checksum += _char_to_int;
-    }
-    if (String.fromCharCode(65 + checksum % 26) !== chars[15]) {
-      return false;
-    }
-    return true;
-  }
-  /*
-   * lv-LV validation function
-   * (Personas kods (PK), persons only)
-   * Check validity of birth date and calculate check (last) digit
-   * Support only for old format numbers (not starting with '32', issued before 2017/07/01)
-   * Material not in DG TAXUD document sourced from:
-   * `https://boot.ritakafija.lv/forums/index.php?/topic/88314-personas-koda-algoritms-%C4%8Deksumma/`
-   */
-
-  function lvLvCheck(tin) {
-    tin = tin.replace(/\W/, ''); // Extract date from TIN
-
-    var day = tin.slice(0, 2);
-    if (day !== '32') {
-      // No date/checksum check if new format
-      var month = tin.slice(2, 4);
-      if (month !== '00') {
-        // No date check if unknown month
-        var full_year = tin.slice(4, 6);
-        switch (tin[6]) {
-          case '0':
-            full_year = "18".concat(full_year);
-            break;
-          case '1':
-            full_year = "19".concat(full_year);
-            break;
-          default:
-            full_year = "20".concat(full_year);
-            break;
-        } // Check date validity
-
-        var date = "".concat(full_year, "/").concat(tin.slice(2, 4), "/").concat(day);
-        if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-          return false;
-        }
-      } // Calculate check digit
-
-      var checksum = 1101;
-      var multip_lookup = [1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-      for (var i = 0; i < tin.length - 1; i++) {
-        checksum -= parseInt(tin[i], 10) * multip_lookup[i];
-      }
-      return parseInt(tin[10], 10) === checksum % 11;
-    }
-    return true;
-  }
-  /*
-   * mt-MT validation function
-   * (Identity Card Number or Unique Taxpayer Reference, persons/entities)
-   * Verify Identity Card Number structure (no other tests found)
-   */
-
-  function mtMtCheck(tin) {
-    if (tin.length !== 9) {
-      // No tests for UTR
-      var chars = tin.toUpperCase().split(''); // Fill with zeros if smaller than proper
-
-      while (chars.length < 8) {
-        chars.unshift(0);
-      } // Validate format according to last character
-
-      switch (tin[7]) {
-        case 'A':
-        case 'P':
-          if (parseInt(chars[6], 10) === 0) {
-            return false;
-          }
-          break;
-        default:
-          {
-            var first_part = parseInt(chars.join('').slice(0, 5), 10);
-            if (first_part > 32000) {
-              return false;
-            }
-            var second_part = parseInt(chars.join('').slice(5, 7), 10);
-            if (first_part === second_part) {
-              return false;
-            }
-          }
-      }
-    }
-    return true;
-  }
-  /*
-   * nl-NL validation function
-   * (Burgerservicenummer (BSN) or Rechtspersonen Samenwerkingsverbanden Informatie Nummer (RSIN),
-   * persons/entities respectively)
-   * Verify TIN validity by calculating check (last) digit (variant of MOD 11)
-   */
-
-  function nlNlCheck(tin) {
-    return algorithms.reverseMultiplyAndSum(tin.split('').slice(0, 8).map(function (a) {
-      return parseInt(a, 10);
-    }), 9) % 11 === parseInt(tin[8], 10);
-  }
-  /*
-   * pl-PL validation function
-   * (Powszechny Elektroniczny System Ewidencji Ludności (PESEL)
-   * or Numer identyfikacji podatkowej (NIP), persons/entities)
-   * Verify TIN validity by validating birth date (PESEL) and calculating check (last) digit
-   */
-
-  function plPlCheck(tin) {
-    // NIP
-    if (tin.length === 10) {
-      // Calculate last digit by multiplying with lookup
-      var lookup = [6, 5, 7, 2, 3, 4, 5, 6, 7];
-      var _checksum = 0;
-      for (var i = 0; i < lookup.length; i++) {
-        _checksum += parseInt(tin[i], 10) * lookup[i];
-      }
-      _checksum %= 11;
-      if (_checksum === 10) {
-        return false;
-      }
-      return _checksum === parseInt(tin[9], 10);
-    } // PESEL
-    // Extract full year using month
-
-    var full_year = tin.slice(0, 2);
-    var month = parseInt(tin.slice(2, 4), 10);
-    if (month > 80) {
-      full_year = "18".concat(full_year);
-      month -= 80;
-    } else if (month > 60) {
-      full_year = "22".concat(full_year);
-      month -= 60;
-    } else if (month > 40) {
-      full_year = "21".concat(full_year);
-      month -= 40;
-    } else if (month > 20) {
-      full_year = "20".concat(full_year);
-      month -= 20;
-    } else {
-      full_year = "19".concat(full_year);
-    } // Add leading zero to month if needed
-
-    if (month < 10) {
-      month = "0".concat(month);
-    } // Check date validity
-
-    var date = "".concat(full_year, "/").concat(month, "/").concat(tin.slice(4, 6));
-    if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-      return false;
-    } // Calculate last digit by mulitplying with odd one-digit numbers except 5
-
-    var checksum = 0;
-    var multiplier = 1;
-    for (var _i7 = 0; _i7 < tin.length - 1; _i7++) {
-      checksum += parseInt(tin[_i7], 10) * multiplier % 10;
-      multiplier += 2;
-      if (multiplier > 10) {
-        multiplier = 1;
-      } else if (multiplier === 5) {
-        multiplier += 2;
-      }
-    }
-    checksum = 10 - checksum % 10;
-    return checksum === parseInt(tin[10], 10);
-  }
-  /*
-  * pt-BR validation function
-  * (Cadastro de Pessoas Físicas (CPF, persons)
-  * Cadastro Nacional de Pessoas Jurídicas (CNPJ, entities)
-  * Both inputs will be validated
-  */
-
-  function ptBrCheck(tin) {
-    if (tin.length === 11) {
-      var _sum;
-      var remainder;
-      _sum = 0;
-      if (
-      // Reject known invalid CPFs
-      tin === '11111111111' || tin === '22222222222' || tin === '33333333333' || tin === '44444444444' || tin === '55555555555' || tin === '66666666666' || tin === '77777777777' || tin === '88888888888' || tin === '99999999999' || tin === '00000000000') return false;
-      for (var i = 1; i <= 9; i++) {
-        _sum += parseInt(tin.substring(i - 1, i), 10) * (11 - i);
-      }
-      remainder = _sum * 10 % 11;
-      if (remainder === 10) remainder = 0;
-      if (remainder !== parseInt(tin.substring(9, 10), 10)) return false;
-      _sum = 0;
-      for (var _i8 = 1; _i8 <= 10; _i8++) {
-        _sum += parseInt(tin.substring(_i8 - 1, _i8), 10) * (12 - _i8);
-      }
-      remainder = _sum * 10 % 11;
-      if (remainder === 10) remainder = 0;
-      if (remainder !== parseInt(tin.substring(10, 11), 10)) return false;
-      return true;
-    }
-    if (
-    // Reject know invalid CNPJs
-    tin === '00000000000000' || tin === '11111111111111' || tin === '22222222222222' || tin === '33333333333333' || tin === '44444444444444' || tin === '55555555555555' || tin === '66666666666666' || tin === '77777777777777' || tin === '88888888888888' || tin === '99999999999999') {
-      return false;
-    }
-    var length = tin.length - 2;
-    var identifiers = tin.substring(0, length);
-    var verificators = tin.substring(length);
-    var sum = 0;
-    var pos = length - 7;
-    for (var _i9 = length; _i9 >= 1; _i9--) {
-      sum += identifiers.charAt(length - _i9) * pos;
-      pos -= 1;
-      if (pos < 2) {
-        pos = 9;
-      }
-    }
-    var result = sum % 11 < 2 ? 0 : 11 - sum % 11;
-    if (result !== parseInt(verificators.charAt(0), 10)) {
-      return false;
-    }
-    length += 1;
-    identifiers = tin.substring(0, length);
-    sum = 0;
-    pos = length - 7;
-    for (var _i10 = length; _i10 >= 1; _i10--) {
-      sum += identifiers.charAt(length - _i10) * pos;
-      pos -= 1;
-      if (pos < 2) {
-        pos = 9;
-      }
-    }
-    result = sum % 11 < 2 ? 0 : 11 - sum % 11;
-    if (result !== parseInt(verificators.charAt(1), 10)) {
-      return false;
-    }
-    return true;
-  }
-  /*
-   * pt-PT validation function
-   * (Número de identificação fiscal (NIF), persons/entities)
-   * Verify TIN validity by calculating check (last) digit (variant of MOD 11)
-   */
-
-  function ptPtCheck(tin) {
-    var checksum = 11 - algorithms.reverseMultiplyAndSum(tin.split('').slice(0, 8).map(function (a) {
-      return parseInt(a, 10);
-    }), 9) % 11;
-    if (checksum > 9) {
-      return parseInt(tin[8], 10) === 0;
-    }
-    return checksum === parseInt(tin[8], 10);
-  }
-  /*
-   * ro-RO validation function
-   * (Cod Numeric Personal (CNP) or Cod de înregistrare fiscală (CIF),
-   * persons only)
-   * Verify CNP validity by calculating check (last) digit (test not found for CIF)
-   * Material not in DG TAXUD document sourced from:
-   * `https://en.wikipedia.org/wiki/National_identification_number#Romania`
-   */
-
-  function roRoCheck(tin) {
-    if (tin.slice(0, 4) !== '9000') {
-      // No test found for this format
-      // Extract full year using century digit if possible
-      var full_year = tin.slice(1, 3);
-      switch (tin[0]) {
-        case '1':
-        case '2':
-          full_year = "19".concat(full_year);
-          break;
-        case '3':
-        case '4':
-          full_year = "18".concat(full_year);
-          break;
-        case '5':
-        case '6':
-          full_year = "20".concat(full_year);
-          break;
-      } // Check date validity
-
-      var date = "".concat(full_year, "/").concat(tin.slice(3, 5), "/").concat(tin.slice(5, 7));
-      if (date.length === 8) {
-        if (!(0, _isDate.default)(date, 'YY/MM/DD')) {
-          return false;
-        }
-      } else if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-        return false;
-      } // Calculate check digit
-
-      var digits = tin.split('').map(function (a) {
-        return parseInt(a, 10);
-      });
-      var multipliers = [2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7, 9];
-      var checksum = 0;
-      for (var i = 0; i < multipliers.length; i++) {
-        checksum += digits[i] * multipliers[i];
-      }
-      if (checksum % 11 === 10) {
-        return digits[12] === 1;
-      }
-      return digits[12] === checksum % 11;
-    }
-    return true;
-  }
-  /*
-   * sk-SK validation function
-   * (Rodné číslo (RČ) or bezvýznamové identifikačné číslo (BIČ), persons only)
-   * Checks validity of pre-1954 birth numbers (rodné číslo) only
-   * Due to the introduction of the pseudo-random BIČ it is not possible to test
-   * post-1954 birth numbers without knowing whether they are BIČ or RČ beforehand
-   */
-
-  function skSkCheck(tin) {
-    if (tin.length === 9) {
-      tin = tin.replace(/\W/, '');
-      if (tin.slice(6) === '000') {
-        return false;
-      } // Three-zero serial not assigned before 1954
-      // Extract full year from TIN length
-
-      var full_year = parseInt(tin.slice(0, 2), 10);
-      if (full_year > 53) {
-        return false;
-      }
-      if (full_year < 10) {
-        full_year = "190".concat(full_year);
-      } else {
-        full_year = "19".concat(full_year);
-      } // Extract month from TIN and normalize
-
-      var month = parseInt(tin.slice(2, 4), 10);
-      if (month > 50) {
-        month -= 50;
-      }
-      if (month < 10) {
-        month = "0".concat(month);
-      } // Check date validity
-
-      var date = "".concat(full_year, "/").concat(month, "/").concat(tin.slice(4, 6));
-      if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-        return false;
-      }
-    }
-    return true;
-  }
-  /*
-   * sl-SI validation function
-   * (Davčna številka, persons/entities)
-   * Verify TIN validity by calculating check (last) digit (variant of MOD 11)
-   */
-
-  function slSiCheck(tin) {
-    var checksum = 11 - algorithms.reverseMultiplyAndSum(tin.split('').slice(0, 7).map(function (a) {
-      return parseInt(a, 10);
-    }), 8) % 11;
-    if (checksum === 10) {
-      return parseInt(tin[7], 10) === 0;
-    }
-    return checksum === parseInt(tin[7], 10);
-  }
-  /*
-   * sv-SE validation function
-   * (Personnummer or samordningsnummer, persons only)
-   * Checks validity of birth date and calls luhnCheck() to validate check (last) digit
-   */
-
-  function svSeCheck(tin) {
-    // Make copy of TIN and normalize to two-digit year form
-    var tin_copy = tin.slice(0);
-    if (tin.length > 11) {
-      tin_copy = tin_copy.slice(2);
-    } // Extract date of birth
-
-    var full_year = '';
-    var month = tin_copy.slice(2, 4);
-    var day = parseInt(tin_copy.slice(4, 6), 10);
-    if (tin.length > 11) {
-      full_year = tin.slice(0, 4);
-    } else {
-      full_year = tin.slice(0, 2);
-      if (tin.length === 11 && day < 60) {
-        // Extract full year from centenarian symbol
-        // Should work just fine until year 10000 or so
-        var current_year = new Date().getFullYear().toString();
-        var current_century = parseInt(current_year.slice(0, 2), 10);
-        current_year = parseInt(current_year, 10);
-        if (tin[6] === '-') {
-          if (parseInt("".concat(current_century).concat(full_year), 10) > current_year) {
-            full_year = "".concat(current_century - 1).concat(full_year);
-          } else {
-            full_year = "".concat(current_century).concat(full_year);
-          }
-        } else {
-          full_year = "".concat(current_century - 1).concat(full_year);
-          if (current_year - parseInt(full_year, 10) < 100) {
-            return false;
-          }
-        }
-      }
-    } // Normalize day and check date validity
-
-    if (day > 60) {
-      day -= 60;
-    }
-    if (day < 10) {
-      day = "0".concat(day);
-    }
-    var date = "".concat(full_year, "/").concat(month, "/").concat(day);
-    if (date.length === 8) {
-      if (!(0, _isDate.default)(date, 'YY/MM/DD')) {
-        return false;
-      }
-    } else if (!(0, _isDate.default)(date, 'YYYY/MM/DD')) {
-      return false;
-    }
-    return algorithms.luhnCheck(tin.replace(/\W/, ''));
-  } // Locale lookup objects
-
-  /*
-   * Tax id regex formats for various locales
-   *
-   * Where not explicitly specified in DG-TAXUD document both
-   * uppercase and lowercase letters are acceptable.
-   */
-
-  var taxIdFormat = {
-    'bg-BG': /^\d{10}$/,
-    'cs-CZ': /^\d{6}\/{0,1}\d{3,4}$/,
-    'de-AT': /^\d{9}$/,
-    'de-DE': /^[1-9]\d{10}$/,
-    'dk-DK': /^\d{6}-{0,1}\d{4}$/,
-    'el-CY': /^[09]\d{7}[A-Z]$/,
-    'el-GR': /^([0-4]|[7-9])\d{8}$/,
-    'en-CA': /^\d{9}$/,
-    'en-GB': /^\d{10}$|^(?!GB|NK|TN|ZZ)(?![DFIQUV])[A-Z](?![DFIQUVO])[A-Z]\d{6}[ABCD ]$/i,
-    'en-IE': /^\d{7}[A-W][A-IW]{0,1}$/i,
-    'en-US': /^\d{2}[- ]{0,1}\d{7}$/,
-    'es-ES': /^(\d{0,8}|[XYZKLM]\d{7})[A-HJ-NP-TV-Z]$/i,
-    'et-EE': /^[1-6]\d{6}(00[1-9]|0[1-9][0-9]|[1-6][0-9]{2}|70[0-9]|710)\d$/,
-    'fi-FI': /^\d{6}[-+A]\d{3}[0-9A-FHJ-NPR-Y]$/i,
-    'fr-BE': /^\d{11}$/,
-    'fr-FR': /^[0-3]\d{12}$|^[0-3]\d\s\d{2}(\s\d{3}){3}$/,
-    // Conforms both to official spec and provided example
-    'fr-LU': /^\d{13}$/,
-    'hr-HR': /^\d{11}$/,
-    'hu-HU': /^8\d{9}$/,
-    'it-IT': /^[A-Z]{6}[L-NP-V0-9]{2}[A-EHLMPRST][L-NP-V0-9]{2}[A-ILMZ][L-NP-V0-9]{3}[A-Z]$/i,
-    'lv-LV': /^\d{6}-{0,1}\d{5}$/,
-    // Conforms both to DG TAXUD spec and original research
-    'mt-MT': /^\d{3,7}[APMGLHBZ]$|^([1-8])\1\d{7}$/i,
-    'nl-NL': /^\d{9}$/,
-    'pl-PL': /^\d{10,11}$/,
-    'pt-BR': /(?:^\d{11}$)|(?:^\d{14}$)/,
-    'pt-PT': /^\d{9}$/,
-    'ro-RO': /^\d{13}$/,
-    'sk-SK': /^\d{6}\/{0,1}\d{3,4}$/,
-    'sl-SI': /^[1-9]\d{7}$/,
-    'sv-SE': /^(\d{6}[-+]{0,1}\d{4}|(18|19|20)\d{6}[-+]{0,1}\d{4})$/
-  }; // taxIdFormat locale aliases
-
-  taxIdFormat['lb-LU'] = taxIdFormat['fr-LU'];
-  taxIdFormat['lt-LT'] = taxIdFormat['et-EE'];
-  taxIdFormat['nl-BE'] = taxIdFormat['fr-BE'];
-  taxIdFormat['fr-CA'] = taxIdFormat['en-CA']; // Algorithmic tax id check functions for various locales
-
-  var taxIdCheck = {
-    'bg-BG': bgBgCheck,
-    'cs-CZ': csCzCheck,
-    'de-AT': deAtCheck,
-    'de-DE': deDeCheck,
-    'dk-DK': dkDkCheck,
-    'el-CY': elCyCheck,
-    'el-GR': elGrCheck,
-    'en-CA': isCanadianSIN,
-    'en-IE': enIeCheck,
-    'en-US': enUsCheck,
-    'es-ES': esEsCheck,
-    'et-EE': etEeCheck,
-    'fi-FI': fiFiCheck,
-    'fr-BE': frBeCheck,
-    'fr-FR': frFrCheck,
-    'fr-LU': frLuCheck,
-    'hr-HR': hrHrCheck,
-    'hu-HU': huHuCheck,
-    'it-IT': itItCheck,
-    'lv-LV': lvLvCheck,
-    'mt-MT': mtMtCheck,
-    'nl-NL': nlNlCheck,
-    'pl-PL': plPlCheck,
-    'pt-BR': ptBrCheck,
-    'pt-PT': ptPtCheck,
-    'ro-RO': roRoCheck,
-    'sk-SK': skSkCheck,
-    'sl-SI': slSiCheck,
-    'sv-SE': svSeCheck
-  }; // taxIdCheck locale aliases
-
-  taxIdCheck['lb-LU'] = taxIdCheck['fr-LU'];
-  taxIdCheck['lt-LT'] = taxIdCheck['et-EE'];
-  taxIdCheck['nl-BE'] = taxIdCheck['fr-BE'];
-  taxIdCheck['fr-CA'] = taxIdCheck['en-CA']; // Regexes for locales where characters should be omitted before checking format
-
-  var allsymbols = /[-\\\/!@#$%\^&\*\(\)\+\=\[\]]+/g;
-  var sanitizeRegexes = {
-    'de-AT': allsymbols,
-    'de-DE': /[\/\\]/g,
-    'fr-BE': allsymbols
-  }; // sanitizeRegexes locale aliases
-
-  sanitizeRegexes['nl-BE'] = sanitizeRegexes['fr-BE'];
-  /*
-   * Validator function
-   * Return true if the passed string is a valid tax identification number
-   * for the specified locale.
-   * Throw an error exception if the locale is not supported.
-   */
-
-  function isTaxID(str) {
-    var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en-US';
-    (0, _assertString.default)(str); // Copy TIN to avoid replacement if sanitized
-
-    var strcopy = str.slice(0);
-    if (locale in taxIdFormat) {
-      if (locale in sanitizeRegexes) {
-        strcopy = strcopy.replace(sanitizeRegexes[locale], '');
-      }
-      if (!taxIdFormat[locale].test(strcopy)) {
-        return false;
-      }
-      if (locale in taxIdCheck) {
-        return taxIdCheck[locale](strcopy);
-      } // Fallthrough; not all locales have algorithmic checks
-
-      return true;
-    }
-    throw new Error("Invalid locale '".concat(locale, "'"));
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isTaxID, isTaxID.exports);
-var isTaxIDExports = isTaxID.exports;
-
-var isMobilePhone$1 = {};
-
-Object.defineProperty(isMobilePhone$1, "__esModule", {
-  value: true
-});
-isMobilePhone$1.default = isMobilePhone;
-isMobilePhone$1.locales = void 0;
-var _assertString$3 = _interopRequireDefault$3(assertStringExports);
-function _interopRequireDefault$3(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-
-/* eslint-disable max-len */
-var phones = {
-  'am-AM': /^(\+?374|0)((10|[9|7][0-9])\d{6}$|[2-4]\d{7}$)/,
-  'ar-AE': /^((\+?971)|0)?5[024568]\d{7}$/,
-  'ar-BH': /^(\+?973)?(3|6)\d{7}$/,
-  'ar-DZ': /^(\+?213|0)(5|6|7)\d{8}$/,
-  'ar-LB': /^(\+?961)?((3|81)\d{6}|7\d{7})$/,
-  'ar-EG': /^((\+?20)|0)?1[0125]\d{8}$/,
-  'ar-IQ': /^(\+?964|0)?7[0-9]\d{8}$/,
-  'ar-JO': /^(\+?962|0)?7[789]\d{7}$/,
-  'ar-KW': /^(\+?965)([569]\d{7}|41\d{6})$/,
-  'ar-LY': /^((\+?218)|0)?(9[1-6]\d{7}|[1-8]\d{7,9})$/,
-  'ar-MA': /^(?:(?:\+|00)212|0)[5-7]\d{8}$/,
-  'ar-OM': /^((\+|00)968)?(9[1-9])\d{6}$/,
-  'ar-PS': /^(\+?970|0)5[6|9](\d{7})$/,
-  'ar-SA': /^(!?(\+?966)|0)?5\d{8}$/,
-  'ar-SY': /^(!?(\+?963)|0)?9\d{8}$/,
-  'ar-TN': /^(\+?216)?[2459]\d{7}$/,
-  'az-AZ': /^(\+994|0)(10|5[015]|7[07]|99)\d{7}$/,
-  'bs-BA': /^((((\+|00)3876)|06))((([0-3]|[5-6])\d{6})|(4\d{7}))$/,
-  'be-BY': /^(\+?375)?(24|25|29|33|44)\d{7}$/,
-  'bg-BG': /^(\+?359|0)?8[789]\d{7}$/,
-  'bn-BD': /^(\+?880|0)1[13456789][0-9]{8}$/,
-  'ca-AD': /^(\+376)?[346]\d{5}$/,
-  'cs-CZ': /^(\+?420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/,
-  'da-DK': /^(\+?45)?\s?\d{2}\s?\d{2}\s?\d{2}\s?\d{2}$/,
-  'de-DE': /^((\+49|0)1)(5[0-25-9]\d|6([23]|0\d?)|7([0-57-9]|6\d))\d{7,9}$/,
-  'de-AT': /^(\+43|0)\d{1,4}\d{3,12}$/,
-  'de-CH': /^(\+41|0)([1-9])\d{1,9}$/,
-  'de-LU': /^(\+352)?((6\d1)\d{6})$/,
-  'dv-MV': /^(\+?960)?(7[2-9]|9[1-9])\d{5}$/,
-  'el-GR': /^(\+?30|0)?6(8[5-9]|9(?![26])[0-9])\d{7}$/,
-  'el-CY': /^(\+?357?)?(9(9|6)\d{6})$/,
-  'en-AI': /^(\+?1|0)264(?:2(35|92)|4(?:6[1-2]|76|97)|5(?:3[6-9]|8[1-4])|7(?:2(4|9)|72))\d{4}$/,
-  'en-AU': /^(\+?61|0)4\d{8}$/,
-  'en-AG': /^(?:\+1|1)268(?:464|7(?:1[3-9]|[28]\d|3[0246]|64|7[0-689]))\d{4}$/,
-  'en-BM': /^(\+?1)?441(((3|7)\d{6}$)|(5[0-3][0-9]\d{4}$)|(59\d{5}$))/,
-  'en-BS': /^(\+?1[-\s]?|0)?\(?242\)?[-\s]?\d{3}[-\s]?\d{4}$/,
-  'en-GB': /^(\+?44|0)7\d{9}$/,
-  'en-GG': /^(\+?44|0)1481\d{6}$/,
-  'en-GH': /^(\+233|0)(20|50|24|54|27|57|26|56|23|28|55|59)\d{7}$/,
-  'en-GY': /^(\+592|0)6\d{6}$/,
-  'en-HK': /^(\+?852[-\s]?)?[456789]\d{3}[-\s]?\d{4}$/,
-  'en-MO': /^(\+?853[-\s]?)?[6]\d{3}[-\s]?\d{4}$/,
-  'en-IE': /^(\+?353|0)8[356789]\d{7}$/,
-  'en-IN': /^(\+?91|0)?[6789]\d{9}$/,
-  'en-JM': /^(\+?876)?\d{7}$/,
-  'en-KE': /^(\+?254|0)(7|1)\d{8}$/,
-  'en-SS': /^(\+?211|0)(9[1257])\d{7}$/,
-  'en-KI': /^((\+686|686)?)?( )?((6|7)(2|3|8)[0-9]{6})$/,
-  'en-KN': /^(?:\+1|1)869(?:46\d|48[89]|55[6-8]|66\d|76[02-7])\d{4}$/,
-  'en-LS': /^(\+?266)(22|28|57|58|59|27|52)\d{6}$/,
-  'en-MT': /^(\+?356|0)?(99|79|77|21|27|22|25)[0-9]{6}$/,
-  'en-MU': /^(\+?230|0)?\d{8}$/,
-  'en-NA': /^(\+?264|0)(6|8)\d{7}$/,
-  'en-NG': /^(\+?234|0)?[789]\d{9}$/,
-  'en-NZ': /^(\+?64|0)[28]\d{7,9}$/,
-  'en-PG': /^(\+?675|0)?(7\d|8[18])\d{6}$/,
-  'en-PK': /^((00|\+)?92|0)3[0-6]\d{8}$/,
-  'en-PH': /^(09|\+639)\d{9}$/,
-  'en-RW': /^(\+?250|0)?[7]\d{8}$/,
-  'en-SG': /^(\+65)?[3689]\d{7}$/,
-  'en-SL': /^(\+?232|0)\d{8}$/,
-  'en-TZ': /^(\+?255|0)?[67]\d{8}$/,
-  'en-UG': /^(\+?256|0)?[7]\d{8}$/,
-  'en-US': /^((\+1|1)?( |-)?)?(\([2-9][0-9]{2}\)|[2-9][0-9]{2})( |-)?([2-9][0-9]{2}( |-)?[0-9]{4})$/,
-  'en-ZA': /^(\+?27|0)\d{9}$/,
-  'en-ZM': /^(\+?26)?09[567]\d{7}$/,
-  'en-ZW': /^(\+263)[0-9]{9}$/,
-  'en-BW': /^(\+?267)?(7[1-8]{1})\d{6}$/,
-  'es-AR': /^\+?549(11|[2368]\d)\d{8}$/,
-  'es-BO': /^(\+?591)?(6|7)\d{7}$/,
-  'es-CO': /^(\+?57)?3(0(0|1|2|4|5)|1\d|2[0-4]|5(0|1))\d{7}$/,
-  'es-CL': /^(\+?56|0)[2-9]\d{1}\d{7}$/,
-  'es-CR': /^(\+506)?[2-8]\d{7}$/,
-  'es-CU': /^(\+53|0053)?5\d{7}/,
-  'es-DO': /^(\+?1)?8[024]9\d{7}$/,
-  'es-HN': /^(\+?504)?[9|8|3|2]\d{7}$/,
-  'es-EC': /^(\+?593|0)([2-7]|9[2-9])\d{7}$/,
-  'es-ES': /^(\+?34)?[6|7]\d{8}$/,
-  'es-PE': /^(\+?51)?9\d{8}$/,
-  'es-MX': /^(\+?52)?(1|01)?\d{10,11}$/,
-  'es-NI': /^(\+?505)\d{7,8}$/,
-  'es-PA': /^(\+?507)\d{7,8}$/,
-  'es-PY': /^(\+?595|0)9[9876]\d{7}$/,
-  'es-SV': /^(\+?503)?[67]\d{7}$/,
-  'es-UY': /^(\+598|0)9[1-9][\d]{6}$/,
-  'es-VE': /^(\+?58)?(2|4)\d{9}$/,
-  'et-EE': /^(\+?372)?\s?(5|8[1-4])\s?([0-9]\s?){6,7}$/,
-  'fa-IR': /^(\+?98[\-\s]?|0)9[0-39]\d[\-\s]?\d{3}[\-\s]?\d{4}$/,
-  'fi-FI': /^(\+?358|0)\s?(4[0-6]|50)\s?(\d\s?){4,8}$/,
-  'fj-FJ': /^(\+?679)?\s?\d{3}\s?\d{4}$/,
-  'fo-FO': /^(\+?298)?\s?\d{2}\s?\d{2}\s?\d{2}$/,
-  'fr-BF': /^(\+226|0)[67]\d{7}$/,
-  'fr-BJ': /^(\+229)\d{8}$/,
-  'fr-CD': /^(\+?243|0)?(8|9)\d{8}$/,
-  'fr-CM': /^(\+?237)6[0-9]{8}$/,
-  'fr-FR': /^(\+?33|0)[67]\d{8}$/,
-  'fr-GF': /^(\+?594|0|00594)[67]\d{8}$/,
-  'fr-GP': /^(\+?590|0|00590)[67]\d{8}$/,
-  'fr-MQ': /^(\+?596|0|00596)[67]\d{8}$/,
-  'fr-PF': /^(\+?689)?8[789]\d{6}$/,
-  'fr-RE': /^(\+?262|0|00262)[67]\d{8}$/,
-  'he-IL': /^(\+972|0)([23489]|5[012345689]|77)[1-9]\d{6}$/,
-  'hu-HU': /^(\+?36|06)(20|30|31|50|70)\d{7}$/,
-  'id-ID': /^(\+?62|0)8(1[123456789]|2[1238]|3[1238]|5[12356789]|7[78]|9[56789]|8[123456789])([\s?|\d]{5,11})$/,
-  'ir-IR': /^(\+98|0)?9\d{9}$/,
-  'it-IT': /^(\+?39)?\s?3\d{2} ?\d{6,7}$/,
-  'it-SM': /^((\+378)|(0549)|(\+390549)|(\+3780549))?6\d{5,9}$/,
-  'ja-JP': /^(\+81[ \-]?(\(0\))?|0)[6789]0[ \-]?\d{4}[ \-]?\d{4}$/,
-  'ka-GE': /^(\+?995)?(79\d{7}|5\d{8})$/,
-  'kk-KZ': /^(\+?7|8)?7\d{9}$/,
-  'kl-GL': /^(\+?299)?\s?\d{2}\s?\d{2}\s?\d{2}$/,
-  'ko-KR': /^((\+?82)[ \-]?)?0?1([0|1|6|7|8|9]{1})[ \-]?\d{3,4}[ \-]?\d{4}$/,
-  'ky-KG': /^(\+?7\s?\+?7|0)\s?\d{2}\s?\d{3}\s?\d{4}$/,
-  'lt-LT': /^(\+370|8)\d{8}$/,
-  'lv-LV': /^(\+?371)2\d{7}$/,
-  'mg-MG': /^((\+?261|0)(2|3)\d)?\d{7}$/,
-  'mn-MN': /^(\+|00|011)?976(77|81|88|91|94|95|96|99)\d{6}$/,
-  'my-MM': /^(\+?959|09|9)(2[5-7]|3[1-2]|4[0-5]|6[6-9]|7[5-9]|9[6-9])[0-9]{7}$/,
-  'ms-MY': /^(\+?60|0)1(([0145](-|\s)?\d{7,8})|([236-9](-|\s)?\d{7}))$/,
-  'mz-MZ': /^(\+?258)?8[234567]\d{7}$/,
-  'nb-NO': /^(\+?47)?[49]\d{7}$/,
-  'ne-NP': /^(\+?977)?9[78]\d{8}$/,
-  'nl-BE': /^(\+?32|0)4\d{8}$/,
-  'nl-NL': /^(((\+|00)?31\(0\))|((\+|00)?31)|0)6{1}\d{8}$/,
-  'nl-AW': /^(\+)?297(56|59|64|73|74|99)\d{5}$/,
-  'nn-NO': /^(\+?47)?[49]\d{7}$/,
-  'pl-PL': /^(\+?48)? ?[5-8]\d ?\d{3} ?\d{2} ?\d{2}$/,
-  'pt-BR': /^((\+?55\ ?[1-9]{2}\ ?)|(\+?55\ ?\([1-9]{2}\)\ ?)|(0[1-9]{2}\ ?)|(\([1-9]{2}\)\ ?)|([1-9]{2}\ ?))((\d{4}\-?\d{4})|(9[1-9]{1}\d{3}\-?\d{4}))$/,
-  'pt-PT': /^(\+?351)?9[1236]\d{7}$/,
-  'pt-AO': /^(\+244)\d{9}$/,
-  'ro-MD': /^(\+?373|0)((6(0|1|2|6|7|8|9))|(7(6|7|8|9)))\d{6}$/,
-  'ro-RO': /^(\+?40|0)\s?7\d{2}(\/|\s|\.|-)?\d{3}(\s|\.|-)?\d{3}$/,
-  'ru-RU': /^(\+?7|8)?9\d{9}$/,
-  'si-LK': /^(?:0|94|\+94)?(7(0|1|2|4|5|6|7|8)( |-)?)\d{7}$/,
-  'sl-SI': /^(\+386\s?|0)(\d{1}\s?\d{3}\s?\d{2}\s?\d{2}|\d{2}\s?\d{3}\s?\d{3})$/,
-  'sk-SK': /^(\+?421)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/,
-  'sq-AL': /^(\+355|0)6[789]\d{6}$/,
-  'sr-RS': /^(\+3816|06)[- \d]{5,9}$/,
-  'sv-SE': /^(\+?46|0)[\s\-]?7[\s\-]?[02369]([\s\-]?\d){7}$/,
-  'tg-TJ': /^(\+?992)?[5][5]\d{7}$/,
-  'th-TH': /^(\+66|66|0)\d{9}$/,
-  'tr-TR': /^(\+?90|0)?5\d{9}$/,
-  'tk-TM': /^(\+993|993|8)\d{8}$/,
-  'uk-UA': /^(\+?38|8)?0\d{9}$/,
-  'uz-UZ': /^(\+?998)?(6[125-79]|7[1-69]|88|9\d)\d{7}$/,
-  'vi-VN': /^((\+?84)|0)((3([2-9]))|(5([25689]))|(7([0|6-9]))|(8([1-9]))|(9([0-9])))([0-9]{7})$/,
-  'zh-CN': /^((\+|00)86)?(1[3-9]|9[28])\d{9}$/,
-  'zh-TW': /^(\+?886\-?|0)?9\d{8}$/,
-  'dz-BT': /^(\+?975|0)?(17|16|77|02)\d{6}$/,
-  'ar-YE': /^(((\+|00)9677|0?7)[0137]\d{7}|((\+|00)967|0)[1-7]\d{6})$/,
-  'ar-EH': /^(\+?212|0)[\s\-]?(5288|5289)[\s\-]?\d{5}$/,
-  'fa-AF': /^(\+93|0)?(2{1}[0-8]{1}|[3-5]{1}[0-4]{1})(\d{7})$/
-};
-/* eslint-enable max-len */
-// aliases
-
-phones['en-CA'] = phones['en-US'];
-phones['fr-CA'] = phones['en-CA'];
-phones['fr-BE'] = phones['nl-BE'];
-phones['zh-HK'] = phones['en-HK'];
-phones['zh-MO'] = phones['en-MO'];
-phones['ga-IE'] = phones['en-IE'];
-phones['fr-CH'] = phones['de-CH'];
-phones['it-CH'] = phones['fr-CH'];
-function isMobilePhone(str, locale, options) {
-  (0, _assertString$3.default)(str);
-  if (options && options.strictMode && !str.startsWith('+')) {
-    return false;
-  }
-  if (Array.isArray(locale)) {
-    return locale.some(function (key) {
-      // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
-      // istanbul ignore else
-      if (phones.hasOwnProperty(key)) {
-        var phone = phones[key];
-        if (phone.test(str)) {
-          return true;
-        }
-      }
-      return false;
-    });
-  } else if (locale in phones) {
-    return phones[locale].test(str); // alias falsey locale as 'any'
-  } else if (!locale || locale === 'any') {
-    for (var key in phones) {
-      // istanbul ignore else
-      if (phones.hasOwnProperty(key)) {
-        var phone = phones[key];
-        if (phone.test(str)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-  throw new Error("Invalid locale '".concat(locale, "'"));
-}
-var locales$1 = Object.keys(phones);
-isMobilePhone$1.locales = locales$1;
-
-var isEthereumAddress = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isEthereumAddress;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var eth = /^(0x)[0-9a-f]{40}$/i;
-  function isEthereumAddress(str) {
-    (0, _assertString.default)(str);
-    return eth.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isEthereumAddress, isEthereumAddress.exports);
-var isEthereumAddressExports = isEthereumAddress.exports;
-
-var isCurrency = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isCurrency;
-  var _merge = _interopRequireDefault(mergeExports);
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function currencyRegex(options) {
-    var decimal_digits = "\\d{".concat(options.digits_after_decimal[0], "}");
-    options.digits_after_decimal.forEach(function (digit, index) {
-      if (index !== 0) decimal_digits = "".concat(decimal_digits, "|\\d{").concat(digit, "}");
-    });
-    var symbol = "(".concat(options.symbol.replace(/\W/, function (m) {
-        return "\\".concat(m);
-      }), ")").concat(options.require_symbol ? '' : '?'),
-      negative = '-?',
-      whole_dollar_amount_without_sep = '[1-9]\\d*',
-      whole_dollar_amount_with_sep = "[1-9]\\d{0,2}(\\".concat(options.thousands_separator, "\\d{3})*"),
-      valid_whole_dollar_amounts = ['0', whole_dollar_amount_without_sep, whole_dollar_amount_with_sep],
-      whole_dollar_amount = "(".concat(valid_whole_dollar_amounts.join('|'), ")?"),
-      decimal_amount = "(\\".concat(options.decimal_separator, "(").concat(decimal_digits, "))").concat(options.require_decimal ? '' : '?');
-    var pattern = whole_dollar_amount + (options.allow_decimal || options.require_decimal ? decimal_amount : ''); // default is negative sign before symbol, but there are two other options (besides parens)
-
-    if (options.allow_negatives && !options.parens_for_negatives) {
-      if (options.negative_sign_after_digits) {
-        pattern += negative;
-      } else if (options.negative_sign_before_digits) {
-        pattern = negative + pattern;
-      }
-    } // South African Rand, for example, uses R 123 (space) and R-123 (no space)
-
-    if (options.allow_negative_sign_placeholder) {
-      pattern = "( (?!\\-))?".concat(pattern);
-    } else if (options.allow_space_after_symbol) {
-      pattern = " ?".concat(pattern);
-    } else if (options.allow_space_after_digits) {
-      pattern += '( (?!$))?';
-    }
-    if (options.symbol_after_digits) {
-      pattern += symbol;
-    } else {
-      pattern = symbol + pattern;
-    }
-    if (options.allow_negatives) {
-      if (options.parens_for_negatives) {
-        pattern = "(\\(".concat(pattern, "\\)|").concat(pattern, ")");
-      } else if (!(options.negative_sign_before_digits || options.negative_sign_after_digits)) {
-        pattern = negative + pattern;
-      }
-    } // ensure there's a dollar and/or decimal amount, and that
-    // it doesn't start with a space or a negative sign followed by a space
-
-    return new RegExp("^(?!-? )(?=.*\\d)".concat(pattern, "$"));
-  }
-  var default_currency_options = {
-    symbol: '$',
-    require_symbol: false,
-    allow_space_after_symbol: false,
-    symbol_after_digits: false,
-    allow_negatives: true,
-    parens_for_negatives: false,
-    negative_sign_before_digits: false,
-    negative_sign_after_digits: false,
-    allow_negative_sign_placeholder: false,
-    thousands_separator: ',',
-    decimal_separator: '.',
-    allow_decimal: true,
-    require_decimal: false,
-    digits_after_decimal: [2],
-    allow_space_after_digits: false
-  };
-  function isCurrency(str, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, default_currency_options);
-    return currencyRegex(options).test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isCurrency, isCurrency.exports);
-var isCurrencyExports = isCurrency.exports;
-
-var isBtcAddress = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isBtcAddress;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var bech32 = /^(bc1)[a-z0-9]{25,39}$/;
-  var base58 = /^(1|3)[A-HJ-NP-Za-km-z1-9]{25,39}$/;
-  function isBtcAddress(str) {
-    (0, _assertString.default)(str);
-    return bech32.test(str) || base58.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isBtcAddress, isBtcAddress.exports);
-var isBtcAddressExports = isBtcAddress.exports;
-
-var isISO6391 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isISO6391;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var isISO6391Set = new Set(['aa', 'ab', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'as', 'av', 'ay', 'az', 'az', 'ba', 'be', 'bg', 'bh', 'bi', 'bm', 'bn', 'bo', 'br', 'bs', 'ca', 'ce', 'ch', 'co', 'cr', 'cs', 'cu', 'cv', 'cy', 'da', 'de', 'dv', 'dz', 'ee', 'el', 'en', 'eo', 'es', 'et', 'eu', 'fa', 'ff', 'fi', 'fj', 'fo', 'fr', 'fy', 'ga', 'gd', 'gl', 'gn', 'gu', 'gv', 'ha', 'he', 'hi', 'ho', 'hr', 'ht', 'hu', 'hy', 'hz', 'ia', 'id', 'ie', 'ig', 'ii', 'ik', 'io', 'is', 'it', 'iu', 'ja', 'jv', 'ka', 'kg', 'ki', 'kj', 'kk', 'kl', 'km', 'kn', 'ko', 'kr', 'ks', 'ku', 'kv', 'kw', 'ky', 'la', 'lb', 'lg', 'li', 'ln', 'lo', 'lt', 'lu', 'lv', 'mg', 'mh', 'mi', 'mk', 'ml', 'mn', 'mr', 'ms', 'mt', 'my', 'na', 'nb', 'nd', 'ne', 'ng', 'nl', 'nn', 'no', 'nr', 'nv', 'ny', 'oc', 'oj', 'om', 'or', 'os', 'pa', 'pi', 'pl', 'ps', 'pt', 'qu', 'rm', 'rn', 'ro', 'ru', 'rw', 'sa', 'sc', 'sd', 'se', 'sg', 'si', 'sk', 'sl', 'sm', 'sn', 'so', 'sq', 'sr', 'ss', 'st', 'su', 'sv', 'sw', 'ta', 'te', 'tg', 'th', 'ti', 'tk', 'tl', 'tn', 'to', 'tr', 'ts', 'tt', 'tw', 'ty', 'ug', 'uk', 'ur', 'uz', 've', 'vi', 'vo', 'wa', 'wo', 'xh', 'yi', 'yo', 'za', 'zh', 'zu']);
-  function isISO6391(str) {
-    (0, _assertString.default)(str);
-    return isISO6391Set.has(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isISO6391, isISO6391.exports);
-var isISO6391Exports = isISO6391.exports;
-
-var isISO8601 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isISO8601;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /* eslint-disable max-len */
-  // from http://goo.gl/0ejHHW
-  var iso8601 = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-3])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/; // same as above, except with a strict 'T' separator between date and time
-
-  var iso8601StrictSeparator = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-3])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
-  /* eslint-enable max-len */
-
-  var isValidDate = function isValidDate(str) {
-    // str must have passed the ISO8601 check
-    // this check is meant to catch invalid dates
-    // like 2009-02-31
-    // first check for ordinal dates
-    var ordinalMatch = str.match(/^(\d{4})-?(\d{3})([ T]{1}\.*|$)/);
-    if (ordinalMatch) {
-      var oYear = Number(ordinalMatch[1]);
-      var oDay = Number(ordinalMatch[2]); // if is leap year
-
-      if (oYear % 4 === 0 && oYear % 100 !== 0 || oYear % 400 === 0) return oDay <= 366;
-      return oDay <= 365;
-    }
-    var match = str.match(/(\d{4})-?(\d{0,2})-?(\d*)/).map(Number);
-    var year = match[1];
-    var month = match[2];
-    var day = match[3];
-    var monthString = month ? "0".concat(month).slice(-2) : month;
-    var dayString = day ? "0".concat(day).slice(-2) : day; // create a date object and compare
-
-    var d = new Date("".concat(year, "-").concat(monthString || '01', "-").concat(dayString || '01'));
-    if (month && day) {
-      return d.getUTCFullYear() === year && d.getUTCMonth() + 1 === month && d.getUTCDate() === day;
-    }
-    return true;
-  };
-  function isISO8601(str) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    (0, _assertString.default)(str);
-    var check = options.strictSeparator ? iso8601StrictSeparator.test(str) : iso8601.test(str);
-    if (check && options.strict) return isValidDate(str);
-    return check;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isISO8601, isISO8601.exports);
-var isISO8601Exports = isISO8601.exports;
-
-var isRFC3339 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isRFC3339;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /* Based on https://tools.ietf.org/html/rfc3339#section-5.6 */
-  var dateFullYear = /[0-9]{4}/;
-  var dateMonth = /(0[1-9]|1[0-2])/;
-  var dateMDay = /([12]\d|0[1-9]|3[01])/;
-  var timeHour = /([01][0-9]|2[0-3])/;
-  var timeMinute = /[0-5][0-9]/;
-  var timeSecond = /([0-5][0-9]|60)/;
-  var timeSecFrac = /(\.[0-9]+)?/;
-  var timeNumOffset = new RegExp("[-+]".concat(timeHour.source, ":").concat(timeMinute.source));
-  var timeOffset = new RegExp("([zZ]|".concat(timeNumOffset.source, ")"));
-  var partialTime = new RegExp("".concat(timeHour.source, ":").concat(timeMinute.source, ":").concat(timeSecond.source).concat(timeSecFrac.source));
-  var fullDate = new RegExp("".concat(dateFullYear.source, "-").concat(dateMonth.source, "-").concat(dateMDay.source));
-  var fullTime = new RegExp("".concat(partialTime.source).concat(timeOffset.source));
-  var rfc3339 = new RegExp("^".concat(fullDate.source, "[ tT]").concat(fullTime.source, "$"));
-  function isRFC3339(str) {
-    (0, _assertString.default)(str);
-    return rfc3339.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isRFC3339, isRFC3339.exports);
-var isRFC3339Exports = isRFC3339.exports;
-
-var isISO31661Alpha3 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isISO31661Alpha3;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  // from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
-  var validISO31661Alpha3CountriesCodes = new Set(['AFG', 'ALA', 'ALB', 'DZA', 'ASM', 'AND', 'AGO', 'AIA', 'ATA', 'ATG', 'ARG', 'ARM', 'ABW', 'AUS', 'AUT', 'AZE', 'BHS', 'BHR', 'BGD', 'BRB', 'BLR', 'BEL', 'BLZ', 'BEN', 'BMU', 'BTN', 'BOL', 'BES', 'BIH', 'BWA', 'BVT', 'BRA', 'IOT', 'BRN', 'BGR', 'BFA', 'BDI', 'KHM', 'CMR', 'CAN', 'CPV', 'CYM', 'CAF', 'TCD', 'CHL', 'CHN', 'CXR', 'CCK', 'COL', 'COM', 'COG', 'COD', 'COK', 'CRI', 'CIV', 'HRV', 'CUB', 'CUW', 'CYP', 'CZE', 'DNK', 'DJI', 'DMA', 'DOM', 'ECU', 'EGY', 'SLV', 'GNQ', 'ERI', 'EST', 'ETH', 'FLK', 'FRO', 'FJI', 'FIN', 'FRA', 'GUF', 'PYF', 'ATF', 'GAB', 'GMB', 'GEO', 'DEU', 'GHA', 'GIB', 'GRC', 'GRL', 'GRD', 'GLP', 'GUM', 'GTM', 'GGY', 'GIN', 'GNB', 'GUY', 'HTI', 'HMD', 'VAT', 'HND', 'HKG', 'HUN', 'ISL', 'IND', 'IDN', 'IRN', 'IRQ', 'IRL', 'IMN', 'ISR', 'ITA', 'JAM', 'JPN', 'JEY', 'JOR', 'KAZ', 'KEN', 'KIR', 'PRK', 'KOR', 'KWT', 'KGZ', 'LAO', 'LVA', 'LBN', 'LSO', 'LBR', 'LBY', 'LIE', 'LTU', 'LUX', 'MAC', 'MKD', 'MDG', 'MWI', 'MYS', 'MDV', 'MLI', 'MLT', 'MHL', 'MTQ', 'MRT', 'MUS', 'MYT', 'MEX', 'FSM', 'MDA', 'MCO', 'MNG', 'MNE', 'MSR', 'MAR', 'MOZ', 'MMR', 'NAM', 'NRU', 'NPL', 'NLD', 'NCL', 'NZL', 'NIC', 'NER', 'NGA', 'NIU', 'NFK', 'MNP', 'NOR', 'OMN', 'PAK', 'PLW', 'PSE', 'PAN', 'PNG', 'PRY', 'PER', 'PHL', 'PCN', 'POL', 'PRT', 'PRI', 'QAT', 'REU', 'ROU', 'RUS', 'RWA', 'BLM', 'SHN', 'KNA', 'LCA', 'MAF', 'SPM', 'VCT', 'WSM', 'SMR', 'STP', 'SAU', 'SEN', 'SRB', 'SYC', 'SLE', 'SGP', 'SXM', 'SVK', 'SVN', 'SLB', 'SOM', 'ZAF', 'SGS', 'SSD', 'ESP', 'LKA', 'SDN', 'SUR', 'SJM', 'SWZ', 'SWE', 'CHE', 'SYR', 'TWN', 'TJK', 'TZA', 'THA', 'TLS', 'TGO', 'TKL', 'TON', 'TTO', 'TUN', 'TUR', 'TKM', 'TCA', 'TUV', 'UGA', 'UKR', 'ARE', 'GBR', 'USA', 'UMI', 'URY', 'UZB', 'VUT', 'VEN', 'VNM', 'VGB', 'VIR', 'WLF', 'ESH', 'YEM', 'ZMB', 'ZWE']);
-  function isISO31661Alpha3(str) {
-    (0, _assertString.default)(str);
-    return validISO31661Alpha3CountriesCodes.has(str.toUpperCase());
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isISO31661Alpha3, isISO31661Alpha3.exports);
-var isISO31661Alpha3Exports = isISO31661Alpha3.exports;
-
-var isISO4217$1 = {};
-
-Object.defineProperty(isISO4217$1, "__esModule", {
-  value: true
-});
-isISO4217$1.default = isISO4217;
-isISO4217$1.CurrencyCodes = void 0;
-var _assertString$2 = _interopRequireDefault$2(assertStringExports);
-function _interopRequireDefault$2(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-
-// from https://en.wikipedia.org/wiki/ISO_4217
-var validISO4217CurrencyCodes = new Set(['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BOV', 'BRL', 'BSD', 'BTN', 'BWP', 'BYN', 'BZD', 'CAD', 'CDF', 'CHE', 'CHF', 'CHW', 'CLF', 'CLP', 'CNY', 'COP', 'COU', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'INR', 'IQD', 'IRR', 'ISK', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRU', 'MUR', 'MVR', 'MWK', 'MXN', 'MXV', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'SSP', 'STN', 'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'USN', 'UYI', 'UYU', 'UYW', 'UZS', 'VES', 'VND', 'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XCD', 'XDR', 'XOF', 'XPD', 'XPF', 'XPT', 'XSU', 'XTS', 'XUA', 'XXX', 'YER', 'ZAR', 'ZMW', 'ZWL']);
-function isISO4217(str) {
-  (0, _assertString$2.default)(str);
-  return validISO4217CurrencyCodes.has(str.toUpperCase());
-}
-var CurrencyCodes = validISO4217CurrencyCodes;
-isISO4217$1.CurrencyCodes = CurrencyCodes;
-
-var isBase32 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isBase32;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var base32 = /^[A-Z2-7]+=*$/;
-  var crockfordBase32 = /^[A-HJKMNP-TV-Z0-9]+$/;
-  var defaultBase32Options = {
-    crockford: false
-  };
-  function isBase32(str, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, defaultBase32Options);
-    if (options.crockford) {
-      return crockfordBase32.test(str);
-    }
-    var len = str.length;
-    if (len % 8 === 0 && base32.test(str)) {
-      return true;
-    }
-    return false;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isBase32, isBase32.exports);
-var isBase32Exports = isBase32.exports;
-
-var isBase58 = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isBase58;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  // Accepted chars - 123456789ABCDEFGH JKLMN PQRSTUVWXYZabcdefghijk mnopqrstuvwxyz
-  var base58Reg = /^[A-HJ-NP-Za-km-z1-9]*$/;
-  function isBase58(str) {
-    (0, _assertString.default)(str);
-    if (base58Reg.test(str)) {
-      return true;
-    }
-    return false;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isBase58, isBase58.exports);
-var isBase58Exports = isBase58.exports;
-
-var isDataURI = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isDataURI;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var validMediaType = /^[a-z]+\/[a-z0-9\-\+\._]+$/i;
-  var validAttribute = /^[a-z\-]+=[a-z0-9\-]+$/i;
-  var validData = /^[a-z0-9!\$&'\(\)\*\+,;=\-\._~:@\/\?%\s]*$/i;
-  function isDataURI(str) {
-    (0, _assertString.default)(str);
-    var data = str.split(',');
-    if (data.length < 2) {
-      return false;
-    }
-    var attributes = data.shift().trim().split(';');
-    var schemeAndMediaType = attributes.shift();
-    if (schemeAndMediaType.slice(0, 5) !== 'data:') {
-      return false;
-    }
-    var mediaType = schemeAndMediaType.slice(5);
-    if (mediaType !== '' && !validMediaType.test(mediaType)) {
-      return false;
-    }
-    for (var i = 0; i < attributes.length; i++) {
-      if (!(i === attributes.length - 1 && attributes[i].toLowerCase() === 'base64') && !validAttribute.test(attributes[i])) {
-        return false;
-      }
-    }
-    for (var _i = 0; _i < data.length; _i++) {
-      if (!validData.test(data[_i])) {
-        return false;
-      }
-    }
-    return true;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isDataURI, isDataURI.exports);
-var isDataURIExports = isDataURI.exports;
-
-var isMagnetURI = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isMagnetURI;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var magnetURIComponent = /(?:^magnet:\?|[^?&]&)xt(?:\.1)?=urn:(?:(?:aich|bitprint|btih|ed2k|ed2khash|kzhash|md5|sha1|tree:tiger):[a-z0-9]{32}(?:[a-z0-9]{8})?|btmh:1220[a-z0-9]{64})(?:$|&)/i;
-  function isMagnetURI(url) {
-    (0, _assertString.default)(url);
-    if (url.indexOf('magnet:?') !== 0) {
-      return false;
-    }
-    return magnetURIComponent.test(url);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isMagnetURI, isMagnetURI.exports);
-var isMagnetURIExports = isMagnetURI.exports;
-
-var isMimeType = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isMimeType;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /*
-    Checks if the provided string matches to a correct Media type format (MIME type)
-  	  This function only checks is the string format follows the
-    etablished rules by the according RFC specifications.
-    This function supports 'charset' in textual media types
-    (https://tools.ietf.org/html/rfc6657).
-  	  This function does not check against all the media types listed
-    by the IANA (https://www.iana.org/assignments/media-types/media-types.xhtml)
-    because of lightness purposes : it would require to include
-    all these MIME types in this librairy, which would weigh it
-    significantly. This kind of effort maybe is not worth for the use that
-    this function has in this entire librairy.
-  	  More informations in the RFC specifications :
-    - https://tools.ietf.org/html/rfc2045
-    - https://tools.ietf.org/html/rfc2046
-    - https://tools.ietf.org/html/rfc7231#section-3.1.1.1
-    - https://tools.ietf.org/html/rfc7231#section-3.1.1.5
-  */
-  // Match simple MIME types
-  // NB :
-  //   Subtype length must not exceed 100 characters.
-  //   This rule does not comply to the RFC specs (what is the max length ?).
-  var mimeTypeSimple = /^(application|audio|font|image|message|model|multipart|text|video)\/[a-zA-Z0-9\.\-\+_]{1,100}$/i; // eslint-disable-line max-len
-  // Handle "charset" in "text/*"
-
-  var mimeTypeText = /^text\/[a-zA-Z0-9\.\-\+]{1,100};\s?charset=("[a-zA-Z0-9\.\-\+\s]{0,70}"|[a-zA-Z0-9\.\-\+]{0,70})(\s?\([a-zA-Z0-9\.\-\+\s]{1,20}\))?$/i; // eslint-disable-line max-len
-  // Handle "boundary" in "multipart/*"
-
-  var mimeTypeMultipart = /^multipart\/[a-zA-Z0-9\.\-\+]{1,100}(;\s?(boundary|charset)=("[a-zA-Z0-9\.\-\+\s]{0,70}"|[a-zA-Z0-9\.\-\+]{0,70})(\s?\([a-zA-Z0-9\.\-\+\s]{1,20}\))?){0,2}$/i; // eslint-disable-line max-len
-
-  function isMimeType(str) {
-    (0, _assertString.default)(str);
-    return mimeTypeSimple.test(str) || mimeTypeText.test(str) || mimeTypeMultipart.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isMimeType, isMimeType.exports);
-var isMimeTypeExports = isMimeType.exports;
-
-var isLatLong = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isLatLong;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var lat = /^\(?[+-]?(90(\.0+)?|[1-8]?\d(\.\d+)?)$/;
-  var long = /^\s?[+-]?(180(\.0+)?|1[0-7]\d(\.\d+)?|\d{1,2}(\.\d+)?)\)?$/;
-  var latDMS = /^(([1-8]?\d)\D+([1-5]?\d|60)\D+([1-5]?\d|60)(\.\d+)?|90\D+0\D+0)\D+[NSns]?$/i;
-  var longDMS = /^\s*([1-7]?\d{1,2}\D+([1-5]?\d|60)\D+([1-5]?\d|60)(\.\d+)?|180\D+0\D+0)\D+[EWew]?$/i;
-  var defaultLatLongOptions = {
-    checkDMS: false
-  };
-  function isLatLong(str, options) {
-    (0, _assertString.default)(str);
-    options = (0, _merge.default)(options, defaultLatLongOptions);
-    if (!str.includes(',')) return false;
-    var pair = str.split(',');
-    if (pair[0].startsWith('(') && !pair[1].endsWith(')') || pair[1].endsWith(')') && !pair[0].startsWith('(')) return false;
-    if (options.checkDMS) {
-      return latDMS.test(pair[0]) && longDMS.test(pair[1]);
-    }
-    return lat.test(pair[0]) && long.test(pair[1]);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isLatLong, isLatLong.exports);
-var isLatLongExports = isLatLong.exports;
-
-var isPostalCode$1 = {};
-
-Object.defineProperty(isPostalCode$1, "__esModule", {
-  value: true
-});
-isPostalCode$1.default = isPostalCode;
-isPostalCode$1.locales = void 0;
-var _assertString$1 = _interopRequireDefault$1(assertStringExports);
-function _interopRequireDefault$1(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-
-// common patterns
-var threeDigit = /^\d{3}$/;
-var fourDigit = /^\d{4}$/;
-var fiveDigit = /^\d{5}$/;
-var sixDigit = /^\d{6}$/;
-var patterns = {
-  AD: /^AD\d{3}$/,
-  AT: fourDigit,
-  AU: fourDigit,
-  AZ: /^AZ\d{4}$/,
-  BA: /^([7-8]\d{4}$)/,
-  BE: fourDigit,
-  BG: fourDigit,
-  BR: /^\d{5}-\d{3}$/,
-  BY: /^2[1-4]\d{4}$/,
-  CA: /^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][\s\-]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,
-  CH: fourDigit,
-  CN: /^(0[1-7]|1[012356]|2[0-7]|3[0-6]|4[0-7]|5[1-7]|6[1-7]|7[1-5]|8[1345]|9[09])\d{4}$/,
-  CZ: /^\d{3}\s?\d{2}$/,
-  DE: fiveDigit,
-  DK: fourDigit,
-  DO: fiveDigit,
-  DZ: fiveDigit,
-  EE: fiveDigit,
-  ES: /^(5[0-2]{1}|[0-4]{1}\d{1})\d{3}$/,
-  FI: fiveDigit,
-  FR: /^\d{2}\s?\d{3}$/,
-  GB: /^(gir\s?0aa|[a-z]{1,2}\d[\da-z]?\s?(\d[a-z]{2})?)$/i,
-  GR: /^\d{3}\s?\d{2}$/,
-  HR: /^([1-5]\d{4}$)/,
-  HT: /^HT\d{4}$/,
-  HU: fourDigit,
-  ID: fiveDigit,
-  IE: /^(?!.*(?:o))[A-Za-z]\d[\dw]\s\w{4}$/i,
-  IL: /^(\d{5}|\d{7})$/,
-  IN: /^((?!10|29|35|54|55|65|66|86|87|88|89)[1-9][0-9]{5})$/,
-  IR: /^(?!(\d)\1{3})[13-9]{4}[1346-9][013-9]{5}$/,
-  IS: threeDigit,
-  IT: fiveDigit,
-  JP: /^\d{3}\-\d{4}$/,
-  KE: fiveDigit,
-  KR: /^(\d{5}|\d{6})$/,
-  LI: /^(948[5-9]|949[0-7])$/,
-  LT: /^LT\-\d{5}$/,
-  LU: fourDigit,
-  LV: /^LV\-\d{4}$/,
-  LK: fiveDigit,
-  MG: threeDigit,
-  MX: fiveDigit,
-  MT: /^[A-Za-z]{3}\s{0,1}\d{4}$/,
-  MY: fiveDigit,
-  NL: /^\d{4}\s?[a-z]{2}$/i,
-  NO: fourDigit,
-  NP: /^(10|21|22|32|33|34|44|45|56|57)\d{3}$|^(977)$/i,
-  NZ: fourDigit,
-  PL: /^\d{2}\-\d{3}$/,
-  PR: /^00[679]\d{2}([ -]\d{4})?$/,
-  PT: /^\d{4}\-\d{3}?$/,
-  RO: sixDigit,
-  RU: sixDigit,
-  SA: fiveDigit,
-  SE: /^[1-9]\d{2}\s?\d{2}$/,
-  SG: sixDigit,
-  SI: fourDigit,
-  SK: /^\d{3}\s?\d{2}$/,
-  TH: fiveDigit,
-  TN: fourDigit,
-  TW: /^\d{3}(\d{2})?$/,
-  UA: fiveDigit,
-  US: /^\d{5}(-\d{4})?$/,
-  ZA: fourDigit,
-  ZM: fiveDigit
-};
-var locales = Object.keys(patterns);
-isPostalCode$1.locales = locales;
-function isPostalCode(str, locale) {
-  (0, _assertString$1.default)(str);
-  if (locale in patterns) {
-    return patterns[locale].test(str);
-  } else if (locale === 'any') {
-    for (var key in patterns) {
-      // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
-      // istanbul ignore else
-      if (patterns.hasOwnProperty(key)) {
-        var pattern = patterns[key];
-        if (pattern.test(str)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-  throw new Error("Invalid locale '".concat(locale, "'"));
-}
-
-var ltrim = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = ltrim;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function ltrim(str, chars) {
-    (0, _assertString.default)(str); // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
-
-    var pattern = chars ? new RegExp("^[".concat(chars.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "]+"), 'g') : /^\s+/g;
-    return str.replace(pattern, '');
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(ltrim, ltrim.exports);
-var ltrimExports = ltrim.exports;
-
-var rtrim = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = rtrim;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function rtrim(str, chars) {
-    (0, _assertString.default)(str);
-    if (chars) {
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
-      var pattern = new RegExp("[".concat(chars.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "]+$"), 'g');
-      return str.replace(pattern, '');
-    } // Use a faster and more safe than regex trim method https://blog.stevenlevithan.com/archives/faster-trim-javascript
-
-    var strIndex = str.length - 1;
-    while (/\s/.test(str.charAt(strIndex))) {
-      strIndex -= 1;
-    }
-    return str.slice(0, strIndex + 1);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(rtrim, rtrim.exports);
-var rtrimExports = rtrim.exports;
-
-var trim = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = trim;
-  var _rtrim = _interopRequireDefault(rtrimExports);
-  var _ltrim = _interopRequireDefault(ltrimExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function trim(str, chars) {
-    return (0, _rtrim.default)((0, _ltrim.default)(str, chars), chars);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(trim, trim.exports);
-var trimExports = trim.exports;
-
-var _escape = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = escape;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function escape(str) {
-    (0, _assertString.default)(str);
-    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/\\/g, '&#x5C;').replace(/`/g, '&#96;');
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(_escape, _escape.exports);
-var _escapeExports = _escape.exports;
-
-var _unescape = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = unescape;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function unescape(str) {
-    (0, _assertString.default)(str);
-    return str.replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '/').replace(/&#x5C;/g, '\\').replace(/&#96;/g, '`').replace(/&amp;/g, '&'); // &amp; replacement has to be the last one to prevent
-    // bugs with intermediate strings containing escape sequences
-    // See: https://github.com/validatorjs/validator.js/issues/1827
-  }
-
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(_unescape, _unescape.exports);
-var _unescapeExports = _unescape.exports;
-
-var stripLow = {exports: {}};
-
-var blacklist = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = blacklist;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function blacklist(str, chars) {
-    (0, _assertString.default)(str);
-    return str.replace(new RegExp("[".concat(chars, "]+"), 'g'), '');
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(blacklist, blacklist.exports);
-var blacklistExports = blacklist.exports;
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = stripLow;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  var _blacklist = _interopRequireDefault(blacklistExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function stripLow(str, keep_new_lines) {
-    (0, _assertString.default)(str);
-    var chars = keep_new_lines ? '\\x00-\\x09\\x0B\\x0C\\x0E-\\x1F\\x7F' : '\\x00-\\x1F\\x7F';
-    return (0, _blacklist.default)(str, chars);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(stripLow, stripLow.exports);
-var stripLowExports = stripLow.exports;
-
-var whitelist = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = whitelist;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function whitelist(str, chars) {
-    (0, _assertString.default)(str);
-    return str.replace(new RegExp("[^".concat(chars, "]+"), 'g'), '');
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(whitelist, whitelist.exports);
-var whitelistExports = whitelist.exports;
-
-var isWhitelisted = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isWhitelisted;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  function isWhitelisted(str, chars) {
-    (0, _assertString.default)(str);
-    for (var i = str.length - 1; i >= 0; i--) {
-      if (chars.indexOf(str[i]) === -1) {
-        return false;
-      }
-    }
-    return true;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isWhitelisted, isWhitelisted.exports);
-var isWhitelistedExports = isWhitelisted.exports;
-
-var normalizeEmail = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = normalizeEmail;
-  var _merge = _interopRequireDefault(mergeExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var default_normalize_email_options = {
-    // The following options apply to all email addresses
-    // Lowercases the local part of the email address.
-    // Please note this may violate RFC 5321 as per http://stackoverflow.com/a/9808332/192024).
-    // The domain is always lowercased, as per RFC 1035
-    all_lowercase: true,
-    // The following conversions are specific to GMail
-    // Lowercases the local part of the GMail address (known to be case-insensitive)
-    gmail_lowercase: true,
-    // Removes dots from the local part of the email address, as that's ignored by GMail
-    gmail_remove_dots: true,
-    // Removes the subaddress (e.g. "+foo") from the email address
-    gmail_remove_subaddress: true,
-    // Conversts the googlemail.com domain to gmail.com
-    gmail_convert_googlemaildotcom: true,
-    // The following conversions are specific to Outlook.com / Windows Live / Hotmail
-    // Lowercases the local part of the Outlook.com address (known to be case-insensitive)
-    outlookdotcom_lowercase: true,
-    // Removes the subaddress (e.g. "+foo") from the email address
-    outlookdotcom_remove_subaddress: true,
-    // The following conversions are specific to Yahoo
-    // Lowercases the local part of the Yahoo address (known to be case-insensitive)
-    yahoo_lowercase: true,
-    // Removes the subaddress (e.g. "-foo") from the email address
-    yahoo_remove_subaddress: true,
-    // The following conversions are specific to Yandex
-    // Lowercases the local part of the Yandex address (known to be case-insensitive)
-    yandex_lowercase: true,
-    // The following conversions are specific to iCloud
-    // Lowercases the local part of the iCloud address (known to be case-insensitive)
-    icloud_lowercase: true,
-    // Removes the subaddress (e.g. "+foo") from the email address
-    icloud_remove_subaddress: true
-  }; // List of domains used by iCloud
-
-  var icloud_domains = ['icloud.com', 'me.com']; // List of domains used by Outlook.com and its predecessors
-  // This list is likely incomplete.
-  // Partial reference:
-  // https://blogs.office.com/2013/04/17/outlook-com-gets-two-step-verification-sign-in-by-alias-and-new-international-domains/
-
-  var outlookdotcom_domains = ['hotmail.at', 'hotmail.be', 'hotmail.ca', 'hotmail.cl', 'hotmail.co.il', 'hotmail.co.nz', 'hotmail.co.th', 'hotmail.co.uk', 'hotmail.com', 'hotmail.com.ar', 'hotmail.com.au', 'hotmail.com.br', 'hotmail.com.gr', 'hotmail.com.mx', 'hotmail.com.pe', 'hotmail.com.tr', 'hotmail.com.vn', 'hotmail.cz', 'hotmail.de', 'hotmail.dk', 'hotmail.es', 'hotmail.fr', 'hotmail.hu', 'hotmail.id', 'hotmail.ie', 'hotmail.in', 'hotmail.it', 'hotmail.jp', 'hotmail.kr', 'hotmail.lv', 'hotmail.my', 'hotmail.ph', 'hotmail.pt', 'hotmail.sa', 'hotmail.sg', 'hotmail.sk', 'live.be', 'live.co.uk', 'live.com', 'live.com.ar', 'live.com.mx', 'live.de', 'live.es', 'live.eu', 'live.fr', 'live.it', 'live.nl', 'msn.com', 'outlook.at', 'outlook.be', 'outlook.cl', 'outlook.co.il', 'outlook.co.nz', 'outlook.co.th', 'outlook.com', 'outlook.com.ar', 'outlook.com.au', 'outlook.com.br', 'outlook.com.gr', 'outlook.com.pe', 'outlook.com.tr', 'outlook.com.vn', 'outlook.cz', 'outlook.de', 'outlook.dk', 'outlook.es', 'outlook.fr', 'outlook.hu', 'outlook.id', 'outlook.ie', 'outlook.in', 'outlook.it', 'outlook.jp', 'outlook.kr', 'outlook.lv', 'outlook.my', 'outlook.ph', 'outlook.pt', 'outlook.sa', 'outlook.sg', 'outlook.sk', 'passport.com']; // List of domains used by Yahoo Mail
-  // This list is likely incomplete
-
-  var yahoo_domains = ['rocketmail.com', 'yahoo.ca', 'yahoo.co.uk', 'yahoo.com', 'yahoo.de', 'yahoo.fr', 'yahoo.in', 'yahoo.it', 'ymail.com']; // List of domains used by yandex.ru
-
-  var yandex_domains = ['yandex.ru', 'yandex.ua', 'yandex.kz', 'yandex.com', 'yandex.by', 'ya.ru']; // replace single dots, but not multiple consecutive dots
-
-  function dotsReplacer(match) {
-    if (match.length > 1) {
-      return match;
-    }
-    return '';
-  }
-  function normalizeEmail(email, options) {
-    options = (0, _merge.default)(options, default_normalize_email_options);
-    var raw_parts = email.split('@');
-    var domain = raw_parts.pop();
-    var user = raw_parts.join('@');
-    var parts = [user, domain]; // The domain is always lowercased, as it's case-insensitive per RFC 1035
-
-    parts[1] = parts[1].toLowerCase();
-    if (parts[1] === 'gmail.com' || parts[1] === 'googlemail.com') {
-      // Address is GMail
-      if (options.gmail_remove_subaddress) {
-        parts[0] = parts[0].split('+')[0];
-      }
-      if (options.gmail_remove_dots) {
-        // this does not replace consecutive dots like example..email@gmail.com
-        parts[0] = parts[0].replace(/\.+/g, dotsReplacer);
-      }
-      if (!parts[0].length) {
-        return false;
-      }
-      if (options.all_lowercase || options.gmail_lowercase) {
-        parts[0] = parts[0].toLowerCase();
-      }
-      parts[1] = options.gmail_convert_googlemaildotcom ? 'gmail.com' : parts[1];
-    } else if (icloud_domains.indexOf(parts[1]) >= 0) {
-      // Address is iCloud
-      if (options.icloud_remove_subaddress) {
-        parts[0] = parts[0].split('+')[0];
-      }
-      if (!parts[0].length) {
-        return false;
-      }
-      if (options.all_lowercase || options.icloud_lowercase) {
-        parts[0] = parts[0].toLowerCase();
-      }
-    } else if (outlookdotcom_domains.indexOf(parts[1]) >= 0) {
-      // Address is Outlook.com
-      if (options.outlookdotcom_remove_subaddress) {
-        parts[0] = parts[0].split('+')[0];
-      }
-      if (!parts[0].length) {
-        return false;
-      }
-      if (options.all_lowercase || options.outlookdotcom_lowercase) {
-        parts[0] = parts[0].toLowerCase();
-      }
-    } else if (yahoo_domains.indexOf(parts[1]) >= 0) {
-      // Address is Yahoo
-      if (options.yahoo_remove_subaddress) {
-        var components = parts[0].split('-');
-        parts[0] = components.length > 1 ? components.slice(0, -1).join('-') : components[0];
-      }
-      if (!parts[0].length) {
-        return false;
-      }
-      if (options.all_lowercase || options.yahoo_lowercase) {
-        parts[0] = parts[0].toLowerCase();
-      }
-    } else if (yandex_domains.indexOf(parts[1]) >= 0) {
-      if (options.all_lowercase || options.yandex_lowercase) {
-        parts[0] = parts[0].toLowerCase();
-      }
-      parts[1] = 'yandex.ru'; // all yandex domains are equal, 1st preferred
-    } else if (options.all_lowercase) {
-      // Any other address
-      parts[0] = parts[0].toLowerCase();
-    }
-    return parts.join('@');
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(normalizeEmail, normalizeEmail.exports);
-var normalizeEmailExports = normalizeEmail.exports;
-
-var isSlug = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isSlug;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var charsetRegex = /^[^\s-_](?!.*?[-_]{2,})[a-z0-9-\\][^\s]*[^-_\s]$/;
-  function isSlug(str) {
-    (0, _assertString.default)(str);
-    return charsetRegex.test(str);
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isSlug, isSlug.exports);
-var isSlugExports = isSlug.exports;
-
-var isLicensePlate = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isLicensePlate;
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var validators = {
-    'cs-CZ': function csCZ(str) {
-      return /^(([ABCDEFHIJKLMNPRSTUVXYZ]|[0-9])-?){5,8}$/.test(str);
-    },
-    'de-DE': function deDE(str) {
-      return /^((A|AA|AB|AC|AE|AH|AK|AM|AN|AÖ|AP|AS|AT|AU|AW|AZ|B|BA|BB|BC|BE|BF|BH|BI|BK|BL|BM|BN|BO|BÖ|BS|BT|BZ|C|CA|CB|CE|CO|CR|CW|D|DA|DD|DE|DH|DI|DL|DM|DN|DO|DU|DW|DZ|E|EA|EB|ED|EE|EF|EG|EH|EI|EL|EM|EN|ER|ES|EU|EW|F|FB|FD|FF|FG|FI|FL|FN|FO|FR|FS|FT|FÜ|FW|FZ|G|GA|GC|GD|GE|GF|GG|GI|GK|GL|GM|GN|GÖ|GP|GR|GS|GT|GÜ|GV|GW|GZ|H|HA|HB|HC|HD|HE|HF|HG|HH|HI|HK|HL|HM|HN|HO|HP|HR|HS|HU|HV|HX|HY|HZ|IK|IL|IN|IZ|J|JE|JL|K|KA|KB|KC|KE|KF|KG|KH|KI|KK|KL|KM|KN|KO|KR|KS|KT|KU|KW|KY|L|LA|LB|LC|LD|LF|LG|LH|LI|LL|LM|LN|LÖ|LP|LR|LU|M|MA|MB|MC|MD|ME|MG|MH|MI|MK|ML|MM|MN|MO|MQ|MR|MS|MÜ|MW|MY|MZ|N|NB|ND|NE|NF|NH|NI|NK|NM|NÖ|NP|NR|NT|NU|NW|NY|NZ|OA|OB|OC|OD|OE|OF|OG|OH|OK|OL|OP|OS|OZ|P|PA|PB|PE|PF|PI|PL|PM|PN|PR|PS|PW|PZ|R|RA|RC|RD|RE|RG|RH|RI|RL|RM|RN|RO|RP|RS|RT|RU|RV|RW|RZ|S|SB|SC|SE|SG|SI|SK|SL|SM|SN|SO|SP|SR|ST|SU|SW|SY|SZ|TE|TF|TG|TO|TP|TR|TS|TT|TÜ|ÜB|UE|UH|UL|UM|UN|V|VB|VG|VK|VR|VS|W|WA|WB|WE|WF|WI|WK|WL|WM|WN|WO|WR|WS|WT|WÜ|WW|WZ|Z|ZE|ZI|ZP|ZR|ZW|ZZ)[- ]?[A-Z]{1,2}[- ]?\d{1,4}|(ABG|ABI|AIB|AIC|ALF|ALZ|ANA|ANG|ANK|APD|ARN|ART|ASL|ASZ|AUR|AZE|BAD|BAR|BBG|BCH|BED|BER|BGD|BGL|BID|BIN|BIR|BIT|BIW|BKS|BLB|BLK|BNA|BOG|BOH|BOR|BOT|BRA|BRB|BRG|BRK|BRL|BRV|BSB|BSK|BTF|BÜD|BUL|BÜR|BÜS|BÜZ|CAS|CHA|CLP|CLZ|COC|COE|CUX|DAH|DAN|DAU|DBR|DEG|DEL|DGF|DIL|DIN|DIZ|DKB|DLG|DON|DUD|DÜW|EBE|EBN|EBS|ECK|EIC|EIL|EIN|EIS|EMD|EMS|ERB|ERH|ERK|ERZ|ESB|ESW|FDB|FDS|FEU|FFB|FKB|FLÖ|FOR|FRG|FRI|FRW|FTL|FÜS|GAN|GAP|GDB|GEL|GEO|GER|GHA|GHC|GLA|GMN|GNT|GOA|GOH|GRA|GRH|GRI|GRM|GRZ|GTH|GUB|GUN|GVM|HAB|HAL|HAM|HAS|HBN|HBS|HCH|HDH|HDL|HEB|HEF|HEI|HER|HET|HGN|HGW|HHM|HIG|HIP|HMÜ|HOG|HOH|HOL|HOM|HOR|HÖS|HOT|HRO|HSK|HST|HVL|HWI|IGB|ILL|JÜL|KEH|KEL|KEM|KIB|KLE|KLZ|KÖN|KÖT|KÖZ|KRU|KÜN|KUS|KYF|LAN|LAU|LBS|LBZ|LDK|LDS|LEO|LER|LEV|LIB|LIF|LIP|LÖB|LOS|LRO|LSZ|LÜN|LUP|LWL|MAB|MAI|MAK|MAL|MED|MEG|MEI|MEK|MEL|MER|MET|MGH|MGN|MHL|MIL|MKK|MOD|MOL|MON|MOS|MSE|MSH|MSP|MST|MTK|MTL|MÜB|MÜR|MYK|MZG|NAB|NAI|NAU|NDH|NEA|NEB|NEC|NEN|NES|NEW|NMB|NMS|NOH|NOL|NOM|NOR|NVP|NWM|OAL|OBB|OBG|OCH|OHA|ÖHR|OHV|OHZ|OPR|OSL|OVI|OVL|OVP|PAF|PAN|PAR|PCH|PEG|PIR|PLÖ|PRÜ|QFT|QLB|RDG|REG|REH|REI|RID|RIE|ROD|ROF|ROK|ROL|ROS|ROT|ROW|RSL|RÜD|RÜG|SAB|SAD|SAN|SAW|SBG|SBK|SCZ|SDH|SDL|SDT|SEB|SEE|SEF|SEL|SFB|SFT|SGH|SHA|SHG|SHK|SHL|SIG|SIM|SLE|SLF|SLK|SLN|SLS|SLÜ|SLZ|SMÜ|SOB|SOG|SOK|SÖM|SON|SPB|SPN|SRB|SRO|STA|STB|STD|STE|STL|SUL|SÜW|SWA|SZB|TBB|TDO|TET|TIR|TÖL|TUT|UEM|UER|UFF|USI|VAI|VEC|VER|VIB|VIE|VIT|VOH|WAF|WAK|WAN|WAR|WAT|WBS|WDA|WEL|WEN|WER|WES|WHV|WIL|WIS|WIT|WIZ|WLG|WMS|WND|WOB|WOH|WOL|WOR|WOS|WRN|WSF|WST|WSW|WTL|WTM|WUG|WÜM|WUN|WUR|WZL|ZEL|ZIG)[- ]?(([A-Z][- ]?\d{1,4})|([A-Z]{2}[- ]?\d{1,3})))[- ]?(E|H)?$/.test(str);
-    },
-    'de-LI': function deLI(str) {
-      return /^FL[- ]?\d{1,5}[UZ]?$/.test(str);
-    },
-    'en-IN': function enIN(str) {
-      return /^[A-Z]{2}[ -]?[0-9]{1,2}(?:[ -]?[A-Z])(?:[ -]?[A-Z]*)?[ -]?[0-9]{4}$/.test(str);
-    },
-    'es-AR': function esAR(str) {
-      return /^(([A-Z]{2} ?[0-9]{3} ?[A-Z]{2})|([A-Z]{3} ?[0-9]{3}))$/.test(str);
-    },
-    'fi-FI': function fiFI(str) {
-      return /^(?=.{4,7})(([A-Z]{1,3}|[0-9]{1,3})[\s-]?([A-Z]{1,3}|[0-9]{1,5}))$/.test(str);
-    },
-    'hu-HU': function huHU(str) {
-      return /^((((?!AAA)(([A-NPRSTVZWXY]{1})([A-PR-Z]{1})([A-HJ-NPR-Z]))|(A[ABC]I)|A[ABC]O|A[A-W]Q|BPI|BPO|UCO|UDO|XAO)-(?!000)\d{3})|(M\d{6})|((CK|DT|CD|HC|H[ABEFIKLMNPRSTVX]|MA|OT|R[A-Z]) \d{2}-\d{2})|(CD \d{3}-\d{3})|(C-(C|X) \d{4})|(X-(A|B|C) \d{4})|(([EPVZ]-\d{5}))|(S A[A-Z]{2} \d{2})|(SP \d{2}-\d{2}))$/.test(str);
-    },
-    'pt-BR': function ptBR(str) {
-      return /^[A-Z]{3}[ -]?[0-9][A-Z][0-9]{2}|[A-Z]{3}[ -]?[0-9]{4}$/.test(str);
-    },
-    'pt-PT': function ptPT(str) {
-      return /^([A-Z]{2}|[0-9]{2})[ -·]?([A-Z]{2}|[0-9]{2})[ -·]?([A-Z]{2}|[0-9]{2})$/.test(str);
-    },
-    'sq-AL': function sqAL(str) {
-      return /^[A-Z]{2}[- ]?((\d{3}[- ]?(([A-Z]{2})|T))|(R[- ]?\d{3}))$/.test(str);
-    },
-    'sv-SE': function svSE(str) {
-      return /^[A-HJ-PR-UW-Z]{3} ?[\d]{2}[A-HJ-PR-UW-Z1-9]$|(^[A-ZÅÄÖ ]{2,7}$)/.test(str.trim());
-    }
-  };
-  function isLicensePlate(str, locale) {
-    (0, _assertString.default)(str);
-    if (locale in validators) {
-      return validators[locale](str);
-    } else if (locale === 'any') {
-      for (var key in validators) {
-        /* eslint guard-for-in: 0 */
-        var validator = validators[key];
-        if (validator(str)) {
-          return true;
-        }
-      }
-      return false;
-    }
-    throw new Error("Invalid locale '".concat(locale, "'"));
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isLicensePlate, isLicensePlate.exports);
-var isLicensePlateExports = isLicensePlate.exports;
-
-var isStrongPassword = {exports: {}};
-
-(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isStrongPassword;
-  var _merge = _interopRequireDefault(mergeExports);
-  var _assertString = _interopRequireDefault(assertStringExports);
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var upperCaseRegex = /^[A-Z]$/;
-  var lowerCaseRegex = /^[a-z]$/;
-  var numberRegex = /^[0-9]$/;
-  var symbolRegex = /^[-#!$@£%^&*()_+|~=`{}\[\]:";'<>?,.\/ ]$/;
-  var defaultOptions = {
-    minLength: 8,
-    minLowercase: 1,
-    minUppercase: 1,
-    minNumbers: 1,
-    minSymbols: 1,
-    returnScore: false,
-    pointsPerUnique: 1,
-    pointsPerRepeat: 0.5,
-    pointsForContainingLower: 10,
-    pointsForContainingUpper: 10,
-    pointsForContainingNumber: 10,
-    pointsForContainingSymbol: 10
-  };
-  /* Counts number of occurrences of each char in a string
-   * could be moved to util/ ?
-  */
-
-  function countChars(str) {
-    var result = {};
-    Array.from(str).forEach(function (char) {
-      var curVal = result[char];
-      if (curVal) {
-        result[char] += 1;
-      } else {
-        result[char] = 1;
-      }
-    });
-    return result;
-  }
-  /* Return information about a password */
-
-  function analyzePassword(password) {
-    var charMap = countChars(password);
-    var analysis = {
-      length: password.length,
-      uniqueChars: Object.keys(charMap).length,
-      uppercaseCount: 0,
-      lowercaseCount: 0,
-      numberCount: 0,
-      symbolCount: 0
-    };
-    Object.keys(charMap).forEach(function (char) {
-      /* istanbul ignore else */
-      if (upperCaseRegex.test(char)) {
-        analysis.uppercaseCount += charMap[char];
-      } else if (lowerCaseRegex.test(char)) {
-        analysis.lowercaseCount += charMap[char];
-      } else if (numberRegex.test(char)) {
-        analysis.numberCount += charMap[char];
-      } else if (symbolRegex.test(char)) {
-        analysis.symbolCount += charMap[char];
-      }
-    });
-    return analysis;
-  }
-  function scorePassword(analysis, scoringOptions) {
-    var points = 0;
-    points += analysis.uniqueChars * scoringOptions.pointsPerUnique;
-    points += (analysis.length - analysis.uniqueChars) * scoringOptions.pointsPerRepeat;
-    if (analysis.lowercaseCount > 0) {
-      points += scoringOptions.pointsForContainingLower;
-    }
-    if (analysis.uppercaseCount > 0) {
-      points += scoringOptions.pointsForContainingUpper;
-    }
-    if (analysis.numberCount > 0) {
-      points += scoringOptions.pointsForContainingNumber;
-    }
-    if (analysis.symbolCount > 0) {
-      points += scoringOptions.pointsForContainingSymbol;
-    }
-    return points;
-  }
-  function isStrongPassword(str) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    (0, _assertString.default)(str);
-    var analysis = analyzePassword(str);
-    options = (0, _merge.default)(options || {}, defaultOptions);
-    if (options.returnScore) {
-      return scorePassword(analysis, options);
-    }
-    return analysis.length >= options.minLength && analysis.lowercaseCount >= options.minLowercase && analysis.uppercaseCount >= options.minUppercase && analysis.numberCount >= options.minNumbers && analysis.symbolCount >= options.minSymbols;
-  }
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(isStrongPassword, isStrongPassword.exports);
-var isStrongPasswordExports = isStrongPassword.exports;
-
-var isVAT$1 = {};
-
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-  return _typeof(obj);
-}
-Object.defineProperty(isVAT$1, "__esModule", {
-  value: true
-});
-isVAT$1.default = isVAT;
-isVAT$1.vatMatchers = void 0;
-var _assertString = _interopRequireDefault(assertStringExports);
-var algorithms = _interopRequireWildcard(algorithms$1);
-function _getRequireWildcardCache() {
-  if (typeof WeakMap !== "function") return null;
-  var cache = new WeakMap();
-  _getRequireWildcardCache = function _getRequireWildcardCache() {
-    return cache;
-  };
-  return cache;
-}
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  }
-  if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
-    return {
-      default: obj
-    };
-  }
-  var cache = _getRequireWildcardCache();
-  if (cache && cache.has(obj)) {
-    return cache.get(obj);
-  }
-  var newObj = {};
-  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-      if (desc && (desc.get || desc.set)) {
-        Object.defineProperty(newObj, key, desc);
-      } else {
-        newObj[key] = obj[key];
-      }
-    }
-  }
-  newObj.default = obj;
-  if (cache) {
-    cache.set(obj, newObj);
-  }
-  return newObj;
-}
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-var PT = function PT(str) {
-  var match = str.match(/^(PT)?(\d{9})$/);
-  if (!match) {
-    return false;
-  }
-  var tin = match[2];
-  var checksum = 11 - algorithms.reverseMultiplyAndSum(tin.split('').slice(0, 8).map(function (a) {
-    return parseInt(a, 10);
-  }), 9) % 11;
-  if (checksum > 9) {
-    return parseInt(tin[8], 10) === 0;
-  }
-  return checksum === parseInt(tin[8], 10);
-};
-var vatMatchers = {
-  /**
-   * European Union VAT identification numbers
-   */
-  AT: function AT(str) {
-    return /^(AT)?U\d{8}$/.test(str);
-  },
-  BE: function BE(str) {
-    return /^(BE)?\d{10}$/.test(str);
-  },
-  BG: function BG(str) {
-    return /^(BG)?\d{9,10}$/.test(str);
-  },
-  HR: function HR(str) {
-    return /^(HR)?\d{11}$/.test(str);
-  },
-  CY: function CY(str) {
-    return /^(CY)?\w{9}$/.test(str);
-  },
-  CZ: function CZ(str) {
-    return /^(CZ)?\d{8,10}$/.test(str);
-  },
-  DK: function DK(str) {
-    return /^(DK)?\d{8}$/.test(str);
-  },
-  EE: function EE(str) {
-    return /^(EE)?\d{9}$/.test(str);
-  },
-  FI: function FI(str) {
-    return /^(FI)?\d{8}$/.test(str);
-  },
-  FR: function FR(str) {
-    return /^(FR)?\w{2}\d{9}$/.test(str);
-  },
-  DE: function DE(str) {
-    return /^(DE)?\d{9}$/.test(str);
-  },
-  EL: function EL(str) {
-    return /^(EL)?\d{9}$/.test(str);
-  },
-  HU: function HU(str) {
-    return /^(HU)?\d{8}$/.test(str);
-  },
-  IE: function IE(str) {
-    return /^(IE)?\d{7}\w{1}(W)?$/.test(str);
-  },
-  IT: function IT(str) {
-    return /^(IT)?\d{11}$/.test(str);
-  },
-  LV: function LV(str) {
-    return /^(LV)?\d{11}$/.test(str);
-  },
-  LT: function LT(str) {
-    return /^(LT)?\d{9,12}$/.test(str);
-  },
-  LU: function LU(str) {
-    return /^(LU)?\d{8}$/.test(str);
-  },
-  MT: function MT(str) {
-    return /^(MT)?\d{8}$/.test(str);
-  },
-  NL: function NL(str) {
-    return /^(NL)?\d{9}B\d{2}$/.test(str);
-  },
-  PL: function PL(str) {
-    return /^(PL)?(\d{10}|(\d{3}-\d{3}-\d{2}-\d{2})|(\d{3}-\d{2}-\d{2}-\d{3}))$/.test(str);
-  },
-  PT: PT,
-  RO: function RO(str) {
-    return /^(RO)?\d{2,10}$/.test(str);
-  },
-  SK: function SK(str) {
-    return /^(SK)?\d{10}$/.test(str);
-  },
-  SI: function SI(str) {
-    return /^(SI)?\d{8}$/.test(str);
-  },
-  ES: function ES(str) {
-    return /^(ES)?\w\d{7}[A-Z]$/.test(str);
-  },
-  SE: function SE(str) {
-    return /^(SE)?\d{12}$/.test(str);
-  },
-  /**
-   * VAT numbers of non-EU countries
-   */
-  AL: function AL(str) {
-    return /^(AL)?\w{9}[A-Z]$/.test(str);
-  },
-  MK: function MK(str) {
-    return /^(MK)?\d{13}$/.test(str);
-  },
-  AU: function AU(str) {
-    return /^(AU)?\d{11}$/.test(str);
-  },
-  BY: function BY(str) {
-    return /^(УНП )?\d{9}$/.test(str);
-  },
-  CA: function CA(str) {
-    return /^(CA)?\d{9}$/.test(str);
-  },
-  IS: function IS(str) {
-    return /^(IS)?\d{5,6}$/.test(str);
-  },
-  IN: function IN(str) {
-    return /^(IN)?\d{15}$/.test(str);
-  },
-  ID: function ID(str) {
-    return /^(ID)?(\d{15}|(\d{2}.\d{3}.\d{3}.\d{1}-\d{3}.\d{3}))$/.test(str);
-  },
-  IL: function IL(str) {
-    return /^(IL)?\d{9}$/.test(str);
-  },
-  KZ: function KZ(str) {
-    return /^(KZ)?\d{9}$/.test(str);
-  },
-  NZ: function NZ(str) {
-    return /^(NZ)?\d{9}$/.test(str);
-  },
-  NG: function NG(str) {
-    return /^(NG)?(\d{12}|(\d{8}-\d{4}))$/.test(str);
-  },
-  NO: function NO(str) {
-    return /^(NO)?\d{9}MVA$/.test(str);
-  },
-  PH: function PH(str) {
-    return /^(PH)?(\d{12}|\d{3} \d{3} \d{3} \d{3})$/.test(str);
-  },
-  RU: function RU(str) {
-    return /^(RU)?(\d{10}|\d{12})$/.test(str);
-  },
-  SM: function SM(str) {
-    return /^(SM)?\d{5}$/.test(str);
-  },
-  SA: function SA(str) {
-    return /^(SA)?\d{15}$/.test(str);
-  },
-  RS: function RS(str) {
-    return /^(RS)?\d{9}$/.test(str);
-  },
-  CH: function CH(str) {
-    return /^(CH)?(\d{6}|\d{9}|(\d{3}.\d{3})|(\d{3}.\d{3}.\d{3}))(TVA|MWST|IVA)$/.test(str);
-  },
-  TR: function TR(str) {
-    return /^(TR)?\d{10}$/.test(str);
-  },
-  UA: function UA(str) {
-    return /^(UA)?\d{12}$/.test(str);
-  },
-  GB: function GB(str) {
-    return /^GB((\d{3} \d{4} ([0-8][0-9]|9[0-6]))|(\d{9} \d{3})|(((GD[0-4])|(HA[5-9]))[0-9]{2}))$/.test(str);
-  },
-  UZ: function UZ(str) {
-    return /^(UZ)?\d{9}$/.test(str);
-  },
-  /**
-   * VAT numbers of Latin American countries
-   */
-  AR: function AR(str) {
-    return /^(AR)?\d{11}$/.test(str);
-  },
-  BO: function BO(str) {
-    return /^(BO)?\d{7}$/.test(str);
-  },
-  BR: function BR(str) {
-    return /^(BR)?((\d{2}.\d{3}.\d{3}\/\d{4}-\d{2})|(\d{3}.\d{3}.\d{3}-\d{2}))$/.test(str);
-  },
-  CL: function CL(str) {
-    return /^(CL)?\d{8}-\d{1}$/.test(str);
-  },
-  CO: function CO(str) {
-    return /^(CO)?\d{10}$/.test(str);
-  },
-  CR: function CR(str) {
-    return /^(CR)?\d{9,12}$/.test(str);
-  },
-  EC: function EC(str) {
-    return /^(EC)?\d{13}$/.test(str);
-  },
-  SV: function SV(str) {
-    return /^(SV)?\d{4}-\d{6}-\d{3}-\d{1}$/.test(str);
-  },
-  GT: function GT(str) {
-    return /^(GT)?\d{7}-\d{1}$/.test(str);
-  },
-  HN: function HN(str) {
-    return /^(HN)?$/.test(str);
-  },
-  MX: function MX(str) {
-    return /^(MX)?\w{3,4}\d{6}\w{3}$/.test(str);
-  },
-  NI: function NI(str) {
-    return /^(NI)?\d{3}-\d{6}-\d{4}\w{1}$/.test(str);
-  },
-  PA: function PA(str) {
-    return /^(PA)?$/.test(str);
-  },
-  PY: function PY(str) {
-    return /^(PY)?\d{6,8}-\d{1}$/.test(str);
-  },
-  PE: function PE(str) {
-    return /^(PE)?\d{11}$/.test(str);
-  },
-  DO: function DO(str) {
-    return /^(DO)?(\d{11}|(\d{3}-\d{7}-\d{1})|[1,4,5]{1}\d{8}|([1,4,5]{1})-\d{2}-\d{5}-\d{1})$/.test(str);
-  },
-  UY: function UY(str) {
-    return /^(UY)?\d{12}$/.test(str);
-  },
-  VE: function VE(str) {
-    return /^(VE)?[J,G,V,E]{1}-(\d{9}|(\d{8}-\d{1}))$/.test(str);
-  }
-};
-isVAT$1.vatMatchers = vatMatchers;
-function isVAT(str, countryCode) {
-  (0, _assertString.default)(str);
-  (0, _assertString.default)(countryCode);
-  if (countryCode in vatMatchers) {
-    return vatMatchers[countryCode](str);
-  }
-  throw new Error("Invalid country code: '".concat(countryCode, "'"));
-}
-
-(function (module, exports) {
-
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-    return _typeof(obj);
-  }
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = void 0;
-  var _toDate = _interopRequireDefault(toDateExports);
-  var _toFloat = _interopRequireDefault(toFloatExports);
-  var _toInt = _interopRequireDefault(toIntExports);
-  var _toBoolean = _interopRequireDefault(toBooleanExports);
-  var _equals = _interopRequireDefault(equalsExports);
-  var _contains = _interopRequireDefault(containsExports);
-  var _matches = _interopRequireDefault(matchesExports);
-  var _isEmail = _interopRequireDefault(isEmailExports);
-  var _isURL = _interopRequireDefault(isURLExports);
-  var _isMACAddress = _interopRequireDefault(isMACAddressExports);
-  var _isIP = _interopRequireDefault(isIPExports);
-  var _isIPRange = _interopRequireDefault(isIPRangeExports);
-  var _isFQDN = _interopRequireDefault(isFQDNExports);
-  var _isDate = _interopRequireDefault(isDateExports);
-  var _isTime = _interopRequireDefault(isTimeExports);
-  var _isBoolean = _interopRequireDefault(isBooleanExports);
-  var _isLocale = _interopRequireDefault(isLocaleExports);
-  var _isAlpha = _interopRequireWildcard(isAlpha$1);
-  var _isAlphanumeric = _interopRequireWildcard(isAlphanumeric$1);
-  var _isNumeric = _interopRequireDefault(isNumericExports);
-  var _isPassportNumber = _interopRequireDefault(isPassportNumberExports);
-  var _isPort = _interopRequireDefault(isPortExports);
-  var _isLowercase = _interopRequireDefault(isLowercaseExports);
-  var _isUppercase = _interopRequireDefault(isUppercaseExports);
-  var _isIMEI = _interopRequireDefault(isIMEIExports);
-  var _isAscii = _interopRequireDefault(isAsciiExports);
-  var _isFullWidth = _interopRequireDefault(isFullWidth$1);
-  var _isHalfWidth = _interopRequireDefault(isHalfWidth$1);
-  var _isVariableWidth = _interopRequireDefault(isVariableWidthExports);
-  var _isMultibyte = _interopRequireDefault(isMultibyteExports);
-  var _isSemVer = _interopRequireDefault(isSemVerExports);
-  var _isSurrogatePair = _interopRequireDefault(isSurrogatePairExports);
-  var _isInt = _interopRequireDefault(isIntExports);
-  var _isFloat = _interopRequireWildcard(isFloat$2);
-  var _isDecimal = _interopRequireDefault(isDecimalExports);
-  var _isHexadecimal = _interopRequireDefault(isHexadecimalExports);
-  var _isOctal = _interopRequireDefault(isOctalExports);
-  var _isDivisibleBy = _interopRequireDefault(isDivisibleByExports);
-  var _isHexColor = _interopRequireDefault(isHexColorExports);
-  var _isRgbColor = _interopRequireDefault(isRgbColorExports);
-  var _isHSL = _interopRequireDefault(isHSLExports);
-  var _isISRC = _interopRequireDefault(isISRCExports);
-  var _isIBAN = _interopRequireWildcard(isIBAN$1);
-  var _isBIC = _interopRequireDefault(isBICExports);
-  var _isMD = _interopRequireDefault(isMD5Exports);
-  var _isHash = _interopRequireDefault(isHashExports);
-  var _isJWT = _interopRequireDefault(isJWTExports);
-  var _isJSON = _interopRequireDefault(isJSONExports);
-  var _isEmpty = _interopRequireDefault(isEmptyExports);
-  var _isLength = _interopRequireDefault(isLengthExports);
-  var _isByteLength = _interopRequireDefault(isByteLengthExports);
-  var _isUUID = _interopRequireDefault(isUUIDExports);
-  var _isMongoId = _interopRequireDefault(isMongoIdExports);
-  var _isAfter = _interopRequireDefault(isAfterExports);
-  var _isBefore = _interopRequireDefault(isBeforeExports);
-  var _isIn = _interopRequireDefault(isInExports);
-  var _isLuhnNumber = _interopRequireDefault(isLuhnNumberExports);
-  var _isCreditCard = _interopRequireDefault(isCreditCardExports);
-  var _isIdentityCard = _interopRequireDefault(isIdentityCardExports);
-  var _isEAN = _interopRequireDefault(isEANExports);
-  var _isISIN = _interopRequireDefault(isISINExports);
-  var _isISBN = _interopRequireDefault(isISBNExports);
-  var _isISSN = _interopRequireDefault(isISSNExports);
-  var _isTaxID = _interopRequireDefault(isTaxIDExports);
-  var _isMobilePhone = _interopRequireWildcard(isMobilePhone$1);
-  var _isEthereumAddress = _interopRequireDefault(isEthereumAddressExports);
-  var _isCurrency = _interopRequireDefault(isCurrencyExports);
-  var _isBtcAddress = _interopRequireDefault(isBtcAddressExports);
-  var _isISO = _interopRequireDefault(isISO6391Exports);
-  var _isISO2 = _interopRequireDefault(isISO8601Exports);
-  var _isRFC = _interopRequireDefault(isRFC3339Exports);
-  var _isISO31661Alpha = _interopRequireDefault(isISO31661Alpha2$1);
-  var _isISO31661Alpha2 = _interopRequireDefault(isISO31661Alpha3Exports);
-  var _isISO3 = _interopRequireDefault(isISO4217$1);
-  var _isBase = _interopRequireDefault(isBase32Exports);
-  var _isBase2 = _interopRequireDefault(isBase58Exports);
-  var _isBase3 = _interopRequireDefault(isBase64Exports);
-  var _isDataURI = _interopRequireDefault(isDataURIExports);
-  var _isMagnetURI = _interopRequireDefault(isMagnetURIExports);
-  var _isMimeType = _interopRequireDefault(isMimeTypeExports);
-  var _isLatLong = _interopRequireDefault(isLatLongExports);
-  var _isPostalCode = _interopRequireWildcard(isPostalCode$1);
-  var _ltrim = _interopRequireDefault(ltrimExports);
-  var _rtrim = _interopRequireDefault(rtrimExports);
-  var _trim = _interopRequireDefault(trimExports);
-  var _escape = _interopRequireDefault(_escapeExports);
-  var _unescape = _interopRequireDefault(_unescapeExports);
-  var _stripLow = _interopRequireDefault(stripLowExports);
-  var _whitelist = _interopRequireDefault(whitelistExports);
-  var _blacklist = _interopRequireDefault(blacklistExports);
-  var _isWhitelisted = _interopRequireDefault(isWhitelistedExports);
-  var _normalizeEmail = _interopRequireDefault(normalizeEmailExports);
-  var _isSlug = _interopRequireDefault(isSlugExports);
-  var _isLicensePlate = _interopRequireDefault(isLicensePlateExports);
-  var _isStrongPassword = _interopRequireDefault(isStrongPasswordExports);
-  var _isVAT = _interopRequireDefault(isVAT$1);
-  function _getRequireWildcardCache() {
-    if (typeof WeakMap !== "function") return null;
-    var cache = new WeakMap();
-    _getRequireWildcardCache = function _getRequireWildcardCache() {
-      return cache;
-    };
-    return cache;
-  }
-  function _interopRequireWildcard(obj) {
-    if (obj && obj.__esModule) {
-      return obj;
-    }
-    if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
-      return {
-        default: obj
-      };
-    }
-    var cache = _getRequireWildcardCache();
-    if (cache && cache.has(obj)) {
-      return cache.get(obj);
-    }
-    var newObj = {};
-    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-    for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-        if (desc && (desc.get || desc.set)) {
-          Object.defineProperty(newObj, key, desc);
-        } else {
-          newObj[key] = obj[key];
-        }
-      }
-    }
-    newObj.default = obj;
-    if (cache) {
-      cache.set(obj, newObj);
-    }
-    return newObj;
-  }
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-  var version = '13.9.0';
-  var validator = {
-    version: version,
-    toDate: _toDate.default,
-    toFloat: _toFloat.default,
-    toInt: _toInt.default,
-    toBoolean: _toBoolean.default,
-    equals: _equals.default,
-    contains: _contains.default,
-    matches: _matches.default,
-    isEmail: _isEmail.default,
-    isURL: _isURL.default,
-    isMACAddress: _isMACAddress.default,
-    isIP: _isIP.default,
-    isIPRange: _isIPRange.default,
-    isFQDN: _isFQDN.default,
-    isBoolean: _isBoolean.default,
-    isIBAN: _isIBAN.default,
-    isBIC: _isBIC.default,
-    isAlpha: _isAlpha.default,
-    isAlphaLocales: _isAlpha.locales,
-    isAlphanumeric: _isAlphanumeric.default,
-    isAlphanumericLocales: _isAlphanumeric.locales,
-    isNumeric: _isNumeric.default,
-    isPassportNumber: _isPassportNumber.default,
-    isPort: _isPort.default,
-    isLowercase: _isLowercase.default,
-    isUppercase: _isUppercase.default,
-    isAscii: _isAscii.default,
-    isFullWidth: _isFullWidth.default,
-    isHalfWidth: _isHalfWidth.default,
-    isVariableWidth: _isVariableWidth.default,
-    isMultibyte: _isMultibyte.default,
-    isSemVer: _isSemVer.default,
-    isSurrogatePair: _isSurrogatePair.default,
-    isInt: _isInt.default,
-    isIMEI: _isIMEI.default,
-    isFloat: _isFloat.default,
-    isFloatLocales: _isFloat.locales,
-    isDecimal: _isDecimal.default,
-    isHexadecimal: _isHexadecimal.default,
-    isOctal: _isOctal.default,
-    isDivisibleBy: _isDivisibleBy.default,
-    isHexColor: _isHexColor.default,
-    isRgbColor: _isRgbColor.default,
-    isHSL: _isHSL.default,
-    isISRC: _isISRC.default,
-    isMD5: _isMD.default,
-    isHash: _isHash.default,
-    isJWT: _isJWT.default,
-    isJSON: _isJSON.default,
-    isEmpty: _isEmpty.default,
-    isLength: _isLength.default,
-    isLocale: _isLocale.default,
-    isByteLength: _isByteLength.default,
-    isUUID: _isUUID.default,
-    isMongoId: _isMongoId.default,
-    isAfter: _isAfter.default,
-    isBefore: _isBefore.default,
-    isIn: _isIn.default,
-    isLuhnNumber: _isLuhnNumber.default,
-    isCreditCard: _isCreditCard.default,
-    isIdentityCard: _isIdentityCard.default,
-    isEAN: _isEAN.default,
-    isISIN: _isISIN.default,
-    isISBN: _isISBN.default,
-    isISSN: _isISSN.default,
-    isMobilePhone: _isMobilePhone.default,
-    isMobilePhoneLocales: _isMobilePhone.locales,
-    isPostalCode: _isPostalCode.default,
-    isPostalCodeLocales: _isPostalCode.locales,
-    isEthereumAddress: _isEthereumAddress.default,
-    isCurrency: _isCurrency.default,
-    isBtcAddress: _isBtcAddress.default,
-    isISO6391: _isISO.default,
-    isISO8601: _isISO2.default,
-    isRFC3339: _isRFC.default,
-    isISO31661Alpha2: _isISO31661Alpha.default,
-    isISO31661Alpha3: _isISO31661Alpha2.default,
-    isISO4217: _isISO3.default,
-    isBase32: _isBase.default,
-    isBase58: _isBase2.default,
-    isBase64: _isBase3.default,
-    isDataURI: _isDataURI.default,
-    isMagnetURI: _isMagnetURI.default,
-    isMimeType: _isMimeType.default,
-    isLatLong: _isLatLong.default,
-    ltrim: _ltrim.default,
-    rtrim: _rtrim.default,
-    trim: _trim.default,
-    escape: _escape.default,
-    unescape: _unescape.default,
-    stripLow: _stripLow.default,
-    whitelist: _whitelist.default,
-    blacklist: _blacklist.default,
-    isWhitelisted: _isWhitelisted.default,
-    normalizeEmail: _normalizeEmail.default,
-    toString: toString,
-    isSlug: _isSlug.default,
-    isStrongPassword: _isStrongPassword.default,
-    isTaxID: _isTaxID.default,
-    isDate: _isDate.default,
-    isTime: _isTime.default,
-    isLicensePlate: _isLicensePlate.default,
-    isVAT: _isVAT.default,
-    ibanLocales: _isIBAN.locales
-  };
-  var _default = validator;
-  exports.default = _default;
-  module.exports = exports.default;
-  module.exports.default = exports.default;
-})(validator$1, validator$1.exports);
-var validatorExports = validator$1.exports;
-var validator = /*@__PURE__*/getDefaultExportFromCjs(validatorExports);
-
-var isByte = function isByte(rawValue) {
-  return validator.isBase64(rawValue);
-};
-
-/*!
- *  decimal.js v10.4.3
- *  An arbitrary-precision Decimal type for JavaScript.
- *  https://github.com/MikeMcl/decimal.js
- *  Copyright (c) 2022 Michael Mclaughlin <M8ch88l@gmail.com>
- *  MIT Licence
- */
-
-
-// -----------------------------------  EDITABLE DEFAULTS  ------------------------------------ //
-
-
-  // The maximum exponent magnitude.
-  // The limit on the value of `toExpNeg`, `toExpPos`, `minE` and `maxE`.
-var EXP_LIMIT = 9e15,                      // 0 to 9e15
-
-  // The limit on the value of `precision`, and on the value of the first argument to
-  // `toDecimalPlaces`, `toExponential`, `toFixed`, `toPrecision` and `toSignificantDigits`.
-  MAX_DIGITS = 1e9,                        // 0 to 1e9
-
-  // Base conversion alphabet.
-  NUMERALS = '0123456789abcdef',
-
-  // The natural logarithm of 10 (1025 digits).
-  LN10 = '2.3025850929940456840179914546843642076011014886287729760333279009675726096773524802359972050895982983419677840422862486334095254650828067566662873690987816894829072083255546808437998948262331985283935053089653777326288461633662222876982198867465436674744042432743651550489343149393914796194044002221051017141748003688084012647080685567743216228355220114804663715659121373450747856947683463616792101806445070648000277502684916746550586856935673420670581136429224554405758925724208241314695689016758940256776311356919292033376587141660230105703089634572075440370847469940168269282808481184289314848524948644871927809676271275775397027668605952496716674183485704422507197965004714951050492214776567636938662976979522110718264549734772662425709429322582798502585509785265383207606726317164309505995087807523710333101197857547331541421808427543863591778117054309827482385045648019095610299291824318237525357709750539565187697510374970888692180205189339507238539205144634197265287286965110862571492198849978748873771345686209167058',
-
-  // Pi (1025 digits).
-  PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632789',
-
-
-  // The initial configuration properties of the Decimal constructor.
-  DEFAULTS = {
-
-    // These values must be integers within the stated ranges (inclusive).
-    // Most of these values can be changed at run-time using the `Decimal.config` method.
-
-    // The maximum number of significant digits of the result of a calculation or base conversion.
-    // E.g. `Decimal.config({ precision: 20 });`
-    precision: 20,                         // 1 to MAX_DIGITS
-
-    // The rounding mode used when rounding to `precision`.
-    //
-    // ROUND_UP         0 Away from zero.
-    // ROUND_DOWN       1 Towards zero.
-    // ROUND_CEIL       2 Towards +Infinity.
-    // ROUND_FLOOR      3 Towards -Infinity.
-    // ROUND_HALF_UP    4 Towards nearest neighbour. If equidistant, up.
-    // ROUND_HALF_DOWN  5 Towards nearest neighbour. If equidistant, down.
-    // ROUND_HALF_EVEN  6 Towards nearest neighbour. If equidistant, towards even neighbour.
-    // ROUND_HALF_CEIL  7 Towards nearest neighbour. If equidistant, towards +Infinity.
-    // ROUND_HALF_FLOOR 8 Towards nearest neighbour. If equidistant, towards -Infinity.
-    //
-    // E.g.
-    // `Decimal.rounding = 4;`
-    // `Decimal.rounding = Decimal.ROUND_HALF_UP;`
-    rounding: 4,                           // 0 to 8
-
-    // The modulo mode used when calculating the modulus: a mod n.
-    // The quotient (q = a / n) is calculated according to the corresponding rounding mode.
-    // The remainder (r) is calculated as: r = a - n * q.
-    //
-    // UP         0 The remainder is positive if the dividend is negative, else is negative.
-    // DOWN       1 The remainder has the same sign as the dividend (JavaScript %).
-    // FLOOR      3 The remainder has the same sign as the divisor (Python %).
-    // HALF_EVEN  6 The IEEE 754 remainder function.
-    // EUCLID     9 Euclidian division. q = sign(n) * floor(a / abs(n)). Always positive.
-    //
-    // Truncated division (1), floored division (3), the IEEE 754 remainder (6), and Euclidian
-    // division (9) are commonly used for the modulus operation. The other rounding modes can also
-    // be used, but they may not give useful results.
-    modulo: 1,                             // 0 to 9
-
-    // The exponent value at and beneath which `toString` returns exponential notation.
-    // JavaScript numbers: -7
-    toExpNeg: -7,                          // 0 to -EXP_LIMIT
-
-    // The exponent value at and above which `toString` returns exponential notation.
-    // JavaScript numbers: 21
-    toExpPos:  21,                         // 0 to EXP_LIMIT
-
-    // The minimum exponent value, beneath which underflow to zero occurs.
-    // JavaScript numbers: -324  (5e-324)
-    minE: -EXP_LIMIT,                      // -1 to -EXP_LIMIT
-
-    // The maximum exponent value, above which overflow to Infinity occurs.
-    // JavaScript numbers: 308  (1.7976931348623157e+308)
-    maxE: EXP_LIMIT,                       // 1 to EXP_LIMIT
-
-    // Whether to use cryptographically-secure random number generation, if available.
-    crypto: false                          // true/false
-  },
-
-
-// ----------------------------------- END OF EDITABLE DEFAULTS ------------------------------- //
-
-
-  inexact, quadrant,
-  external = true,
-
-  decimalError = '[DecimalError] ',
-  invalidArgument = decimalError + 'Invalid argument: ',
-  precisionLimitExceeded = decimalError + 'Precision limit exceeded',
-  cryptoUnavailable = decimalError + 'crypto unavailable',
-  tag = '[object Decimal]',
-
-  mathfloor = Math.floor,
-  mathpow = Math.pow,
-
-  isBinary = /^0b([01]+(\.[01]*)?|\.[01]+)(p[+-]?\d+)?$/i,
-  isHex = /^0x([0-9a-f]+(\.[0-9a-f]*)?|\.[0-9a-f]+)(p[+-]?\d+)?$/i,
-  isOctal = /^0o([0-7]+(\.[0-7]*)?|\.[0-7]+)(p[+-]?\d+)?$/i,
-  isDecimal = /^(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i,
-
-  BASE = 1e7,
-  LOG_BASE = 7,
-  MAX_SAFE_INTEGER = 9007199254740991,
-
-  LN10_PRECISION = LN10.length - 1,
-  PI_PRECISION = PI.length - 1,
-
-  // Decimal.prototype object
-  P = { toStringTag: tag };
-
-
-// Decimal prototype methods
-
-
-/*
- *  absoluteValue             abs
- *  ceil
- *  clampedTo                 clamp
- *  comparedTo                cmp
- *  cosine                    cos
- *  cubeRoot                  cbrt
- *  decimalPlaces             dp
- *  dividedBy                 div
- *  dividedToIntegerBy        divToInt
- *  equals                    eq
- *  floor
- *  greaterThan               gt
- *  greaterThanOrEqualTo      gte
- *  hyperbolicCosine          cosh
- *  hyperbolicSine            sinh
- *  hyperbolicTangent         tanh
- *  inverseCosine             acos
- *  inverseHyperbolicCosine   acosh
- *  inverseHyperbolicSine     asinh
- *  inverseHyperbolicTangent  atanh
- *  inverseSine               asin
- *  inverseTangent            atan
- *  isFinite
- *  isInteger                 isInt
- *  isNaN
- *  isNegative                isNeg
- *  isPositive                isPos
- *  isZero
- *  lessThan                  lt
- *  lessThanOrEqualTo         lte
- *  logarithm                 log
- *  [maximum]                 [max]
- *  [minimum]                 [min]
- *  minus                     sub
- *  modulo                    mod
- *  naturalExponential        exp
- *  naturalLogarithm          ln
- *  negated                   neg
- *  plus                      add
- *  precision                 sd
- *  round
- *  sine                      sin
- *  squareRoot                sqrt
- *  tangent                   tan
- *  times                     mul
- *  toBinary
- *  toDecimalPlaces           toDP
- *  toExponential
- *  toFixed
- *  toFraction
- *  toHexadecimal             toHex
- *  toNearest
- *  toNumber
- *  toOctal
- *  toPower                   pow
- *  toPrecision
- *  toSignificantDigits       toSD
- *  toString
- *  truncated                 trunc
- *  valueOf                   toJSON
- */
-
-
-/*
- * Return a new Decimal whose value is the absolute value of this Decimal.
- *
- */
-P.absoluteValue = P.abs = function () {
-  var x = new this.constructor(this);
-  if (x.s < 0) x.s = 1;
-  return finalise(x);
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal rounded to a whole number in the
- * direction of positive Infinity.
- *
- */
-P.ceil = function () {
-  return finalise(new this.constructor(this), this.e + 1, 2);
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal clamped to the range
- * delineated by `min` and `max`.
- *
- * min {number|string|Decimal}
- * max {number|string|Decimal}
- *
- */
-P.clampedTo = P.clamp = function (min, max) {
-  var k,
-    x = this,
-    Ctor = x.constructor;
-  min = new Ctor(min);
-  max = new Ctor(max);
-  if (!min.s || !max.s) return new Ctor(NaN);
-  if (min.gt(max)) throw Error(invalidArgument + max);
-  k = x.cmp(min);
-  return k < 0 ? min : x.cmp(max) > 0 ? max : new Ctor(x);
-};
-
-
-/*
- * Return
- *   1    if the value of this Decimal is greater than the value of `y`,
- *  -1    if the value of this Decimal is less than the value of `y`,
- *   0    if they have the same value,
- *   NaN  if the value of either Decimal is NaN.
- *
- */
-P.comparedTo = P.cmp = function (y) {
-  var i, j, xdL, ydL,
-    x = this,
-    xd = x.d,
-    yd = (y = new x.constructor(y)).d,
-    xs = x.s,
-    ys = y.s;
-
-  // Either NaN or ±Infinity?
-  if (!xd || !yd) {
-    return !xs || !ys ? NaN : xs !== ys ? xs : xd === yd ? 0 : !xd ^ xs < 0 ? 1 : -1;
-  }
-
-  // Either zero?
-  if (!xd[0] || !yd[0]) return xd[0] ? xs : yd[0] ? -ys : 0;
-
-  // Signs differ?
-  if (xs !== ys) return xs;
-
-  // Compare exponents.
-  if (x.e !== y.e) return x.e > y.e ^ xs < 0 ? 1 : -1;
-
-  xdL = xd.length;
-  ydL = yd.length;
-
-  // Compare digit by digit.
-  for (i = 0, j = xdL < ydL ? xdL : ydL; i < j; ++i) {
-    if (xd[i] !== yd[i]) return xd[i] > yd[i] ^ xs < 0 ? 1 : -1;
-  }
-
-  // Compare lengths.
-  return xdL === ydL ? 0 : xdL > ydL ^ xs < 0 ? 1 : -1;
-};
-
-
-/*
- * Return a new Decimal whose value is the cosine of the value in radians of this Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-1, 1]
- *
- * cos(0)         = 1
- * cos(-0)        = 1
- * cos(Infinity)  = NaN
- * cos(-Infinity) = NaN
- * cos(NaN)       = NaN
- *
- */
-P.cosine = P.cos = function () {
-  var pr, rm,
-    x = this,
-    Ctor = x.constructor;
-
-  if (!x.d) return new Ctor(NaN);
-
-  // cos(0) = cos(-0) = 1
-  if (!x.d[0]) return new Ctor(1);
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  Ctor.precision = pr + Math.max(x.e, x.sd()) + LOG_BASE;
-  Ctor.rounding = 1;
-
-  x = cosine(Ctor, toLessThanHalfPi(Ctor, x));
-
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return finalise(quadrant == 2 || quadrant == 3 ? x.neg() : x, pr, rm, true);
-};
-
-
-/*
- *
- * Return a new Decimal whose value is the cube root of the value of this Decimal, rounded to
- * `precision` significant digits using rounding mode `rounding`.
- *
- *  cbrt(0)  =  0
- *  cbrt(-0) = -0
- *  cbrt(1)  =  1
- *  cbrt(-1) = -1
- *  cbrt(N)  =  N
- *  cbrt(-I) = -I
- *  cbrt(I)  =  I
- *
- * Math.cbrt(x) = (x < 0 ? -Math.pow(-x, 1/3) : Math.pow(x, 1/3))
- *
- */
-P.cubeRoot = P.cbrt = function () {
-  var e, m, n, r, rep, s, sd, t, t3, t3plusx,
-    x = this,
-    Ctor = x.constructor;
-
-  if (!x.isFinite() || x.isZero()) return new Ctor(x);
-  external = false;
-
-  // Initial estimate.
-  s = x.s * mathpow(x.s * x, 1 / 3);
-
-   // Math.cbrt underflow/overflow?
-   // Pass x to Math.pow as integer, then adjust the exponent of the result.
-  if (!s || Math.abs(s) == 1 / 0) {
-    n = digitsToString(x.d);
-    e = x.e;
-
-    // Adjust n exponent so it is a multiple of 3 away from x exponent.
-    if (s = (e - n.length + 1) % 3) n += (s == 1 || s == -2 ? '0' : '00');
-    s = mathpow(n, 1 / 3);
-
-    // Rarely, e may be one less than the result exponent value.
-    e = mathfloor((e + 1) / 3) - (e % 3 == (e < 0 ? -1 : 2));
-
-    if (s == 1 / 0) {
-      n = '5e' + e;
-    } else {
-      n = s.toExponential();
-      n = n.slice(0, n.indexOf('e') + 1) + e;
-    }
-
-    r = new Ctor(n);
-    r.s = x.s;
-  } else {
-    r = new Ctor(s.toString());
-  }
-
-  sd = (e = Ctor.precision) + 3;
-
-  // Halley's method.
-  // TODO? Compare Newton's method.
-  for (;;) {
-    t = r;
-    t3 = t.times(t).times(t);
-    t3plusx = t3.plus(x);
-    r = divide(t3plusx.plus(x).times(t), t3plusx.plus(t3), sd + 2, 1);
-
-    // TODO? Replace with for-loop and checkRoundingDigits.
-    if (digitsToString(t.d).slice(0, sd) === (n = digitsToString(r.d)).slice(0, sd)) {
-      n = n.slice(sd - 3, sd + 1);
-
-      // The 4th rounding digit may be in error by -1 so if the 4 rounding digits are 9999 or 4999
-      // , i.e. approaching a rounding boundary, continue the iteration.
-      if (n == '9999' || !rep && n == '4999') {
-
-        // On the first iteration only, check to see if rounding up gives the exact result as the
-        // nines may infinitely repeat.
-        if (!rep) {
-          finalise(t, e + 1, 0);
-
-          if (t.times(t).times(t).eq(x)) {
-            r = t;
-            break;
-          }
-        }
-
-        sd += 4;
-        rep = 1;
-      } else {
-
-        // If the rounding digits are null, 0{0,4} or 50{0,3}, check for an exact result.
-        // If not, then there are further digits and m will be truthy.
-        if (!+n || !+n.slice(1) && n.charAt(0) == '5') {
-
-          // Truncate to the first rounding digit.
-          finalise(r, e + 1, 1);
-          m = !r.times(r).times(r).eq(x);
-        }
-
-        break;
-      }
-    }
-  }
-
-  external = true;
-
-  return finalise(r, e, Ctor.rounding, m);
-};
-
-
-/*
- * Return the number of decimal places of the value of this Decimal.
- *
- */
-P.decimalPlaces = P.dp = function () {
-  var w,
-    d = this.d,
-    n = NaN;
-
-  if (d) {
-    w = d.length - 1;
-    n = (w - mathfloor(this.e / LOG_BASE)) * LOG_BASE;
-
-    // Subtract the number of trailing zeros of the last word.
-    w = d[w];
-    if (w) for (; w % 10 == 0; w /= 10) n--;
-    if (n < 0) n = 0;
-  }
-
-  return n;
-};
-
-
-/*
- *  n / 0 = I
- *  n / N = N
- *  n / I = 0
- *  0 / n = 0
- *  0 / 0 = N
- *  0 / N = N
- *  0 / I = 0
- *  N / n = N
- *  N / 0 = N
- *  N / N = N
- *  N / I = N
- *  I / n = I
- *  I / 0 = I
- *  I / N = N
- *  I / I = N
- *
- * Return a new Decimal whose value is the value of this Decimal divided by `y`, rounded to
- * `precision` significant digits using rounding mode `rounding`.
- *
- */
-P.dividedBy = P.div = function (y) {
-  return divide(this, new this.constructor(y));
-};
-
-
-/*
- * Return a new Decimal whose value is the integer part of dividing the value of this Decimal
- * by the value of `y`, rounded to `precision` significant digits using rounding mode `rounding`.
- *
- */
-P.dividedToIntegerBy = P.divToInt = function (y) {
-  var x = this,
-    Ctor = x.constructor;
-  return finalise(divide(x, new Ctor(y), 0, 1, 1), Ctor.precision, Ctor.rounding);
-};
-
-
-/*
- * Return true if the value of this Decimal is equal to the value of `y`, otherwise return false.
- *
- */
-P.equals = P.eq = function (y) {
-  return this.cmp(y) === 0;
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal rounded to a whole number in the
- * direction of negative Infinity.
- *
- */
-P.floor = function () {
-  return finalise(new this.constructor(this), this.e + 1, 3);
-};
-
-
-/*
- * Return true if the value of this Decimal is greater than the value of `y`, otherwise return
- * false.
- *
- */
-P.greaterThan = P.gt = function (y) {
-  return this.cmp(y) > 0;
-};
-
-
-/*
- * Return true if the value of this Decimal is greater than or equal to the value of `y`,
- * otherwise return false.
- *
- */
-P.greaterThanOrEqualTo = P.gte = function (y) {
-  var k = this.cmp(y);
-  return k == 1 || k === 0;
-};
-
-
-/*
- * Return a new Decimal whose value is the hyperbolic cosine of the value in radians of this
- * Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [1, Infinity]
- *
- * cosh(x) = 1 + x^2/2! + x^4/4! + x^6/6! + ...
- *
- * cosh(0)         = 1
- * cosh(-0)        = 1
- * cosh(Infinity)  = Infinity
- * cosh(-Infinity) = Infinity
- * cosh(NaN)       = NaN
- *
- *  x        time taken (ms)   result
- * 1000      9                 9.8503555700852349694e+433
- * 10000     25                4.4034091128314607936e+4342
- * 100000    171               1.4033316802130615897e+43429
- * 1000000   3817              1.5166076984010437725e+434294
- * 10000000  abandoned after 2 minute wait
- *
- * TODO? Compare performance of cosh(x) = 0.5 * (exp(x) + exp(-x))
- *
- */
-P.hyperbolicCosine = P.cosh = function () {
-  var k, n, pr, rm, len,
-    x = this,
-    Ctor = x.constructor,
-    one = new Ctor(1);
-
-  if (!x.isFinite()) return new Ctor(x.s ? 1 / 0 : NaN);
-  if (x.isZero()) return one;
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  Ctor.precision = pr + Math.max(x.e, x.sd()) + 4;
-  Ctor.rounding = 1;
-  len = x.d.length;
-
-  // Argument reduction: cos(4x) = 1 - 8cos^2(x) + 8cos^4(x) + 1
-  // i.e. cos(x) = 1 - cos^2(x/4)(8 - 8cos^2(x/4))
-
-  // Estimate the optimum number of times to use the argument reduction.
-  // TODO? Estimation reused from cosine() and may not be optimal here.
-  if (len < 32) {
-    k = Math.ceil(len / 3);
-    n = (1 / tinyPow(4, k)).toString();
-  } else {
-    k = 16;
-    n = '2.3283064365386962890625e-10';
-  }
-
-  x = taylorSeries(Ctor, 1, x.times(n), new Ctor(1), true);
-
-  // Reverse argument reduction
-  var cosh2_x,
-    i = k,
-    d8 = new Ctor(8);
-  for (; i--;) {
-    cosh2_x = x.times(x);
-    x = one.minus(cosh2_x.times(d8.minus(cosh2_x.times(d8))));
-  }
-
-  return finalise(x, Ctor.precision = pr, Ctor.rounding = rm, true);
-};
-
-
-/*
- * Return a new Decimal whose value is the hyperbolic sine of the value in radians of this
- * Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-Infinity, Infinity]
- *
- * sinh(x) = x + x^3/3! + x^5/5! + x^7/7! + ...
- *
- * sinh(0)         = 0
- * sinh(-0)        = -0
- * sinh(Infinity)  = Infinity
- * sinh(-Infinity) = -Infinity
- * sinh(NaN)       = NaN
- *
- * x        time taken (ms)
- * 10       2 ms
- * 100      5 ms
- * 1000     14 ms
- * 10000    82 ms
- * 100000   886 ms            1.4033316802130615897e+43429
- * 200000   2613 ms
- * 300000   5407 ms
- * 400000   8824 ms
- * 500000   13026 ms          8.7080643612718084129e+217146
- * 1000000  48543 ms
- *
- * TODO? Compare performance of sinh(x) = 0.5 * (exp(x) - exp(-x))
- *
- */
-P.hyperbolicSine = P.sinh = function () {
-  var k, pr, rm, len,
-    x = this,
-    Ctor = x.constructor;
-
-  if (!x.isFinite() || x.isZero()) return new Ctor(x);
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  Ctor.precision = pr + Math.max(x.e, x.sd()) + 4;
-  Ctor.rounding = 1;
-  len = x.d.length;
-
-  if (len < 3) {
-    x = taylorSeries(Ctor, 2, x, x, true);
-  } else {
-
-    // Alternative argument reduction: sinh(3x) = sinh(x)(3 + 4sinh^2(x))
-    // i.e. sinh(x) = sinh(x/3)(3 + 4sinh^2(x/3))
-    // 3 multiplications and 1 addition
-
-    // Argument reduction: sinh(5x) = sinh(x)(5 + sinh^2(x)(20 + 16sinh^2(x)))
-    // i.e. sinh(x) = sinh(x/5)(5 + sinh^2(x/5)(20 + 16sinh^2(x/5)))
-    // 4 multiplications and 2 additions
-
-    // Estimate the optimum number of times to use the argument reduction.
-    k = 1.4 * Math.sqrt(len);
-    k = k > 16 ? 16 : k | 0;
-
-    x = x.times(1 / tinyPow(5, k));
-    x = taylorSeries(Ctor, 2, x, x, true);
-
-    // Reverse argument reduction
-    var sinh2_x,
-      d5 = new Ctor(5),
-      d16 = new Ctor(16),
-      d20 = new Ctor(20);
-    for (; k--;) {
-      sinh2_x = x.times(x);
-      x = x.times(d5.plus(sinh2_x.times(d16.times(sinh2_x).plus(d20))));
-    }
-  }
-
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return finalise(x, pr, rm, true);
-};
-
-
-/*
- * Return a new Decimal whose value is the hyperbolic tangent of the value in radians of this
- * Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-1, 1]
- *
- * tanh(x) = sinh(x) / cosh(x)
- *
- * tanh(0)         = 0
- * tanh(-0)        = -0
- * tanh(Infinity)  = 1
- * tanh(-Infinity) = -1
- * tanh(NaN)       = NaN
- *
- */
-P.hyperbolicTangent = P.tanh = function () {
-  var pr, rm,
-    x = this,
-    Ctor = x.constructor;
-
-  if (!x.isFinite()) return new Ctor(x.s);
-  if (x.isZero()) return new Ctor(x);
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  Ctor.precision = pr + 7;
-  Ctor.rounding = 1;
-
-  return divide(x.sinh(), x.cosh(), Ctor.precision = pr, Ctor.rounding = rm);
-};
-
-
-/*
- * Return a new Decimal whose value is the arccosine (inverse cosine) in radians of the value of
- * this Decimal.
- *
- * Domain: [-1, 1]
- * Range: [0, pi]
- *
- * acos(x) = pi/2 - asin(x)
- *
- * acos(0)       = pi/2
- * acos(-0)      = pi/2
- * acos(1)       = 0
- * acos(-1)      = pi
- * acos(1/2)     = pi/3
- * acos(-1/2)    = 2*pi/3
- * acos(|x| > 1) = NaN
- * acos(NaN)     = NaN
- *
- */
-P.inverseCosine = P.acos = function () {
-  var halfPi,
-    x = this,
-    Ctor = x.constructor,
-    k = x.abs().cmp(1),
-    pr = Ctor.precision,
-    rm = Ctor.rounding;
-
-  if (k !== -1) {
-    return k === 0
-      // |x| is 1
-      ? x.isNeg() ? getPi(Ctor, pr, rm) : new Ctor(0)
-      // |x| > 1 or x is NaN
-      : new Ctor(NaN);
-  }
-
-  if (x.isZero()) return getPi(Ctor, pr + 4, rm).times(0.5);
-
-  // TODO? Special case acos(0.5) = pi/3 and acos(-0.5) = 2*pi/3
-
-  Ctor.precision = pr + 6;
-  Ctor.rounding = 1;
-
-  x = x.asin();
-  halfPi = getPi(Ctor, pr + 4, rm).times(0.5);
-
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return halfPi.minus(x);
-};
-
-
-/*
- * Return a new Decimal whose value is the inverse of the hyperbolic cosine in radians of the
- * value of this Decimal.
- *
- * Domain: [1, Infinity]
- * Range: [0, Infinity]
- *
- * acosh(x) = ln(x + sqrt(x^2 - 1))
- *
- * acosh(x < 1)     = NaN
- * acosh(NaN)       = NaN
- * acosh(Infinity)  = Infinity
- * acosh(-Infinity) = NaN
- * acosh(0)         = NaN
- * acosh(-0)        = NaN
- * acosh(1)         = 0
- * acosh(-1)        = NaN
- *
- */
-P.inverseHyperbolicCosine = P.acosh = function () {
-  var pr, rm,
-    x = this,
-    Ctor = x.constructor;
-
-  if (x.lte(1)) return new Ctor(x.eq(1) ? 0 : NaN);
-  if (!x.isFinite()) return new Ctor(x);
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  Ctor.precision = pr + Math.max(Math.abs(x.e), x.sd()) + 4;
-  Ctor.rounding = 1;
-  external = false;
-
-  x = x.times(x).minus(1).sqrt().plus(x);
-
-  external = true;
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return x.ln();
-};
-
-
-/*
- * Return a new Decimal whose value is the inverse of the hyperbolic sine in radians of the value
- * of this Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-Infinity, Infinity]
- *
- * asinh(x) = ln(x + sqrt(x^2 + 1))
- *
- * asinh(NaN)       = NaN
- * asinh(Infinity)  = Infinity
- * asinh(-Infinity) = -Infinity
- * asinh(0)         = 0
- * asinh(-0)        = -0
- *
- */
-P.inverseHyperbolicSine = P.asinh = function () {
-  var pr, rm,
-    x = this,
-    Ctor = x.constructor;
-
-  if (!x.isFinite() || x.isZero()) return new Ctor(x);
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  Ctor.precision = pr + 2 * Math.max(Math.abs(x.e), x.sd()) + 6;
-  Ctor.rounding = 1;
-  external = false;
-
-  x = x.times(x).plus(1).sqrt().plus(x);
-
-  external = true;
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return x.ln();
-};
-
-
-/*
- * Return a new Decimal whose value is the inverse of the hyperbolic tangent in radians of the
- * value of this Decimal.
- *
- * Domain: [-1, 1]
- * Range: [-Infinity, Infinity]
- *
- * atanh(x) = 0.5 * ln((1 + x) / (1 - x))
- *
- * atanh(|x| > 1)   = NaN
- * atanh(NaN)       = NaN
- * atanh(Infinity)  = NaN
- * atanh(-Infinity) = NaN
- * atanh(0)         = 0
- * atanh(-0)        = -0
- * atanh(1)         = Infinity
- * atanh(-1)        = -Infinity
- *
- */
-P.inverseHyperbolicTangent = P.atanh = function () {
-  var pr, rm, wpr, xsd,
-    x = this,
-    Ctor = x.constructor;
-
-  if (!x.isFinite()) return new Ctor(NaN);
-  if (x.e >= 0) return new Ctor(x.abs().eq(1) ? x.s / 0 : x.isZero() ? x : NaN);
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  xsd = x.sd();
-
-  if (Math.max(xsd, pr) < 2 * -x.e - 1) return finalise(new Ctor(x), pr, rm, true);
-
-  Ctor.precision = wpr = xsd - x.e;
-
-  x = divide(x.plus(1), new Ctor(1).minus(x), wpr + pr, 1);
-
-  Ctor.precision = pr + 4;
-  Ctor.rounding = 1;
-
-  x = x.ln();
-
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return x.times(0.5);
-};
-
-
-/*
- * Return a new Decimal whose value is the arcsine (inverse sine) in radians of the value of this
- * Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-pi/2, pi/2]
- *
- * asin(x) = 2*atan(x/(1 + sqrt(1 - x^2)))
- *
- * asin(0)       = 0
- * asin(-0)      = -0
- * asin(1/2)     = pi/6
- * asin(-1/2)    = -pi/6
- * asin(1)       = pi/2
- * asin(-1)      = -pi/2
- * asin(|x| > 1) = NaN
- * asin(NaN)     = NaN
- *
- * TODO? Compare performance of Taylor series.
- *
- */
-P.inverseSine = P.asin = function () {
-  var halfPi, k,
-    pr, rm,
-    x = this,
-    Ctor = x.constructor;
-
-  if (x.isZero()) return new Ctor(x);
-
-  k = x.abs().cmp(1);
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-
-  if (k !== -1) {
-
-    // |x| is 1
-    if (k === 0) {
-      halfPi = getPi(Ctor, pr + 4, rm).times(0.5);
-      halfPi.s = x.s;
-      return halfPi;
-    }
-
-    // |x| > 1 or x is NaN
-    return new Ctor(NaN);
-  }
-
-  // TODO? Special case asin(1/2) = pi/6 and asin(-1/2) = -pi/6
-
-  Ctor.precision = pr + 6;
-  Ctor.rounding = 1;
-
-  x = x.div(new Ctor(1).minus(x.times(x)).sqrt().plus(1)).atan();
-
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return x.times(2);
-};
-
-
-/*
- * Return a new Decimal whose value is the arctangent (inverse tangent) in radians of the value
- * of this Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-pi/2, pi/2]
- *
- * atan(x) = x - x^3/3 + x^5/5 - x^7/7 + ...
- *
- * atan(0)         = 0
- * atan(-0)        = -0
- * atan(1)         = pi/4
- * atan(-1)        = -pi/4
- * atan(Infinity)  = pi/2
- * atan(-Infinity) = -pi/2
- * atan(NaN)       = NaN
- *
- */
-P.inverseTangent = P.atan = function () {
-  var i, j, k, n, px, t, r, wpr, x2,
-    x = this,
-    Ctor = x.constructor,
-    pr = Ctor.precision,
-    rm = Ctor.rounding;
-
-  if (!x.isFinite()) {
-    if (!x.s) return new Ctor(NaN);
-    if (pr + 4 <= PI_PRECISION) {
-      r = getPi(Ctor, pr + 4, rm).times(0.5);
-      r.s = x.s;
-      return r;
-    }
-  } else if (x.isZero()) {
-    return new Ctor(x);
-  } else if (x.abs().eq(1) && pr + 4 <= PI_PRECISION) {
-    r = getPi(Ctor, pr + 4, rm).times(0.25);
-    r.s = x.s;
-    return r;
-  }
-
-  Ctor.precision = wpr = pr + 10;
-  Ctor.rounding = 1;
-
-  // TODO? if (x >= 1 && pr <= PI_PRECISION) atan(x) = halfPi * x.s - atan(1 / x);
-
-  // Argument reduction
-  // Ensure |x| < 0.42
-  // atan(x) = 2 * atan(x / (1 + sqrt(1 + x^2)))
-
-  k = Math.min(28, wpr / LOG_BASE + 2 | 0);
-
-  for (i = k; i; --i) x = x.div(x.times(x).plus(1).sqrt().plus(1));
-
-  external = false;
-
-  j = Math.ceil(wpr / LOG_BASE);
-  n = 1;
-  x2 = x.times(x);
-  r = new Ctor(x);
-  px = x;
-
-  // atan(x) = x - x^3/3 + x^5/5 - x^7/7 + ...
-  for (; i !== -1;) {
-    px = px.times(x2);
-    t = r.minus(px.div(n += 2));
-
-    px = px.times(x2);
-    r = t.plus(px.div(n += 2));
-
-    if (r.d[j] !== void 0) for (i = j; r.d[i] === t.d[i] && i--;);
-  }
-
-  if (k) r = r.times(2 << (k - 1));
-
-  external = true;
-
-  return finalise(r, Ctor.precision = pr, Ctor.rounding = rm, true);
-};
-
-
-/*
- * Return true if the value of this Decimal is a finite number, otherwise return false.
- *
- */
-P.isFinite = function () {
-  return !!this.d;
-};
-
-
-/*
- * Return true if the value of this Decimal is an integer, otherwise return false.
- *
- */
-P.isInteger = P.isInt = function () {
-  return !!this.d && mathfloor(this.e / LOG_BASE) > this.d.length - 2;
-};
-
-
-/*
- * Return true if the value of this Decimal is NaN, otherwise return false.
- *
- */
-P.isNaN = function () {
-  return !this.s;
-};
-
-
-/*
- * Return true if the value of this Decimal is negative, otherwise return false.
- *
- */
-P.isNegative = P.isNeg = function () {
-  return this.s < 0;
-};
-
-
-/*
- * Return true if the value of this Decimal is positive, otherwise return false.
- *
- */
-P.isPositive = P.isPos = function () {
-  return this.s > 0;
-};
-
-
-/*
- * Return true if the value of this Decimal is 0 or -0, otherwise return false.
- *
- */
-P.isZero = function () {
-  return !!this.d && this.d[0] === 0;
-};
-
-
-/*
- * Return true if the value of this Decimal is less than `y`, otherwise return false.
- *
- */
-P.lessThan = P.lt = function (y) {
-  return this.cmp(y) < 0;
-};
-
-
-/*
- * Return true if the value of this Decimal is less than or equal to `y`, otherwise return false.
- *
- */
-P.lessThanOrEqualTo = P.lte = function (y) {
-  return this.cmp(y) < 1;
-};
-
-
-/*
- * Return the logarithm of the value of this Decimal to the specified base, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * If no base is specified, return log[10](arg).
- *
- * log[base](arg) = ln(arg) / ln(base)
- *
- * The result will always be correctly rounded if the base of the log is 10, and 'almost always'
- * otherwise:
- *
- * Depending on the rounding mode, the result may be incorrectly rounded if the first fifteen
- * rounding digits are [49]99999999999999 or [50]00000000000000. In that case, the maximum error
- * between the result and the correctly rounded result will be one ulp (unit in the last place).
- *
- * log[-b](a)       = NaN
- * log[0](a)        = NaN
- * log[1](a)        = NaN
- * log[NaN](a)      = NaN
- * log[Infinity](a) = NaN
- * log[b](0)        = -Infinity
- * log[b](-0)       = -Infinity
- * log[b](-a)       = NaN
- * log[b](1)        = 0
- * log[b](Infinity) = Infinity
- * log[b](NaN)      = NaN
- *
- * [base] {number|string|Decimal} The base of the logarithm.
- *
- */
-P.logarithm = P.log = function (base) {
-  var isBase10, d, denominator, k, inf, num, sd, r,
-    arg = this,
-    Ctor = arg.constructor,
-    pr = Ctor.precision,
-    rm = Ctor.rounding,
-    guard = 5;
-
-  // Default base is 10.
-  if (base == null) {
-    base = new Ctor(10);
-    isBase10 = true;
-  } else {
-    base = new Ctor(base);
-    d = base.d;
-
-    // Return NaN if base is negative, or non-finite, or is 0 or 1.
-    if (base.s < 0 || !d || !d[0] || base.eq(1)) return new Ctor(NaN);
-
-    isBase10 = base.eq(10);
-  }
-
-  d = arg.d;
-
-  // Is arg negative, non-finite, 0 or 1?
-  if (arg.s < 0 || !d || !d[0] || arg.eq(1)) {
-    return new Ctor(d && !d[0] ? -1 / 0 : arg.s != 1 ? NaN : d ? 0 : 1 / 0);
-  }
-
-  // The result will have a non-terminating decimal expansion if base is 10 and arg is not an
-  // integer power of 10.
-  if (isBase10) {
-    if (d.length > 1) {
-      inf = true;
-    } else {
-      for (k = d[0]; k % 10 === 0;) k /= 10;
-      inf = k !== 1;
-    }
-  }
-
-  external = false;
-  sd = pr + guard;
-  num = naturalLogarithm(arg, sd);
-  denominator = isBase10 ? getLn10(Ctor, sd + 10) : naturalLogarithm(base, sd);
-
-  // The result will have 5 rounding digits.
-  r = divide(num, denominator, sd, 1);
-
-  // If at a rounding boundary, i.e. the result's rounding digits are [49]9999 or [50]0000,
-  // calculate 10 further digits.
-  //
-  // If the result is known to have an infinite decimal expansion, repeat this until it is clear
-  // that the result is above or below the boundary. Otherwise, if after calculating the 10
-  // further digits, the last 14 are nines, round up and assume the result is exact.
-  // Also assume the result is exact if the last 14 are zero.
-  //
-  // Example of a result that will be incorrectly rounded:
-  // log[1048576](4503599627370502) = 2.60000000000000009610279511444746...
-  // The above result correctly rounded using ROUND_CEIL to 1 decimal place should be 2.7, but it
-  // will be given as 2.6 as there are 15 zeros immediately after the requested decimal place, so
-  // the exact result would be assumed to be 2.6, which rounded using ROUND_CEIL to 1 decimal
-  // place is still 2.6.
-  if (checkRoundingDigits(r.d, k = pr, rm)) {
-
-    do {
-      sd += 10;
-      num = naturalLogarithm(arg, sd);
-      denominator = isBase10 ? getLn10(Ctor, sd + 10) : naturalLogarithm(base, sd);
-      r = divide(num, denominator, sd, 1);
-
-      if (!inf) {
-
-        // Check for 14 nines from the 2nd rounding digit, as the first may be 4.
-        if (+digitsToString(r.d).slice(k + 1, k + 15) + 1 == 1e14) {
-          r = finalise(r, pr + 1, 0);
-        }
-
-        break;
-      }
-    } while (checkRoundingDigits(r.d, k += 10, rm));
-  }
-
-  external = true;
-
-  return finalise(r, pr, rm);
-};
-
-
-/*
- * Return a new Decimal whose value is the maximum of the arguments and the value of this Decimal.
- *
- * arguments {number|string|Decimal}
- *
-P.max = function () {
-  Array.prototype.push.call(arguments, this);
-  return maxOrMin(this.constructor, arguments, 'lt');
-};
- */
-
-
-/*
- * Return a new Decimal whose value is the minimum of the arguments and the value of this Decimal.
- *
- * arguments {number|string|Decimal}
- *
-P.min = function () {
-  Array.prototype.push.call(arguments, this);
-  return maxOrMin(this.constructor, arguments, 'gt');
-};
- */
-
-
-/*
- *  n - 0 = n
- *  n - N = N
- *  n - I = -I
- *  0 - n = -n
- *  0 - 0 = 0
- *  0 - N = N
- *  0 - I = -I
- *  N - n = N
- *  N - 0 = N
- *  N - N = N
- *  N - I = N
- *  I - n = I
- *  I - 0 = I
- *  I - N = N
- *  I - I = N
- *
- * Return a new Decimal whose value is the value of this Decimal minus `y`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- */
-P.minus = P.sub = function (y) {
-  var d, e, i, j, k, len, pr, rm, xd, xe, xLTy, yd,
-    x = this,
-    Ctor = x.constructor;
-
-  y = new Ctor(y);
-
-  // If either is not finite...
-  if (!x.d || !y.d) {
-
-    // Return NaN if either is NaN.
-    if (!x.s || !y.s) y = new Ctor(NaN);
-
-    // Return y negated if x is finite and y is ±Infinity.
-    else if (x.d) y.s = -y.s;
-
-    // Return x if y is finite and x is ±Infinity.
-    // Return x if both are ±Infinity with different signs.
-    // Return NaN if both are ±Infinity with the same sign.
-    else y = new Ctor(y.d || x.s !== y.s ? x : NaN);
-
-    return y;
-  }
-
-  // If signs differ...
-  if (x.s != y.s) {
-    y.s = -y.s;
-    return x.plus(y);
-  }
-
-  xd = x.d;
-  yd = y.d;
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-
-  // If either is zero...
-  if (!xd[0] || !yd[0]) {
-
-    // Return y negated if x is zero and y is non-zero.
-    if (yd[0]) y.s = -y.s;
-
-    // Return x if y is zero and x is non-zero.
-    else if (xd[0]) y = new Ctor(x);
-
-    // Return zero if both are zero.
-    // From IEEE 754 (2008) 6.3: 0 - 0 = -0 - -0 = -0 when rounding to -Infinity.
-    else return new Ctor(rm === 3 ? -0 : 0);
-
-    return external ? finalise(y, pr, rm) : y;
-  }
-
-  // x and y are finite, non-zero numbers with the same sign.
-
-  // Calculate base 1e7 exponents.
-  e = mathfloor(y.e / LOG_BASE);
-  xe = mathfloor(x.e / LOG_BASE);
-
-  xd = xd.slice();
-  k = xe - e;
-
-  // If base 1e7 exponents differ...
-  if (k) {
-    xLTy = k < 0;
-
-    if (xLTy) {
-      d = xd;
-      k = -k;
-      len = yd.length;
-    } else {
-      d = yd;
-      e = xe;
-      len = xd.length;
-    }
-
-    // Numbers with massively different exponents would result in a very high number of
-    // zeros needing to be prepended, but this can be avoided while still ensuring correct
-    // rounding by limiting the number of zeros to `Math.ceil(pr / LOG_BASE) + 2`.
-    i = Math.max(Math.ceil(pr / LOG_BASE), len) + 2;
-
-    if (k > i) {
-      k = i;
-      d.length = 1;
-    }
-
-    // Prepend zeros to equalise exponents.
-    d.reverse();
-    for (i = k; i--;) d.push(0);
-    d.reverse();
-
-  // Base 1e7 exponents equal.
-  } else {
-
-    // Check digits to determine which is the bigger number.
-
-    i = xd.length;
-    len = yd.length;
-    xLTy = i < len;
-    if (xLTy) len = i;
-
-    for (i = 0; i < len; i++) {
-      if (xd[i] != yd[i]) {
-        xLTy = xd[i] < yd[i];
-        break;
-      }
-    }
-
-    k = 0;
-  }
-
-  if (xLTy) {
-    d = xd;
-    xd = yd;
-    yd = d;
-    y.s = -y.s;
-  }
-
-  len = xd.length;
-
-  // Append zeros to `xd` if shorter.
-  // Don't add zeros to `yd` if shorter as subtraction only needs to start at `yd` length.
-  for (i = yd.length - len; i > 0; --i) xd[len++] = 0;
-
-  // Subtract yd from xd.
-  for (i = yd.length; i > k;) {
-
-    if (xd[--i] < yd[i]) {
-      for (j = i; j && xd[--j] === 0;) xd[j] = BASE - 1;
-      --xd[j];
-      xd[i] += BASE;
-    }
-
-    xd[i] -= yd[i];
-  }
-
-  // Remove trailing zeros.
-  for (; xd[--len] === 0;) xd.pop();
-
-  // Remove leading zeros and adjust exponent accordingly.
-  for (; xd[0] === 0; xd.shift()) --e;
-
-  // Zero?
-  if (!xd[0]) return new Ctor(rm === 3 ? -0 : 0);
-
-  y.d = xd;
-  y.e = getBase10Exponent(xd, e);
-
-  return external ? finalise(y, pr, rm) : y;
-};
-
-
-/*
- *   n % 0 =  N
- *   n % N =  N
- *   n % I =  n
- *   0 % n =  0
- *  -0 % n = -0
- *   0 % 0 =  N
- *   0 % N =  N
- *   0 % I =  0
- *   N % n =  N
- *   N % 0 =  N
- *   N % N =  N
- *   N % I =  N
- *   I % n =  N
- *   I % 0 =  N
- *   I % N =  N
- *   I % I =  N
- *
- * Return a new Decimal whose value is the value of this Decimal modulo `y`, rounded to
- * `precision` significant digits using rounding mode `rounding`.
- *
- * The result depends on the modulo mode.
- *
- */
-P.modulo = P.mod = function (y) {
-  var q,
-    x = this,
-    Ctor = x.constructor;
-
-  y = new Ctor(y);
-
-  // Return NaN if x is ±Infinity or NaN, or y is NaN or ±0.
-  if (!x.d || !y.s || y.d && !y.d[0]) return new Ctor(NaN);
-
-  // Return x if y is ±Infinity or x is ±0.
-  if (!y.d || x.d && !x.d[0]) {
-    return finalise(new Ctor(x), Ctor.precision, Ctor.rounding);
-  }
-
-  // Prevent rounding of intermediate calculations.
-  external = false;
-
-  if (Ctor.modulo == 9) {
-
-    // Euclidian division: q = sign(y) * floor(x / abs(y))
-    // result = x - q * y    where  0 <= result < abs(y)
-    q = divide(x, y.abs(), 0, 3, 1);
-    q.s *= y.s;
-  } else {
-    q = divide(x, y, 0, Ctor.modulo, 1);
-  }
-
-  q = q.times(y);
-
-  external = true;
-
-  return x.minus(q);
-};
-
-
-/*
- * Return a new Decimal whose value is the natural exponential of the value of this Decimal,
- * i.e. the base e raised to the power the value of this Decimal, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- */
-P.naturalExponential = P.exp = function () {
-  return naturalExponential(this);
-};
-
-
-/*
- * Return a new Decimal whose value is the natural logarithm of the value of this Decimal,
- * rounded to `precision` significant digits using rounding mode `rounding`.
- *
- */
-P.naturalLogarithm = P.ln = function () {
-  return naturalLogarithm(this);
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal negated, i.e. as if multiplied by
- * -1.
- *
- */
-P.negated = P.neg = function () {
-  var x = new this.constructor(this);
-  x.s = -x.s;
-  return finalise(x);
-};
-
-
-/*
- *  n + 0 = n
- *  n + N = N
- *  n + I = I
- *  0 + n = n
- *  0 + 0 = 0
- *  0 + N = N
- *  0 + I = I
- *  N + n = N
- *  N + 0 = N
- *  N + N = N
- *  N + I = N
- *  I + n = I
- *  I + 0 = I
- *  I + N = N
- *  I + I = I
- *
- * Return a new Decimal whose value is the value of this Decimal plus `y`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- */
-P.plus = P.add = function (y) {
-  var carry, d, e, i, k, len, pr, rm, xd, yd,
-    x = this,
-    Ctor = x.constructor;
-
-  y = new Ctor(y);
-
-  // If either is not finite...
-  if (!x.d || !y.d) {
-
-    // Return NaN if either is NaN.
-    if (!x.s || !y.s) y = new Ctor(NaN);
-
-    // Return x if y is finite and x is ±Infinity.
-    // Return x if both are ±Infinity with the same sign.
-    // Return NaN if both are ±Infinity with different signs.
-    // Return y if x is finite and y is ±Infinity.
-    else if (!x.d) y = new Ctor(y.d || x.s === y.s ? x : NaN);
-
-    return y;
-  }
-
-   // If signs differ...
-  if (x.s != y.s) {
-    y.s = -y.s;
-    return x.minus(y);
-  }
-
-  xd = x.d;
-  yd = y.d;
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-
-  // If either is zero...
-  if (!xd[0] || !yd[0]) {
-
-    // Return x if y is zero.
-    // Return y if y is non-zero.
-    if (!yd[0]) y = new Ctor(x);
-
-    return external ? finalise(y, pr, rm) : y;
-  }
-
-  // x and y are finite, non-zero numbers with the same sign.
-
-  // Calculate base 1e7 exponents.
-  k = mathfloor(x.e / LOG_BASE);
-  e = mathfloor(y.e / LOG_BASE);
-
-  xd = xd.slice();
-  i = k - e;
-
-  // If base 1e7 exponents differ...
-  if (i) {
-
-    if (i < 0) {
-      d = xd;
-      i = -i;
-      len = yd.length;
-    } else {
-      d = yd;
-      e = k;
-      len = xd.length;
-    }
-
-    // Limit number of zeros prepended to max(ceil(pr / LOG_BASE), len) + 1.
-    k = Math.ceil(pr / LOG_BASE);
-    len = k > len ? k + 1 : len + 1;
-
-    if (i > len) {
-      i = len;
-      d.length = 1;
-    }
-
-    // Prepend zeros to equalise exponents. Note: Faster to use reverse then do unshifts.
-    d.reverse();
-    for (; i--;) d.push(0);
-    d.reverse();
-  }
-
-  len = xd.length;
-  i = yd.length;
-
-  // If yd is longer than xd, swap xd and yd so xd points to the longer array.
-  if (len - i < 0) {
-    i = len;
-    d = yd;
-    yd = xd;
-    xd = d;
-  }
-
-  // Only start adding at yd.length - 1 as the further digits of xd can be left as they are.
-  for (carry = 0; i;) {
-    carry = (xd[--i] = xd[i] + yd[i] + carry) / BASE | 0;
-    xd[i] %= BASE;
-  }
-
-  if (carry) {
-    xd.unshift(carry);
-    ++e;
-  }
-
-  // Remove trailing zeros.
-  // No need to check for zero, as +x + +y != 0 && -x + -y != 0
-  for (len = xd.length; xd[--len] == 0;) xd.pop();
-
-  y.d = xd;
-  y.e = getBase10Exponent(xd, e);
-
-  return external ? finalise(y, pr, rm) : y;
-};
-
-
-/*
- * Return the number of significant digits of the value of this Decimal.
- *
- * [z] {boolean|number} Whether to count integer-part trailing zeros: true, false, 1 or 0.
- *
- */
-P.precision = P.sd = function (z) {
-  var k,
-    x = this;
-
-  if (z !== void 0 && z !== !!z && z !== 1 && z !== 0) throw Error(invalidArgument + z);
-
-  if (x.d) {
-    k = getPrecision(x.d);
-    if (z && x.e + 1 > k) k = x.e + 1;
-  } else {
-    k = NaN;
-  }
-
-  return k;
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal rounded to a whole number using
- * rounding mode `rounding`.
- *
- */
-P.round = function () {
-  var x = this,
-    Ctor = x.constructor;
-
-  return finalise(new Ctor(x), x.e + 1, Ctor.rounding);
-};
-
-
-/*
- * Return a new Decimal whose value is the sine of the value in radians of this Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-1, 1]
- *
- * sin(x) = x - x^3/3! + x^5/5! - ...
- *
- * sin(0)         = 0
- * sin(-0)        = -0
- * sin(Infinity)  = NaN
- * sin(-Infinity) = NaN
- * sin(NaN)       = NaN
- *
- */
-P.sine = P.sin = function () {
-  var pr, rm,
-    x = this,
-    Ctor = x.constructor;
-
-  if (!x.isFinite()) return new Ctor(NaN);
-  if (x.isZero()) return new Ctor(x);
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  Ctor.precision = pr + Math.max(x.e, x.sd()) + LOG_BASE;
-  Ctor.rounding = 1;
-
-  x = sine(Ctor, toLessThanHalfPi(Ctor, x));
-
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return finalise(quadrant > 2 ? x.neg() : x, pr, rm, true);
-};
-
-
-/*
- * Return a new Decimal whose value is the square root of this Decimal, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- *  sqrt(-n) =  N
- *  sqrt(N)  =  N
- *  sqrt(-I) =  N
- *  sqrt(I)  =  I
- *  sqrt(0)  =  0
- *  sqrt(-0) = -0
- *
- */
-P.squareRoot = P.sqrt = function () {
-  var m, n, sd, r, rep, t,
-    x = this,
-    d = x.d,
-    e = x.e,
-    s = x.s,
-    Ctor = x.constructor;
-
-  // Negative/NaN/Infinity/zero?
-  if (s !== 1 || !d || !d[0]) {
-    return new Ctor(!s || s < 0 && (!d || d[0]) ? NaN : d ? x : 1 / 0);
-  }
-
-  external = false;
-
-  // Initial estimate.
-  s = Math.sqrt(+x);
-
-  // Math.sqrt underflow/overflow?
-  // Pass x to Math.sqrt as integer, then adjust the exponent of the result.
-  if (s == 0 || s == 1 / 0) {
-    n = digitsToString(d);
-
-    if ((n.length + e) % 2 == 0) n += '0';
-    s = Math.sqrt(n);
-    e = mathfloor((e + 1) / 2) - (e < 0 || e % 2);
-
-    if (s == 1 / 0) {
-      n = '5e' + e;
-    } else {
-      n = s.toExponential();
-      n = n.slice(0, n.indexOf('e') + 1) + e;
-    }
-
-    r = new Ctor(n);
-  } else {
-    r = new Ctor(s.toString());
-  }
-
-  sd = (e = Ctor.precision) + 3;
-
-  // Newton-Raphson iteration.
-  for (;;) {
-    t = r;
-    r = t.plus(divide(x, t, sd + 2, 1)).times(0.5);
-
-    // TODO? Replace with for-loop and checkRoundingDigits.
-    if (digitsToString(t.d).slice(0, sd) === (n = digitsToString(r.d)).slice(0, sd)) {
-      n = n.slice(sd - 3, sd + 1);
-
-      // The 4th rounding digit may be in error by -1 so if the 4 rounding digits are 9999 or
-      // 4999, i.e. approaching a rounding boundary, continue the iteration.
-      if (n == '9999' || !rep && n == '4999') {
-
-        // On the first iteration only, check to see if rounding up gives the exact result as the
-        // nines may infinitely repeat.
-        if (!rep) {
-          finalise(t, e + 1, 0);
-
-          if (t.times(t).eq(x)) {
-            r = t;
-            break;
-          }
-        }
-
-        sd += 4;
-        rep = 1;
-      } else {
-
-        // If the rounding digits are null, 0{0,4} or 50{0,3}, check for an exact result.
-        // If not, then there are further digits and m will be truthy.
-        if (!+n || !+n.slice(1) && n.charAt(0) == '5') {
-
-          // Truncate to the first rounding digit.
-          finalise(r, e + 1, 1);
-          m = !r.times(r).eq(x);
-        }
-
-        break;
-      }
-    }
-  }
-
-  external = true;
-
-  return finalise(r, e, Ctor.rounding, m);
-};
-
-
-/*
- * Return a new Decimal whose value is the tangent of the value in radians of this Decimal.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-Infinity, Infinity]
- *
- * tan(0)         = 0
- * tan(-0)        = -0
- * tan(Infinity)  = NaN
- * tan(-Infinity) = NaN
- * tan(NaN)       = NaN
- *
- */
-P.tangent = P.tan = function () {
-  var pr, rm,
-    x = this,
-    Ctor = x.constructor;
-
-  if (!x.isFinite()) return new Ctor(NaN);
-  if (x.isZero()) return new Ctor(x);
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-  Ctor.precision = pr + 10;
-  Ctor.rounding = 1;
-
-  x = x.sin();
-  x.s = 1;
-  x = divide(x, new Ctor(1).minus(x.times(x)).sqrt(), pr + 10, 0);
-
-  Ctor.precision = pr;
-  Ctor.rounding = rm;
-
-  return finalise(quadrant == 2 || quadrant == 4 ? x.neg() : x, pr, rm, true);
-};
-
-
-/*
- *  n * 0 = 0
- *  n * N = N
- *  n * I = I
- *  0 * n = 0
- *  0 * 0 = 0
- *  0 * N = N
- *  0 * I = N
- *  N * n = N
- *  N * 0 = N
- *  N * N = N
- *  N * I = N
- *  I * n = I
- *  I * 0 = N
- *  I * N = N
- *  I * I = I
- *
- * Return a new Decimal whose value is this Decimal times `y`, rounded to `precision` significant
- * digits using rounding mode `rounding`.
- *
- */
-P.times = P.mul = function (y) {
-  var carry, e, i, k, r, rL, t, xdL, ydL,
-    x = this,
-    Ctor = x.constructor,
-    xd = x.d,
-    yd = (y = new Ctor(y)).d;
-
-  y.s *= x.s;
-
-   // If either is NaN, ±Infinity or ±0...
-  if (!xd || !xd[0] || !yd || !yd[0]) {
-
-    return new Ctor(!y.s || xd && !xd[0] && !yd || yd && !yd[0] && !xd
-
-      // Return NaN if either is NaN.
-      // Return NaN if x is ±0 and y is ±Infinity, or y is ±0 and x is ±Infinity.
-      ? NaN
-
-      // Return ±Infinity if either is ±Infinity.
-      // Return ±0 if either is ±0.
-      : !xd || !yd ? y.s / 0 : y.s * 0);
-  }
-
-  e = mathfloor(x.e / LOG_BASE) + mathfloor(y.e / LOG_BASE);
-  xdL = xd.length;
-  ydL = yd.length;
-
-  // Ensure xd points to the longer array.
-  if (xdL < ydL) {
-    r = xd;
-    xd = yd;
-    yd = r;
-    rL = xdL;
-    xdL = ydL;
-    ydL = rL;
-  }
-
-  // Initialise the result array with zeros.
-  r = [];
-  rL = xdL + ydL;
-  for (i = rL; i--;) r.push(0);
-
-  // Multiply!
-  for (i = ydL; --i >= 0;) {
-    carry = 0;
-    for (k = xdL + i; k > i;) {
-      t = r[k] + yd[i] * xd[k - i - 1] + carry;
-      r[k--] = t % BASE | 0;
-      carry = t / BASE | 0;
-    }
-
-    r[k] = (r[k] + carry) % BASE | 0;
-  }
-
-  // Remove trailing zeros.
-  for (; !r[--rL];) r.pop();
-
-  if (carry) ++e;
-  else r.shift();
-
-  y.d = r;
-  y.e = getBase10Exponent(r, e);
-
-  return external ? finalise(y, Ctor.precision, Ctor.rounding) : y;
-};
-
-
-/*
- * Return a string representing the value of this Decimal in base 2, round to `sd` significant
- * digits using rounding mode `rm`.
- *
- * If the optional `sd` argument is present then return binary exponential notation.
- *
- * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- */
-P.toBinary = function (sd, rm) {
-  return toStringBinary(this, 2, sd, rm);
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal rounded to a maximum of `dp`
- * decimal places using rounding mode `rm` or `rounding` if `rm` is omitted.
- *
- * If `dp` is omitted, return a new Decimal whose value is the value of this Decimal.
- *
- * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- */
-P.toDecimalPlaces = P.toDP = function (dp, rm) {
-  var x = this,
-    Ctor = x.constructor;
-
-  x = new Ctor(x);
-  if (dp === void 0) return x;
-
-  checkInt32(dp, 0, MAX_DIGITS);
-
-  if (rm === void 0) rm = Ctor.rounding;
-  else checkInt32(rm, 0, 8);
-
-  return finalise(x, dp + x.e + 1, rm);
-};
-
-
-/*
- * Return a string representing the value of this Decimal in exponential notation rounded to
- * `dp` fixed decimal places using rounding mode `rounding`.
- *
- * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- */
-P.toExponential = function (dp, rm) {
-  var str,
-    x = this,
-    Ctor = x.constructor;
-
-  if (dp === void 0) {
-    str = finiteToString(x, true);
-  } else {
-    checkInt32(dp, 0, MAX_DIGITS);
-
-    if (rm === void 0) rm = Ctor.rounding;
-    else checkInt32(rm, 0, 8);
-
-    x = finalise(new Ctor(x), dp + 1, rm);
-    str = finiteToString(x, true, dp + 1);
-  }
-
-  return x.isNeg() && !x.isZero() ? '-' + str : str;
-};
-
-
-/*
- * Return a string representing the value of this Decimal in normal (fixed-point) notation to
- * `dp` fixed decimal places and rounded using rounding mode `rm` or `rounding` if `rm` is
- * omitted.
- *
- * As with JavaScript numbers, (-0).toFixed(0) is '0', but e.g. (-0.00001).toFixed(0) is '-0'.
- *
- * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- * (-0).toFixed(0) is '0', but (-0.1).toFixed(0) is '-0'.
- * (-0).toFixed(1) is '0.0', but (-0.01).toFixed(1) is '-0.0'.
- * (-0).toFixed(3) is '0.000'.
- * (-0.5).toFixed(0) is '-0'.
- *
- */
-P.toFixed = function (dp, rm) {
-  var str, y,
-    x = this,
-    Ctor = x.constructor;
-
-  if (dp === void 0) {
-    str = finiteToString(x);
-  } else {
-    checkInt32(dp, 0, MAX_DIGITS);
-
-    if (rm === void 0) rm = Ctor.rounding;
-    else checkInt32(rm, 0, 8);
-
-    y = finalise(new Ctor(x), dp + x.e + 1, rm);
-    str = finiteToString(y, false, dp + y.e + 1);
-  }
-
-  // To determine whether to add the minus sign look at the value before it was rounded,
-  // i.e. look at `x` rather than `y`.
-  return x.isNeg() && !x.isZero() ? '-' + str : str;
-};
-
-
-/*
- * Return an array representing the value of this Decimal as a simple fraction with an integer
- * numerator and an integer denominator.
- *
- * The denominator will be a positive non-zero value less than or equal to the specified maximum
- * denominator. If a maximum denominator is not specified, the denominator will be the lowest
- * value necessary to represent the number exactly.
- *
- * [maxD] {number|string|Decimal} Maximum denominator. Integer >= 1 and < Infinity.
- *
- */
-P.toFraction = function (maxD) {
-  var d, d0, d1, d2, e, k, n, n0, n1, pr, q, r,
-    x = this,
-    xd = x.d,
-    Ctor = x.constructor;
-
-  if (!xd) return new Ctor(x);
-
-  n1 = d0 = new Ctor(1);
-  d1 = n0 = new Ctor(0);
-
-  d = new Ctor(d1);
-  e = d.e = getPrecision(xd) - x.e - 1;
-  k = e % LOG_BASE;
-  d.d[0] = mathpow(10, k < 0 ? LOG_BASE + k : k);
-
-  if (maxD == null) {
-
-    // d is 10**e, the minimum max-denominator needed.
-    maxD = e > 0 ? d : n1;
-  } else {
-    n = new Ctor(maxD);
-    if (!n.isInt() || n.lt(n1)) throw Error(invalidArgument + n);
-    maxD = n.gt(d) ? (e > 0 ? d : n1) : n;
-  }
-
-  external = false;
-  n = new Ctor(digitsToString(xd));
-  pr = Ctor.precision;
-  Ctor.precision = e = xd.length * LOG_BASE * 2;
-
-  for (;;)  {
-    q = divide(n, d, 0, 1, 1);
-    d2 = d0.plus(q.times(d1));
-    if (d2.cmp(maxD) == 1) break;
-    d0 = d1;
-    d1 = d2;
-    d2 = n1;
-    n1 = n0.plus(q.times(d2));
-    n0 = d2;
-    d2 = d;
-    d = n.minus(q.times(d2));
-    n = d2;
-  }
-
-  d2 = divide(maxD.minus(d0), d1, 0, 1, 1);
-  n0 = n0.plus(d2.times(n1));
-  d0 = d0.plus(d2.times(d1));
-  n0.s = n1.s = x.s;
-
-  // Determine which fraction is closer to x, n0/d0 or n1/d1?
-  r = divide(n1, d1, e, 1).minus(x).abs().cmp(divide(n0, d0, e, 1).minus(x).abs()) < 1
-      ? [n1, d1] : [n0, d0];
-
-  Ctor.precision = pr;
-  external = true;
-
-  return r;
-};
-
-
-/*
- * Return a string representing the value of this Decimal in base 16, round to `sd` significant
- * digits using rounding mode `rm`.
- *
- * If the optional `sd` argument is present then return binary exponential notation.
- *
- * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- */
-P.toHexadecimal = P.toHex = function (sd, rm) {
-  return toStringBinary(this, 16, sd, rm);
-};
-
-
-/*
- * Returns a new Decimal whose value is the nearest multiple of `y` in the direction of rounding
- * mode `rm`, or `Decimal.rounding` if `rm` is omitted, to the value of this Decimal.
- *
- * The return value will always have the same sign as this Decimal, unless either this Decimal
- * or `y` is NaN, in which case the return value will be also be NaN.
- *
- * The return value is not affected by the value of `precision`.
- *
- * y {number|string|Decimal} The magnitude to round to a multiple of.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- * 'toNearest() rounding mode not an integer: {rm}'
- * 'toNearest() rounding mode out of range: {rm}'
- *
- */
-P.toNearest = function (y, rm) {
-  var x = this,
-    Ctor = x.constructor;
-
-  x = new Ctor(x);
-
-  if (y == null) {
-
-    // If x is not finite, return x.
-    if (!x.d) return x;
-
-    y = new Ctor(1);
-    rm = Ctor.rounding;
-  } else {
-    y = new Ctor(y);
-    if (rm === void 0) {
-      rm = Ctor.rounding;
-    } else {
-      checkInt32(rm, 0, 8);
-    }
-
-    // If x is not finite, return x if y is not NaN, else NaN.
-    if (!x.d) return y.s ? x : y;
-
-    // If y is not finite, return Infinity with the sign of x if y is Infinity, else NaN.
-    if (!y.d) {
-      if (y.s) y.s = x.s;
-      return y;
-    }
-  }
-
-  // If y is not zero, calculate the nearest multiple of y to x.
-  if (y.d[0]) {
-    external = false;
-    x = divide(x, y, 0, rm, 1).times(y);
-    external = true;
-    finalise(x);
-
-  // If y is zero, return zero with the sign of x.
-  } else {
-    y.s = x.s;
-    x = y;
-  }
-
-  return x;
-};
-
-
-/*
- * Return the value of this Decimal converted to a number primitive.
- * Zero keeps its sign.
- *
- */
-P.toNumber = function () {
-  return +this;
-};
-
-
-/*
- * Return a string representing the value of this Decimal in base 8, round to `sd` significant
- * digits using rounding mode `rm`.
- *
- * If the optional `sd` argument is present then return binary exponential notation.
- *
- * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- */
-P.toOctal = function (sd, rm) {
-  return toStringBinary(this, 8, sd, rm);
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal raised to the power `y`, rounded
- * to `precision` significant digits using rounding mode `rounding`.
- *
- * ECMAScript compliant.
- *
- *   pow(x, NaN)                           = NaN
- *   pow(x, ±0)                            = 1
-
- *   pow(NaN, non-zero)                    = NaN
- *   pow(abs(x) > 1, +Infinity)            = +Infinity
- *   pow(abs(x) > 1, -Infinity)            = +0
- *   pow(abs(x) == 1, ±Infinity)           = NaN
- *   pow(abs(x) < 1, +Infinity)            = +0
- *   pow(abs(x) < 1, -Infinity)            = +Infinity
- *   pow(+Infinity, y > 0)                 = +Infinity
- *   pow(+Infinity, y < 0)                 = +0
- *   pow(-Infinity, odd integer > 0)       = -Infinity
- *   pow(-Infinity, even integer > 0)      = +Infinity
- *   pow(-Infinity, odd integer < 0)       = -0
- *   pow(-Infinity, even integer < 0)      = +0
- *   pow(+0, y > 0)                        = +0
- *   pow(+0, y < 0)                        = +Infinity
- *   pow(-0, odd integer > 0)              = -0
- *   pow(-0, even integer > 0)             = +0
- *   pow(-0, odd integer < 0)              = -Infinity
- *   pow(-0, even integer < 0)             = +Infinity
- *   pow(finite x < 0, finite non-integer) = NaN
- *
- * For non-integer or very large exponents pow(x, y) is calculated using
- *
- *   x^y = exp(y*ln(x))
- *
- * Assuming the first 15 rounding digits are each equally likely to be any digit 0-9, the
- * probability of an incorrectly rounded result
- * P([49]9{14} | [50]0{14}) = 2 * 0.2 * 10^-14 = 4e-15 = 1/2.5e+14
- * i.e. 1 in 250,000,000,000,000
- *
- * If a result is incorrectly rounded the maximum error will be 1 ulp (unit in last place).
- *
- * y {number|string|Decimal} The power to which to raise this Decimal.
- *
- */
-P.toPower = P.pow = function (y) {
-  var e, k, pr, r, rm, s,
-    x = this,
-    Ctor = x.constructor,
-    yn = +(y = new Ctor(y));
-
-  // Either ±Infinity, NaN or ±0?
-  if (!x.d || !y.d || !x.d[0] || !y.d[0]) return new Ctor(mathpow(+x, yn));
-
-  x = new Ctor(x);
-
-  if (x.eq(1)) return x;
-
-  pr = Ctor.precision;
-  rm = Ctor.rounding;
-
-  if (y.eq(1)) return finalise(x, pr, rm);
-
-  // y exponent
-  e = mathfloor(y.e / LOG_BASE);
-
-  // If y is a small integer use the 'exponentiation by squaring' algorithm.
-  if (e >= y.d.length - 1 && (k = yn < 0 ? -yn : yn) <= MAX_SAFE_INTEGER) {
-    r = intPow(Ctor, x, k, pr);
-    return y.s < 0 ? new Ctor(1).div(r) : finalise(r, pr, rm);
-  }
-
-  s = x.s;
-
-  // if x is negative
-  if (s < 0) {
-
-    // if y is not an integer
-    if (e < y.d.length - 1) return new Ctor(NaN);
-
-    // Result is positive if x is negative and the last digit of integer y is even.
-    if ((y.d[e] & 1) == 0) s = 1;
-
-    // if x.eq(-1)
-    if (x.e == 0 && x.d[0] == 1 && x.d.length == 1) {
-      x.s = s;
-      return x;
-    }
-  }
-
-  // Estimate result exponent.
-  // x^y = 10^e,  where e = y * log10(x)
-  // log10(x) = log10(x_significand) + x_exponent
-  // log10(x_significand) = ln(x_significand) / ln(10)
-  k = mathpow(+x, yn);
-  e = k == 0 || !isFinite(k)
-    ? mathfloor(yn * (Math.log('0.' + digitsToString(x.d)) / Math.LN10 + x.e + 1))
-    : new Ctor(k + '').e;
-
-  // Exponent estimate may be incorrect e.g. x: 0.999999999999999999, y: 2.29, e: 0, r.e: -1.
-
-  // Overflow/underflow?
-  if (e > Ctor.maxE + 1 || e < Ctor.minE - 1) return new Ctor(e > 0 ? s / 0 : 0);
-
-  external = false;
-  Ctor.rounding = x.s = 1;
-
-  // Estimate the extra guard digits needed to ensure five correct rounding digits from
-  // naturalLogarithm(x). Example of failure without these extra digits (precision: 10):
-  // new Decimal(2.32456).pow('2087987436534566.46411')
-  // should be 1.162377823e+764914905173815, but is 1.162355823e+764914905173815
-  k = Math.min(12, (e + '').length);
-
-  // r = x^y = exp(y*ln(x))
-  r = naturalExponential(y.times(naturalLogarithm(x, pr + k)), pr);
-
-  // r may be Infinity, e.g. (0.9999999999999999).pow(-1e+40)
-  if (r.d) {
-
-    // Truncate to the required precision plus five rounding digits.
-    r = finalise(r, pr + 5, 1);
-
-    // If the rounding digits are [49]9999 or [50]0000 increase the precision by 10 and recalculate
-    // the result.
-    if (checkRoundingDigits(r.d, pr, rm)) {
-      e = pr + 10;
-
-      // Truncate to the increased precision plus five rounding digits.
-      r = finalise(naturalExponential(y.times(naturalLogarithm(x, e + k)), e), e + 5, 1);
-
-      // Check for 14 nines from the 2nd rounding digit (the first rounding digit may be 4 or 9).
-      if (+digitsToString(r.d).slice(pr + 1, pr + 15) + 1 == 1e14) {
-        r = finalise(r, pr + 1, 0);
-      }
-    }
-  }
-
-  r.s = s;
-  external = true;
-  Ctor.rounding = rm;
-
-  return finalise(r, pr, rm);
-};
-
-
-/*
- * Return a string representing the value of this Decimal rounded to `sd` significant digits
- * using rounding mode `rounding`.
- *
- * Return exponential notation if `sd` is less than the number of digits necessary to represent
- * the integer part of the value in normal notation.
- *
- * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- */
-P.toPrecision = function (sd, rm) {
-  var str,
-    x = this,
-    Ctor = x.constructor;
-
-  if (sd === void 0) {
-    str = finiteToString(x, x.e <= Ctor.toExpNeg || x.e >= Ctor.toExpPos);
-  } else {
-    checkInt32(sd, 1, MAX_DIGITS);
-
-    if (rm === void 0) rm = Ctor.rounding;
-    else checkInt32(rm, 0, 8);
-
-    x = finalise(new Ctor(x), sd, rm);
-    str = finiteToString(x, sd <= x.e || x.e <= Ctor.toExpNeg, sd);
-  }
-
-  return x.isNeg() && !x.isZero() ? '-' + str : str;
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal rounded to a maximum of `sd`
- * significant digits using rounding mode `rm`, or to `precision` and `rounding` respectively if
- * omitted.
- *
- * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
- * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
- *
- * 'toSD() digits out of range: {sd}'
- * 'toSD() digits not an integer: {sd}'
- * 'toSD() rounding mode not an integer: {rm}'
- * 'toSD() rounding mode out of range: {rm}'
- *
- */
-P.toSignificantDigits = P.toSD = function (sd, rm) {
-  var x = this,
-    Ctor = x.constructor;
-
-  if (sd === void 0) {
-    sd = Ctor.precision;
-    rm = Ctor.rounding;
-  } else {
-    checkInt32(sd, 1, MAX_DIGITS);
-
-    if (rm === void 0) rm = Ctor.rounding;
-    else checkInt32(rm, 0, 8);
-  }
-
-  return finalise(new Ctor(x), sd, rm);
-};
-
-
-/*
- * Return a string representing the value of this Decimal.
- *
- * Return exponential notation if this Decimal has a positive exponent equal to or greater than
- * `toExpPos`, or a negative exponent equal to or less than `toExpNeg`.
- *
- */
-P.toString = function () {
-  var x = this,
-    Ctor = x.constructor,
-    str = finiteToString(x, x.e <= Ctor.toExpNeg || x.e >= Ctor.toExpPos);
-
-  return x.isNeg() && !x.isZero() ? '-' + str : str;
-};
-
-
-/*
- * Return a new Decimal whose value is the value of this Decimal truncated to a whole number.
- *
- */
-P.truncated = P.trunc = function () {
-  return finalise(new this.constructor(this), this.e + 1, 1);
-};
-
-
-/*
- * Return a string representing the value of this Decimal.
- * Unlike `toString`, negative zero will include the minus sign.
- *
- */
-P.valueOf = P.toJSON = function () {
-  var x = this,
-    Ctor = x.constructor,
-    str = finiteToString(x, x.e <= Ctor.toExpNeg || x.e >= Ctor.toExpPos);
-
-  return x.isNeg() ? '-' + str : str;
-};
-
-
-// Helper functions for Decimal.prototype (P) and/or Decimal methods, and their callers.
-
-
-/*
- *  digitsToString           P.cubeRoot, P.logarithm, P.squareRoot, P.toFraction, P.toPower,
- *                           finiteToString, naturalExponential, naturalLogarithm
- *  checkInt32               P.toDecimalPlaces, P.toExponential, P.toFixed, P.toNearest,
- *                           P.toPrecision, P.toSignificantDigits, toStringBinary, random
- *  checkRoundingDigits      P.logarithm, P.toPower, naturalExponential, naturalLogarithm
- *  convertBase              toStringBinary, parseOther
- *  cos                      P.cos
- *  divide                   P.atanh, P.cubeRoot, P.dividedBy, P.dividedToIntegerBy,
- *                           P.logarithm, P.modulo, P.squareRoot, P.tan, P.tanh, P.toFraction,
- *                           P.toNearest, toStringBinary, naturalExponential, naturalLogarithm,
- *                           taylorSeries, atan2, parseOther
- *  finalise                 P.absoluteValue, P.atan, P.atanh, P.ceil, P.cos, P.cosh,
- *                           P.cubeRoot, P.dividedToIntegerBy, P.floor, P.logarithm, P.minus,
- *                           P.modulo, P.negated, P.plus, P.round, P.sin, P.sinh, P.squareRoot,
- *                           P.tan, P.times, P.toDecimalPlaces, P.toExponential, P.toFixed,
- *                           P.toNearest, P.toPower, P.toPrecision, P.toSignificantDigits,
- *                           P.truncated, divide, getLn10, getPi, naturalExponential,
- *                           naturalLogarithm, ceil, floor, round, trunc
- *  finiteToString           P.toExponential, P.toFixed, P.toPrecision, P.toString, P.valueOf,
- *                           toStringBinary
- *  getBase10Exponent        P.minus, P.plus, P.times, parseOther
- *  getLn10                  P.logarithm, naturalLogarithm
- *  getPi                    P.acos, P.asin, P.atan, toLessThanHalfPi, atan2
- *  getPrecision             P.precision, P.toFraction
- *  getZeroString            digitsToString, finiteToString
- *  intPow                   P.toPower, parseOther
- *  isOdd                    toLessThanHalfPi
- *  maxOrMin                 max, min
- *  naturalExponential       P.naturalExponential, P.toPower
- *  naturalLogarithm         P.acosh, P.asinh, P.atanh, P.logarithm, P.naturalLogarithm,
- *                           P.toPower, naturalExponential
- *  nonFiniteToString        finiteToString, toStringBinary
- *  parseDecimal             Decimal
- *  parseOther               Decimal
- *  sin                      P.sin
- *  taylorSeries             P.cosh, P.sinh, cos, sin
- *  toLessThanHalfPi         P.cos, P.sin
- *  toStringBinary           P.toBinary, P.toHexadecimal, P.toOctal
- *  truncate                 intPow
- *
- *  Throws:                  P.logarithm, P.precision, P.toFraction, checkInt32, getLn10, getPi,
- *                           naturalLogarithm, config, parseOther, random, Decimal
- */
-
-
-function digitsToString(d) {
-  var i, k, ws,
-    indexOfLastWord = d.length - 1,
-    str = '',
-    w = d[0];
-
-  if (indexOfLastWord > 0) {
-    str += w;
-    for (i = 1; i < indexOfLastWord; i++) {
-      ws = d[i] + '';
-      k = LOG_BASE - ws.length;
-      if (k) str += getZeroString(k);
-      str += ws;
-    }
-
-    w = d[i];
-    ws = w + '';
-    k = LOG_BASE - ws.length;
-    if (k) str += getZeroString(k);
-  } else if (w === 0) {
-    return '0';
-  }
-
-  // Remove trailing zeros of last w.
-  for (; w % 10 === 0;) w /= 10;
-
-  return str + w;
-}
-
-
-function checkInt32(i, min, max) {
-  if (i !== ~~i || i < min || i > max) {
-    throw Error(invalidArgument + i);
-  }
-}
-
-
-/*
- * Check 5 rounding digits if `repeating` is null, 4 otherwise.
- * `repeating == null` if caller is `log` or `pow`,
- * `repeating != null` if caller is `naturalLogarithm` or `naturalExponential`.
- */
-function checkRoundingDigits(d, i, rm, repeating) {
-  var di, k, r, rd;
-
-  // Get the length of the first word of the array d.
-  for (k = d[0]; k >= 10; k /= 10) --i;
-
-  // Is the rounding digit in the first word of d?
-  if (--i < 0) {
-    i += LOG_BASE;
-    di = 0;
-  } else {
-    di = Math.ceil((i + 1) / LOG_BASE);
-    i %= LOG_BASE;
-  }
-
-  // i is the index (0 - 6) of the rounding digit.
-  // E.g. if within the word 3487563 the first rounding digit is 5,
-  // then i = 4, k = 1000, rd = 3487563 % 1000 = 563
-  k = mathpow(10, LOG_BASE - i);
-  rd = d[di] % k | 0;
-
-  if (repeating == null) {
-    if (i < 3) {
-      if (i == 0) rd = rd / 100 | 0;
-      else if (i == 1) rd = rd / 10 | 0;
-      r = rm < 4 && rd == 99999 || rm > 3 && rd == 49999 || rd == 50000 || rd == 0;
-    } else {
-      r = (rm < 4 && rd + 1 == k || rm > 3 && rd + 1 == k / 2) &&
-        (d[di + 1] / k / 100 | 0) == mathpow(10, i - 2) - 1 ||
-          (rd == k / 2 || rd == 0) && (d[di + 1] / k / 100 | 0) == 0;
-    }
-  } else {
-    if (i < 4) {
-      if (i == 0) rd = rd / 1000 | 0;
-      else if (i == 1) rd = rd / 100 | 0;
-      else if (i == 2) rd = rd / 10 | 0;
-      r = (repeating || rm < 4) && rd == 9999 || !repeating && rm > 3 && rd == 4999;
-    } else {
-      r = ((repeating || rm < 4) && rd + 1 == k ||
-      (!repeating && rm > 3) && rd + 1 == k / 2) &&
-        (d[di + 1] / k / 1000 | 0) == mathpow(10, i - 3) - 1;
-    }
-  }
-
-  return r;
-}
-
-
-// Convert string of `baseIn` to an array of numbers of `baseOut`.
-// Eg. convertBase('255', 10, 16) returns [15, 15].
-// Eg. convertBase('ff', 16, 10) returns [2, 5, 5].
-function convertBase(str, baseIn, baseOut) {
-  var j,
-    arr = [0],
-    arrL,
-    i = 0,
-    strL = str.length;
-
-  for (; i < strL;) {
-    for (arrL = arr.length; arrL--;) arr[arrL] *= baseIn;
-    arr[0] += NUMERALS.indexOf(str.charAt(i++));
-    for (j = 0; j < arr.length; j++) {
-      if (arr[j] > baseOut - 1) {
-        if (arr[j + 1] === void 0) arr[j + 1] = 0;
-        arr[j + 1] += arr[j] / baseOut | 0;
-        arr[j] %= baseOut;
-      }
-    }
-  }
-
-  return arr.reverse();
-}
-
-
-/*
- * cos(x) = 1 - x^2/2! + x^4/4! - ...
- * |x| < pi/2
- *
- */
-function cosine(Ctor, x) {
-  var k, len, y;
-
-  if (x.isZero()) return x;
-
-  // Argument reduction: cos(4x) = 8*(cos^4(x) - cos^2(x)) + 1
-  // i.e. cos(x) = 8*(cos^4(x/4) - cos^2(x/4)) + 1
-
-  // Estimate the optimum number of times to use the argument reduction.
-  len = x.d.length;
-  if (len < 32) {
-    k = Math.ceil(len / 3);
-    y = (1 / tinyPow(4, k)).toString();
-  } else {
-    k = 16;
-    y = '2.3283064365386962890625e-10';
-  }
-
-  Ctor.precision += k;
-
-  x = taylorSeries(Ctor, 1, x.times(y), new Ctor(1));
-
-  // Reverse argument reduction
-  for (var i = k; i--;) {
-    var cos2x = x.times(x);
-    x = cos2x.times(cos2x).minus(cos2x).times(8).plus(1);
-  }
-
-  Ctor.precision -= k;
-
-  return x;
-}
-
-
-/*
- * Perform division in the specified base.
- */
-var divide = (function () {
-
-  // Assumes non-zero x and k, and hence non-zero result.
-  function multiplyInteger(x, k, base) {
-    var temp,
-      carry = 0,
-      i = x.length;
-
-    for (x = x.slice(); i--;) {
-      temp = x[i] * k + carry;
-      x[i] = temp % base | 0;
-      carry = temp / base | 0;
-    }
-
-    if (carry) x.unshift(carry);
-
-    return x;
-  }
-
-  function compare(a, b, aL, bL) {
-    var i, r;
-
-    if (aL != bL) {
-      r = aL > bL ? 1 : -1;
-    } else {
-      for (i = r = 0; i < aL; i++) {
-        if (a[i] != b[i]) {
-          r = a[i] > b[i] ? 1 : -1;
-          break;
-        }
-      }
-    }
-
-    return r;
-  }
-
-  function subtract(a, b, aL, base) {
-    var i = 0;
-
-    // Subtract b from a.
-    for (; aL--;) {
-      a[aL] -= i;
-      i = a[aL] < b[aL] ? 1 : 0;
-      a[aL] = i * base + a[aL] - b[aL];
-    }
-
-    // Remove leading zeros.
-    for (; !a[0] && a.length > 1;) a.shift();
-  }
-
-  return function (x, y, pr, rm, dp, base) {
-    var cmp, e, i, k, logBase, more, prod, prodL, q, qd, rem, remL, rem0, sd, t, xi, xL, yd0,
-      yL, yz,
-      Ctor = x.constructor,
-      sign = x.s == y.s ? 1 : -1,
-      xd = x.d,
-      yd = y.d;
-
-    // Either NaN, Infinity or 0?
-    if (!xd || !xd[0] || !yd || !yd[0]) {
-
-      return new Ctor(// Return NaN if either NaN, or both Infinity or 0.
-        !x.s || !y.s || (xd ? yd && xd[0] == yd[0] : !yd) ? NaN :
-
-        // Return ±0 if x is 0 or y is ±Infinity, or return ±Infinity as y is 0.
-        xd && xd[0] == 0 || !yd ? sign * 0 : sign / 0);
-    }
-
-    if (base) {
-      logBase = 1;
-      e = x.e - y.e;
-    } else {
-      base = BASE;
-      logBase = LOG_BASE;
-      e = mathfloor(x.e / logBase) - mathfloor(y.e / logBase);
-    }
-
-    yL = yd.length;
-    xL = xd.length;
-    q = new Ctor(sign);
-    qd = q.d = [];
-
-    // Result exponent may be one less than e.
-    // The digit array of a Decimal from toStringBinary may have trailing zeros.
-    for (i = 0; yd[i] == (xd[i] || 0); i++);
-
-    if (yd[i] > (xd[i] || 0)) e--;
-
-    if (pr == null) {
-      sd = pr = Ctor.precision;
-      rm = Ctor.rounding;
-    } else if (dp) {
-      sd = pr + (x.e - y.e) + 1;
-    } else {
-      sd = pr;
-    }
-
-    if (sd < 0) {
-      qd.push(1);
-      more = true;
-    } else {
-
-      // Convert precision in number of base 10 digits to base 1e7 digits.
-      sd = sd / logBase + 2 | 0;
-      i = 0;
-
-      // divisor < 1e7
-      if (yL == 1) {
-        k = 0;
-        yd = yd[0];
-        sd++;
-
-        // k is the carry.
-        for (; (i < xL || k) && sd--; i++) {
-          t = k * base + (xd[i] || 0);
-          qd[i] = t / yd | 0;
-          k = t % yd | 0;
-        }
-
-        more = k || i < xL;
-
-      // divisor >= 1e7
-      } else {
-
-        // Normalise xd and yd so highest order digit of yd is >= base/2
-        k = base / (yd[0] + 1) | 0;
-
-        if (k > 1) {
-          yd = multiplyInteger(yd, k, base);
-          xd = multiplyInteger(xd, k, base);
-          yL = yd.length;
-          xL = xd.length;
-        }
-
-        xi = yL;
-        rem = xd.slice(0, yL);
-        remL = rem.length;
-
-        // Add zeros to make remainder as long as divisor.
-        for (; remL < yL;) rem[remL++] = 0;
-
-        yz = yd.slice();
-        yz.unshift(0);
-        yd0 = yd[0];
-
-        if (yd[1] >= base / 2) ++yd0;
-
-        do {
-          k = 0;
-
-          // Compare divisor and remainder.
-          cmp = compare(yd, rem, yL, remL);
-
-          // If divisor < remainder.
-          if (cmp < 0) {
-
-            // Calculate trial digit, k.
-            rem0 = rem[0];
-            if (yL != remL) rem0 = rem0 * base + (rem[1] || 0);
-
-            // k will be how many times the divisor goes into the current remainder.
-            k = rem0 / yd0 | 0;
-
-            //  Algorithm:
-            //  1. product = divisor * trial digit (k)
-            //  2. if product > remainder: product -= divisor, k--
-            //  3. remainder -= product
-            //  4. if product was < remainder at 2:
-            //    5. compare new remainder and divisor
-            //    6. If remainder > divisor: remainder -= divisor, k++
-
-            if (k > 1) {
-              if (k >= base) k = base - 1;
-
-              // product = divisor * trial digit.
-              prod = multiplyInteger(yd, k, base);
-              prodL = prod.length;
-              remL = rem.length;
-
-              // Compare product and remainder.
-              cmp = compare(prod, rem, prodL, remL);
-
-              // product > remainder.
-              if (cmp == 1) {
-                k--;
-
-                // Subtract divisor from product.
-                subtract(prod, yL < prodL ? yz : yd, prodL, base);
-              }
-            } else {
-
-              // cmp is -1.
-              // If k is 0, there is no need to compare yd and rem again below, so change cmp to 1
-              // to avoid it. If k is 1 there is a need to compare yd and rem again below.
-              if (k == 0) cmp = k = 1;
-              prod = yd.slice();
-            }
-
-            prodL = prod.length;
-            if (prodL < remL) prod.unshift(0);
-
-            // Subtract product from remainder.
-            subtract(rem, prod, remL, base);
-
-            // If product was < previous remainder.
-            if (cmp == -1) {
-              remL = rem.length;
-
-              // Compare divisor and new remainder.
-              cmp = compare(yd, rem, yL, remL);
-
-              // If divisor < new remainder, subtract divisor from remainder.
-              if (cmp < 1) {
-                k++;
-
-                // Subtract divisor from remainder.
-                subtract(rem, yL < remL ? yz : yd, remL, base);
-              }
-            }
-
-            remL = rem.length;
-          } else if (cmp === 0) {
-            k++;
-            rem = [0];
-          }    // if cmp === 1, k will be 0
-
-          // Add the next digit, k, to the result array.
-          qd[i++] = k;
-
-          // Update the remainder.
-          if (cmp && rem[0]) {
-            rem[remL++] = xd[xi] || 0;
-          } else {
-            rem = [xd[xi]];
-            remL = 1;
-          }
-
-        } while ((xi++ < xL || rem[0] !== void 0) && sd--);
-
-        more = rem[0] !== void 0;
-      }
-
-      // Leading zero?
-      if (!qd[0]) qd.shift();
-    }
-
-    // logBase is 1 when divide is being used for base conversion.
-    if (logBase == 1) {
-      q.e = e;
-      inexact = more;
-    } else {
-
-      // To calculate q.e, first get the number of digits of qd[0].
-      for (i = 1, k = qd[0]; k >= 10; k /= 10) i++;
-      q.e = i + e * logBase - 1;
-
-      finalise(q, dp ? pr + q.e + 1 : pr, rm, more);
-    }
-
-    return q;
-  };
-})();
-
-
-/*
- * Round `x` to `sd` significant digits using rounding mode `rm`.
- * Check for over/under-flow.
- */
- function finalise(x, sd, rm, isTruncated) {
-  var digits, i, j, k, rd, roundUp, w, xd, xdi,
-    Ctor = x.constructor;
-
-  // Don't round if sd is null or undefined.
-  out: if (sd != null) {
-    xd = x.d;
-
-    // Infinity/NaN.
-    if (!xd) return x;
-
-    // rd: the rounding digit, i.e. the digit after the digit that may be rounded up.
-    // w: the word of xd containing rd, a base 1e7 number.
-    // xdi: the index of w within xd.
-    // digits: the number of digits of w.
-    // i: what would be the index of rd within w if all the numbers were 7 digits long (i.e. if
-    // they had leading zeros)
-    // j: if > 0, the actual index of rd within w (if < 0, rd is a leading zero).
-
-    // Get the length of the first word of the digits array xd.
-    for (digits = 1, k = xd[0]; k >= 10; k /= 10) digits++;
-    i = sd - digits;
-
-    // Is the rounding digit in the first word of xd?
-    if (i < 0) {
-      i += LOG_BASE;
-      j = sd;
-      w = xd[xdi = 0];
-
-      // Get the rounding digit at index j of w.
-      rd = w / mathpow(10, digits - j - 1) % 10 | 0;
-    } else {
-      xdi = Math.ceil((i + 1) / LOG_BASE);
-      k = xd.length;
-      if (xdi >= k) {
-        if (isTruncated) {
-
-          // Needed by `naturalExponential`, `naturalLogarithm` and `squareRoot`.
-          for (; k++ <= xdi;) xd.push(0);
-          w = rd = 0;
-          digits = 1;
-          i %= LOG_BASE;
-          j = i - LOG_BASE + 1;
-        } else {
-          break out;
-        }
-      } else {
-        w = k = xd[xdi];
-
-        // Get the number of digits of w.
-        for (digits = 1; k >= 10; k /= 10) digits++;
-
-        // Get the index of rd within w.
-        i %= LOG_BASE;
-
-        // Get the index of rd within w, adjusted for leading zeros.
-        // The number of leading zeros of w is given by LOG_BASE - digits.
-        j = i - LOG_BASE + digits;
-
-        // Get the rounding digit at index j of w.
-        rd = j < 0 ? 0 : w / mathpow(10, digits - j - 1) % 10 | 0;
-      }
-    }
-
-    // Are there any non-zero digits after the rounding digit?
-    isTruncated = isTruncated || sd < 0 ||
-      xd[xdi + 1] !== void 0 || (j < 0 ? w : w % mathpow(10, digits - j - 1));
-
-    // The expression `w % mathpow(10, digits - j - 1)` returns all the digits of w to the right
-    // of the digit at (left-to-right) index j, e.g. if w is 908714 and j is 2, the expression
-    // will give 714.
-
-    roundUp = rm < 4
-      ? (rd || isTruncated) && (rm == 0 || rm == (x.s < 0 ? 3 : 2))
-      : rd > 5 || rd == 5 && (rm == 4 || isTruncated || rm == 6 &&
-
-        // Check whether the digit to the left of the rounding digit is odd.
-        ((i > 0 ? j > 0 ? w / mathpow(10, digits - j) : 0 : xd[xdi - 1]) % 10) & 1 ||
-          rm == (x.s < 0 ? 8 : 7));
-
-    if (sd < 1 || !xd[0]) {
-      xd.length = 0;
-      if (roundUp) {
-
-        // Convert sd to decimal places.
-        sd -= x.e + 1;
-
-        // 1, 0.1, 0.01, 0.001, 0.0001 etc.
-        xd[0] = mathpow(10, (LOG_BASE - sd % LOG_BASE) % LOG_BASE);
-        x.e = -sd || 0;
-      } else {
-
-        // Zero.
-        xd[0] = x.e = 0;
-      }
-
-      return x;
-    }
-
-    // Remove excess digits.
-    if (i == 0) {
-      xd.length = xdi;
-      k = 1;
-      xdi--;
-    } else {
-      xd.length = xdi + 1;
-      k = mathpow(10, LOG_BASE - i);
-
-      // E.g. 56700 becomes 56000 if 7 is the rounding digit.
-      // j > 0 means i > number of leading zeros of w.
-      xd[xdi] = j > 0 ? (w / mathpow(10, digits - j) % mathpow(10, j) | 0) * k : 0;
-    }
-
-    if (roundUp) {
-      for (;;) {
-
-        // Is the digit to be rounded up in the first word of xd?
-        if (xdi == 0) {
-
-          // i will be the length of xd[0] before k is added.
-          for (i = 1, j = xd[0]; j >= 10; j /= 10) i++;
-          j = xd[0] += k;
-          for (k = 1; j >= 10; j /= 10) k++;
-
-          // if i != k the length has increased.
-          if (i != k) {
-            x.e++;
-            if (xd[0] == BASE) xd[0] = 1;
-          }
-
-          break;
-        } else {
-          xd[xdi] += k;
-          if (xd[xdi] != BASE) break;
-          xd[xdi--] = 0;
-          k = 1;
-        }
-      }
-    }
-
-    // Remove trailing zeros.
-    for (i = xd.length; xd[--i] === 0;) xd.pop();
-  }
-
-  if (external) {
-
-    // Overflow?
-    if (x.e > Ctor.maxE) {
-
-      // Infinity.
-      x.d = null;
-      x.e = NaN;
-
-    // Underflow?
-    } else if (x.e < Ctor.minE) {
-
-      // Zero.
-      x.e = 0;
-      x.d = [0];
-      // Ctor.underflow = true;
-    } // else Ctor.underflow = false;
-  }
-
-  return x;
-}
-
-
-function finiteToString(x, isExp, sd) {
-  if (!x.isFinite()) return nonFiniteToString(x);
-  var k,
-    e = x.e,
-    str = digitsToString(x.d),
-    len = str.length;
-
-  if (isExp) {
-    if (sd && (k = sd - len) > 0) {
-      str = str.charAt(0) + '.' + str.slice(1) + getZeroString(k);
-    } else if (len > 1) {
-      str = str.charAt(0) + '.' + str.slice(1);
-    }
-
-    str = str + (x.e < 0 ? 'e' : 'e+') + x.e;
-  } else if (e < 0) {
-    str = '0.' + getZeroString(-e - 1) + str;
-    if (sd && (k = sd - len) > 0) str += getZeroString(k);
-  } else if (e >= len) {
-    str += getZeroString(e + 1 - len);
-    if (sd && (k = sd - e - 1) > 0) str = str + '.' + getZeroString(k);
-  } else {
-    if ((k = e + 1) < len) str = str.slice(0, k) + '.' + str.slice(k);
-    if (sd && (k = sd - len) > 0) {
-      if (e + 1 === len) str += '.';
-      str += getZeroString(k);
-    }
-  }
-
-  return str;
-}
-
-
-// Calculate the base 10 exponent from the base 1e7 exponent.
-function getBase10Exponent(digits, e) {
-  var w = digits[0];
-
-  // Add the number of digits of the first word of the digits array.
-  for ( e *= LOG_BASE; w >= 10; w /= 10) e++;
-  return e;
-}
-
-
-function getLn10(Ctor, sd, pr) {
-  if (sd > LN10_PRECISION) {
-
-    // Reset global state in case the exception is caught.
-    external = true;
-    if (pr) Ctor.precision = pr;
-    throw Error(precisionLimitExceeded);
-  }
-  return finalise(new Ctor(LN10), sd, 1, true);
-}
-
-
-function getPi(Ctor, sd, rm) {
-  if (sd > PI_PRECISION) throw Error(precisionLimitExceeded);
-  return finalise(new Ctor(PI), sd, rm, true);
-}
-
-
-function getPrecision(digits) {
-  var w = digits.length - 1,
-    len = w * LOG_BASE + 1;
-
-  w = digits[w];
-
-  // If non-zero...
-  if (w) {
-
-    // Subtract the number of trailing zeros of the last word.
-    for (; w % 10 == 0; w /= 10) len--;
-
-    // Add the number of digits of the first word.
-    for (w = digits[0]; w >= 10; w /= 10) len++;
-  }
-
-  return len;
-}
-
-
-function getZeroString(k) {
-  var zs = '';
-  for (; k--;) zs += '0';
-  return zs;
-}
-
-
-/*
- * Return a new Decimal whose value is the value of Decimal `x` to the power `n`, where `n` is an
- * integer of type number.
- *
- * Implements 'exponentiation by squaring'. Called by `pow` and `parseOther`.
- *
- */
-function intPow(Ctor, x, n, pr) {
-  var isTruncated,
-    r = new Ctor(1),
-
-    // Max n of 9007199254740991 takes 53 loop iterations.
-    // Maximum digits array length; leaves [28, 34] guard digits.
-    k = Math.ceil(pr / LOG_BASE + 4);
-
-  external = false;
-
-  for (;;) {
-    if (n % 2) {
-      r = r.times(x);
-      if (truncate(r.d, k)) isTruncated = true;
-    }
-
-    n = mathfloor(n / 2);
-    if (n === 0) {
-
-      // To ensure correct rounding when r.d is truncated, increment the last word if it is zero.
-      n = r.d.length - 1;
-      if (isTruncated && r.d[n] === 0) ++r.d[n];
-      break;
-    }
-
-    x = x.times(x);
-    truncate(x.d, k);
-  }
-
-  external = true;
-
-  return r;
-}
-
-
-function isOdd(n) {
-  return n.d[n.d.length - 1] & 1;
-}
-
-
-/*
- * Handle `max` and `min`. `ltgt` is 'lt' or 'gt'.
- */
-function maxOrMin(Ctor, args, ltgt) {
-  var y,
-    x = new Ctor(args[0]),
-    i = 0;
-
-  for (; ++i < args.length;) {
-    y = new Ctor(args[i]);
-    if (!y.s) {
-      x = y;
-      break;
-    } else if (x[ltgt](y)) {
-      x = y;
-    }
-  }
-
-  return x;
-}
-
-
-/*
- * Return a new Decimal whose value is the natural exponential of `x` rounded to `sd` significant
- * digits.
- *
- * Taylor/Maclaurin series.
- *
- * exp(x) = x^0/0! + x^1/1! + x^2/2! + x^3/3! + ...
- *
- * Argument reduction:
- *   Repeat x = x / 32, k += 5, until |x| < 0.1
- *   exp(x) = exp(x / 2^k)^(2^k)
- *
- * Previously, the argument was initially reduced by
- * exp(x) = exp(r) * 10^k  where r = x - k * ln10, k = floor(x / ln10)
- * to first put r in the range [0, ln10], before dividing by 32 until |x| < 0.1, but this was
- * found to be slower than just dividing repeatedly by 32 as above.
- *
- * Max integer argument: exp('20723265836946413') = 6.3e+9000000000000000
- * Min integer argument: exp('-20723265836946411') = 1.2e-9000000000000000
- * (Math object integer min/max: Math.exp(709) = 8.2e+307, Math.exp(-745) = 5e-324)
- *
- *  exp(Infinity)  = Infinity
- *  exp(-Infinity) = 0
- *  exp(NaN)       = NaN
- *  exp(±0)        = 1
- *
- *  exp(x) is non-terminating for any finite, non-zero x.
- *
- *  The result will always be correctly rounded.
- *
- */
-function naturalExponential(x, sd) {
-  var denominator, guard, j, pow, sum, t, wpr,
-    rep = 0,
-    i = 0,
-    k = 0,
-    Ctor = x.constructor,
-    rm = Ctor.rounding,
-    pr = Ctor.precision;
-
-  // 0/NaN/Infinity?
-  if (!x.d || !x.d[0] || x.e > 17) {
-
-    return new Ctor(x.d
-      ? !x.d[0] ? 1 : x.s < 0 ? 0 : 1 / 0
-      : x.s ? x.s < 0 ? 0 : x : 0 / 0);
-  }
-
-  if (sd == null) {
-    external = false;
-    wpr = pr;
-  } else {
-    wpr = sd;
-  }
-
-  t = new Ctor(0.03125);
-
-  // while abs(x) >= 0.1
-  while (x.e > -2) {
-
-    // x = x / 2^5
-    x = x.times(t);
-    k += 5;
-  }
-
-  // Use 2 * log10(2^k) + 5 (empirically derived) to estimate the increase in precision
-  // necessary to ensure the first 4 rounding digits are correct.
-  guard = Math.log(mathpow(2, k)) / Math.LN10 * 2 + 5 | 0;
-  wpr += guard;
-  denominator = pow = sum = new Ctor(1);
-  Ctor.precision = wpr;
-
-  for (;;) {
-    pow = finalise(pow.times(x), wpr, 1);
-    denominator = denominator.times(++i);
-    t = sum.plus(divide(pow, denominator, wpr, 1));
-
-    if (digitsToString(t.d).slice(0, wpr) === digitsToString(sum.d).slice(0, wpr)) {
-      j = k;
-      while (j--) sum = finalise(sum.times(sum), wpr, 1);
-
-      // Check to see if the first 4 rounding digits are [49]999.
-      // If so, repeat the summation with a higher precision, otherwise
-      // e.g. with precision: 18, rounding: 1
-      // exp(18.404272462595034083567793919843761) = 98372560.1229999999 (should be 98372560.123)
-      // `wpr - guard` is the index of first rounding digit.
-      if (sd == null) {
-
-        if (rep < 3 && checkRoundingDigits(sum.d, wpr - guard, rm, rep)) {
-          Ctor.precision = wpr += 10;
-          denominator = pow = t = new Ctor(1);
-          i = 0;
-          rep++;
-        } else {
-          return finalise(sum, Ctor.precision = pr, rm, external = true);
-        }
-      } else {
-        Ctor.precision = pr;
-        return sum;
-      }
-    }
-
-    sum = t;
-  }
-}
-
-
-/*
- * Return a new Decimal whose value is the natural logarithm of `x` rounded to `sd` significant
- * digits.
- *
- *  ln(-n)        = NaN
- *  ln(0)         = -Infinity
- *  ln(-0)        = -Infinity
- *  ln(1)         = 0
- *  ln(Infinity)  = Infinity
- *  ln(-Infinity) = NaN
- *  ln(NaN)       = NaN
- *
- *  ln(n) (n != 1) is non-terminating.
- *
- */
-function naturalLogarithm(y, sd) {
-  var c, c0, denominator, e, numerator, rep, sum, t, wpr, x1, x2,
-    n = 1,
-    guard = 10,
-    x = y,
-    xd = x.d,
-    Ctor = x.constructor,
-    rm = Ctor.rounding,
-    pr = Ctor.precision;
-
-  // Is x negative or Infinity, NaN, 0 or 1?
-  if (x.s < 0 || !xd || !xd[0] || !x.e && xd[0] == 1 && xd.length == 1) {
-    return new Ctor(xd && !xd[0] ? -1 / 0 : x.s != 1 ? NaN : xd ? 0 : x);
-  }
-
-  if (sd == null) {
-    external = false;
-    wpr = pr;
-  } else {
-    wpr = sd;
-  }
-
-  Ctor.precision = wpr += guard;
-  c = digitsToString(xd);
-  c0 = c.charAt(0);
-
-  if (Math.abs(e = x.e) < 1.5e15) {
-
-    // Argument reduction.
-    // The series converges faster the closer the argument is to 1, so using
-    // ln(a^b) = b * ln(a),   ln(a) = ln(a^b) / b
-    // multiply the argument by itself until the leading digits of the significand are 7, 8, 9,
-    // 10, 11, 12 or 13, recording the number of multiplications so the sum of the series can
-    // later be divided by this number, then separate out the power of 10 using
-    // ln(a*10^b) = ln(a) + b*ln(10).
-
-    // max n is 21 (gives 0.9, 1.0 or 1.1) (9e15 / 21 = 4.2e14).
-    //while (c0 < 9 && c0 != 1 || c0 == 1 && c.charAt(1) > 1) {
-    // max n is 6 (gives 0.7 - 1.3)
-    while (c0 < 7 && c0 != 1 || c0 == 1 && c.charAt(1) > 3) {
-      x = x.times(y);
-      c = digitsToString(x.d);
-      c0 = c.charAt(0);
-      n++;
-    }
-
-    e = x.e;
-
-    if (c0 > 1) {
-      x = new Ctor('0.' + c);
-      e++;
-    } else {
-      x = new Ctor(c0 + '.' + c.slice(1));
-    }
-  } else {
-
-    // The argument reduction method above may result in overflow if the argument y is a massive
-    // number with exponent >= 1500000000000000 (9e15 / 6 = 1.5e15), so instead recall this
-    // function using ln(x*10^e) = ln(x) + e*ln(10).
-    t = getLn10(Ctor, wpr + 2, pr).times(e + '');
-    x = naturalLogarithm(new Ctor(c0 + '.' + c.slice(1)), wpr - guard).plus(t);
-    Ctor.precision = pr;
-
-    return sd == null ? finalise(x, pr, rm, external = true) : x;
-  }
-
-  // x1 is x reduced to a value near 1.
-  x1 = x;
-
-  // Taylor series.
-  // ln(y) = ln((1 + x)/(1 - x)) = 2(x + x^3/3 + x^5/5 + x^7/7 + ...)
-  // where x = (y - 1)/(y + 1)    (|x| < 1)
-  sum = numerator = x = divide(x.minus(1), x.plus(1), wpr, 1);
-  x2 = finalise(x.times(x), wpr, 1);
-  denominator = 3;
-
-  for (;;) {
-    numerator = finalise(numerator.times(x2), wpr, 1);
-    t = sum.plus(divide(numerator, new Ctor(denominator), wpr, 1));
-
-    if (digitsToString(t.d).slice(0, wpr) === digitsToString(sum.d).slice(0, wpr)) {
-      sum = sum.times(2);
-
-      // Reverse the argument reduction. Check that e is not 0 because, besides preventing an
-      // unnecessary calculation, -0 + 0 = +0 and to ensure correct rounding -0 needs to stay -0.
-      if (e !== 0) sum = sum.plus(getLn10(Ctor, wpr + 2, pr).times(e + ''));
-      sum = divide(sum, new Ctor(n), wpr, 1);
-
-      // Is rm > 3 and the first 4 rounding digits 4999, or rm < 4 (or the summation has
-      // been repeated previously) and the first 4 rounding digits 9999?
-      // If so, restart the summation with a higher precision, otherwise
-      // e.g. with precision: 12, rounding: 1
-      // ln(135520028.6126091714265381533) = 18.7246299999 when it should be 18.72463.
-      // `wpr - guard` is the index of first rounding digit.
-      if (sd == null) {
-        if (checkRoundingDigits(sum.d, wpr - guard, rm, rep)) {
-          Ctor.precision = wpr += guard;
-          t = numerator = x = divide(x1.minus(1), x1.plus(1), wpr, 1);
-          x2 = finalise(x.times(x), wpr, 1);
-          denominator = rep = 1;
-        } else {
-          return finalise(sum, Ctor.precision = pr, rm, external = true);
-        }
-      } else {
-        Ctor.precision = pr;
-        return sum;
-      }
-    }
-
-    sum = t;
-    denominator += 2;
-  }
-}
-
-
-// ±Infinity, NaN.
-function nonFiniteToString(x) {
-  // Unsigned.
-  return String(x.s * x.s / 0);
-}
-
-
-/*
- * Parse the value of a new Decimal `x` from string `str`.
- */
-function parseDecimal(x, str) {
-  var e, i, len;
-
-  // Decimal point?
-  if ((e = str.indexOf('.')) > -1) str = str.replace('.', '');
-
-  // Exponential form?
-  if ((i = str.search(/e/i)) > 0) {
-
-    // Determine exponent.
-    if (e < 0) e = i;
-    e += +str.slice(i + 1);
-    str = str.substring(0, i);
-  } else if (e < 0) {
-
-    // Integer.
-    e = str.length;
-  }
-
-  // Determine leading zeros.
-  for (i = 0; str.charCodeAt(i) === 48; i++);
-
-  // Determine trailing zeros.
-  for (len = str.length; str.charCodeAt(len - 1) === 48; --len);
-  str = str.slice(i, len);
-
-  if (str) {
-    len -= i;
-    x.e = e = e - i - 1;
-    x.d = [];
-
-    // Transform base
-
-    // e is the base 10 exponent.
-    // i is where to slice str to get the first word of the digits array.
-    i = (e + 1) % LOG_BASE;
-    if (e < 0) i += LOG_BASE;
-
-    if (i < len) {
-      if (i) x.d.push(+str.slice(0, i));
-      for (len -= LOG_BASE; i < len;) x.d.push(+str.slice(i, i += LOG_BASE));
-      str = str.slice(i);
-      i = LOG_BASE - str.length;
-    } else {
-      i -= len;
-    }
-
-    for (; i--;) str += '0';
-    x.d.push(+str);
-
-    if (external) {
-
-      // Overflow?
-      if (x.e > x.constructor.maxE) {
-
-        // Infinity.
-        x.d = null;
-        x.e = NaN;
-
-      // Underflow?
-      } else if (x.e < x.constructor.minE) {
-
-        // Zero.
-        x.e = 0;
-        x.d = [0];
-        // x.constructor.underflow = true;
-      } // else x.constructor.underflow = false;
-    }
-  } else {
-
-    // Zero.
-    x.e = 0;
-    x.d = [0];
-  }
-
-  return x;
-}
-
-
-/*
- * Parse the value of a new Decimal `x` from a string `str`, which is not a decimal value.
- */
-function parseOther(x, str) {
-  var base, Ctor, divisor, i, isFloat, len, p, xd, xe;
-
-  if (str.indexOf('_') > -1) {
-    str = str.replace(/(\d)_(?=\d)/g, '$1');
-    if (isDecimal.test(str)) return parseDecimal(x, str);
-  } else if (str === 'Infinity' || str === 'NaN') {
-    if (!+str) x.s = NaN;
-    x.e = NaN;
-    x.d = null;
-    return x;
-  }
-
-  if (isHex.test(str))  {
-    base = 16;
-    str = str.toLowerCase();
-  } else if (isBinary.test(str))  {
-    base = 2;
-  } else if (isOctal.test(str))  {
-    base = 8;
-  } else {
-    throw Error(invalidArgument + str);
-  }
-
-  // Is there a binary exponent part?
-  i = str.search(/p/i);
-
-  if (i > 0) {
-    p = +str.slice(i + 1);
-    str = str.substring(2, i);
-  } else {
-    str = str.slice(2);
-  }
-
-  // Convert `str` as an integer then divide the result by `base` raised to a power such that the
-  // fraction part will be restored.
-  i = str.indexOf('.');
-  isFloat = i >= 0;
-  Ctor = x.constructor;
-
-  if (isFloat) {
-    str = str.replace('.', '');
-    len = str.length;
-    i = len - i;
-
-    // log[10](16) = 1.2041... , log[10](88) = 1.9444....
-    divisor = intPow(Ctor, new Ctor(base), i, i * 2);
-  }
-
-  xd = convertBase(str, base, BASE);
-  xe = xd.length - 1;
-
-  // Remove trailing zeros.
-  for (i = xe; xd[i] === 0; --i) xd.pop();
-  if (i < 0) return new Ctor(x.s * 0);
-  x.e = getBase10Exponent(xd, xe);
-  x.d = xd;
-  external = false;
-
-  // At what precision to perform the division to ensure exact conversion?
-  // maxDecimalIntegerPartDigitCount = ceil(log[10](b) * otherBaseIntegerPartDigitCount)
-  // log[10](2) = 0.30103, log[10](8) = 0.90309, log[10](16) = 1.20412
-  // E.g. ceil(1.2 * 3) = 4, so up to 4 decimal digits are needed to represent 3 hex int digits.
-  // maxDecimalFractionPartDigitCount = {Hex:4|Oct:3|Bin:1} * otherBaseFractionPartDigitCount
-  // Therefore using 4 * the number of digits of str will always be enough.
-  if (isFloat) x = divide(x, divisor, len * 4);
-
-  // Multiply by the binary exponent part if present.
-  if (p) x = x.times(Math.abs(p) < 54 ? mathpow(2, p) : Decimal.pow(2, p));
-  external = true;
-
-  return x;
-}
-
-
-/*
- * sin(x) = x - x^3/3! + x^5/5! - ...
- * |x| < pi/2
- *
- */
-function sine(Ctor, x) {
-  var k,
-    len = x.d.length;
-
-  if (len < 3) {
-    return x.isZero() ? x : taylorSeries(Ctor, 2, x, x);
-  }
-
-  // Argument reduction: sin(5x) = 16*sin^5(x) - 20*sin^3(x) + 5*sin(x)
-  // i.e. sin(x) = 16*sin^5(x/5) - 20*sin^3(x/5) + 5*sin(x/5)
-  // and  sin(x) = sin(x/5)(5 + sin^2(x/5)(16sin^2(x/5) - 20))
-
-  // Estimate the optimum number of times to use the argument reduction.
-  k = 1.4 * Math.sqrt(len);
-  k = k > 16 ? 16 : k | 0;
-
-  x = x.times(1 / tinyPow(5, k));
-  x = taylorSeries(Ctor, 2, x, x);
-
-  // Reverse argument reduction
-  var sin2_x,
-    d5 = new Ctor(5),
-    d16 = new Ctor(16),
-    d20 = new Ctor(20);
-  for (; k--;) {
-    sin2_x = x.times(x);
-    x = x.times(d5.plus(sin2_x.times(d16.times(sin2_x).minus(d20))));
-  }
-
-  return x;
-}
-
-
-// Calculate Taylor series for `cos`, `cosh`, `sin` and `sinh`.
-function taylorSeries(Ctor, n, x, y, isHyperbolic) {
-  var j, t, u, x2,
-    pr = Ctor.precision,
-    k = Math.ceil(pr / LOG_BASE);
-
-  external = false;
-  x2 = x.times(x);
-  u = new Ctor(y);
-
-  for (;;) {
-    t = divide(u.times(x2), new Ctor(n++ * n++), pr, 1);
-    u = isHyperbolic ? y.plus(t) : y.minus(t);
-    y = divide(t.times(x2), new Ctor(n++ * n++), pr, 1);
-    t = u.plus(y);
-
-    if (t.d[k] !== void 0) {
-      for (j = k; t.d[j] === u.d[j] && j--;);
-      if (j == -1) break;
-    }
-
-    j = u;
-    u = y;
-    y = t;
-    t = j;
-  }
-
-  external = true;
-  t.d.length = k + 1;
-
-  return t;
-}
-
-
-// Exponent e must be positive and non-zero.
-function tinyPow(b, e) {
-  var n = b;
-  while (--e) n *= b;
-  return n;
-}
-
-
-// Return the absolute value of `x` reduced to less than or equal to half pi.
-function toLessThanHalfPi(Ctor, x) {
-  var t,
-    isNeg = x.s < 0,
-    pi = getPi(Ctor, Ctor.precision, 1),
-    halfPi = pi.times(0.5);
-
-  x = x.abs();
-
-  if (x.lte(halfPi)) {
-    quadrant = isNeg ? 4 : 1;
-    return x;
-  }
-
-  t = x.divToInt(pi);
-
-  if (t.isZero()) {
-    quadrant = isNeg ? 3 : 2;
-  } else {
-    x = x.minus(t.times(pi));
-
-    // 0 <= x < pi
-    if (x.lte(halfPi)) {
-      quadrant = isOdd(t) ? (isNeg ? 2 : 3) : (isNeg ? 4 : 1);
-      return x;
-    }
-
-    quadrant = isOdd(t) ? (isNeg ? 1 : 4) : (isNeg ? 3 : 2);
-  }
-
-  return x.minus(pi).abs();
-}
-
-
-/*
- * Return the value of Decimal `x` as a string in base `baseOut`.
- *
- * If the optional `sd` argument is present include a binary exponent suffix.
- */
-function toStringBinary(x, baseOut, sd, rm) {
-  var base, e, i, k, len, roundUp, str, xd, y,
-    Ctor = x.constructor,
-    isExp = sd !== void 0;
-
-  if (isExp) {
-    checkInt32(sd, 1, MAX_DIGITS);
-    if (rm === void 0) rm = Ctor.rounding;
-    else checkInt32(rm, 0, 8);
-  } else {
-    sd = Ctor.precision;
-    rm = Ctor.rounding;
-  }
-
-  if (!x.isFinite()) {
-    str = nonFiniteToString(x);
-  } else {
-    str = finiteToString(x);
-    i = str.indexOf('.');
-
-    // Use exponential notation according to `toExpPos` and `toExpNeg`? No, but if required:
-    // maxBinaryExponent = floor((decimalExponent + 1) * log[2](10))
-    // minBinaryExponent = floor(decimalExponent * log[2](10))
-    // log[2](10) = 3.321928094887362347870319429489390175864
-
-    if (isExp) {
-      base = 2;
-      if (baseOut == 16) {
-        sd = sd * 4 - 3;
-      } else if (baseOut == 8) {
-        sd = sd * 3 - 2;
-      }
-    } else {
-      base = baseOut;
-    }
-
-    // Convert the number as an integer then divide the result by its base raised to a power such
-    // that the fraction part will be restored.
-
-    // Non-integer.
-    if (i >= 0) {
-      str = str.replace('.', '');
-      y = new Ctor(1);
-      y.e = str.length - i;
-      y.d = convertBase(finiteToString(y), 10, base);
-      y.e = y.d.length;
-    }
-
-    xd = convertBase(str, 10, base);
-    e = len = xd.length;
-
-    // Remove trailing zeros.
-    for (; xd[--len] == 0;) xd.pop();
-
-    if (!xd[0]) {
-      str = isExp ? '0p+0' : '0';
-    } else {
-      if (i < 0) {
-        e--;
-      } else {
-        x = new Ctor(x);
-        x.d = xd;
-        x.e = e;
-        x = divide(x, y, sd, rm, 0, base);
-        xd = x.d;
-        e = x.e;
-        roundUp = inexact;
-      }
-
-      // The rounding digit, i.e. the digit after the digit that may be rounded up.
-      i = xd[sd];
-      k = base / 2;
-      roundUp = roundUp || xd[sd + 1] !== void 0;
-
-      roundUp = rm < 4
-        ? (i !== void 0 || roundUp) && (rm === 0 || rm === (x.s < 0 ? 3 : 2))
-        : i > k || i === k && (rm === 4 || roundUp || rm === 6 && xd[sd - 1] & 1 ||
-          rm === (x.s < 0 ? 8 : 7));
-
-      xd.length = sd;
-
-      if (roundUp) {
-
-        // Rounding up may mean the previous digit has to be rounded up and so on.
-        for (; ++xd[--sd] > base - 1;) {
-          xd[sd] = 0;
-          if (!sd) {
-            ++e;
-            xd.unshift(1);
-          }
-        }
-      }
-
-      // Determine trailing zeros.
-      for (len = xd.length; !xd[len - 1]; --len);
-
-      // E.g. [4, 11, 15] becomes 4bf.
-      for (i = 0, str = ''; i < len; i++) str += NUMERALS.charAt(xd[i]);
-
-      // Add binary exponent suffix?
-      if (isExp) {
-        if (len > 1) {
-          if (baseOut == 16 || baseOut == 8) {
-            i = baseOut == 16 ? 4 : 3;
-            for (--len; len % i; len++) str += '0';
-            xd = convertBase(str, base, baseOut);
-            for (len = xd.length; !xd[len - 1]; --len);
-
-            // xd[0] will always be be 1
-            for (i = 1, str = '1.'; i < len; i++) str += NUMERALS.charAt(xd[i]);
-          } else {
-            str = str.charAt(0) + '.' + str.slice(1);
-          }
-        }
-
-        str =  str + (e < 0 ? 'p' : 'p+') + e;
-      } else if (e < 0) {
-        for (; ++e;) str = '0' + str;
-        str = '0.' + str;
-      } else {
-        if (++e > len) for (e -= len; e-- ;) str += '0';
-        else if (e < len) str = str.slice(0, e) + '.' + str.slice(e);
-      }
-    }
-
-    str = (baseOut == 16 ? '0x' : baseOut == 2 ? '0b' : baseOut == 8 ? '0o' : '') + str;
-  }
-
-  return x.s < 0 ? '-' + str : str;
-}
-
-
-// Does not strip trailing zeros.
-function truncate(arr, len) {
-  if (arr.length > len) {
-    arr.length = len;
-    return true;
-  }
-}
-
-
-// Decimal methods
-
-
-/*
- *  abs
- *  acos
- *  acosh
- *  add
- *  asin
- *  asinh
- *  atan
- *  atanh
- *  atan2
- *  cbrt
- *  ceil
- *  clamp
- *  clone
- *  config
- *  cos
- *  cosh
- *  div
- *  exp
- *  floor
- *  hypot
- *  ln
- *  log
- *  log2
- *  log10
- *  max
- *  min
- *  mod
- *  mul
- *  pow
- *  random
- *  round
- *  set
- *  sign
- *  sin
- *  sinh
- *  sqrt
- *  sub
- *  sum
- *  tan
- *  tanh
- *  trunc
- */
-
-
-/*
- * Return a new Decimal whose value is the absolute value of `x`.
- *
- * x {number|string|Decimal}
- *
- */
-function abs(x) {
-  return new this(x).abs();
-}
-
-
-/*
- * Return a new Decimal whose value is the arccosine in radians of `x`.
- *
- * x {number|string|Decimal}
- *
- */
-function acos(x) {
-  return new this(x).acos();
-}
-
-
-/*
- * Return a new Decimal whose value is the inverse of the hyperbolic cosine of `x`, rounded to
- * `precision` significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function acosh(x) {
-  return new this(x).acosh();
-}
-
-
-/*
- * Return a new Decimal whose value is the sum of `x` and `y`, rounded to `precision` significant
- * digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- * y {number|string|Decimal}
- *
- */
-function add(x, y) {
-  return new this(x).plus(y);
-}
-
-
-/*
- * Return a new Decimal whose value is the arcsine in radians of `x`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- *
- */
-function asin(x) {
-  return new this(x).asin();
-}
-
-
-/*
- * Return a new Decimal whose value is the inverse of the hyperbolic sine of `x`, rounded to
- * `precision` significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function asinh(x) {
-  return new this(x).asinh();
-}
-
-
-/*
- * Return a new Decimal whose value is the arctangent in radians of `x`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- *
- */
-function atan(x) {
-  return new this(x).atan();
-}
-
-
-/*
- * Return a new Decimal whose value is the inverse of the hyperbolic tangent of `x`, rounded to
- * `precision` significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function atanh(x) {
-  return new this(x).atanh();
-}
-
-
-/*
- * Return a new Decimal whose value is the arctangent in radians of `y/x` in the range -pi to pi
- * (inclusive), rounded to `precision` significant digits using rounding mode `rounding`.
- *
- * Domain: [-Infinity, Infinity]
- * Range: [-pi, pi]
- *
- * y {number|string|Decimal} The y-coordinate.
- * x {number|string|Decimal} The x-coordinate.
- *
- * atan2(±0, -0)               = ±pi
- * atan2(±0, +0)               = ±0
- * atan2(±0, -x)               = ±pi for x > 0
- * atan2(±0, x)                = ±0 for x > 0
- * atan2(-y, ±0)               = -pi/2 for y > 0
- * atan2(y, ±0)                = pi/2 for y > 0
- * atan2(±y, -Infinity)        = ±pi for finite y > 0
- * atan2(±y, +Infinity)        = ±0 for finite y > 0
- * atan2(±Infinity, x)         = ±pi/2 for finite x
- * atan2(±Infinity, -Infinity) = ±3*pi/4
- * atan2(±Infinity, +Infinity) = ±pi/4
- * atan2(NaN, x) = NaN
- * atan2(y, NaN) = NaN
- *
- */
-function atan2(y, x) {
-  y = new this(y);
-  x = new this(x);
-  var r,
-    pr = this.precision,
-    rm = this.rounding,
-    wpr = pr + 4;
-
-  // Either NaN
-  if (!y.s || !x.s) {
-    r = new this(NaN);
-
-  // Both ±Infinity
-  } else if (!y.d && !x.d) {
-    r = getPi(this, wpr, 1).times(x.s > 0 ? 0.25 : 0.75);
-    r.s = y.s;
-
-  // x is ±Infinity or y is ±0
-  } else if (!x.d || y.isZero()) {
-    r = x.s < 0 ? getPi(this, pr, rm) : new this(0);
-    r.s = y.s;
-
-  // y is ±Infinity or x is ±0
-  } else if (!y.d || x.isZero()) {
-    r = getPi(this, wpr, 1).times(0.5);
-    r.s = y.s;
-
-  // Both non-zero and finite
-  } else if (x.s < 0) {
-    this.precision = wpr;
-    this.rounding = 1;
-    r = this.atan(divide(y, x, wpr, 1));
-    x = getPi(this, wpr, 1);
-    this.precision = pr;
-    this.rounding = rm;
-    r = y.s < 0 ? r.minus(x) : r.plus(x);
-  } else {
-    r = this.atan(divide(y, x, wpr, 1));
-  }
-
-  return r;
-}
-
-
-/*
- * Return a new Decimal whose value is the cube root of `x`, rounded to `precision` significant
- * digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- *
- */
-function cbrt(x) {
-  return new this(x).cbrt();
-}
-
-
-/*
- * Return a new Decimal whose value is `x` rounded to an integer using `ROUND_CEIL`.
- *
- * x {number|string|Decimal}
- *
- */
-function ceil(x) {
-  return finalise(x = new this(x), x.e + 1, 2);
-}
-
-
-/*
- * Return a new Decimal whose value is `x` clamped to the range delineated by `min` and `max`.
- *
- * x {number|string|Decimal}
- * min {number|string|Decimal}
- * max {number|string|Decimal}
- *
- */
-function clamp(x, min, max) {
-  return new this(x).clamp(min, max);
-}
-
-
-/*
- * Configure global settings for a Decimal constructor.
- *
- * `obj` is an object with one or more of the following properties,
- *
- *   precision  {number}
- *   rounding   {number}
- *   toExpNeg   {number}
- *   toExpPos   {number}
- *   maxE       {number}
- *   minE       {number}
- *   modulo     {number}
- *   crypto     {boolean|number}
- *   defaults   {true}
- *
- * E.g. Decimal.config({ precision: 20, rounding: 4 })
- *
- */
-function config(obj) {
-  if (!obj || typeof obj !== 'object') throw Error(decimalError + 'Object expected');
-  var i, p, v,
-    useDefaults = obj.defaults === true,
-    ps = [
-      'precision', 1, MAX_DIGITS,
-      'rounding', 0, 8,
-      'toExpNeg', -EXP_LIMIT, 0,
-      'toExpPos', 0, EXP_LIMIT,
-      'maxE', 0, EXP_LIMIT,
-      'minE', -EXP_LIMIT, 0,
-      'modulo', 0, 9
-    ];
-
-  for (i = 0; i < ps.length; i += 3) {
-    if (p = ps[i], useDefaults) this[p] = DEFAULTS[p];
-    if ((v = obj[p]) !== void 0) {
-      if (mathfloor(v) === v && v >= ps[i + 1] && v <= ps[i + 2]) this[p] = v;
-      else throw Error(invalidArgument + p + ': ' + v);
-    }
-  }
-
-  if (p = 'crypto', useDefaults) this[p] = DEFAULTS[p];
-  if ((v = obj[p]) !== void 0) {
-    if (v === true || v === false || v === 0 || v === 1) {
-      if (v) {
-        if (typeof crypto != 'undefined' && crypto &&
-          (crypto.getRandomValues || crypto.randomBytes)) {
-          this[p] = true;
-        } else {
-          throw Error(cryptoUnavailable);
-        }
-      } else {
-        this[p] = false;
-      }
-    } else {
-      throw Error(invalidArgument + p + ': ' + v);
-    }
-  }
-
-  return this;
-}
-
-
-/*
- * Return a new Decimal whose value is the cosine of `x`, rounded to `precision` significant
- * digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function cos(x) {
-  return new this(x).cos();
-}
-
-
-/*
- * Return a new Decimal whose value is the hyperbolic cosine of `x`, rounded to precision
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function cosh(x) {
-  return new this(x).cosh();
-}
-
-
-/*
- * Create and return a Decimal constructor with the same configuration properties as this Decimal
- * constructor.
- *
- */
-function clone(obj) {
-  var i, p, ps;
-
-  /*
-   * The Decimal constructor and exported function.
-   * Return a new Decimal instance.
-   *
-   * v {number|string|Decimal} A numeric value.
-   *
-   */
-  function Decimal(v) {
-    var e, i, t,
-      x = this;
-
-    // Decimal called without new.
-    if (!(x instanceof Decimal)) return new Decimal(v);
-
-    // Retain a reference to this Decimal constructor, and shadow Decimal.prototype.constructor
-    // which points to Object.
-    x.constructor = Decimal;
-
-    // Duplicate.
-    if (isDecimalInstance(v)) {
-      x.s = v.s;
-
-      if (external) {
-        if (!v.d || v.e > Decimal.maxE) {
-
-          // Infinity.
-          x.e = NaN;
-          x.d = null;
-        } else if (v.e < Decimal.minE) {
-
-          // Zero.
-          x.e = 0;
-          x.d = [0];
-        } else {
-          x.e = v.e;
-          x.d = v.d.slice();
-        }
-      } else {
-        x.e = v.e;
-        x.d = v.d ? v.d.slice() : v.d;
-      }
-
-      return;
-    }
-
-    t = typeof v;
-
-    if (t === 'number') {
-      if (v === 0) {
-        x.s = 1 / v < 0 ? -1 : 1;
-        x.e = 0;
-        x.d = [0];
-        return;
-      }
-
-      if (v < 0) {
-        v = -v;
-        x.s = -1;
-      } else {
-        x.s = 1;
-      }
-
-      // Fast path for small integers.
-      if (v === ~~v && v < 1e7) {
-        for (e = 0, i = v; i >= 10; i /= 10) e++;
-
-        if (external) {
-          if (e > Decimal.maxE) {
-            x.e = NaN;
-            x.d = null;
-          } else if (e < Decimal.minE) {
-            x.e = 0;
-            x.d = [0];
-          } else {
-            x.e = e;
-            x.d = [v];
-          }
-        } else {
-          x.e = e;
-          x.d = [v];
-        }
-
-        return;
-
-      // Infinity, NaN.
-      } else if (v * 0 !== 0) {
-        if (!v) x.s = NaN;
-        x.e = NaN;
-        x.d = null;
-        return;
-      }
-
-      return parseDecimal(x, v.toString());
-
-    } else if (t !== 'string') {
-      throw Error(invalidArgument + v);
-    }
-
-    // Minus sign?
-    if ((i = v.charCodeAt(0)) === 45) {
-      v = v.slice(1);
-      x.s = -1;
-    } else {
-      // Plus sign?
-      if (i === 43) v = v.slice(1);
-      x.s = 1;
-    }
-
-    return isDecimal.test(v) ? parseDecimal(x, v) : parseOther(x, v);
-  }
-
-  Decimal.prototype = P;
-
-  Decimal.ROUND_UP = 0;
-  Decimal.ROUND_DOWN = 1;
-  Decimal.ROUND_CEIL = 2;
-  Decimal.ROUND_FLOOR = 3;
-  Decimal.ROUND_HALF_UP = 4;
-  Decimal.ROUND_HALF_DOWN = 5;
-  Decimal.ROUND_HALF_EVEN = 6;
-  Decimal.ROUND_HALF_CEIL = 7;
-  Decimal.ROUND_HALF_FLOOR = 8;
-  Decimal.EUCLID = 9;
-
-  Decimal.config = Decimal.set = config;
-  Decimal.clone = clone;
-  Decimal.isDecimal = isDecimalInstance;
-
-  Decimal.abs = abs;
-  Decimal.acos = acos;
-  Decimal.acosh = acosh;        // ES6
-  Decimal.add = add;
-  Decimal.asin = asin;
-  Decimal.asinh = asinh;        // ES6
-  Decimal.atan = atan;
-  Decimal.atanh = atanh;        // ES6
-  Decimal.atan2 = atan2;
-  Decimal.cbrt = cbrt;          // ES6
-  Decimal.ceil = ceil;
-  Decimal.clamp = clamp;
-  Decimal.cos = cos;
-  Decimal.cosh = cosh;          // ES6
-  Decimal.div = div;
-  Decimal.exp = exp;
-  Decimal.floor = floor;
-  Decimal.hypot = hypot;        // ES6
-  Decimal.ln = ln;
-  Decimal.log = log;
-  Decimal.log10 = log10;        // ES6
-  Decimal.log2 = log2;          // ES6
-  Decimal.max = max;
-  Decimal.min = min;
-  Decimal.mod = mod;
-  Decimal.mul = mul;
-  Decimal.pow = pow;
-  Decimal.random = random;
-  Decimal.round = round;
-  Decimal.sign = sign;          // ES6
-  Decimal.sin = sin;
-  Decimal.sinh = sinh;          // ES6
-  Decimal.sqrt = sqrt;
-  Decimal.sub = sub;
-  Decimal.sum = sum;
-  Decimal.tan = tan;
-  Decimal.tanh = tanh;          // ES6
-  Decimal.trunc = trunc;        // ES6
-
-  if (obj === void 0) obj = {};
-  if (obj) {
-    if (obj.defaults !== true) {
-      ps = ['precision', 'rounding', 'toExpNeg', 'toExpPos', 'maxE', 'minE', 'modulo', 'crypto'];
-      for (i = 0; i < ps.length;) if (!obj.hasOwnProperty(p = ps[i++])) obj[p] = this[p];
-    }
-  }
-
-  Decimal.config(obj);
-
-  return Decimal;
-}
-
-
-/*
- * Return a new Decimal whose value is `x` divided by `y`, rounded to `precision` significant
- * digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- * y {number|string|Decimal}
- *
- */
-function div(x, y) {
-  return new this(x).div(y);
-}
-
-
-/*
- * Return a new Decimal whose value is the natural exponential of `x`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} The power to which to raise the base of the natural log.
- *
- */
-function exp(x) {
-  return new this(x).exp();
-}
-
-
-/*
- * Return a new Decimal whose value is `x` round to an integer using `ROUND_FLOOR`.
- *
- * x {number|string|Decimal}
- *
- */
-function floor(x) {
-  return finalise(x = new this(x), x.e + 1, 3);
-}
-
-
-/*
- * Return a new Decimal whose value is the square root of the sum of the squares of the arguments,
- * rounded to `precision` significant digits using rounding mode `rounding`.
- *
- * hypot(a, b, ...) = sqrt(a^2 + b^2 + ...)
- *
- * arguments {number|string|Decimal}
- *
- */
-function hypot() {
-  var i, n,
-    t = new this(0);
-
-  external = false;
-
-  for (i = 0; i < arguments.length;) {
-    n = new this(arguments[i++]);
-    if (!n.d) {
-      if (n.s) {
-        external = true;
-        return new this(1 / 0);
-      }
-      t = n;
-    } else if (t.d) {
-      t = t.plus(n.times(n));
-    }
-  }
-
-  external = true;
-
-  return t.sqrt();
-}
-
-
-/*
- * Return true if object is a Decimal instance (where Decimal is any Decimal constructor),
- * otherwise return false.
- *
- */
-function isDecimalInstance(obj) {
-  return obj instanceof Decimal || obj && obj.toStringTag === tag || false;
-}
-
-
-/*
- * Return a new Decimal whose value is the natural logarithm of `x`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- *
- */
-function ln(x) {
-  return new this(x).ln();
-}
-
-
-/*
- * Return a new Decimal whose value is the log of `x` to the base `y`, or to base 10 if no base
- * is specified, rounded to `precision` significant digits using rounding mode `rounding`.
- *
- * log[y](x)
- *
- * x {number|string|Decimal} The argument of the logarithm.
- * y {number|string|Decimal} The base of the logarithm.
- *
- */
-function log(x, y) {
-  return new this(x).log(y);
-}
-
-
-/*
- * Return a new Decimal whose value is the base 2 logarithm of `x`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- *
- */
-function log2(x) {
-  return new this(x).log(2);
-}
-
-
-/*
- * Return a new Decimal whose value is the base 10 logarithm of `x`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- *
- */
-function log10(x) {
-  return new this(x).log(10);
-}
-
-
-/*
- * Return a new Decimal whose value is the maximum of the arguments.
- *
- * arguments {number|string|Decimal}
- *
- */
-function max() {
-  return maxOrMin(this, arguments, 'lt');
-}
-
-
-/*
- * Return a new Decimal whose value is the minimum of the arguments.
- *
- * arguments {number|string|Decimal}
- *
- */
-function min() {
-  return maxOrMin(this, arguments, 'gt');
-}
-
-
-/*
- * Return a new Decimal whose value is `x` modulo `y`, rounded to `precision` significant digits
- * using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- * y {number|string|Decimal}
- *
- */
-function mod(x, y) {
-  return new this(x).mod(y);
-}
-
-
-/*
- * Return a new Decimal whose value is `x` multiplied by `y`, rounded to `precision` significant
- * digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- * y {number|string|Decimal}
- *
- */
-function mul(x, y) {
-  return new this(x).mul(y);
-}
-
-
-/*
- * Return a new Decimal whose value is `x` raised to the power `y`, rounded to precision
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} The base.
- * y {number|string|Decimal} The exponent.
- *
- */
-function pow(x, y) {
-  return new this(x).pow(y);
-}
-
-
-/*
- * Returns a new Decimal with a random value equal to or greater than 0 and less than 1, and with
- * `sd`, or `Decimal.precision` if `sd` is omitted, significant digits (or less if trailing zeros
- * are produced).
- *
- * [sd] {number} Significant digits. Integer, 0 to MAX_DIGITS inclusive.
- *
- */
-function random(sd) {
-  var d, e, k, n,
-    i = 0,
-    r = new this(1),
-    rd = [];
-
-  if (sd === void 0) sd = this.precision;
-  else checkInt32(sd, 1, MAX_DIGITS);
-
-  k = Math.ceil(sd / LOG_BASE);
-
-  if (!this.crypto) {
-    for (; i < k;) rd[i++] = Math.random() * 1e7 | 0;
-
-  // Browsers supporting crypto.getRandomValues.
-  } else if (crypto.getRandomValues) {
-    d = crypto.getRandomValues(new Uint32Array(k));
-
-    for (; i < k;) {
-      n = d[i];
-
-      // 0 <= n < 4294967296
-      // Probability n >= 4.29e9, is 4967296 / 4294967296 = 0.00116 (1 in 865).
-      if (n >= 4.29e9) {
-        d[i] = crypto.getRandomValues(new Uint32Array(1))[0];
-      } else {
-
-        // 0 <= n <= 4289999999
-        // 0 <= (n % 1e7) <= 9999999
-        rd[i++] = n % 1e7;
-      }
-    }
-
-  // Node.js supporting crypto.randomBytes.
-  } else if (crypto.randomBytes) {
-
-    // buffer
-    d = crypto.randomBytes(k *= 4);
-
-    for (; i < k;) {
-
-      // 0 <= n < 2147483648
-      n = d[i] + (d[i + 1] << 8) + (d[i + 2] << 16) + ((d[i + 3] & 0x7f) << 24);
-
-      // Probability n >= 2.14e9, is 7483648 / 2147483648 = 0.0035 (1 in 286).
-      if (n >= 2.14e9) {
-        crypto.randomBytes(4).copy(d, i);
-      } else {
-
-        // 0 <= n <= 2139999999
-        // 0 <= (n % 1e7) <= 9999999
-        rd.push(n % 1e7);
-        i += 4;
-      }
-    }
-
-    i = k / 4;
-  } else {
-    throw Error(cryptoUnavailable);
-  }
-
-  k = rd[--i];
-  sd %= LOG_BASE;
-
-  // Convert trailing digits to zeros according to sd.
-  if (k && sd) {
-    n = mathpow(10, LOG_BASE - sd);
-    rd[i] = (k / n | 0) * n;
-  }
-
-  // Remove trailing words which are zero.
-  for (; rd[i] === 0; i--) rd.pop();
-
-  // Zero?
-  if (i < 0) {
-    e = 0;
-    rd = [0];
-  } else {
-    e = -1;
-
-    // Remove leading words which are zero and adjust exponent accordingly.
-    for (; rd[0] === 0; e -= LOG_BASE) rd.shift();
-
-    // Count the digits of the first word of rd to determine leading zeros.
-    for (k = 1, n = rd[0]; n >= 10; n /= 10) k++;
-
-    // Adjust the exponent for leading zeros of the first word of rd.
-    if (k < LOG_BASE) e -= LOG_BASE - k;
-  }
-
-  r.e = e;
-  r.d = rd;
-
-  return r;
-}
-
-
-/*
- * Return a new Decimal whose value is `x` rounded to an integer using rounding mode `rounding`.
- *
- * To emulate `Math.round`, set rounding to 7 (ROUND_HALF_CEIL).
- *
- * x {number|string|Decimal}
- *
- */
-function round(x) {
-  return finalise(x = new this(x), x.e + 1, this.rounding);
-}
-
-
-/*
- * Return
- *   1    if x > 0,
- *  -1    if x < 0,
- *   0    if x is 0,
- *  -0    if x is -0,
- *   NaN  otherwise
- *
- * x {number|string|Decimal}
- *
- */
-function sign(x) {
-  x = new this(x);
-  return x.d ? (x.d[0] ? x.s : 0 * x.s) : x.s || NaN;
-}
-
-
-/*
- * Return a new Decimal whose value is the sine of `x`, rounded to `precision` significant digits
- * using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function sin(x) {
-  return new this(x).sin();
-}
-
-
-/*
- * Return a new Decimal whose value is the hyperbolic sine of `x`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function sinh(x) {
-  return new this(x).sinh();
-}
-
-
-/*
- * Return a new Decimal whose value is the square root of `x`, rounded to `precision` significant
- * digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- *
- */
-function sqrt(x) {
-  return new this(x).sqrt();
-}
-
-
-/*
- * Return a new Decimal whose value is `x` minus `y`, rounded to `precision` significant digits
- * using rounding mode `rounding`.
- *
- * x {number|string|Decimal}
- * y {number|string|Decimal}
- *
- */
-function sub(x, y) {
-  return new this(x).sub(y);
-}
-
-
-/*
- * Return a new Decimal whose value is the sum of the arguments, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * Only the result is rounded, not the intermediate calculations.
- *
- * arguments {number|string|Decimal}
- *
- */
-function sum() {
-  var i = 0,
-    args = arguments,
-    x = new this(args[i]);
-
-  external = false;
-  for (; x.s && ++i < args.length;) x = x.plus(args[i]);
-  external = true;
-
-  return finalise(x, this.precision, this.rounding);
-}
-
-
-/*
- * Return a new Decimal whose value is the tangent of `x`, rounded to `precision` significant
- * digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function tan(x) {
-  return new this(x).tan();
-}
-
-
-/*
- * Return a new Decimal whose value is the hyperbolic tangent of `x`, rounded to `precision`
- * significant digits using rounding mode `rounding`.
- *
- * x {number|string|Decimal} A value in radians.
- *
- */
-function tanh(x) {
-  return new this(x).tanh();
-}
-
-
-/*
- * Return a new Decimal whose value is `x` truncated to an integer.
- *
- * x {number|string|Decimal}
- *
- */
-function trunc(x) {
-  return finalise(x = new this(x), x.e + 1, 1);
-}
-
-
-P[Symbol.for('nodejs.util.inspect.custom')] = P.toString;
-P[Symbol.toStringTag] = 'Decimal';
-
-// Create and configure initial Decimal constructor.
-var Decimal = P.constructor = clone(DEFAULTS);
-
-// Create the internal constants from their string values.
-LN10 = new Decimal(LN10);
-PI = new Decimal(PI);
-
-var isTypeSupported = function isTypeSupported(typeToCheck, typesInSchema) {
-  return Array.isArray(typesInSchema) ? typesInSchema.indexOf(typeToCheck) >= 0 : typeToCheck === typesInSchema;
-};
-
-var doubleAjvKeyword = 'formatDouble';
-var formatForDoubleNumbers = function formatForDoubleNumbers(schema) {
-  if (isTypeSupported('number', schema.type) && schema.format === 'double') {
-    delete schema.format;
-    schema[doubleAjvKeyword] = true;
-  }
-};
-var isDouble = function isDouble(rawValue) {
-  try {
-    var fullPrecisionValue = new Decimal(rawValue);
-    var doublePrecisionValue = new Decimal(fullPrecisionValue.toNumber());
-    return fullPrecisionValue.eq(doublePrecisionValue);
-  } catch (error) {
-    return false;
-  }
-};
-
-var maximumFloatPrecision = 6;
-var floatAjvKeyword = 'formatFloat';
-var formatForFloatNumbers = function formatForFloatNumbers(schema) {
-  if (isTypeSupported('number', schema.type) && schema.format === 'float') {
-    delete schema.format;
-    schema[floatAjvKeyword] = true;
-  }
-};
-var isFloat = function isFloat(rawValue) {
-  try {
-    return new Decimal(rawValue).precision() <= maximumFloatPrecision;
-  } catch (error) {
-    return false;
-  }
-};
-
-var int32MinValue = Decimal.pow(2, 31).negated();
-var int32MaxValue = Decimal.pow(2, 31).minus(1);
-var int32AjvKeyword = 'formatInt32';
-var formatForInt32Numbers = function formatForInt32Numbers(schema) {
-  if (isTypeSupported('integer', schema.type) && schema.format === 'int32') {
-    delete schema.format;
-    schema[int32AjvKeyword] = true;
-  }
-};
-var isInt32 = function isInt32(rawValue) {
-  try {
-    var value = new Decimal(rawValue);
-    return value.isInteger() && value.greaterThanOrEqualTo(int32MinValue) && value.lessThanOrEqualTo(int32MaxValue);
-  } catch (error) {
-    return false;
-  }
-};
-
-var int64MinValue = Decimal.pow(2, 63).negated();
-var int64MaxValue = Decimal.pow(2, 63).minus(1);
-var int64AjvKeyword = 'formatInt64';
-var formatForInt64Numbers = function formatForInt64Numbers(schema) {
-  if (isTypeSupported('integer', schema.type) && schema.format === 'int64') {
-    delete schema.format;
-    schema[int64AjvKeyword] = true;
-  }
-};
-var isInt64 = function isInt64(parsedValue) {
-  try {
-    var value = new Decimal(parsedValue);
-    return value.isInteger() && value.greaterThanOrEqualTo(int64MinValue) && value.lessThanOrEqualTo(int64MaxValue);
-  } catch (error) {
-    return false;
-  }
-};
-
-var stringAjvKeyword = 'regex';
-var SwaggerAjvFormats = ['binary', 'byte', 'password', 'integer', 'date', 'date-time'];
-var formatForString = function formatForString(schema) {
-  if (isTypeSupported('string', schema.type) && SwaggerAjvFormats.filter(function (element) {
-    return element === schema.format;
-  }).length === 0) {
-    delete schema.format;
-    schema[stringAjvKeyword] = true;
-  }
-};
-var isString = function isString(rawValue) {
-  return Object.prototype.toString.call(rawValue) === '[object String]';
-};
-
-var isPassword = function isPassword() {
-  return true;
-};
-
-var id = "http://json-schema.org/draft-04/schema#";
-var $schema = "http://json-schema.org/draft-04/schema#";
-var description = "Core schema meta-schema";
-var definitions = {
-	schemaArray: {
-		type: "array",
-		minItems: 1,
-		items: {
-			$ref: "#"
-		}
-	},
-	positiveInteger: {
-		type: "integer",
-		minimum: 0
-	},
-	positiveIntegerDefault0: {
-		allOf: [
-			{
-				$ref: "#/definitions/positiveInteger"
-			},
-			{
-				"default": 0
-			}
-		]
-	},
-	simpleTypes: {
-		"enum": [
-			"array",
-			"boolean",
-			"integer",
-			"null",
-			"number",
-			"object",
-			"string"
-		]
-	},
-	stringArray: {
-		type: "array",
-		items: {
-			type: "string"
-		},
-		minItems: 1,
-		uniqueItems: true
-	}
-};
-var type = "object";
-var properties = {
-	id: {
-		type: "string"
-	},
-	$schema: {
-		type: "string"
-	},
-	title: {
-		type: "string"
-	},
-	description: {
-		type: "string"
-	},
-	"default": {
-	},
-	multipleOf: {
-		type: "number",
-		minimum: 0,
-		exclusiveMinimum: true
-	},
-	maximum: {
-		type: "number"
-	},
-	exclusiveMaximum: {
-		type: "boolean",
-		"default": false
-	},
-	minimum: {
-		type: "number"
-	},
-	exclusiveMinimum: {
-		type: "boolean",
-		"default": false
-	},
-	maxLength: {
-		$ref: "#/definitions/positiveInteger"
-	},
-	minLength: {
-		$ref: "#/definitions/positiveIntegerDefault0"
-	},
-	pattern: {
-		type: "string",
-		format: "regex"
-	},
-	additionalItems: {
-		anyOf: [
-			{
-				type: "boolean"
-			},
-			{
-				$ref: "#"
-			}
-		],
-		"default": {
-		}
-	},
-	items: {
-		anyOf: [
-			{
-				$ref: "#"
-			},
-			{
-				$ref: "#/definitions/schemaArray"
-			}
-		],
-		"default": {
-		}
-	},
-	maxItems: {
-		$ref: "#/definitions/positiveInteger"
-	},
-	minItems: {
-		$ref: "#/definitions/positiveIntegerDefault0"
-	},
-	uniqueItems: {
-		type: "boolean",
-		"default": false
-	},
-	maxProperties: {
-		$ref: "#/definitions/positiveInteger"
-	},
-	minProperties: {
-		$ref: "#/definitions/positiveIntegerDefault0"
-	},
-	required: {
-		$ref: "#/definitions/stringArray"
-	},
-	additionalProperties: {
-		anyOf: [
-			{
-				type: "boolean"
-			},
-			{
-				$ref: "#"
-			}
-		],
-		"default": {
-		}
-	},
-	definitions: {
-		type: "object",
-		additionalProperties: {
-			$ref: "#"
-		},
-		"default": {
-		}
-	},
-	properties: {
-		type: "object",
-		additionalProperties: {
-			$ref: "#"
-		},
-		"default": {
-		}
-	},
-	patternProperties: {
-		type: "object",
-		additionalProperties: {
-			$ref: "#"
-		},
-		"default": {
-		}
-	},
-	dependencies: {
-		type: "object",
-		additionalProperties: {
-			anyOf: [
-				{
-					$ref: "#"
-				},
-				{
-					$ref: "#/definitions/stringArray"
-				}
-			]
-		}
-	},
-	"enum": {
-		type: "array",
-		minItems: 1,
-		uniqueItems: true
-	},
-	type: {
-		anyOf: [
-			{
-				$ref: "#/definitions/simpleTypes"
-			},
-			{
-				type: "array",
-				items: {
-					$ref: "#/definitions/simpleTypes"
-				},
-				minItems: 1,
-				uniqueItems: true
-			}
-		]
-	},
-	format: {
-		type: "string"
-	},
-	allOf: {
-		$ref: "#/definitions/schemaArray"
-	},
-	anyOf: {
-		$ref: "#/definitions/schemaArray"
-	},
-	oneOf: {
-		$ref: "#/definitions/schemaArray"
-	},
-	not: {
-		$ref: "#"
-	}
-};
-var dependencies = {
-	exclusiveMaximum: [
-		"maximum"
-	],
-	exclusiveMinimum: [
-		"minimum"
-	]
-};
-var draft4MetaSchema = {
-	id: id,
+var require$$3 = {
 	$schema: $schema,
-	description: description,
+	$id: $id,
+	title: title,
 	definitions: definitions,
 	type: type,
 	properties: properties,
-	dependencies: dependencies,
-	"default": {
-}
+	"default": true
 };
 
-var removeLeadingDotIfPresent = function removeLeadingDotIfPresent(dataPath) {
-  return dataPath.replace(/^\./, '');
-};
-var getRawValueFromJson = function getRawValueFromJson(rawJson, dataPath) {
-  return dataPath ? _.get(rawJson, removeLeadingDotIfPresent(dataPath)) : rawJson;
-};
-var addSwaggerFormatsAndKeywords = function addSwaggerFormatsAndKeywords(ajv, rawJson) {
-  ajv.addFormat('binary', isBinary$1);
-  ajv.addFormat('byte', isByte);
-  ajv.addFormat('password', isPassword);
-  ajv.addKeyword(doubleAjvKeyword, {
-    type: 'number',
-    validate: function validate(_schema, _data, _parentSchema, dataPath) {
-      var rawValue = getRawValueFromJson(rawJson, dataPath);
-      return isDouble(rawValue);
+(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.MissingRefError = exports.ValidationError = exports.CodeGen = exports.Name = exports.nil = exports.stringify = exports.str = exports._ = exports.KeywordCxt = void 0;
+  const core_1 = core$6;
+  const draft7_1 = draft7;
+  const discriminator_1 = discriminator;
+  const draft7MetaSchema = require$$3;
+  const META_SUPPORT_DATA = ["/properties"];
+  const META_SCHEMA_ID = "http://json-schema.org/draft-07/schema";
+  class Ajv extends core_1.default {
+    _addVocabularies() {
+      super._addVocabularies();
+      draft7_1.default.forEach(v => this.addVocabulary(v));
+      if (this.opts.discriminator) this.addKeyword(discriminator_1.default);
+    }
+    _addDefaultMetaSchema() {
+      super._addDefaultMetaSchema();
+      if (!this.opts.meta) return;
+      const metaSchema = this.opts.$data ? this.$dataMetaSchema(draft7MetaSchema, META_SUPPORT_DATA) : draft7MetaSchema;
+      this.addMetaSchema(metaSchema, META_SCHEMA_ID, false);
+      this.refs["http://json-schema.org/schema"] = META_SCHEMA_ID;
+    }
+    defaultMeta() {
+      return this.opts.defaultMeta = super.defaultMeta() || (this.getSchema(META_SCHEMA_ID) ? META_SCHEMA_ID : undefined);
+    }
+  }
+  module.exports = exports = Ajv;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ajv;
+  var validate_1 = requireValidate();
+  Object.defineProperty(exports, "KeywordCxt", {
+    enumerable: true,
+    get: function () {
+      return validate_1.KeywordCxt;
     }
   });
-  ajv.addKeyword(floatAjvKeyword, {
-    type: 'number',
-    validate: function validate(_schema, _data, _parentSchema, dataPath) {
-      var rawValue = getRawValueFromJson(rawJson, dataPath);
-      return isFloat(rawValue);
+  var codegen_1 = requireCodegen();
+  Object.defineProperty(exports, "_", {
+    enumerable: true,
+    get: function () {
+      return codegen_1._;
     }
   });
-  ajv.addKeyword(int32AjvKeyword, {
-    type: 'integer',
-    validate: function validate(_schema, _data, _parentSchema, dataPath) {
-      var rawValue = getRawValueFromJson(rawJson, dataPath);
-      return isInt32(rawValue);
+  Object.defineProperty(exports, "str", {
+    enumerable: true,
+    get: function () {
+      return codegen_1.str;
     }
   });
-  ajv.addKeyword(int64AjvKeyword, {
-    type: 'integer',
-    validate: function validate(_schema, _data, _parentSchema, dataPath) {
-      var rawValue = getRawValueFromJson(rawJson, dataPath);
-      return isInt64(rawValue);
+  Object.defineProperty(exports, "stringify", {
+    enumerable: true,
+    get: function () {
+      return codegen_1.stringify;
     }
   });
-  ajv.addKeyword(stringAjvKeyword, {
-    type: 'string',
-    validate: function validate(_schema, _data, _parentSchema, dataPath) {
-      var rawValue = getRawValueFromJson(rawJson, dataPath);
-      return isString(rawValue);
+  Object.defineProperty(exports, "nil", {
+    enumerable: true,
+    get: function () {
+      return codegen_1.nil;
     }
   });
-};
-var nonSwaggerAjvFormats = ['email', 'hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uri', 'uuid', 'url', 'uri-template', 'uri-reference'];
-var alwaysTrue = function alwaysTrue() {
-  return true;
-};
-var removeNonSwaggerAjvFormats = function removeNonSwaggerAjvFormats(ajv) {
-  nonSwaggerAjvFormats.forEach(function (formatName) {
-    ajv.addFormat(formatName, alwaysTrue);
+  Object.defineProperty(exports, "Name", {
+    enumerable: true,
+    get: function () {
+      return codegen_1.Name;
+    }
   });
-};
-var updateSchemaPropertyToDraft4 = function updateSchemaPropertyToDraft4(schema) {
-  schema.$schema = 'http://json-schema.org/draft-04/schema';
-};
-var changeTypeToKeywordForCustomFormats = function changeTypeToKeywordForCustomFormats(schema) {
-  traverseJsonSchema(schema, function (mutableSchema) {
-    formatForDoubleNumbers(mutableSchema);
-    formatForFloatNumbers(mutableSchema);
-    formatForInt32Numbers(mutableSchema);
-    formatForInt64Numbers(mutableSchema);
-    formatForString(mutableSchema);
+  Object.defineProperty(exports, "CodeGen", {
+    enumerable: true,
+    get: function () {
+      return codegen_1.CodeGen;
+    }
   });
-};
-var createAjvForDraft4 = function createAjvForDraft4(userOptions) {
-  var optionsRequiredForDraft4 = {
-    logger: false,
-    schemaId: 'id'
+  var validation_error_1 = requireValidation_error();
+  Object.defineProperty(exports, "ValidationError", {
+    enumerable: true,
+    get: function () {
+      return validation_error_1.default;
+    }
+  });
+  var ref_error_1 = requireRef_error();
+  Object.defineProperty(exports, "MissingRefError", {
+    enumerable: true,
+    get: function () {
+      return ref_error_1.default;
+    }
+  });
+})(ajv, ajv.exports);
+var ajvExports = ajv.exports;
+var Ajv = /*@__PURE__*/getDefaultExportFromCjs(ajvExports);
+
+var dist = {exports: {}};
+
+var formats = {};
+
+(function (exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.formatNames = exports.fastFormats = exports.fullFormats = void 0;
+  function fmtDef(validate, compare) {
+    return {
+      validate,
+      compare
+    };
+  }
+  exports.fullFormats = {
+    // date: http://tools.ietf.org/html/rfc3339#section-5.6
+    date: fmtDef(date, compareDate),
+    // date-time: http://tools.ietf.org/html/rfc3339#section-5.6
+    time: fmtDef(time, compareTime),
+    "date-time": fmtDef(date_time, compareDateTime),
+    // duration: https://tools.ietf.org/html/rfc3339#appendix-A
+    duration: /^P(?!$)((\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?|(\d+W)?)$/,
+    uri,
+    "uri-reference": /^(?:[a-z][a-z0-9+\-.]*:)?(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'"()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?(?:\?(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i,
+    // uri-template: https://tools.ietf.org/html/rfc6570
+    "uri-template": /^(?:(?:[^\x00-\x20"'<>%\\^`{|}]|%[0-9a-f]{2})|\{[+#./;?&=,!@|]?(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?(?:,(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?)*\})*$/i,
+    // For the source: https://gist.github.com/dperini/729294
+    // For test cases: https://mathiasbynens.be/demo/url-regex
+    url: /^(?:https?|ftp):\/\/(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u{00a1}-\u{ffff}]+-)*[a-z0-9\u{00a1}-\u{ffff}]+)(?:\.(?:[a-z0-9\u{00a1}-\u{ffff}]+-)*[a-z0-9\u{00a1}-\u{ffff}]+)*(?:\.(?:[a-z\u{00a1}-\u{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/iu,
+    email: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i,
+    hostname: /^(?=.{1,253}\.?$)[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[-0-9a-z]{0,61}[0-9a-z])?)*\.?$/i,
+    // optimized https://www.safaribooksonline.com/library/view/regular-expressions-cookbook/9780596802837/ch07s16.html
+    ipv4: /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/,
+    ipv6: /^((([0-9a-f]{1,4}:){7}([0-9a-f]{1,4}|:))|(([0-9a-f]{1,4}:){6}(:[0-9a-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9a-f]{1,4}:){5}(((:[0-9a-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9a-f]{1,4}:){4}(((:[0-9a-f]{1,4}){1,3})|((:[0-9a-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){3}(((:[0-9a-f]{1,4}){1,4})|((:[0-9a-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){2}(((:[0-9a-f]{1,4}){1,5})|((:[0-9a-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){1}(((:[0-9a-f]{1,4}){1,6})|((:[0-9a-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9a-f]{1,4}){1,7})|((:[0-9a-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))$/i,
+    regex,
+    // uuid: http://tools.ietf.org/html/rfc4122
+    uuid: /^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i,
+    // JSON-pointer: https://tools.ietf.org/html/rfc6901
+    // uri fragment: https://tools.ietf.org/html/rfc3986#appendix-A
+    "json-pointer": /^(?:\/(?:[^~/]|~0|~1)*)*$/,
+    "json-pointer-uri-fragment": /^#(?:\/(?:[a-z0-9_\-.!$&'()*+,;:=@]|%[0-9a-f]{2}|~0|~1)*)*$/i,
+    // relative JSON-pointer: http://tools.ietf.org/html/draft-luff-relative-json-pointer-00
+    "relative-json-pointer": /^(?:0|[1-9][0-9]*)(?:#|(?:\/(?:[^~/]|~0|~1)*)*)$/,
+    // the following formats are used by the openapi specification: https://spec.openapis.org/oas/v3.0.0#data-types
+    // byte: https://github.com/miguelmota/is-base64
+    byte,
+    // signed 32 bit integer
+    int32: {
+      type: "number",
+      validate: validateInt32
+    },
+    // signed 64 bit integer
+    int64: {
+      type: "number",
+      validate: validateInt64
+    },
+    // C-type float
+    float: {
+      type: "number",
+      validate: validateNumber
+    },
+    // C-type double
+    double: {
+      type: "number",
+      validate: validateNumber
+    },
+    // hint to the UI to hide input strings
+    password: true,
+    // unchecked string payload
+    binary: true
   };
-  var options = _.defaultsDeep({}, userOptions, optionsRequiredForDraft4);
-  var ajv = new Ajv$1(options);
-  ajv.addMetaSchema(draft4MetaSchema);
-  return ajv;
-};
+  exports.fastFormats = {
+    ...exports.fullFormats,
+    date: fmtDef(/^\d\d\d\d-[0-1]\d-[0-3]\d$/, compareDate),
+    time: fmtDef(/^(?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)?$/i, compareTime),
+    "date-time": fmtDef(/^\d\d\d\d-[0-1]\d-[0-3]\d[t\s](?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)$/i, compareDateTime),
+    // uri: https://github.com/mafintosh/is-my-json-valid/blob/master/formats.js
+    uri: /^(?:[a-z][a-z0-9+\-.]*:)(?:\/?\/)?[^\s]*$/i,
+    "uri-reference": /^(?:(?:[a-z][a-z0-9+\-.]*:)?\/?\/)?(?:[^\\\s#][^\s#]*)?(?:#[^\\\s]*)?$/i,
+    // email (sources from jsen validator):
+    // http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address#answer-8829363
+    // http://www.w3.org/TR/html5/forms.html#valid-e-mail-address (search for 'wilful violation')
+    email: /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i
+  };
+  exports.formatNames = Object.keys(exports.fullFormats);
+  function isLeapYear(year) {
+    // https://tools.ietf.org/html/rfc3339#appendix-C
+    return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  }
+  const DATE = /^(\d\d\d\d)-(\d\d)-(\d\d)$/;
+  const DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  function date(str) {
+    // full-date from http://tools.ietf.org/html/rfc3339#section-5.6
+    const matches = DATE.exec(str);
+    if (!matches) return false;
+    const year = +matches[1];
+    const month = +matches[2];
+    const day = +matches[3];
+    return month >= 1 && month <= 12 && day >= 1 && day <= (month === 2 && isLeapYear(year) ? 29 : DAYS[month]);
+  }
+  function compareDate(d1, d2) {
+    if (!(d1 && d2)) return undefined;
+    if (d1 > d2) return 1;
+    if (d1 < d2) return -1;
+    return 0;
+  }
+  const TIME = /^(\d\d):(\d\d):(\d\d)(\.\d+)?(z|[+-]\d\d(?::?\d\d)?)?$/i;
+  function time(str, withTimeZone) {
+    const matches = TIME.exec(str);
+    if (!matches) return false;
+    const hour = +matches[1];
+    const minute = +matches[2];
+    const second = +matches[3];
+    const timeZone = matches[5];
+    return (hour <= 23 && minute <= 59 && second <= 59 || hour === 23 && minute === 59 && second === 60) && (!withTimeZone || timeZone !== "");
+  }
+  function compareTime(t1, t2) {
+    if (!(t1 && t2)) return undefined;
+    const a1 = TIME.exec(t1);
+    const a2 = TIME.exec(t2);
+    if (!(a1 && a2)) return undefined;
+    t1 = a1[1] + a1[2] + a1[3] + (a1[4] || "");
+    t2 = a2[1] + a2[2] + a2[3] + (a2[4] || "");
+    if (t1 > t2) return 1;
+    if (t1 < t2) return -1;
+    return 0;
+  }
+  const DATE_TIME_SEPARATOR = /t|\s/i;
+  function date_time(str) {
+    // http://tools.ietf.org/html/rfc3339#section-5.6
+    const dateTime = str.split(DATE_TIME_SEPARATOR);
+    return dateTime.length === 2 && date(dateTime[0]) && time(dateTime[1], true);
+  }
+  function compareDateTime(dt1, dt2) {
+    if (!(dt1 && dt2)) return undefined;
+    const [d1, t1] = dt1.split(DATE_TIME_SEPARATOR);
+    const [d2, t2] = dt2.split(DATE_TIME_SEPARATOR);
+    const res = compareDate(d1, d2);
+    if (res === undefined) return undefined;
+    return res || compareTime(t1, t2);
+  }
+  const NOT_URI_FRAGMENT = /\/|:/;
+  const URI = /^(?:[a-z][a-z0-9+\-.]*:)(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)(?:\?(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;
+  function uri(str) {
+    // http://jmrware.com/articles/2009/uri_regexp/URI_regex.html + optional protocol + required "."
+    return NOT_URI_FRAGMENT.test(str) && URI.test(str);
+  }
+  const BYTE = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/gm;
+  function byte(str) {
+    BYTE.lastIndex = 0;
+    return BYTE.test(str);
+  }
+  const MIN_INT32 = -(2 ** 31);
+  const MAX_INT32 = 2 ** 31 - 1;
+  function validateInt32(value) {
+    return Number.isInteger(value) && value <= MAX_INT32 && value >= MIN_INT32;
+  }
+  function validateInt64(value) {
+    // JSON and javascript max Int is 2**53, so any int that passes isInteger is valid for Int64
+    return Number.isInteger(value);
+  }
+  function validateNumber() {
+    return true;
+  }
+  const Z_ANCHOR = /[^\\]\\Z/;
+  function regex(str) {
+    if (Z_ANCHOR.test(str)) return false;
+    try {
+      new RegExp(str);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+})(formats);
+
+var limit = {};
+
+(function (exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.formatLimitDefinition = void 0;
+  const ajv_1 = ajvExports;
+  const codegen_1 = requireCodegen();
+  const ops = codegen_1.operators;
+  const KWDs = {
+    formatMaximum: {
+      okStr: "<=",
+      ok: ops.LTE,
+      fail: ops.GT
+    },
+    formatMinimum: {
+      okStr: ">=",
+      ok: ops.GTE,
+      fail: ops.LT
+    },
+    formatExclusiveMaximum: {
+      okStr: "<",
+      ok: ops.LT,
+      fail: ops.GTE
+    },
+    formatExclusiveMinimum: {
+      okStr: ">",
+      ok: ops.GT,
+      fail: ops.LTE
+    }
+  };
+  const error = {
+    message: ({
+      keyword,
+      schemaCode
+    }) => codegen_1.str`should be ${KWDs[keyword].okStr} ${schemaCode}`,
+    params: ({
+      keyword,
+      schemaCode
+    }) => codegen_1._`{comparison: ${KWDs[keyword].okStr}, limit: ${schemaCode}}`
+  };
+  exports.formatLimitDefinition = {
+    keyword: Object.keys(KWDs),
+    type: "string",
+    schemaType: "string",
+    $data: true,
+    error,
+    code(cxt) {
+      const {
+        gen,
+        data,
+        schemaCode,
+        keyword,
+        it
+      } = cxt;
+      const {
+        opts,
+        self
+      } = it;
+      if (!opts.validateFormats) return;
+      const fCxt = new ajv_1.KeywordCxt(it, self.RULES.all.format.definition, "format");
+      if (fCxt.$data) validate$DataFormat();else validateFormat();
+      function validate$DataFormat() {
+        const fmts = gen.scopeValue("formats", {
+          ref: self.formats,
+          code: opts.code.formats
+        });
+        const fmt = gen.const("fmt", codegen_1._`${fmts}[${fCxt.schemaCode}]`);
+        cxt.fail$data(codegen_1.or(codegen_1._`typeof ${fmt} != "object"`, codegen_1._`${fmt} instanceof RegExp`, codegen_1._`typeof ${fmt}.compare != "function"`, compareCode(fmt)));
+      }
+      function validateFormat() {
+        const format = fCxt.schema;
+        const fmtDef = self.formats[format];
+        if (!fmtDef || fmtDef === true) return;
+        if (typeof fmtDef != "object" || fmtDef instanceof RegExp || typeof fmtDef.compare != "function") {
+          throw new Error(`"${keyword}": format "${format}" does not define "compare" function`);
+        }
+        const fmt = gen.scopeValue("formats", {
+          key: format,
+          ref: fmtDef,
+          code: opts.code.formats ? codegen_1._`${opts.code.formats}${codegen_1.getProperty(format)}` : undefined
+        });
+        cxt.fail$data(compareCode(fmt));
+      }
+      function compareCode(fmt) {
+        return codegen_1._`${fmt}.compare(${data}, ${schemaCode}) ${KWDs[keyword].fail} 0`;
+      }
+    },
+    dependencies: ["format"]
+  };
+  const formatLimitPlugin = ajv => {
+    ajv.addKeyword(exports.formatLimitDefinition);
+    return ajv;
+  };
+  exports.default = formatLimitPlugin;
+})(limit);
+
+(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  const formats_1 = formats;
+  const limit_1 = limit;
+  const codegen_1 = requireCodegen();
+  const fullName = new codegen_1.Name("fullFormats");
+  const fastName = new codegen_1.Name("fastFormats");
+  const formatsPlugin = (ajv, opts = {
+    keywords: true
+  }) => {
+    if (Array.isArray(opts)) {
+      addFormats(ajv, opts, formats_1.fullFormats, fullName);
+      return ajv;
+    }
+    const [formats, exportName] = opts.mode === "fast" ? [formats_1.fastFormats, fastName] : [formats_1.fullFormats, fullName];
+    const list = opts.formats || formats_1.formatNames;
+    addFormats(ajv, list, formats, exportName);
+    if (opts.keywords) limit_1.default(ajv);
+    return ajv;
+  };
+  formatsPlugin.get = (name, mode = "full") => {
+    const formats = mode === "fast" ? formats_1.fastFormats : formats_1.fullFormats;
+    const f = formats[name];
+    if (!f) throw new Error(`Unknown format "${name}"`);
+    return f;
+  };
+  function addFormats(ajv, list, fs, exportName) {
+    var _a;
+    var _b;
+    (_a = (_b = ajv.opts.code).formats) !== null && _a !== void 0 ? _a : _b.formats = codegen_1._`require("ajv-formats/dist/formats").${exportName}`;
+    for (const f of list) ajv.addFormat(f, fs[f]);
+  }
+  module.exports = exports = formatsPlugin;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = formatsPlugin;
+})(dist, dist.exports);
+var distExports = dist.exports;
+var addFormats = /*@__PURE__*/getDefaultExportFromCjs(distExports);
+
 var validateJson = function validateJson(jsonSchema, json, numbersSentAsStrings) {
-  var ajv = createAjvForDraft4({
+  var ajv = new Ajv({
     allErrors: true,
     coerceTypes: numbersSentAsStrings || false,
-    verbose: true
+    logger: false,
+    strictSchema: false
   });
-  addSwaggerFormatsAndKeywords(ajv, json);
-  removeNonSwaggerAjvFormats(ajv);
-  var ajvCompatibleJsonSchema = _.cloneDeep(jsonSchema);
-  changeTypeToKeywordForCustomFormats(ajvCompatibleJsonSchema);
-  updateSchemaPropertyToDraft4(ajvCompatibleJsonSchema);
-  ajv.validate(ajvCompatibleJsonSchema, _.cloneDeep(json));
+  addFormats(ajv);
+  ajv.addKeyword({
+    keyword: 'collectionFormat',
+    type: 'array'
+  });
+  ajv.validate(jsonSchema, json);
   return ajv.errors || [];
 };
 
@@ -55297,7 +38134,7 @@ var validateRequestBodyAgainstSchema = function validateRequestBodyAgainstSchema
     return result.build({
       code: 'request.body.incompatible',
       message: "Request body is incompatible with the request body schema in the spec file: ".concat(error.message),
-      mockSegment: parsedMockRequestBody.parentInteraction.getRequestBodyPath(error.dataPath),
+      mockSegment: parsedMockRequestBody.parentInteraction.getRequestBodyPath(error.instancePath.replace(/\//g, '.')),
       source: 'spec-mock-validation',
       specSegment: parsedSpecRequestBody.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), schema, mediaType)
     });
@@ -55429,7 +38266,7 @@ var removeRequiredPropertiesFromSchema = function removeRequiredPropertiesFromSc
 var setAdditionalPropertiesToFalseInSchema = function setAdditionalPropertiesToFalseInSchema(schema) {
   var modifiedSchema = _.cloneDeep(schema);
   traverseJsonSchema(modifiedSchema, function (mutableSchema) {
-    if (typeof mutableSchema.additionalProperties === 'undefined') {
+    if (typeof mutableSchema.additionalProperties === 'undefined' && mutableSchema.type && mutableSchema.type === "object") {
       mutableSchema.additionalProperties = false;
     }
     return modifiedSchema;
@@ -55477,7 +38314,7 @@ var validateParsedMockResponseBody = function validateParsedMockResponseBody(par
     return result.build({
       code: 'response.body.incompatible',
       message: "Response body is incompatible with the response body schema in the spec file: ".concat(message),
-      mockSegment: parsedMockInteraction.getResponseBodyPath(error.dataPath),
+      mockSegment: parsedMockInteraction.getResponseBodyPath(error.instancePath.replace(/\//g, '.')),
       source: 'spec-mock-validation',
       specSegment: parsedSpecResponse.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), schema, mediaType)
     });
@@ -56104,4 +38941,4 @@ var SwaggerMockValidator = /*#__PURE__*/function () {
 }();
 
 export { FileStore as F, SwaggerMockValidatorErrorImpl as S, _asyncToGenerator as _, _regeneratorRuntime as a, _ as b, _createClass as c, _classCallCheck as d, _objectSpread2 as e, SwaggerMockValidator as f, getDefaultExportFromCjs as g, transformStringToObject as t, validateSpecAndMockContent as v };
-//# sourceMappingURL=swagger-mock-validator-f2196fbd.js.map
+//# sourceMappingURL=swagger-mock-validator-bd3c27eb.js.map
