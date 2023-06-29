@@ -1,0 +1,72 @@
+openapi: 3.1.0
+info:
+  title: anyOf / oneOf / allOf example
+  description: Demonstrate the use of these logical keywordsa
+  version: 1.0.0
+paths:
+  /pet:
+    get:
+      summary: Gets a random pet
+      description: Returns a random pet
+      operationId: getRandomPet
+      responses:
+        "200":
+          description: A random pet
+          content:
+            "application/json":
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Cat'
+                  - $ref: '#/components/schemas/Dog'
+                discriminator:
+                  propertyName: pet_type
+                required: # this is NOT removed because oneOf needs it
+                  - pet_type
+components:
+  schemas:
+    Pet:
+      type: object
+      required: # this is ignored, because provider returns superset of what consumer uses
+        - name
+      properties:
+        name:
+          type: string
+    Dog:
+      properties:
+        pet_type:
+          const: Dog
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            pet_type:
+              const: Dog
+            bark:
+              type: boolean
+            breed:
+              type: string
+              enum: [Dingo, Husky, Retriever, Shepherd]
+            stroke:
+              anyOf:
+                - type: object
+                  properties:
+                    head:
+                      type: string
+                - type: object
+                  properties:
+                    tail:
+                      type: string
+    Cat:
+      properties:
+        pet_type:
+          const: Cat
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            pet_type:
+              const: Cat
+            hunts:
+              type: boolean
+            age:
+              type: integer

@@ -1,0 +1,62 @@
+{
+  "consumer": {
+    "name": "thing-consumer"
+  },
+  "provider": {
+    "name": "inheritance-provider"
+  },
+  "interactions": [
+    {
+      "description": "a request to get a dog shaped thing",
+      "request": {
+        "method": "GET",
+        "path": "/pet",
+        "headers": {
+          "Authorization": "Bearer 2019-01-14T11:34:18.045Z"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "pet_type": "Dog",
+          "name": "bar",
+          "bark": true,
+          "stroke": {
+            "head": "yah"
+          },
+          "breed": "Dingo"
+        }
+      }
+    },
+    {
+      "description": "a request to get a cat shaped thing",
+      "request": {
+        "method": "GET",
+        "path": "/pet",
+        "headers": {
+          "Authorization": "Bearer 2019-01-14T11:34:18.045Z"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "pet_type": "Cat",
+          "xname": "missing name is ok, but extra property is not",
+          "hunts": true,
+          "age": 6
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
