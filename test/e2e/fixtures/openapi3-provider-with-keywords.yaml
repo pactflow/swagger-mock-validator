@@ -39,8 +39,6 @@ components:
         - $ref: '#/components/schemas/Pet'
         - type: object
           properties:
-            pet_type:
-              const: Dog
             bark:
               type: boolean
             breed:
