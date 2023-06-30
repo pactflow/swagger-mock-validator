@@ -395,5 +395,5 @@ describe('swagger-mock-validator/cli', () => {
             swagger: 'test/e2e/fixtures/openapi3-provider.yaml'
         });
         expect(result).toEqual(jasmine.stringMatching('warnings: \\[Object|Array\\]'));
-    });
+    }, 30000);
 });

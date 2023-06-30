@@ -1,4 +1,4 @@
-import Ajv  from 'ajv';
+import Ajv  from 'ajv/dist/2019';
 import addFormats from "ajv-formats"
 import {ParsedSpecJsonSchema} from '../spec-parser/parsed-spec';
 
@@ -6,6 +6,7 @@ export const validateJson = (jsonSchema: ParsedSpecJsonSchema, json: any, number
     const ajv = new Ajv({
         allErrors: true,
         coerceTypes: numbersSentAsStrings || false,
+        discriminator: true,
         logger: false,
         strictSchema: false,
     });

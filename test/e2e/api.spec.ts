@@ -168,6 +168,63 @@ describe('swagger-mock-validator/api', () => {
         expect(result.warnings.length).toBe(0, 'result.warnings.length');
     }, 30000);
 
+    it('should succeed with validation errors when swagger file uses logical keywords', async () => {
+        const specPath = 'test/e2e/fixtures/openapi3-provider-with-keywords.yaml';
+        const mockPath = 'test/e2e/fixtures/pact-broken-consumer-for-keywords.json';
+
+        const specContent = await loadContent(specPath);
+        const mockContent = await loadContent(mockPath);
+
+        const result = await SwaggerMockValidator.validate({
+            mock: {
+                content: mockContent,
+                format: 'pact',
+                pathOrUrl: mockPath
+            },
+            spec: {
+                content: specContent,
+                format: 'openapi3',
+                pathOrUrl: specPath
+            },
+            additionalPropertiesInResponse: false,
+            requiredPropertiesInResponse: false
+        });
+
+        expect(result.errors.length).toBe(1, 'result.errors.length');
+        expect(result.errors[0]).toEqual({
+            code: 'response.body.incompatible',
+            message: 'Response body is incompatible with the response body schema in the spec file: must NOT have unevaluated properties',
+            mockDetails: {
+                interactionDescription: 'a request to get a cat shaped thing',
+                interactionState: '[none]',
+                location: '[root].interactions[1].response.body',
+                mockFile: 'test/e2e/fixtures/pact-broken-consumer-for-keywords.json',
+                value: {
+                    pet_type: 'Cat',
+                    xname: 'missing name is ok, but extra property is not',
+                    hunts: true,
+                    age: 6
+                }
+            },
+            source: 'spec-mock-validation',
+            specDetails: {
+                location: '[root].paths./pet.get.responses.200.content.application/json.schema.oneOf.0.unevaluatedProperties',
+                pathMethod: 'get',
+                pathName: '/pet',
+                specFile: 'test/e2e/fixtures/openapi3-provider-with-keywords.yaml',
+                value: false
+            },
+            type: 'error'
+        });
+        expect(result.failureReason).toBe(
+            'Mock file "test/e2e/fixtures/pact-broken-consumer-for-keywords.json" is not compatible with spec file ' +
+            '"test/e2e/fixtures/openapi3-provider-with-keywords.yaml"',
+            'result.failureReason'
+        );
+        expect(result.success).toBe(false, 'result.success');
+        expect(result.warnings.length).toBe(0, 'result.warnings.length');
+    }, 30000);
+
     it('should fail when the swagger file is invalid', async () => {
         const mockPath = 'test/e2e/fixtures/pact-working-consumer.json';
 
