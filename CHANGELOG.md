@@ -1,3 +1,12 @@
+# [13.1.0](https://github.com/pactflow/swagger-mock-validator/compare/13.0.0...13.1.0) (2023-06-30)
+
+
+### Features
+
+* improve support for allOf, anyOf, oneOf ([#32](https://github.com/pactflow/swagger-mock-validator/issues/32)) ([8035cce](https://github.com/pactflow/swagger-mock-validator/commit/8035cce8da493a1d01de4a003f713016c3fcb937))
+
+
+
 # [13.0.0](https://github.com/pactflow/swagger-mock-validator/compare/12.3.0...13.0.0) (2023-06-28)
 
 ### Features
