@@ -52,7 +52,31 @@
           "age": 6
         }
       }
-    }
+    },
+    {
+      "description": "a request to create a dog shaped thing",
+      "request": {
+        "method": "POST",
+        "path": "/pet",
+        "headers": {
+          "Authorization": "Bearer 2019-01-14T11:34:18.045Z",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "pet_type": "Dog",
+          "name": "bar",
+          "bark": true,
+          "stroke": {
+            "head": "yah"
+          },
+          "breed": "Dingo"
+        }
+      },
+      "response": {
+        "status": 201
+      }
+    },
+
   ],
   "metadata": {
     "pactSpecification": {

@@ -22,6 +22,24 @@ paths:
                   propertyName: pet_type
                 required: # this is NOT removed because oneOf needs it
                   - pet_type
+    post:
+      summary: Create a pet
+      operationId: createPet
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Cat'
+                - $ref: '#/components/schemas/Dog'
+              discriminator:
+                propertyName: pet_type
+              required: # this is NOT removed because oneOf needs it
+                - pet_type
+      responses:
+        "201":
+          description: Created
 components:
   schemas:
     Pet:

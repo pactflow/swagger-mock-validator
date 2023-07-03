@@ -250,7 +250,7 @@ describe('request body', () => {
         expect(result).toContainNoErrors();
         expect(result).toContainWarnings([{
             code: 'request.body.unknown',
-            message: 'No schema found for request body',
+            message: 'No matching schema found for request body',
             mockDetails: {
                 interactionDescription: 'interaction description',
                 interactionState: '[none]',
