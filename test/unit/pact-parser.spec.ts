@@ -110,7 +110,7 @@ describe('pact-parser', () => {
                         status: 200,
                         body: {
                             encoded: false,
-                            contents: { hello: 'world' },
+                            content: { hello: 'world' },
                         },
                     },
                 },
@@ -125,7 +125,7 @@ describe('pact-parser', () => {
                         status: 200,
                         body: {
                             encoded: 'JSON',
-                            contents: '{ "hello": "world" }',
+                            content: '{ "hello": "world" }',
                         },
                     },
                 },
@@ -140,7 +140,7 @@ describe('pact-parser', () => {
                         status: 200,
                         body: {
                             encoded: 'base64',
-                            contents: 'aGVsbG8gd29ybGQ=',
+                            content: 'aGVsbG8gd29ybGQ=',
                         },
                     },
                 },
@@ -152,7 +152,7 @@ describe('pact-parser', () => {
                         path: '/products/27',
                         body: {
                             encoded: false,
-                            contents: { hello: 'world' },
+                            content: { hello: 'world' },
                         },
                     },
                     response: {
@@ -167,7 +167,7 @@ describe('pact-parser', () => {
                         path: '/products/27',
                         body: {
                             encoded: 'JSON',
-                            contents: '{ "hello": "world" }',
+                            content: '{ "hello": "world" }',
                         },
                     },
                     response: {
@@ -182,7 +182,7 @@ describe('pact-parser', () => {
                         path: '/products/27',
                         body: {
                             encoded: 'base64',
-                            contents: 'aGVsbG8gd29ybGQ=',
+                            content: 'aGVsbG8gd29ybGQ=',
                         },
                     },
                     response: {
@@ -197,7 +197,7 @@ describe('pact-parser', () => {
                         path: '/products/27',
                         body: {
                             encoded: 'JSON',
-                            contents: '{ not: json }',
+                            content: '{ not: json }',
                         },
                     },
                     response: {
@@ -212,7 +212,7 @@ describe('pact-parser', () => {
                         path: '/products/27',
                         body: {
                             encoded: 'foo',
-                            contents: 'abcdef',
+                            content: 'abcdef',
                         },
                     },
                     response: {
