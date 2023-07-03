@@ -83,20 +83,20 @@ const parseAsPactV4Body = (body: any) => {
         return undefined;
     }
 
-    const { encoded, contents = '' } = body;
+    const { encoded, content = '' } = body;
 
     try {
         if (!encoded) {
-            return contents;
+            return content;
         }
 
         if ((encoded as string).toUpperCase() === 'JSON') {
-            return JSON.parse(contents); // throws if fails to parse
+            return JSON.parse(content); // throws if fails to parse
         }
 
-        return Buffer.from(contents, encoded).toString(); // throws if unrecognised encoding
+        return Buffer.from(content, encoded).toString(); // throws if unrecognised encoding
     } catch {
-        return contents;
+        return content;
     }
 };
 
