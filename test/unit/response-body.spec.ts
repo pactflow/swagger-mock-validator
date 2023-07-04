@@ -345,7 +345,7 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
             expect(result).toContainErrors([
                 {
                     code: 'response.body.unknown',
-                    message: 'No schema found for response body',
+                    message: 'No matching schema found for response body',
                     mockDetails: {
                         interactionDescription: 'interaction description',
                         interactionState: '[none]',
