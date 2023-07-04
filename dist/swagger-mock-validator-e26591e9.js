@@ -11098,19 +11098,19 @@ var parseAsPactV4Body = function parseAsPactV4Body(body) {
     return undefined;
   }
   var encoded = body.encoded,
-    _body$contents = body.contents,
-    contents = _body$contents === void 0 ? '' : _body$contents;
+    _body$content = body.content,
+    content = _body$content === void 0 ? '' : _body$content;
   try {
     if (!encoded) {
-      return contents;
+      return content;
     }
     if (encoded.toUpperCase() === 'JSON') {
-      return JSON.parse(contents); // throws if fails to parse
+      return JSON.parse(content); // throws if fails to parse
     }
 
-    return Buffer.from(contents, encoded).toString(); // throws if unrecognised encoding
+    return Buffer.from(content, encoded).toString(); // throws if unrecognised encoding
   } catch (_unused) {
-    return contents;
+    return content;
   }
 };
 var passThrough = function passThrough(x) {
@@ -38733,12 +38733,45 @@ var toNormalizedParsedSpec = function toNormalizedParsedSpec(parsedSpec) {
   });
 };
 
-var validateRequestBodyAgainstSchema = function validateRequestBodyAgainstSchema(parsedMockInteraction, parsedSpecOperation) {
+var transformSchema$1 = function transformSchema(schema) {
+  var modifiedSchema = _.cloneDeep(schema);
+
+  // OpenAPI defines allOf to mean the union of all sub-schemas
+  // JSON-Schema defines allOf to mean that *every* sub-schema needs to be satisfied
+  // In draft 2019-09, JSON-Schema added "unevaluatedProperties" to support this behaviour
+  traverseJsonSchema(modifiedSchema, function (mutableSchema) {
+    if (mutableSchema.allOf) {
+      mutableSchema.allOf.forEach(function (s) {
+        delete s.additionalProperties;
+      });
+      mutableSchema.unevaluatedProperties = false;
+    }
+  });
+  return modifiedSchema;
+};
+var isOptionalRequestBodyMissing = function isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation) {
+  return parsedMockInteraction.requestBody.value === undefined && !(parsedSpecOperation.requestBodyParameter && parsedSpecOperation.requestBodyParameter.required);
+};
+var specAndMockHaveNoBody = function specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) {
+  return !parsedSpecOperation.requestBodyParameter && !parsedMockInteraction.requestBody.value;
+};
+var isUnsupportedMediaType = function isUnsupportedMediaType(parsedSpecOperation) {
+  return parsedSpecOperation.consumes.value.length > 0 && !isTypesOfJson(parsedSpecOperation.consumes.value);
+};
+var isBadRequest$3 = function isBadRequest(parsedMockInteraction) {
+  return parsedMockInteraction.responseStatus.value >= 400;
+};
+var shouldSkipValidation$4 = function shouldSkipValidation(parsedMockInteraction, parsedSpecOperation) {
+  return isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation) || specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) || isUnsupportedMediaType(parsedSpecOperation) || isBadRequest$3(parsedMockInteraction);
+};
+var validateParsedMockRequestBody = function validateParsedMockRequestBody(parsedMockInteraction, parsedSpecOperation) {
   var _parsedMockInteractio;
-  var parsedMockRequestBody = parsedMockInteraction.requestBody;
+  if (shouldSkipValidation$4(parsedMockInteraction, parsedSpecOperation)) {
+    return [];
+  }
   var parsedSpecRequestBody = parsedSpecOperation.requestBodyParameter;
   var expectedMediaType = (_parsedMockInteractio = parsedMockInteraction.requestHeaders['content-type']) === null || _parsedMockInteractio === void 0 ? void 0 : _parsedMockInteractio.value;
-  var schemaForMediaType = parsedSpecRequestBody.schemaByContentType(expectedMediaType);
+  var schemaForMediaType = parsedSpecRequestBody === null || parsedSpecRequestBody === void 0 ? void 0 : parsedSpecRequestBody.schemaByContentType(expectedMediaType);
   if (!schemaForMediaType) {
     return [result.build({
       code: 'request.body.unknown',
@@ -38750,46 +38783,17 @@ var validateRequestBodyAgainstSchema = function validateRequestBodyAgainstSchema
   }
   var schema = schemaForMediaType.schema,
     mediaType = schemaForMediaType.mediaType;
-  var validationErrors = validateJson(schemaForMediaType.schema, parsedMockRequestBody.value);
+  var transformedSchema = transformSchema$1(schema);
+  var validationErrors = validateJson(transformedSchema, parsedMockInteraction.requestBody.value);
   return _.map(validationErrors, function (error) {
     return result.build({
       code: 'request.body.incompatible',
       message: "Request body is incompatible with the request body schema in the spec file: ".concat(error.message),
-      mockSegment: parsedMockRequestBody.parentInteraction.getRequestBodyPath(error.instancePath.replace(/\//g, '.')),
+      mockSegment: parsedMockInteraction.requestBody.parentInteraction.getRequestBodyPath(error.instancePath.replace(/\//g, '.')),
       source: 'spec-mock-validation',
-      specSegment: parsedSpecRequestBody.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), schema, mediaType)
+      specSegment: parsedSpecRequestBody.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), transformedSchema, mediaType)
     });
   });
-};
-var isOptionalRequestBodyMissing = function isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation) {
-  return parsedMockInteraction.requestBody.value === undefined && !(parsedSpecOperation.requestBodyParameter && parsedSpecOperation.requestBodyParameter.required);
-};
-var specAndMockHaveNoBody = function specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) {
-  return !parsedSpecOperation.requestBodyParameter && !parsedMockInteraction.requestBody.value;
-};
-var isNotSupportedMediaType$1 = function isNotSupportedMediaType(parsedSpecOperation) {
-  return parsedSpecOperation.consumes.value.length > 0 && !isTypesOfJson(parsedSpecOperation.consumes.value);
-};
-var isBadRequest$3 = function isBadRequest(parsedMockInteraction) {
-  return parsedMockInteraction.responseStatus.value >= 400;
-};
-var shouldSkipValidation$4 = function shouldSkipValidation(parsedMockInteraction, parsedSpecOperation) {
-  return isNotSupportedMediaType$1(parsedSpecOperation) || specAndMockHaveNoBody(parsedMockInteraction, parsedSpecOperation) || isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation) || isBadRequest$3(parsedMockInteraction);
-};
-var validateParsedMockRequestBody = function validateParsedMockRequestBody(parsedMockInteraction, parsedSpecOperation) {
-  if (shouldSkipValidation$4(parsedMockInteraction, parsedSpecOperation)) {
-    return [];
-  }
-  if (parsedSpecOperation.requestBodyParameter) {
-    return validateRequestBodyAgainstSchema(parsedMockInteraction, parsedSpecOperation);
-  }
-  return [result.build({
-    code: 'request.body.unknown',
-    message: 'No schema found for request body',
-    mockSegment: parsedMockInteraction.requestBody,
-    source: 'spec-mock-validation',
-    specSegment: parsedSpecOperation
-  })];
 };
 
 var headerUsedForSecurity = function headerUsedForSecurity(headerName, parsedSpecOperation) {
@@ -38876,37 +38880,34 @@ var validateParsedMockRequestQuery = function validateParsedMockRequestQuery(par
   }).flatten().value();
 };
 
-// a consumer may only use a subset of the provider *response*
-// any field marked as required in OAS, should be considered optional for pact testing
-var removeRequiredPropertiesFromSchema = function removeRequiredPropertiesFromSchema(schema) {
+var transformSchema = function transformSchema(schema, opts) {
   var modifiedSchema = _.cloneDeep(schema);
-  traverseJsonSchema(modifiedSchema, function (mutableSchema) {
-    if (mutableSchema.oneOf) {
-      return; // discriminator is required to be a valid schema
-    }
 
-    delete mutableSchema.required;
-  });
-  return modifiedSchema;
-};
+  // a provider must provide a superset of what the consumer asks for
+  // additionalProperties expected in pact response are disallowed
+  if (!opts.additionalPropertiesInResponse) {
+    traverseJsonSchema(modifiedSchema, function (mutableSchema) {
+      if (typeof mutableSchema.additionalProperties === 'undefined' && mutableSchema.type && mutableSchema.type === 'object') {
+        mutableSchema.additionalProperties = false;
+      }
+    });
+  }
 
-// a provider must provide a superset of what the consumer asks for
-// additionalProperties expected in pact response are disallowed
-var setAdditionalPropertiesToFalseInSchema = function setAdditionalPropertiesToFalseInSchema(schema) {
-  var modifiedSchema = _.cloneDeep(schema);
-  traverseJsonSchema(modifiedSchema, function (mutableSchema) {
-    if (typeof mutableSchema.additionalProperties === 'undefined' && mutableSchema.type && mutableSchema.type === "object") {
-      mutableSchema.additionalProperties = false;
-    }
-  });
-  return modifiedSchema;
-};
+  // a consumer may only use a subset of the provider *response*
+  // any field marked as required in OAS, should be considered optional for pact testing
+  if (!opts.requiredPropertiesInResponse) {
+    traverseJsonSchema(modifiedSchema, function (mutableSchema) {
+      if (mutableSchema.oneOf) {
+        return; // discriminator is required to be a valid schema
+      }
 
-// OpenAPI defines allOf to mean the union of all sub-schemas
-// JSON-Schema defines allOf to mean that *every* sub-schema needs to be satisfied
-// In draft 2019-09, JSON-Schema added "unevaluatedProperties" to support this behaviour
-var convertAllOfDefinition = function convertAllOfDefinition(schema) {
-  var modifiedSchema = _.cloneDeep(schema);
+      delete mutableSchema.required;
+    });
+  }
+
+  // OpenAPI defines allOf to mean the union of all sub-schemas
+  // JSON-Schema defines allOf to mean that *every* sub-schema needs to be satisfied
+  // In draft 2019-09, JSON-Schema added "unevaluatedProperties" to support this behaviour
   traverseJsonSchema(modifiedSchema, function (mutableSchema) {
     if (mutableSchema.allOf) {
       mutableSchema.allOf.forEach(function (s) {
@@ -38926,34 +38927,26 @@ var isNotSupportedMediaType = function isNotSupportedMediaType(parsedSpecRespons
 var shouldSkipValidation$1 = function shouldSkipValidation(parsedMockInteraction, parsedSpecResponse) {
   return isMockInteractionWithoutResponseBody(parsedMockInteraction) || isNotSupportedMediaType(parsedSpecResponse);
 };
-
-// tslint:disable:cyclomatic-complexity
 var validateParsedMockResponseBody = function validateParsedMockResponseBody(parsedMockInteraction, parsedSpecResponse, opts) {
   var _parsedMockInteractio;
   if (shouldSkipValidation$1(parsedMockInteraction, parsedSpecResponse)) {
     return [];
   }
-  var expectedMediaType = ((_parsedMockInteractio = parsedMockInteraction.requestHeaders.accept) === null || _parsedMockInteractio === void 0 ? void 0 : _parsedMockInteractio.value) || "application/json";
+  var expectedMediaType = ((_parsedMockInteractio = parsedMockInteraction.requestHeaders.accept) === null || _parsedMockInteractio === void 0 ? void 0 : _parsedMockInteractio.value) || 'application/json';
   var schemaForMediaType = parsedSpecResponse.schemaByContentType(expectedMediaType);
   if (!schemaForMediaType) {
     return [result.build({
       code: 'response.body.unknown',
-      message: 'No schema found for response body',
+      message: 'No matching schema found for response body',
       mockSegment: parsedMockInteraction.responseBody,
       source: 'spec-mock-validation',
       specSegment: parsedSpecResponse
     })];
   }
-  var schema = schemaForMediaType.schema;
-  var mediaType = schemaForMediaType.mediaType;
-  if (!opts.additionalPropertiesInResponse) {
-    schema = setAdditionalPropertiesToFalseInSchema(schema);
-  }
-  if (!opts.requiredPropertiesInResponse) {
-    schema = removeRequiredPropertiesFromSchema(schema);
-  }
-  schema = convertAllOfDefinition(schema);
-  var validationErrors = validateJson(schema, parsedMockInteraction.responseBody.value);
+  var schema = schemaForMediaType.schema,
+    mediaType = schemaForMediaType.mediaType;
+  var transformedSchema = transformSchema(schema, opts);
+  var validationErrors = validateJson(transformedSchema, parsedMockInteraction.responseBody.value);
   return _.map(validationErrors, function (error) {
     var message = error.keyword === 'additionalProperties' ? "".concat(error.message, " - ").concat(error.params.additionalProperty) : error.message;
     return result.build({
@@ -38961,11 +38954,10 @@ var validateParsedMockResponseBody = function validateParsedMockResponseBody(par
       message: "Response body is incompatible with the response body schema in the spec file: ".concat(message),
       mockSegment: parsedMockInteraction.getResponseBodyPath(error.instancePath.replace(/\//g, '.')),
       source: 'spec-mock-validation',
-      specSegment: parsedSpecResponse.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), schema, mediaType)
+      specSegment: parsedSpecResponse.getFromSchema(error.schemaPath.replace(/\//g, '.').substring(2), transformedSchema, mediaType)
     });
   });
 };
-// tslint:enable:cyclomatic-complexity
 
 var ignoredHttpHeaders = ['content-type'];
 var standardHttpHeaders = ['access-control-allow-origin', 'accept-patch', 'accept-ranges', 'age', 'allow', 'alt-svc', 'cache-control', 'connection', 'content-disposition', 'content-encoding', 'content-language', 'content-length', 'content-location', 'content-md5', 'content-range', 'date', 'etag', 'expires', 'last-modified', 'link', 'location', 'p3p', 'pragma', 'proxy-authenticate', 'public-key-pins', 'refresh', 'retry-after', 'server', 'set-cookie', 'status', 'strict-transport-security', 'trailer', 'transfer-encoding', 'tsv', 'upgrade', 'vary', 'via', 'warning', 'www-authenticate', 'x-frame-options'];
@@ -39586,4 +39578,4 @@ var SwaggerMockValidator = /*#__PURE__*/function () {
 }();
 
 export { FileStore as F, SwaggerMockValidatorErrorImpl as S, _asyncToGenerator as _, _regeneratorRuntime as a, _ as b, _createClass as c, _classCallCheck as d, _objectSpread2 as e, SwaggerMockValidator as f, getDefaultExportFromCjs as g, transformStringToObject as t, validateSpecAndMockContent as v };
-//# sourceMappingURL=swagger-mock-validator-89accd71.js.map
+//# sourceMappingURL=swagger-mock-validator-e26591e9.js.map

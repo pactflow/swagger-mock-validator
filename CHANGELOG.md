@@ -1,3 +1,17 @@
+# [13.2.0](https://github.com/pactflow/swagger-mock-validator/compare/13.1.0...13.2.0) (2023-07-04)
+
+
+### Bug Fixes
+
+* incorrect decoding of pact v4 bodies ([#33](https://github.com/pactflow/swagger-mock-validator/issues/33)) ([0a7f140](https://github.com/pactflow/swagger-mock-validator/commit/0a7f140d302df0a6f2249994a9c5d6b40c44b53f))
+
+
+### Features
+
+* allow polymorphic inheritance in request bodies ([#34](https://github.com/pactflow/swagger-mock-validator/issues/34)) ([beb128b](https://github.com/pactflow/swagger-mock-validator/commit/beb128b43432033e319ef4f7559106202c3956b7))
+
+
+
 # [13.1.0](https://github.com/pactflow/swagger-mock-validator/compare/13.0.0...13.1.0) (2023-06-30)
 
 
