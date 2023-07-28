@@ -1,3 +1,12 @@
+# [13.3.0](https://github.com/pactflow/swagger-mock-validator/compare/13.2.0...13.3.0) (2023-07-28)
+
+
+### Bug Fixes
+
+* handle exclusiveMinimum/exclusiveMaximum in bodies ([#37](https://github.com/pactflow/swagger-mock-validator/issues/37)) ([fd4dee0](https://github.com/pactflow/swagger-mock-validator/commit/fd4dee0a3e96affbb041d30856e63a0b1a841b33))
+
+
+
 # [13.2.0](https://github.com/pactflow/swagger-mock-validator/compare/13.1.0...13.2.0) (2023-07-04)
 
 

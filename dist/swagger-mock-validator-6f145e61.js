@@ -15297,12 +15297,8 @@ var isParameterSchemaUnsupported = function isParameterSchemaUnsupported(schema)
 
 // draft-06 onwards converts exclusiveMinimum and exclusiveMaximum to numbers
 var upgradeSchema = function upgradeSchema(schema) {
-  if (schema.exclusiveMaximum) {
-    schema.exclusiveMaximum = schema.maximum;
-  }
-  if (schema.exclusiveMinimum) {
-    schema.exclusiveMinimum = schema.minimum;
-  }
+  schema.exclusiveMaximum = schema.exclusiveMaximum ? schema.maximum : undefined;
+  schema.exclusiveMinimum = schema.exclusiveMinimum ? schema.minimum : undefined;
   return schema;
 };
 var getParameterSchema = function getParameterSchema(parameter) {
@@ -38747,6 +38743,12 @@ var transformSchema$1 = function transformSchema(schema) {
       mutableSchema.unevaluatedProperties = false;
     }
   });
+
+  // draft-06 onwards converts exclusiveMinimum and exclusiveMaximum to numbers
+  traverseJsonSchema(modifiedSchema, function (mutableSchema) {
+    mutableSchema.exclusiveMaximum = mutableSchema.exclusiveMaximum ? mutableSchema.maximum : undefined;
+    mutableSchema.exclusiveMinimum = mutableSchema.exclusiveMinimum ? mutableSchema.minimum : undefined;
+  });
   return modifiedSchema;
 };
 var isOptionalRequestBodyMissing = function isOptionalRequestBodyMissing(parsedMockInteraction, parsedSpecOperation) {
@@ -38915,6 +38917,12 @@ var transformSchema = function transformSchema(schema, opts) {
       });
       mutableSchema.unevaluatedProperties = false;
     }
+  });
+
+  // draft-06 onwards converts exclusiveMinimum and exclusiveMaximum to numbers
+  traverseJsonSchema(modifiedSchema, function (mutableSchema) {
+    mutableSchema.exclusiveMaximum = mutableSchema.exclusiveMaximum ? mutableSchema.maximum : undefined;
+    mutableSchema.exclusiveMinimum = mutableSchema.exclusiveMinimum ? mutableSchema.minimum : undefined;
   });
   return modifiedSchema;
 };
@@ -39578,4 +39586,4 @@ var SwaggerMockValidator = /*#__PURE__*/function () {
 }();
 
 export { FileStore as F, SwaggerMockValidatorErrorImpl as S, _asyncToGenerator as _, _regeneratorRuntime as a, _ as b, _createClass as c, _classCallCheck as d, _objectSpread2 as e, SwaggerMockValidator as f, getDefaultExportFromCjs as g, transformStringToObject as t, validateSpecAndMockContent as v };
-//# sourceMappingURL=swagger-mock-validator-e26591e9.js.map
+//# sourceMappingURL=swagger-mock-validator-6f145e61.js.map
