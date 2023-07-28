@@ -23,6 +23,12 @@ const transformSchema = (
         }
     });
 
+    // draft-06 onwards converts exclusiveMinimum and exclusiveMaximum to numbers
+    traverseJsonSchema(modifiedSchema, (mutableSchema) => {
+        mutableSchema.exclusiveMaximum = mutableSchema.exclusiveMaximum ? mutableSchema.maximum : undefined;
+        mutableSchema.exclusiveMinimum = mutableSchema.exclusiveMinimum ? mutableSchema.minimum : undefined;
+    });
+
     return modifiedSchema;
 };
 

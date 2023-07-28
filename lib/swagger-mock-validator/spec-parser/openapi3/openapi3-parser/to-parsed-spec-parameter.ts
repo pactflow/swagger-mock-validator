@@ -15,12 +15,8 @@ const isParameterSchemaUnsupported = (schema: ParsedSpecJsonSchemaCore): boolean
 
 // draft-06 onwards converts exclusiveMinimum and exclusiveMaximum to numbers
 const upgradeSchema = (schema: ParsedSpecJsonSchemaCore): ParsedSpecJsonSchemaCore => {
-    if (schema.exclusiveMaximum) {
-        schema.exclusiveMaximum = schema.maximum;
-    }
-    if (schema.exclusiveMinimum) {
-        schema.exclusiveMinimum = schema.minimum;
-    }
+    schema.exclusiveMaximum = schema.exclusiveMaximum ? schema.maximum : undefined;
+    schema.exclusiveMinimum = schema.exclusiveMinimum ? schema.minimum : undefined;
     return schema;
 };
 

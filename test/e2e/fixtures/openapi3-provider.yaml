@@ -41,6 +41,12 @@ components:
           type: string
         email:
           type: string
+        age:
+          type: integer
+          minimum: 19
+          exclusiveMinimum: true
+          maximum: 100
+          exclusiveMaximum: false
       required:
       - userId
       - firstName
