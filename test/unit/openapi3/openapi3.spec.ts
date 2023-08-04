@@ -829,7 +829,11 @@ describe('openapi3/parser', () => {
                 .build();
 
             const result = await swaggerMockValidatorLoader.invoke(specFile, pactFile);
-
+            const expectedErrorValue = {'/user/{userId}/info': specPathItem.build()}
+            if (expectedErrorValue['/user/{userId}/info'].get?.parameters && expectedErrorValue['/user/{userId}/info'].get?.parameters?.length > 0){
+                expectedErrorValue['/user/{userId}/info'].get.parameters[0].schema.exclusiveMinimum = undefined
+                expectedErrorValue['/user/{userId}/info'].get.parameters[0].schema.exclusiveMaximum = undefined
+            }
             expect(result).toContainErrors([{
                 code: 'request.path-or-method.unknown',
                 message: 'Path or method not defined in spec file: GET /user/not-a-number/info',
@@ -846,7 +850,7 @@ describe('openapi3/parser', () => {
                     pathMethod: null,
                     pathName: null,
                     specFile: 'spec.json',
-                    value: {'/user/{userId}/info': specPathItem.build()}
+                    value: expectedErrorValue
                 },
                 type: 'error'
             }]);
@@ -911,7 +915,7 @@ describe('openapi3/parser', () => {
                     pathMethod: 'get',
                     pathName: defaultPath,
                     specFile: 'spec.json',
-                    value: {in: 'query', name: 'name', required: true, schema: {type: 'number'}}
+                    value: {in: 'query', name: 'name', required: true, schema: {type: 'number', exclusiveMaximum: undefined, exclusiveMinimum: undefined}}
                 },
                 type: 'error'
             }]);
@@ -1086,7 +1090,8 @@ describe('openapi3/parser', () => {
                     pathMethod: 'get',
                     pathName: defaultPath,
                     specFile: 'spec.json',
-                    value: headerParameter.build()
+                    value: { ...headerParameter.build(), schema: {...headerParameter.build().schema, exclusiveMaximum: undefined, exclusiveMinimum: undefined} },
+
                 },
                 type: 'error'
             }]);
@@ -1459,7 +1464,7 @@ describe('openapi3/parser', () => {
                     pathMethod: 'get',
                     pathName: defaultPath,
                     specFile: 'spec.json',
-                    value: {schema: {type: 'number'}}
+                    value: {schema: {type: 'number', exclusiveMaximum: undefined, exclusiveMinimum: undefined }}
                 },
                 type: 'error'
             }]);
@@ -1765,7 +1770,7 @@ describe('openapi3/parser', () => {
                         pathMethod: 'get',
                         pathName: defaultPath,
                         specFile: 'spec.json',
-                        value: 'int32'
+                        value: int32Schema.build().format,
                     },
                     type: 'error'
                 },
@@ -1786,7 +1791,7 @@ describe('openapi3/parser', () => {
                         pathMethod: 'get',
                         pathName: defaultPath,
                         specFile: 'spec.json',
-                        value: [int32Schema.build()]
+                        value: [{ ...int32Schema.build(), exclusiveMaximum: undefined, exclusiveMinimum: undefined }],
                     },
                     type: 'error'
                 }
@@ -1825,7 +1830,7 @@ describe('openapi3/parser', () => {
                         interactionState: '[none]',
                         location: '[root].interactions[0].request.body',
                         mockFile: 'pact.json',
-                        value: maxInt32PlusOne
+                        value: maxInt32PlusOne,
                     },
                     source: 'spec-mock-validation',
                     specDetails: {
@@ -1835,7 +1840,7 @@ describe('openapi3/parser', () => {
                         pathMethod: 'get',
                         pathName: defaultPath,
                         specFile: 'spec.json',
-                        value: 'int32'
+                        value: int32Schema.build().format
                     },
                     type: 'error'
                 },
@@ -1856,7 +1861,7 @@ describe('openapi3/parser', () => {
                         pathMethod: 'get',
                         pathName: defaultPath,
                         specFile: 'spec.json',
-                        value: [int32Schema.build()]
+                        value: [{...int32Schema.build(), exclusiveMaximum: undefined, exclusiveMinimum: undefined }]
                     },
                     type: 'error'
                 }
@@ -1904,7 +1909,7 @@ describe('openapi3/parser', () => {
                         pathMethod: 'get',
                         pathName: defaultPath,
                         specFile: 'spec.json',
-                        value: int32Schema.build()
+                        value: { ...int32Schema.build(), exclusiveMaximum: undefined, exclusiveMinimum: undefined },
                     },
                     type: 'error'
                 }
