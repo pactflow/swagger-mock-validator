@@ -1,3 +1,12 @@
+# [14.0.0](https://github.com/pactflow/swagger-mock-validator/compare/13.3.0...14.0.0) (2023-08-04)
+
+
+### Features
+
+* explicity set additionalProperties to false ([82f2a3b](https://github.com/pactflow/swagger-mock-validator/commit/82f2a3b9e5c9bf699969b301c2e62a59906a1b79))
+
+
+
 # [13.3.0](https://github.com/pactflow/swagger-mock-validator/compare/13.2.0...13.3.0) (2023-07-28)
 
 

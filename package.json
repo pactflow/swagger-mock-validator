@@ -1,6 +1,6 @@
 {
   "name": "@pactflow/swagger-mock-validator",
-  "version": "13.3.0",
+  "version": "14.0.0",
   "description": "A CLI tool to validate mocks against swagger/OpenApi specs.",
   "bin": {
     "swagger-mock-validator": "./bin/swagger-mock-validator.mjs"
