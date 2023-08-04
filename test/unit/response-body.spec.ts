@@ -542,14 +542,39 @@ declare function expect<T>(actual: T): CustomMatchers<T>;
             ]);
         });
 
-        it('should pass when a pact response body has an additional property', async () => {
+        it('should fail when a pact response body has an additional property', async () => {
             const pactResponseBody = { a: 1 };
 
             const swaggerBodySchema = schemaBuilder.withTypeObject().withAdditionalPropertiesBoolean(true);
 
             const result = await validateResponseBody(pactResponseBody, swaggerBodySchema);
 
-            expect(result).toContainNoWarningsOrErrors();
+            expect(result.failureReason).toEqual(expectedFailedValidationError);
+            expect(result).toContainErrors([
+                {
+                    code: 'response.body.incompatible',
+                    message:
+                        'Response body is incompatible with the response body schema in the spec file: must NOT have additional properties - a',
+                    mockDetails: {
+                        interactionDescription: 'interaction description',
+                        interactionState: '[none]',
+                        location: '[root].interactions[0].response.body',
+                        mockFile: 'pact.json',
+                        value: { a: 1 },
+                    },
+                    source: 'spec-mock-validation',
+                    specDetails: {
+                        location:
+                            `[root].paths./does/exist.get.responses.${statusCode}.` +
+                            'schema.additionalProperties',
+                        pathMethod: 'get',
+                        pathName: '/does/exist',
+                        specFile: 'spec.json',
+                        value: false,
+                    },
+                    type: 'error',
+                },
+            ]);
         });
 
         xit('should pass when response body has additional property in circular schema reference', async () => {

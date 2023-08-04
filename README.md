@@ -94,9 +94,13 @@ Options:
 
 ## Examples
 
-We will demonstate with a sample Pact file and [Swagger PetStore Example](https://petstore.swagger.io/v2/swagger.json)
+We will demonstate with a sample Pact file and [Swagger PetStore Example](https://petstore.swagger.io/v2/swagger.json) 
 
-Included in this repository is a [sample Pact file](./docs/pact.json)
+Included in this repository is a [sample Pact file](./docs/pact.json) and the [Swagger Petstore Example file]((./docs/pact.json))
+
+The swagger file has been modified to included `additionalProperties: true` in the `Pet` schema. This will be ignored with the default settings. 
+
+set `--additionalPropertiesInResponse true` to preserve the field.
 
 ```json
 {
@@ -186,7 +190,7 @@ With
 - `--additionalPropertiesInResponse` true
 - `--requiredPropertiesInResponse` false
 
-`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse true --requiredPropertiesInResponse false https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse true --requiredPropertiesInResponse false docs/swagger.json ./docs/pact.json`
 
 ```bash
 0 error(s)
@@ -198,11 +202,11 @@ With
 - `--additionalPropertiesInResponse` false
 - `--requiredPropertiesInResponse` true
 
-`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse true https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse false --requiredPropertiesInResponse true docs/swagger.json ./docs/pact.json`
 
 ```bash
 
-Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
+Mock file "./docs/pact.json" is not compatible with spec file "docs/swagger.json"
 3 error(s)
         response.body.incompatible: 3
 0 warning(s)
@@ -224,7 +228,7 @@ Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.
         location: '[root].paths./pet/{petId}.get.responses.200.schema.additionalProperties',
         pathMethod: 'get',
         pathName: '/pet/{petId}',
-        specFile: 'https://petstore.swagger.io/v2/swagger.json',
+        specFile: 'docs/swagger.json',
         value: undefined
       },
       type: 'error'
@@ -244,7 +248,7 @@ Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.
         location: '[root].paths./pet/{petId}.get.responses.200.schema.required',
         pathMethod: 'get',
         pathName: '/pet/{petId}',
-        specFile: 'https://petstore.swagger.io/v2/swagger.json',
+        specFile: 'docs/swagger.json',
         value: [ 'name', 'photoUrls' ]
       },
       type: 'error'
@@ -264,7 +268,7 @@ Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.
         location: '[root].paths./pet/{petId}.get.responses.200.schema.required',
         pathMethod: 'get',
         pathName: '/pet/{petId}',
-        specFile: 'https://petstore.swagger.io/v2/swagger.json',
+        specFile: 'docs/swagger.json',
         value: [ 'name', 'photoUrls' ]
       },
       type: 'error'
@@ -272,7 +276,7 @@ Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.
   ]
 }
 
-Error: Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
+Error: Mock file "./docs/pact.json" is not compatible with spec file "docs/swagger.json"
 ```
 
 With 
@@ -280,10 +284,10 @@ With
 - `--additionalPropertiesInResponse` true
 - `--requiredPropertiesInResponse` true
 
-`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse true --requiredPropertiesInResponse true https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator --additionalPropertiesInResponse true --requiredPropertiesInResponse true docs/swagger.json ./docs/pact.json`
 
 ```bash
-Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
+Mock file "./docs/pact.json" is not compatible with spec file "docs/swagger.json"
 2 error(s)
         response.body.incompatible: 2
 0 warning(s)
@@ -305,7 +309,7 @@ Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.
         location: '[root].paths./pet/{petId}.get.responses.200.schema.required',
         pathMethod: 'get',
         pathName: '/pet/{petId}',
-        specFile: 'https://petstore.swagger.io/v2/swagger.json',
+        specFile: 'docs/swagger.json',
         value: [ 'name', 'photoUrls' ]
       },
       type: 'error'
@@ -325,7 +329,7 @@ Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.
         location: '[root].paths./pet/{petId}.get.responses.200.schema.required',
         pathMethod: 'get',
         pathName: '/pet/{petId}',
-        specFile: 'https://petstore.swagger.io/v2/swagger.json',
+        specFile: 'docs/swagger.json',
         value: [ 'name', 'photoUrls' ]
       },
       type: 'error'
@@ -333,7 +337,7 @@ Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.
   ]
 }
 
-Error: Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
+Error: Mock file "./docs/pact.json" is not compatible with spec file "docs/swagger.json"
 ```
 ### Providers using the Pact Broker
 
