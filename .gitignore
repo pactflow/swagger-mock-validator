@@ -6,3 +6,4 @@ build-output
 npm-debug.log
 package-lock.json
 .vs
+dist
