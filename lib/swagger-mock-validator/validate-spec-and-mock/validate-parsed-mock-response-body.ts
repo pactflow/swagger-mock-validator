@@ -18,7 +18,7 @@ const transformSchema = (
     if (!opts.additionalPropertiesInResponse) {
         traverseJsonSchema(modifiedSchema, (mutableSchema) => {
             if (
-                typeof mutableSchema.additionalProperties === 'undefined' &&
+                (typeof mutableSchema.additionalProperties === 'undefined' || mutableSchema.additionalProperties === true) &&
                 mutableSchema.type &&
                 mutableSchema.type === 'object'
             ) {
