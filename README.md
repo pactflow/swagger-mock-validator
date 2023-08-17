@@ -94,13 +94,13 @@ Options:
 
 ## Examples
 
-We will demonstate with a sample Pact file and [Swagger PetStore Example](https://petstore.swagger.io/v2/swagger.json) 
+We will demonstate with a sample Pact file and [Swagger PetStore Example](https://petstore.swagger.io/v2/swagger.json).
 
-Included in this repository is a [sample Pact file](./docs/pact.json) and the [Swagger Petstore Example file]((./docs/pact.json))
+Included in this repository is a [sample Pact file](./docs/pact.json) and the [Swagger Petstore Example file](./docs/swagger.json).
 
-The swagger file has been modified to included `additionalProperties: true` in the `Pet` schema. This will be ignored with the default settings. 
+The swagger file has been modified to include `additionalProperties: true` in the `Pet` schema. This will be ignored with the default settings. 
 
-set `--additionalPropertiesInResponse true` to preserve the field.
+set `--additionalPropertiesInResponse true` to preserve the intended behaviour.
 
 ```json
 {
@@ -149,7 +149,7 @@ Default behaviour, as per the following flags
 - `--additionalPropertiesInResponse` false
 - `--requiredPropertiesInResponse` false
 
-`npx @pactflow/swagger-mock-validator https://petstore.swagger.io/v2/swagger.json ./docs/pact.json`
+`npx @pactflow/swagger-mock-validator ./docs/swagger.json ./docs/pact.json`
 
 ```bash
 Mock file "./docs/pact.json" is not compatible with spec file "https://petstore.swagger.io/v2/swagger.json"
