@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { traverseJsonSchema } from '../common/traverse-json-schema';
 import { ParsedMockInteraction } from '../mock-parser/parsed-mock';
 import { result } from '../result';
-import { ParsedSpecJsonSchema, ParsedSpecJsonSchemaValue, ParsedSpecResponse } from '../spec-parser/parsed-spec';
+import { ParsedSpecJsonSchema, ParsedSpecJsonSchemaCore, ParsedSpecResponse } from '../spec-parser/parsed-spec';
 import { ValidateOptions } from '../types';
 import { isTypesOfJson } from './content-negotiation';
 import { validateJson } from './validate-json';
@@ -43,8 +43,12 @@ const transformSchema = (
     // In draft 2019-09, JSON-Schema added "unevaluatedProperties" to support this behaviour
     traverseJsonSchema(modifiedSchema, (mutableSchema) => {
         if (mutableSchema.allOf) {
-            mutableSchema.allOf.forEach((s) => {
-                delete (s as ParsedSpecJsonSchemaValue).additionalProperties;
+            mutableSchema.allOf.forEach((s: ParsedSpecJsonSchemaCore) => {
+                delete s.additionalProperties;
+                if (s.allOf) {
+                    // traversal is depth-first; if nested allOf, remove unevaluatedProperties from previously set deeper schema
+                    delete s.unevaluatedProperties;
+                }
             });
             mutableSchema.unevaluatedProperties = false;
         }
