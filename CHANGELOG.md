@@ -1,3 +1,12 @@
+# [14.1.0](https://github.com/pactflow/swagger-mock-validator/compare/14.0.0...14.1.0) (2023-08-21)
+
+
+### Bug Fixes
+
+* handle nested allOf ([#43](https://github.com/pactflow/swagger-mock-validator/issues/43)) ([41cb25d](https://github.com/pactflow/swagger-mock-validator/commit/41cb25d1b2a0ed5fa58e42ba6901fd9290a402dd))
+
+
+
 # [14.0.0](https://github.com/pactflow/swagger-mock-validator/compare/13.3.0...14.0.0) (2023-08-04)
 
 
