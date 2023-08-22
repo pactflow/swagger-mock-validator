@@ -7,7 +7,6 @@ import {expectToFail} from '../helpers/expect-to-fail';
 
 interface InvokeCommandOptions {
     analyticsUrl?: string;
-    auth?: string;
     mock: string;
     providerName?: string;
     swagger: string;
@@ -40,10 +39,6 @@ const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
 
     if (options.analyticsUrl) {
         command += ` --analyticsUrl ${options.analyticsUrl}`;
-    }
-
-    if (options.auth) {
-        command += ` --user ${options.auth}`;
     }
 
     if (options.outputDepth) {
@@ -369,22 +364,6 @@ describe('swagger-mock-validator/cli', () => {
         expect(result).toEqual(jasmine.stringMatching('2 warning'));
         expect(result).toEqual(
             jasmine.stringMatching('Request header is not defined in the spec file: x-unknown-header')
-        );
-    }, 30000);
-
-    it('should make an authenticated request to the provided pact broker url when asked to do so', async () => {
-        const auth = 'user:pass';
-
-        await invokeCommand({
-            auth,
-            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
-            providerName: 'provider-1',
-            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
-        });
-
-        expect(mockPactBroker.get).toHaveBeenCalledWith(
-            jasmine.objectContaining({authorization: 'Basic dXNlcjpwYXNz'}),
-            jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
         );
     }, 30000);
 
