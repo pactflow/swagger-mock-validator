@@ -32,7 +32,6 @@ export type MockUuidGeneratorResponses = string[];
 
 export interface SwaggerMockValidatorLoaderInvokeWithMocksOptions {
     analyticsUrl?: string;
-    auth?: string;
     fileSystem?: FileSystem;
     httpClient?: HttpClient;
     metadata?: Metadata;
@@ -111,7 +110,7 @@ export const swaggerMockValidatorLoader = {
         const mockMetadata = options.metadata || swaggerMockValidatorLoader.createMockMetadata({});
 
         const fileStore = new FileStore(mockFileSystem, mockHttpClient);
-        const pactBrokerClient = new PactBrokerClient(mockHttpClient, options.auth);
+        const pactBrokerClient = new PactBrokerClient(mockHttpClient);
         const pactBroker = new PactBroker(pactBrokerClient);
         const analytics = new Analytics(mockHttpClient, mockUuidGenerator, mockMetadata);
         const swaggerMockValidator = new SwaggerMockValidator(fileStore, pactBroker, analytics);

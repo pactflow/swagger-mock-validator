@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 export class HttpClient {
-    public async get(url: string, auth?: string): Promise<string> {
-        console.log(auth);
+    public async get(url: string): Promise<string> {
         let authHeader: string | undefined;
         if (process.env.PACT_BROKER_TOKEN != '') {
             authHeader = 'Bearer ' + process.env.PACT_BROKER_TOKEN;
@@ -12,8 +11,6 @@ export class HttpClient {
                 Buffer.from(`${process.env.PACT_BROKER_USERNAME}:${process.env.PACT_BROKER_PASSWORD}`).toString(
                     'base64'
                 );
-        } else if (auth) {
-            authHeader = auth.includes(':') ? 'Bearer ' + auth : 'Basic ' + Buffer.from(auth).toString('base64');
         }
 
         const response = await axios.get(url, {
