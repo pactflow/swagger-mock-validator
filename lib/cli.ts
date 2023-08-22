@@ -72,7 +72,18 @@ json file. Optionally, pass a --tag option alongside a --provider option to filt
 pacts from the broker by Pact Broker version tags.
 
 If the pact broker has basic auth enabled, pass a --user option with username and password joined by a colon
-(i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.`
+(i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.
+
+Alternatively you can set access pact broker resources, by setting the following env vars
+
+Basic Auth
+
+PACT_BROKER_USERNAME
+PACT_BROKER_PASSWORD
+
+Bearer Token Auth
+
+PACT_BROKER_TOKEN`
     )
     .action(async (swagger, mock, options) => {
         try {
