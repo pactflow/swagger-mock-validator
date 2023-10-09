@@ -7,7 +7,7 @@ import { ValidateOptions } from '../types';
 import { isTypesOfJson } from './content-negotiation';
 import { validateJson } from './validate-json';
 
-const transformSchema = (
+export const transformSchema = (
     schema: ParsedSpecJsonSchema,
     opts: Pick<ValidateOptions, 'additionalPropertiesInResponse' | 'requiredPropertiesInResponse'>
 ): ParsedSpecJsonSchema => {
@@ -18,7 +18,11 @@ const transformSchema = (
     if (!opts.additionalPropertiesInResponse) {
         traverseJsonSchema(modifiedSchema, (mutableSchema) => {
             if (
-                (typeof mutableSchema.additionalProperties === 'undefined' || mutableSchema.additionalProperties === true) &&
+                (typeof mutableSchema.additionalProperties === 'undefined' ||
+                    mutableSchema.additionalProperties === true) &&
+                !mutableSchema.oneOf &&
+                !mutableSchema.allOf &&
+                !mutableSchema.anyOf &&
                 mutableSchema.type &&
                 mutableSchema.type === 'object'
             ) {
