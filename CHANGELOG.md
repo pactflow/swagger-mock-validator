@@ -1,3 +1,12 @@
+# [14.2.0](https://github.com/pactflow/swagger-mock-validator/compare/14.1.0...14.2.0) (2023-10-09)
+
+
+### Bug Fixes
+
+* handle type: "object" in schema composition ([#47](https://github.com/pactflow/swagger-mock-validator/issues/47)) ([f9219ad](https://github.com/pactflow/swagger-mock-validator/commit/f9219ad805894e413021028093cdfdb65eb8e278))
+
+
+
 # [14.1.0](https://github.com/pactflow/swagger-mock-validator/compare/14.0.0...14.1.0) (2023-08-21)
 
 
