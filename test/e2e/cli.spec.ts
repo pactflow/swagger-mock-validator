@@ -13,6 +13,9 @@ interface InvokeCommandOptions {
     swagger: string;
     tag?: string;
     outputDepth?: string;
+    providerApplicationVersion?: string;
+    buildUrl?: string;
+    publish?: boolean;
 }
 
 const execute = (command: string): Promise<string> => {
@@ -50,6 +53,18 @@ const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
         command += ` --outputDepth ${options.outputDepth}`;
     }
 
+    if (options.providerApplicationVersion) {
+        command += ` --providerApplicationVersion ${options.providerApplicationVersion}`;
+    }
+
+    if (options.buildUrl) {
+        command += ` --buildUrl ${options.buildUrl}`;
+    }
+
+    if (options.publish) {
+        command += ` --publish`;
+    }
+
     return execute(command);
 };
 
@@ -58,11 +73,14 @@ const urlTo = (path: string) => `http://localhost:${serverPort}/${path}`;
 
 describe('swagger-mock-validator/cli', () => {
     let mockServer: Server;
-    let mockPactBroker: jasmine.SpyObj<{ get: (requestHeaders: object, requestUrl: string) => void }>;
+    let mockPactBroker: jasmine.SpyObj<{
+        get: (requestHeaders: object, requestUrl: string) => void,
+        post: (body: object, requestUrl: string) => void
+    }>;
     let mockAnalytics: jasmine.SpyObj<{ post: (body: object) => void }>;
 
     beforeAll((done) => {
-        mockPactBroker = jasmine.createSpyObj('mockPactBroker', ['get']);
+        mockPactBroker = jasmine.createSpyObj('mockPactBroker', ['get', 'post']);
         mockAnalytics = jasmine.createSpyObj('mockAnalytics', ['post']);
 
         const expressApp = express();
@@ -75,6 +93,10 @@ describe('swagger-mock-validator/cli', () => {
             mockAnalytics.post(request.body);
             response.status(201).end();
         });
+        expressApp.post('/*', bodyParser.json(), (request, response) => {
+            mockPactBroker.post(request.body, request.url);
+            response.status(201).end();
+        });
         expressApp.use(express.static('.'));
 
         mockServer = expressApp.listen(serverPort, done);
@@ -83,6 +105,7 @@ describe('swagger-mock-validator/cli', () => {
     beforeEach(() => {
         mockAnalytics.post.calls.reset();
         mockPactBroker.get.calls.reset();
+        mockPactBroker.post.calls.reset();
     });
 
     afterAll((done) => mockServer.close(done));
@@ -358,6 +381,33 @@ describe('swagger-mock-validator/cli', () => {
             },
             source: 'swagger-mock-validator'
         });
+    }, 30000);
+
+    it('should publish verification status to pact broker', async () => {
+        const expectCall = {
+            providerApplicationVersion: '1.2.3',
+            buildUrl: 'https://pipeline/1'
+        };
+        await invokeCommand({
+            mock: urlTo('test/e2e/fixtures/pact-working-consumer.json'),
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json'),
+            publish: true,
+            ...expectCall
+        });
+
+        expect(mockPactBroker.post).toHaveBeenCalledWith({
+            success: true,
+            ...expectCall
+        }, '/publish');
+    }, 30000);
+
+    it('should not publish verification status to pact broker', async () => {
+        await invokeCommand({
+            mock: urlTo('test/e2e/fixtures/pact-working-consumer.json'),
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+
+        expect(mockPactBroker.post).toHaveBeenCalledTimes(0);
     }, 30000);
 
     it('should succeed when a pact file and an openapi3 file are compatible', async () => {

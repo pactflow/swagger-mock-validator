@@ -13,6 +13,11 @@ export interface Pact {
     metadata?: PactMetadata;
     metaData?: PactMetadata;
     provider: { name: string };
+    _links?: {
+        'pb:publish-verification-results'?: {
+            href: string;
+        }
+    };
 }
 
 export interface PactInteraction {

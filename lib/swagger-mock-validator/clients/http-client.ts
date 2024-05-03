@@ -13,8 +13,11 @@ export class HttpClient {
         return response.data;
     }
 
-    public async post(url: string, body: any): Promise<void> {
+    public async post(url: string, body: any, auth?: string): Promise<void> {
         await axios.post(url, body, {
+            headers: {
+                ...(auth ? {authorization: 'Basic ' + Buffer.from(auth).toString('base64')} : {})
+            },
             timeout: 5000,
             validateStatus: (status) => status >= 200 && status <= 299
         });
