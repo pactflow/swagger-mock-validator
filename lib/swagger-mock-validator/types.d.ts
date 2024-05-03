@@ -33,6 +33,9 @@ export interface SwaggerMockValidatorUserOptions {
     tag?: string;
     additionalPropertiesInResponse?: string;
     requiredPropertiesInResponse?: string;
+    providerApplicationVersion?: string;
+    buildUrl?: string;
+    publish?: string;
 }
 
 export interface PactBrokerUserOptions {
@@ -76,6 +79,9 @@ interface ParsedSwaggerMockValidatorOptions {
     tag?: string;
     additionalPropertiesInResponse: boolean;
     requiredPropertiesInResponse: boolean;
+    providerApplicationVersion?: string;
+    buildUrl?: string;
+    publish: boolean;
 }
 
 export type MockSource = 'pactBroker' | 'path' | 'url';

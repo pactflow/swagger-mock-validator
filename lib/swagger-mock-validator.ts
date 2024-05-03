@@ -53,7 +53,8 @@ const parseUserOptions = (
       ? false // default to false - existing behaviour
       : userOptions.requiredPropertiesInResponse === 'true'
       ? true
-      : false
+      : false,
+  publish: typeof userOptions.publish !== 'undefined'
 });
 
 const combineValidationResults = (
@@ -228,6 +229,10 @@ export class SwaggerMockValidator {
         result.parsedMock,
         result.validationOutcome
       );
+
+      if (options.publish) {
+        await this.pactBroker.publishVerificationResult(options, result.parsedMock, result.validationOutcome);
+      }
     }
 
     return result.validationOutcome;

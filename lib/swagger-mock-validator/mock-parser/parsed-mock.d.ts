@@ -3,6 +3,7 @@ export interface ParsedMock {
     interactions: ParsedMockInteraction[];
     pathOrUrl: string;
     provider: string;
+    verificationUrl?: string;
 }
 
 export interface ParsedMockInteraction extends ParsedMockValue<any> {

@@ -7,8 +7,11 @@ import {
     PactBrokerRootResponse,
     PactBrokerUserOptions,
     PactBrokerUserOptionsWithTag,
+    ParsedSwaggerMockValidatorOptions,
     SerializedMock
 } from './types';
+import {ValidationOutcome} from '../api-types';
+import {ParsedMock} from './mock-parser/parsed-mock';
 
 export class PactBroker {
     private static getProviderTemplateUrl(pactBrokerRootResponse: PactBrokerRootResponse, template: string): string {
@@ -23,6 +26,25 @@ export class PactBroker {
         const pactUrls = await this.getPactUrls(providerPactsUrl);
 
         return this.getPacts(pactUrls);
+    }
+
+    public async publishVerificationResult(
+        {providerApplicationVersion, buildUrl}: ParsedSwaggerMockValidatorOptions,
+        {verificationUrl}: ParsedMock,
+        {success}: ValidationOutcome
+    ): Promise<void> {
+        if (!verificationUrl) {
+            throw new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
+                `No verification publication url available in pact`
+            );
+        }
+
+        return this.pactBrokerClient.post(verificationUrl, {
+            success,
+            providerApplicationVersion,
+            buildUrl,
+        });
     }
 
     private async getUrlForProviderPacts(options: PactBrokerUserOptions): Promise<string> {

@@ -214,6 +214,7 @@ export const pactParser = {
             interactions: pactJson.interactions.filter(filterUnsupportedTypes).map(parseInteraction),
             pathOrUrl: mockPathOrUrl,
             provider: pactJson.provider.name,
+            verificationUrl: pactJson._links?.['pb:publish-verification-results']?.href
         };
     },
 };
