@@ -387,6 +387,21 @@ describe('swagger-mock-validator/cli', () => {
             jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
         );
     }, 30000);
+    it('should make an bearer token authenticated request to the provided pact broker url when asked to do so', async () => {
+        const auth = 'token';
+
+        await invokeCommand({
+            auth,
+            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
+            providerName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+
+        expect(mockPactBroker.get).toHaveBeenCalledWith(
+            jasmine.objectContaining({authorization: 'Bearer token'}),
+            jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
+        );
+    }, 30000);
 
     it('should format output objects to depth 0', async () => {
         const result = await invokeCommand({

@@ -48,6 +48,7 @@ program
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
     .option('-t, --tag [string]', 'The tag to filter pacts retrieved from the pact broker')
     .option('-u, --user [USERNAME:PASSWORD]', 'The basic auth username and password to access the pact broker')
+    .option('-b, --token [string]', 'The bearer token to access the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
     .option('-o, --outputDepth [integer]', 'Specifies the number of times to recurse ' +
     'while formatting the output objects. ' +
@@ -76,7 +77,12 @@ If the pact broker has basic auth enabled, pass a --user option with username an
     )
     .action(async (swagger, mock, options) => {
         try {
-            const swaggerMockValidator = SwaggerMockValidatorFactory.create(options.user);
+            if (!options.user && process.env.PACT_BROKER_USERNAME != '' && process.env.PACT_BROKER_PASSWORD != '') {
+                options.user = process.env.PACT_BROKER_USERNAME + ':' + process.env.PACT_BROKER_PASSWORD;
+            } else if (!options.token && process.env.PACT_BROKER_TOKEN != '') {
+                options.token = process.env.PACT_BROKER_TOKEN;
+            }
+            const swaggerMockValidator = SwaggerMockValidatorFactory.create(options.user ?? options.token);
 
             const result = await swaggerMockValidator.validate({
                 analyticsUrl: options.analyticsUrl,
