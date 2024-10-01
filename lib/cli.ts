@@ -77,9 +77,13 @@ If the pact broker has basic auth enabled, pass a --user option with username an
     )
     .action(async (swagger, mock, options) => {
         try {
-            if (!options.user && process.env.PACT_BROKER_USERNAME != '' && process.env.PACT_BROKER_PASSWORD != '') {
+            if (
+                options.user == undefined &&
+                process.env.PACT_BROKER_USERNAME != undefined &&
+                process.env.PACT_BROKER_PASSWORD != undefined
+            ) {
                 options.user = process.env.PACT_BROKER_USERNAME + ':' + process.env.PACT_BROKER_PASSWORD;
-            } else if (!options.token && process.env.PACT_BROKER_TOKEN != '') {
+            } else if (options.token == undefined && process.env.PACT_BROKER_TOKEN != undefined) {
                 options.token = process.env.PACT_BROKER_TOKEN;
             }
             const swaggerMockValidator = SwaggerMockValidatorFactory.create(options.user ?? options.token);
