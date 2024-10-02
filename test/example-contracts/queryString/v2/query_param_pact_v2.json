@@ -1,0 +1,59 @@
+{
+    "consumer": {
+        "name": "pactflow-example-bi-directional-consumer-cypress"
+    },
+    "provider": {
+        "name": "pactflow-example-bi-directional-provider-postman"
+    },
+    "interactions": [
+        {
+            "description": "displays product item by query",
+            "providerState": "",
+            "request": {
+                "method": "GET",
+                "path": "/products",
+                "headers": {
+                    "accept": "application/json, text/plain, */*",
+                    "authorization": "Bearer 2024-03-13T18:05:40.611Z"
+                },
+                "body": "",
+                "query": "id=2"
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "content-type": "application/json"
+                },
+                "body": [
+                    {
+                        "id": "09",
+                        "type": "CREDIT_CARD",
+                        "name": "Gem Visa",
+                        "price": 99.99
+                    },
+                    {
+                        "id": "10",
+                        "type": "CREDIT_CARD",
+                        "name": "28 Degrees",
+                        "price": 49.49
+                    },
+                    {
+                        "id": "11",
+                        "type": "PERSONAL_LOAN",
+                        "name": "MyFlexiPay",
+                        "price": 16.5
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "pactSpecification": {
+            "version": "2.0.0"
+        },
+        "client": {
+            "name": "pact-cypress-adapter",
+            "version": "1.3.0"
+        }
+    }
+}
