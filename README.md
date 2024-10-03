@@ -89,12 +89,14 @@ You can also set the following environment variables
 - Bearer Auth
   - `PACT_BROKER_TOKEN`
 
+Note: command line options will take precedence over environment variables.
+
 Options:
   -V, --version                                   output the version number
   -p, --provider [string]                         The name of the provider in the pact broker
   -t, --tag [string]                              The tag to filter pacts retrieved from the pact broker
-  -u, --user [USERNAME:PASSWORD]                  The basic auth username and password to access the pact broker
-  -u, --token [string]                            The bearer token to access the pact broker
+  -u, --user [USERNAME:PASSWORD]                  The basic auth username and password to access the pact broker (env - PACT_BROKER_USERNAME:PACT_BROKER_PASSWORD)
+  -u, --token [string]                            The bearer token to access the pact broker (env - PACT_BROKER_TOKEN)
   -a, --analyticsUrl [string]                     The url to send analytics events to as a http post
   -o, --outputDepth [integer]                     Specifies the number of times to recurse while formatting the output objects. This is useful in case of large complicated objects or schemas. (default: 4)
   -A, --additionalPropertiesInResponse [boolean]  allow additional properties in response bodies, default false
