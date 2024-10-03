@@ -67,7 +67,7 @@ describe('swagger-mock-validator/cli', () => {
 
         const expressApp = express();
 
-        expressApp.get('/*', (request, _, next) => {
+        expressApp.get(/(.*)/, (request, _, next) => {
             mockPactBroker.get(request.headers, request.url);
             next();
         });
