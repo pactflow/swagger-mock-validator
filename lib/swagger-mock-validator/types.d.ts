@@ -3,12 +3,29 @@ import {SwaggerMockValidatorOptionsMockType, SwaggerMockValidatorOptionsSpecType
 export interface PactBrokerRootResponse {
     _links: PactBrokerLinks;
 }
+export interface PactBrokerPacticipantResponse {
+    _links: PactBrokerPacticipantResponseLinks;
+}
 
 interface PactBrokerLinks {
+    'pb:pacticipant': PactBrokerLinksPacticipant;
     'pb:latest-provider-pacts': PactBrokerLinksLatestProviderPacts;
     'pb:latest-provider-pacts-with-tag': PactBrokerLinksLatestProviderPacts;
 }
+interface PactBrokerPacticipantResponseLinks {
+    'pb:version-tag': PactBrokerLinksPacticipantVersionTag;
+    'pb:branch-version': PactBrokerLinksPacticipantBranchVersion;
+}
 
+interface PactBrokerLinksPacticipant {
+    href: string;
+}
+interface PactBrokerLinksPacticipantVersionTag {
+    href: string;
+}
+interface PactBrokerLinksPacticipantBranchVersion {
+    href: string;
+}
 interface PactBrokerLinksLatestProviderPacts {
     href: string;
 }
@@ -36,6 +53,8 @@ export interface SwaggerMockValidatorUserOptions {
     providerApplicationVersion?: string;
     buildUrl?: string;
     publish?: string;
+    providerBranch?: string;
+    providerTags?: string;
 }
 
 export interface PactBrokerUserOptions {
@@ -80,6 +99,8 @@ interface ParsedSwaggerMockValidatorOptions {
     additionalPropertiesInResponse: boolean;
     requiredPropertiesInResponse: boolean;
     providerApplicationVersion?: string;
+    providerBranch?: string;
+    providerTags?: string;
     buildUrl?: string;
     publish: boolean;
 }

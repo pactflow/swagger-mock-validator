@@ -84,11 +84,12 @@ describe('swagger-mock-validator/cli', () => {
     let mockPactBroker: jasmine.SpyObj<{
         get: (requestHeaders: object, requestUrl: string) => void,
         post: (body: object, requestUrl: string) => void
+        put: (body: object, requestUrl: string) => void
     }>;
     let mockAnalytics: jasmine.SpyObj<{ post: (body: object) => void }>;
 
     beforeAll((done) => {
-        mockPactBroker = jasmine.createSpyObj('mockPactBroker', ['get', 'post']);
+        mockPactBroker = jasmine.createSpyObj('mockPactBroker', ['get', 'post', 'put']);
         mockAnalytics = jasmine.createSpyObj('mockAnalytics', ['post']);
 
         const expressApp = express();
@@ -101,8 +102,12 @@ describe('swagger-mock-validator/cli', () => {
             mockAnalytics.post(request.body);
             response.status(201).end();
         });
-        expressApp.post('/*', bodyParser.json(), (request, response) => {
+        expressApp.post(/(.*)/, bodyParser.json(), (request, response) => {
             mockPactBroker.post(request.body, request.url);
+            response.status(201).end();
+        });
+        expressApp.post(/(.*)/, bodyParser.json(), (request, response) => {
+            mockPactBroker.put(request.body, request.url);
             response.status(201).end();
         });
         expressApp.use(express.static('.'));
@@ -113,6 +118,7 @@ describe('swagger-mock-validator/cli', () => {
     beforeEach(() => {
         mockAnalytics.post.calls.reset();
         mockPactBroker.get.calls.reset();
+        mockPactBroker.post.calls.reset();
         mockPactBroker.post.calls.reset();
     });
 

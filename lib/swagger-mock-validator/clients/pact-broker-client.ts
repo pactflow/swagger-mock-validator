@@ -37,4 +37,13 @@ export class PactBrokerClient {
             );
         }
     }
+    public async put(url: string, body: object): Promise<void> {
+        try {
+            await this.httpClient.put(url, body, this.auth);
+        } catch (error) {
+            throw new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR', `Unable to put "${url}"`, error
+            );
+        }
+    }
 }

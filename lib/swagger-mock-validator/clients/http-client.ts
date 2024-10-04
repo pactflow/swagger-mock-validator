@@ -42,4 +42,13 @@ export class HttpClient {
             validateStatus: (status) => status >= 200 && status <= 299
         });
     }
+    public async put(url: string, body: any, auth?: string): Promise<void> {
+        await axios.put(url, body, {
+            headers: {
+                ...(auth ? {authorization: 'Basic ' + Buffer.from(auth).toString('base64')} : {})
+            },
+            timeout: 5000,
+            validateStatus: (status) => status >= 200 && status <= 299
+        });
+    }
 }

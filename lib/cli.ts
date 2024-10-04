@@ -57,6 +57,8 @@ program
     .option('-R, --requiredPropertiesInResponse [boolean]', 'allows required properties in response bodies, default false')
     .option('--publish', 'Allows publication of verification result to pact broker, default false')
     .option('--providerApplicationVersion [string]', 'Version of provider, used when publishing result to broker')
+    .option('--providerBranch [string]', 'Branch of provider, used when publishing result to broker')
+    .option('--providerTags [string]', 'Tags of provider, used when publishing result to broker, comma seperated')
     .option('--buildUrl [string]', 'Url to build/pipeline, used when publishing result to broker')
     .description(
 `Confirms the swagger spec and mock are compatible with each other.
@@ -114,6 +116,8 @@ Note: command line options will take precedence over environment variables.
                 additionalPropertiesInResponse: options.additionalPropertiesInResponse,
                 requiredPropertiesInResponse: options.requiredPropertiesInResponse,
                 providerApplicationVersion: options.providerApplicationVersion,
+                providerBranch: options.providerBranch,
+                providerTags: options.providerTags,
                 buildUrl: options.buildUrl,
                 publish: options.publish
             });

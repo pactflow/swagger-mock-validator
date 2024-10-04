@@ -103,8 +103,10 @@ Options:
   -A, --additionalPropertiesInResponse [boolean]  allow additional properties in response bodies, default false
   -R, --requiredPropertiesInResponse [boolean]    allows required properties in response bodies, default false
   --publish                                       Allows publication of verification result to pact broker, default false
-  --providerApplicationVersion [string]           Version of provider, used when publishing result to broker
+  --providerApplicationVersion [string]           Version of provider, used when publishing result to broker, required if --publish is set
   --buildUrl [string]                             Url to build/pipeline, used when publishing result to broker
+  --providerBranch [string]                       Branch of provider, used when publishing result to broker
+  --providerTags [string]                         Tags of provider, used when publishing result to broker, comma separated
   -h, --help                                      display help for command
 
 ```
