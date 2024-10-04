@@ -31,6 +31,7 @@ export interface SwaggerMockValidatorUserOptions {
     providerName?: string;
     specPathOrUrl: string;
     tag?: string;
+    branch?: string;
     additionalPropertiesInResponse?: string;
     requiredPropertiesInResponse?: string;
 }
@@ -39,10 +40,14 @@ export interface PactBrokerUserOptions {
     pactBrokerUrl: string;
     providerName: string;
     tag?: string;
+    branch?: string;
 }
 
 export type PactBrokerUserOptionsWithTag = PactBrokerUserOptions & {
     tag: string;
+};
+export type PactBrokerUserOptionsWithBranch = PactBrokerUserOptions & {
+    branch: string;
 };
 
 export type AutoDetectFormat = 'auto-detect';
@@ -74,6 +79,7 @@ interface ParsedSwaggerMockValidatorOptions {
     specPathOrUrl: string;
     specSource: SpecSource;
     tag?: string;
+    branch?: string;
     additionalPropertiesInResponse: boolean;
     requiredPropertiesInResponse: boolean;
 }

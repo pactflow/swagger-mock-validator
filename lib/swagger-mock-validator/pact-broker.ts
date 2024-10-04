@@ -7,6 +7,7 @@ import {
     PactBrokerRootResponse,
     PactBrokerUserOptions,
     PactBrokerUserOptionsWithTag,
+    PactBrokerUserOptionsWithBranch,
     SerializedMock
 } from './types';
 
@@ -29,12 +30,21 @@ export class PactBroker {
         const pactBrokerRootResponse =
             await this.pactBrokerClient.loadAsObject<PactBrokerRootResponse>(options.pactBrokerUrl);
 
-        return options.tag
-            ? this.getUrlForProviderPactsByTag(pactBrokerRootResponse, {
+        if (options.tag){
+            return this.getUrlForProviderPactsByTag(pactBrokerRootResponse, {
                 pactBrokerUrl: options.pactBrokerUrl,
                 providerName: options.providerName,
                 tag: options.tag
-            }) : this.getUrlForAllProviderPacts(pactBrokerRootResponse, options);
+            })
+        } else if (options.branch){
+            return this.getUrlForProviderPactsByBranch(pactBrokerRootResponse, {
+                pactBrokerUrl: options.pactBrokerUrl,
+                providerName: options.providerName,
+                branch: options.branch
+            })
+        } else {
+            return this.getUrlForAllProviderPacts(pactBrokerRootResponse, options);
+        }
     }
 
     private getUrlForProviderPactsByTag(pactBrokerRootResponse: PactBrokerRootResponse,
@@ -53,6 +63,25 @@ export class PactBroker {
 
         return this.getSpecificUrlFromTemplate(
             providerTemplateUrl, {provider: options.providerName, tag: options.tag}
+        );
+    }
+
+    private getUrlForProviderPactsByBranch(pactBrokerRootResponse: PactBrokerRootResponse,
+                                        options: PactBrokerUserOptionsWithBranch): string {
+        const providerTemplateUrl = PactBroker.getProviderTemplateUrl(
+            pactBrokerRootResponse,
+            '_links.pb:latest-provider-pacts-with-branch.href'
+        );
+
+        if (!providerTemplateUrl) {
+            throw new SwaggerMockValidatorErrorImpl(
+                'SWAGGER_MOCK_VALIDATOR_READ_ERROR',
+                `Unable to read "${options.pactBrokerUrl}": No latest pact file url found for tag`
+            );
+        }
+
+        return this.getSpecificUrlFromTemplate(
+            providerTemplateUrl, {provider: options.providerName, branch: options.branch}
         );
     }
 

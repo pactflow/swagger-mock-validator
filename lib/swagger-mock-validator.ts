@@ -160,7 +160,8 @@ export class SwaggerMockValidator {
       ? this.pactBroker.loadPacts({
           pactBrokerUrl: options.mockPathOrUrl,
           providerName: options.providerName,
-          tag: options.tag
+          tag: options.tag,
+          branch: options.branch
         })
       : this.getPactFromFileOrUrl(options.mockPathOrUrl);
 

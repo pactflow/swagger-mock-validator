@@ -47,6 +47,7 @@ program
     .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
     .option('-t, --tag [string]', 'The tag to filter pacts retrieved from the pact broker')
+    .option('-b, --branch [string]', 'The branch to filter pacts retrieved from the pact broker')
     .option('-u, --user [USERNAME:PASSWORD]', 'The basic auth username and password to access the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
     .option('-o, --outputDepth [integer]', 'Specifies the number of times to recurse ' +
@@ -84,6 +85,7 @@ If the pact broker has basic auth enabled, pass a --user option with username an
                 providerName: options.provider,
                 specPathOrUrl: swagger,
                 tag: options.tag,
+                branch: options.branch,
                 additionalPropertiesInResponse: options.additionalPropertiesInResponse,
                 requiredPropertiesInResponse: options.requiredPropertiesInResponse
             });
