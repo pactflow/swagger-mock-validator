@@ -10,7 +10,7 @@ jobs:
     if: ${{ github.event.client_payload.release_type == 'major' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: fregante/setup-git-user@v1
@@ -30,11 +30,11 @@ jobs:
     if: ${{ github.event.client_payload.release_type == 'minor' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: fregante/setup-git-user@v1
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
@@ -50,11 +50,11 @@ jobs:
     if: ${{ github.event.client_payload.release_type == 'patch' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: fregante/setup-git-user@v1
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import {isObject} from 'util';
 import {ValidationResultCode} from '../../api-types';
 import {ParsedMockInteraction, ParsedMockValue} from '../mock-parser/parsed-mock';
 import {result} from '../result';
@@ -43,7 +42,7 @@ const getCollectionSeparator = (parsedSpecCollectionFormat?: ParsedSpecCollectio
 };
 
 const isParsedSpecJsonSchemaCore = (schema?: ParsedSpecJsonSchema): schema is ParsedSpecJsonSchemaCore =>
-    isObject(schema);
+    schema !== null && typeof schema === "object";
 
 const expandArrays = (
     parsedMockValue: string,

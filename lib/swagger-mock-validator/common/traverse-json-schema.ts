@@ -1,11 +1,10 @@
 import _ from 'lodash';
-import {isBoolean, isUndefined} from 'util';
 import {ParsedSpecJsonSchema, ParsedSpecJsonSchemaCore} from '../spec-parser/parsed-spec';
 
 export type JsonSchemaVisitor = (mutableSchema: ParsedSpecJsonSchemaCore) => void;
 
 export const traverseJsonSchema = (mutableSchema: ParsedSpecJsonSchema | undefined, visitor: JsonSchemaVisitor) => {
-    if (isBoolean(mutableSchema) || isUndefined(mutableSchema)) {
+    if (typeof mutableSchema === "boolean" || mutableSchema == undefined) {
         return;
     }
 
