@@ -76,14 +76,16 @@ the specified provider name. The <swagger> argument should be the path or url to
 json file. Optionally, pass a --tag option alongside a --provider option to filter the retrieved
 pacts from the broker by Pact Broker version tags.
 
-If the pact broker has basic auth enabled, pass a --user option with username and password joined by a colon
-(i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.
+If the pact broker has auth enabled, set the necessary env vars to access the pact broker resources.
+
+PACT_BROKER_USERNAME
+PACT_BROKER_PASSWORD
+PACT_BROKER_TOKEN
 
 Options:
   -V, --version                                   output the version number
   -p, --provider [string]                         The name of the provider in the pact broker
   -t, --tag [string]                              The tag to filter pacts retrieved from the pact broker
-  -u, --user [USERNAME:PASSWORD]                  The basic auth username and password to access the pact broker
   -a, --analyticsUrl [string]                     The url to send analytics events to as a http post
   -o, --outputDepth [integer]                     Specifies the number of times to recurse while formatting the output objects. This is useful in case of large complicated objects or schemas. (default: 4)
   -A, --additionalPropertiesInResponse [boolean]  allow additional properties in response bodies, default false
@@ -351,9 +353,15 @@ Additionally, provide a Pact Broker version tag alongside the name of the provid
 swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name --tag production
 ```
 
-If the Pact Broker is behind basic auth, you can pass credentials with the `--user` option while invoking the tool.
+If the Pact Broker is behind basic auth, you can pass credentials with env vars while invoking the tool.
+
 ```
-swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name --user BASIC_AUTH_USER:BASIC_AUTH_PASSWORD
+PACT_BROKER_USERNAME=foo PACT_BROKER_PASSWORD=bar swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name
+```
+
+If the Pact Broker is behind bearer auth, you can pass credentials with env vars while invoking the tool.
+```
+PACT_BROKER_TOKEN=bar swagger-mock-validator /path/to/swagger.json https://pact-broker.com --provider my-provider-name
 ```
 
 ### Analytics (Opt-In)

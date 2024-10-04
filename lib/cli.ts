@@ -47,7 +47,6 @@ program
     .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
     .option('-t, --tag [string]', 'The tag to filter pacts retrieved from the pact broker')
-    .option('-u, --user [USERNAME:PASSWORD]', 'The basic auth username and password to access the pact broker')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
     .option('-o, --outputDepth [integer]', 'Specifies the number of times to recurse ' +
     'while formatting the output objects. ' +
@@ -71,12 +70,20 @@ the specified provider name. The <swagger> argument should be the path or url to
 json file. Optionally, pass a --tag option alongside a --provider option to filter the retrieved
 pacts from the broker by Pact Broker version tags.
 
-If the pact broker has basic auth enabled, pass a --user option with username and password joined by a colon
-(i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.`
+If the pact broker has auth enabled, you can access pact broker resources, by setting the following env vars
+
+Basic Auth
+
+PACT_BROKER_USERNAME
+PACT_BROKER_PASSWORD
+
+Bearer Token Auth
+
+PACT_BROKER_TOKEN`
     )
     .action(async (swagger, mock, options) => {
         try {
-            const swaggerMockValidator = SwaggerMockValidatorFactory.create(options.user);
+            const swaggerMockValidator = SwaggerMockValidatorFactory.create();
 
             const result = await swaggerMockValidator.validate({
                 analyticsUrl: options.analyticsUrl,

@@ -154,7 +154,7 @@ describe('reading urls', () => {
         it('should make a request to the root of the pact broker', async () => {
             await invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name');
 
-            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com', undefined);
+            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com');
         });
 
         it('should fail when the request to the root of the pact broker fails', async () => {
@@ -192,7 +192,7 @@ describe('reading urls', () => {
 
             await invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name');
 
-            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com/provider-name/pacts', undefined);
+            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com/provider-name/pacts');
         });
 
         it('should fail when the request for the latest pact files fails', async () => {
@@ -247,9 +247,9 @@ describe('reading urls', () => {
             await invokeValidateWithPactBroker('http://pact-broker.com', 'provider-name');
 
             expect(mockHttpClient.get)
-                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/consumer-1/pact', undefined);
+                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/consumer-1/pact');
             expect(mockHttpClient.get)
-                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/consumer-2/pact', undefined);
+                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/consumer-2/pact');
         });
 
         it('should fail when the request for one of the provider pact files fails', async () => {
@@ -398,7 +398,7 @@ describe('reading urls', () => {
 
             await invokeValidateWithPactBroker('http://pact-broker.com', 'provider/name');
 
-            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com/provider%2Fname/pacts', undefined);
+            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com/provider%2Fname/pacts');
         });
     });
 
@@ -415,19 +415,17 @@ describe('reading urls', () => {
                 Promise.resolve(JSON.stringify(pactBuilder.build()));
         });
 
-        const invokeValidateWithPactBrokerAndAuth = (pactBrokerUrl: string, providerName: string, auth: string) => {
-            return invokeValidate({
-                auth,
-                mockPathOrUrl: pactBrokerUrl,
+        const invokeValidateWithPactBrokerAndAuth = (pactBrokerUrl: string, providerName: string) => {
+            return invokeValidate({mockPathOrUrl: pactBrokerUrl,
                 providerName,
                 specPathOrUrl: 'http://domain.com/swagger.json'
             });
         };
 
         it('should make an authenticated request to the root of the pact broker', async () => {
-            await invokeValidateWithPactBrokerAndAuth('http://pact-broker.com', 'provider-name', 'user:password');
+            await invokeValidateWithPactBrokerAndAuth('http://pact-broker.com', 'provider-name');
 
-            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com', 'user:password');
+            expect(mockHttpClient.get).toHaveBeenCalledWith('http://pact-broker.com');
         });
 
         it('should make an authenticated request for the latest pact files for the provider', async () => {
@@ -438,10 +436,10 @@ describe('reading urls', () => {
             mockUrls['http://pact-broker.com/provider-name/pacts'] =
                 Promise.resolve(JSON.stringify(providerPactsBuilder.build()));
 
-            await invokeValidateWithPactBrokerAndAuth('http://pact-broker.com', 'provider-name', 'user:password');
+            await invokeValidateWithPactBrokerAndAuth('http://pact-broker.com', 'provider-name');
 
             expect(mockHttpClient.get)
-                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/pacts', 'user:password');
+                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/pacts');
         });
 
         it('should make a request for all the provider pact files', async () => {
@@ -459,12 +457,12 @@ describe('reading urls', () => {
             mockUrls['http://pact-broker.com/provider-name/consumer-2/pact'] =
                 Promise.resolve(JSON.stringify(pactBuilder.build()));
 
-            await invokeValidateWithPactBrokerAndAuth('http://pact-broker.com', 'provider-name', 'user:password');
+            await invokeValidateWithPactBrokerAndAuth('http://pact-broker.com', 'provider-name');
 
             expect(mockHttpClient.get)
-                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/consumer-1/pact', 'user:password');
+                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/consumer-1/pact');
             expect(mockHttpClient.get)
-                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/consumer-2/pact', 'user:password');
+                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/consumer-2/pact');
         });
     });
 
@@ -509,7 +507,7 @@ describe('reading urls', () => {
             await invokeValidateWithPactBrokerAndTag('http://pact-broker.com', 'provider-name', 'sample-tag');
 
             expect(mockHttpClient.get)
-                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/latest/sample-tag', undefined);
+                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/latest/sample-tag');
         });
 
         it('should pass but display a warning when there are no provider pact files for the given tag', async () => {
@@ -547,7 +545,7 @@ describe('reading urls', () => {
             await invokeValidateWithPactBrokerAndTag('http://pact-broker.com', 'provider-name', 'sample/tag');
 
             expect(mockHttpClient.get)
-                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/latest/sample%2Ftag', undefined);
+                .toHaveBeenCalledWith('http://pact-broker.com/provider-name/latest/sample%2Ftag');
         });
     });
 });
