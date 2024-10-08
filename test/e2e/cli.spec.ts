@@ -8,11 +8,13 @@ import {expectToFail} from '../helpers/expect-to-fail';
 interface InvokeCommandOptions {
     analyticsUrl?: string;
     auth?: string;
+    token?: string;
     mock: string;
     providerName?: string;
     swagger: string;
     tag?: string;
     outputDepth?: string;
+    envVars?: string;
 }
 
 const execute = (command: string): Promise<string> => {
@@ -28,7 +30,9 @@ const execute = (command: string): Promise<string> => {
 };
 
 const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
-    let command = `./bin/swagger-mock-validator.mjs ${options.swagger} ${options.mock}`;
+    let command = `${options.envVars ? `${options.envVars} ` : ''}./bin/swagger-mock-validator.mjs ${options.swagger} ${
+        options.mock
+    }`;
 
     if (options.providerName) {
         command += ` --provider ${options.providerName}`;
@@ -44,6 +48,10 @@ const invokeCommand = (options: InvokeCommandOptions): Promise<string> => {
 
     if (options.auth) {
         command += ` --user ${options.auth}`;
+    }
+
+    if (options.token) {
+        command += ` --token ${options.token}`;
     }
 
     if (options.outputDepth) {
@@ -387,7 +395,85 @@ describe('swagger-mock-validator/cli', () => {
             jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
         );
     }, 30000);
+    it('should make an bearer token authenticated request to the provided pact broker url when asked to do so', async () => {
+        const token = 'token';
 
+        await invokeCommand({
+            token,
+            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
+            providerName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+
+        expect(mockPactBroker.get).toHaveBeenCalledWith(
+            jasmine.objectContaining({authorization: 'Bearer token'}),
+            jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
+        );
+    }, 30000);
+    it('should make an authenticated request with a user/pass combo read from PACT_BROKER_USERNAME/PACT_BROKER_PASSWORD variable', async () => {
+        const user = 'user';
+        const pass = 'pass';
+
+        await invokeCommand({
+            envVars: `PACT_BROKER_USERNAME=${user} PACT_BROKER_PASSWORD=${pass}`,
+            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
+            providerName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+
+        expect(mockPactBroker.get).toHaveBeenCalledWith(
+            jasmine.objectContaining({authorization: 'Basic dXNlcjpwYXNz'}),
+            jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
+        );
+    }, 30000);
+    it('should make an authenticated request with a bearer token read from PACT_BROKER_TOKEN variable', async () => {
+        const token = 'token';
+
+        await invokeCommand({
+            envVars: `PACT_BROKER_TOKEN=${token}`,
+            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
+            providerName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+
+        expect(mockPactBroker.get).toHaveBeenCalledWith(
+            jasmine.objectContaining({authorization: 'Bearer token'}),
+            jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
+        );
+    }, 30000);
+    it('should prefer user variable, even if PACT_BROKER_USERNAME/PACT_BROKER_PASSWORD variable are set', async () => {
+        const user = 'user';
+        const pass = 'pass';
+
+        await invokeCommand({
+            auth: `${user}:${pass}`,
+            envVars: `PACT_BROKER_USERNAME=${user}_env PACT_BROKER_PASSWORD=${pass}_env`,
+            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
+            providerName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+
+        expect(mockPactBroker.get).toHaveBeenCalledWith(
+            jasmine.objectContaining({authorization: 'Basic dXNlcjpwYXNz'}),
+            jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
+        );
+    }, 30000);
+    it('should prefer user variable, even if PACT_BROKER_TOKEN variable are set', async () => {
+        const token = 'token';
+
+        await invokeCommand({
+            token,
+            envVars: `PACT_BROKER_TOKEN=${token}_env`,
+            mock: urlTo('test/e2e/fixtures/pact-broker.json'),
+            providerName: 'provider-1',
+            swagger: urlTo('test/e2e/fixtures/swagger-provider.json')
+        });
+
+        expect(mockPactBroker.get).toHaveBeenCalledWith(
+            jasmine.objectContaining({authorization: 'Bearer token'}),
+            jasmine.stringMatching('test/e2e/fixtures/pact-broker.json')
+        );
+    }, 30000);
     it('should format output objects to depth 0', async () => {
         const result = await invokeCommand({
             mock: 'test/e2e/fixtures/pact-working-consumer.json',

@@ -2,9 +2,19 @@ import axios from 'axios';
 
 export class HttpClient {
     public async get(url: string, auth?: string): Promise<string> {
+        let authHeader: string | undefined;
+
+        if (auth) {
+            if (auth.includes(':')) {
+                authHeader = 'Basic ' + Buffer.from(auth).toString('base64');
+            } else {
+                authHeader = 'Bearer ' + auth;
+            }
+        }
+
         const response = await axios.get(url, {
             headers: {
-              ...(auth ? {authorization: 'Basic ' + Buffer.from(auth).toString('base64')} : {})
+                ...(authHeader ? { Authorization: authHeader } : {})
             },
             timeout: 30000,
             transformResponse: (data) => data,

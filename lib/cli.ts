@@ -47,7 +47,8 @@ program
     .arguments('<swagger> <mock>')
     .option('-p, --provider [string]', 'The name of the provider in the pact broker')
     .option('-t, --tag [string]', 'The tag to filter pacts retrieved from the pact broker')
-    .option('-u, --user [USERNAME:PASSWORD]', 'The basic auth username and password to access the pact broker')
+    .option('-u, --user [USERNAME:PASSWORD]', 'The basic auth username and password to access the pact broker (env - PACT_BROKER_USERNAME:PACT_BROKER_PASSWORD)')
+    .option('-b, --token [string]', 'The bearer token to access the pact broker (env - PACT_BROKER_TOKEN)')
     .option('-a, --analyticsUrl [string]', 'The url to send analytics events to as a http post')
     .option('-o, --outputDepth [integer]', 'Specifies the number of times to recurse ' +
     'while formatting the output objects. ' +
@@ -72,11 +73,33 @@ json file. Optionally, pass a --tag option alongside a --provider option to filt
 pacts from the broker by Pact Broker version tags.
 
 If the pact broker has basic auth enabled, pass a --user option with username and password joined by a colon
-(i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.`
+(i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.
+
+If the pact broker has bearer token auth enabled, pass a --token option along with the token to access the pact broker resources.
+
+You can also set the following environment variables
+
+- Basic Auth
+  - PACT_BROKER_USERNAME
+  - PACT_BROKER_PASSWORD
+- Bearer Auth
+  - PACT_BROKER_TOKEN
+
+Note: command line options will take precedence over environment variables.
+`
     )
     .action(async (swagger, mock, options) => {
         try {
-            const swaggerMockValidator = SwaggerMockValidatorFactory.create(options.user);
+            if (
+                options.user == undefined &&
+                process.env.PACT_BROKER_USERNAME != undefined &&
+                process.env.PACT_BROKER_PASSWORD != undefined
+            ) {
+                options.user = process.env.PACT_BROKER_USERNAME + ':' + process.env.PACT_BROKER_PASSWORD;
+            } else if (options.token == undefined && process.env.PACT_BROKER_TOKEN != undefined) {
+                options.token = process.env.PACT_BROKER_TOKEN;
+            }
+            const swaggerMockValidator = SwaggerMockValidatorFactory.create(options.user ?? options.token);
 
             const result = await swaggerMockValidator.validate({
                 analyticsUrl: options.analyticsUrl,
