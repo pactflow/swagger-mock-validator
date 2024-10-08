@@ -43,9 +43,19 @@ export class HttpClient {
         });
     }
     public async put(url: string, body: any, auth?: string): Promise<void> {
+        let authHeader: string | undefined;
+
+        if (auth) {
+            if (auth.includes(':')) {
+                authHeader = 'Basic ' + Buffer.from(auth).toString('base64');
+            } else {
+                authHeader = 'Bearer ' + auth;
+            }
+        }
+
         await axios.put(url, body, {
             headers: {
-                ...(auth ? {authorization: 'Basic ' + Buffer.from(auth).toString('base64')} : {})
+                ...(auth ? {Authorization: authHeader} : {})
             },
             timeout: 5000,
             validateStatus: (status) => status >= 200 && status <= 299
