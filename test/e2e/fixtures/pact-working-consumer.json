@@ -326,5 +326,10 @@
     }],
     "metadata": {
         "pactSpecificationVersion": "1.0.0"
+    },
+    "_links": {
+        "pb:publish-verification-results": {
+            "href": "http://localhost:8000/publish"
+        }
     }
 }

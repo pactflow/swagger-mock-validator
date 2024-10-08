@@ -5,10 +5,22 @@ export interface PactBrokerRootResponse {
 }
 
 interface PactBrokerLinks {
+    'pb:pacticipant': PactBrokerLinksPacticipant;
     'pb:latest-provider-pacts': PactBrokerLinksLatestProviderPacts;
     'pb:latest-provider-pacts-with-tag': PactBrokerLinksLatestProviderPacts;
+    'pb:pacticipant-version-tag': PactBrokerLinksPacticipantVersionTag;
+    'pb:pacticipant-branch-version': PactBrokerLinksPacticipantBranchVersion;
 }
 
+interface PactBrokerLinksPacticipant {
+    href: string;
+}
+interface PactBrokerLinksPacticipantVersionTag {
+    href: string;
+}
+interface PactBrokerLinksPacticipantBranchVersion {
+    href: string;
+}
 interface PactBrokerLinksLatestProviderPacts {
     href: string;
 }
@@ -33,6 +45,11 @@ export interface SwaggerMockValidatorUserOptions {
     tag?: string;
     additionalPropertiesInResponse?: string;
     requiredPropertiesInResponse?: string;
+    providerApplicationVersion?: string;
+    buildUrl?: string;
+    publish?: string;
+    providerBranch?: string;
+    providerTags?: string;
 }
 
 export interface PactBrokerUserOptions {
@@ -76,6 +93,11 @@ interface ParsedSwaggerMockValidatorOptions {
     tag?: string;
     additionalPropertiesInResponse: boolean;
     requiredPropertiesInResponse: boolean;
+    providerApplicationVersion?: string;
+    providerBranch?: string;
+    providerTags?: string;
+    buildUrl?: string;
+    publish: boolean;
 }
 
 export type MockSource = 'pactBroker' | 'path' | 'url';

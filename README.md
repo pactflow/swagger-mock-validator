@@ -74,7 +74,8 @@ pact broker and the provider name should be passed using the --provider option. 
 automatically find the latest versions of the consumer pact file(s) uploaded to the broker for
 the specified provider name. The <swagger> argument should be the path or url to the swagger
 json file. Optionally, pass a --tag option alongside a --provider option to filter the retrieved
-pacts from the broker by Pact Broker version tags.
+pacts from the broker by Pact Broker version tags. Pass the --publish flag together with
+--providerApplicationVersion to publish the result to the pact broker.
 
 If the pact broker has basic auth enabled, pass a --user option with username and password joined by a colon
 (i.e. THE_USERNAME:THE_PASSWORD) to access the pact broker resources.
@@ -101,7 +102,13 @@ Options:
   -o, --outputDepth [integer]                     Specifies the number of times to recurse while formatting the output objects. This is useful in case of large complicated objects or schemas. (default: 4)
   -A, --additionalPropertiesInResponse [boolean]  allow additional properties in response bodies, default false
   -R, --requiredPropertiesInResponse [boolean]    allows required properties in response bodies, default false
+  --publish                                       Allows publication of verification result to pact broker, default false
+  --providerApplicationVersion [string]           Version of provider, used when publishing result to broker, required if --publish is set
+  --buildUrl [string]                             Url to build/pipeline, used when publishing result to broker
+  --providerBranch [string]                       Branch of provider, used when publishing result to broker
+  --providerTags [string]                         Tags of provider, used when publishing result to broker, comma separated
   -h, --help                                      display help for command
+
 ```
 
 
