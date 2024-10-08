@@ -16,8 +16,7 @@ export default tseslint.config(
     {
         ignores: [
           "**/test/*",
-          "commitlint.config.cjs",
-          "gulpfile.cjs"
+          "commitlint.config.cjs"
         ],
       },{
     extends: [
