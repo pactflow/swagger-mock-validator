@@ -1,3 +1,15 @@
+# [14.4.0](https://github.com/pactflow/swagger-mock-validator/compare/14.3.0...14.4.0) (2024-10-08)
+
+
+### Features
+
+* add option to publish verification result to pact broker ([3c4871d](https://github.com/pactflow/swagger-mock-validator/commit/3c4871d4b4917d0a9d4800e4808968285b5469cd))
+* add support for formatted verification results ([acbfc75](https://github.com/pactflow/swagger-mock-validator/commit/acbfc755772914813ffbc76a10931e31d99c77e7))
+* Bearer token based auth for PactFlow Broker ([f42f3ed](https://github.com/pactflow/swagger-mock-validator/commit/f42f3edd34d1eeb8565494ab8f9b7fd9abdcce35))
+* support provider branch/tags on verification published ([d644079](https://github.com/pactflow/swagger-mock-validator/commit/d644079bdf0ff0a34532e85c368d20fbbc77d4b8))
+
+
+
 # [14.3.0](https://github.com/pactflow/swagger-mock-validator/compare/14.2.0...14.3.0) (2024-10-04)
 
 
