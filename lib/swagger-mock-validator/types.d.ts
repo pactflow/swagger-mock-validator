@@ -3,18 +3,13 @@ import {SwaggerMockValidatorOptionsMockType, SwaggerMockValidatorOptionsSpecType
 export interface PactBrokerRootResponse {
     _links: PactBrokerLinks;
 }
-export interface PactBrokerPacticipantResponse {
-    _links: PactBrokerPacticipantResponseLinks;
-}
 
 interface PactBrokerLinks {
     'pb:pacticipant': PactBrokerLinksPacticipant;
     'pb:latest-provider-pacts': PactBrokerLinksLatestProviderPacts;
     'pb:latest-provider-pacts-with-tag': PactBrokerLinksLatestProviderPacts;
-}
-interface PactBrokerPacticipantResponseLinks {
-    'pb:version-tag': PactBrokerLinksPacticipantVersionTag;
-    'pb:branch-version': PactBrokerLinksPacticipantBranchVersion;
+    'pb:pacticipant-version-tag': PactBrokerLinksPacticipantVersionTag;
+    'pb:pacticipant-branch-version': PactBrokerLinksPacticipantBranchVersion;
 }
 
 interface PactBrokerLinksPacticipant {

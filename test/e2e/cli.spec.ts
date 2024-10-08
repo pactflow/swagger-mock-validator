@@ -400,13 +400,30 @@ describe('swagger-mock-validator/cli', () => {
     it('should publish verification status to pact broker', async () => {
         const expectCall = {
             providerApplicationVersion: '1.2.3',
-            buildUrl: 'https://pipeline/1'
+            buildUrl: 'https://pipeline/1',
+            testResults: [
+                {
+                    interactionDescription: 'unknown header as a warning test',
+                    interactionId: null,
+                    success: true,
+                    mismatches: [
+                        {
+                            attribute: 'request.header.unknown',
+                            description: 'Request header is not defined in the spec file: x-unknown-header',
+                            identifier: '1,2',
+                        },
+                    ],
+                },
+            ],
+            verifiedBy: {
+                implementation: "swagger-mock-validator"
+            }
         };
         await invokeCommand({
             mock: urlTo('test/e2e/fixtures/pact-working-consumer.json'),
             swagger: urlTo('test/e2e/fixtures/swagger-provider.json'),
             publish: true,
-            ...expectCall
+            ...expectCall,
         });
 
         expect(mockPactBroker.post).toHaveBeenCalledWith({

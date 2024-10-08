@@ -1,18 +1,17 @@
 import _ from 'lodash';
-import {PactBrokerClient} from './clients/pact-broker-client';
-import {SwaggerMockValidatorErrorImpl} from './swagger-mock-validator-error-impl';
+import { PactBrokerClient } from './clients/pact-broker-client';
+import { SwaggerMockValidatorErrorImpl } from './swagger-mock-validator-error-impl';
 import {
     PactBrokerProviderPacts,
     PactBrokerProviderPactsLinksPact,
     PactBrokerRootResponse,
-    PactBrokerPacticipantResponse,
     PactBrokerUserOptions,
     PactBrokerUserOptionsWithTag,
     ParsedSwaggerMockValidatorOptions,
-    SerializedMock
+    SerializedMock,
 } from './types';
-import {ValidationOutcome} from '../api-types';
-import {ParsedMock} from './mock-parser/parsed-mock';
+import { ValidationOutcome } from '../api-types';
+import { ParsedMock } from './mock-parser/parsed-mock';
 
 export class PactBroker {
     private static getProviderTemplateUrl(pactBrokerRootResponse: PactBrokerRootResponse, template: string): string {
@@ -39,7 +38,7 @@ export class PactBroker {
             providerName,
         }: ParsedSwaggerMockValidatorOptions,
         { verificationUrl }: ParsedMock,
-        { success }: ValidationOutcome,
+        { success, errors, warnings }: ValidationOutcome,
     ): Promise<void> {
         // if (mockSource !== 'pactBroker') {
         //     throw new SwaggerMockValidatorErrorImpl(
@@ -63,48 +62,79 @@ export class PactBroker {
         let branchVersionUrl;
         let versionTagUrl;
         if ((providerBranch || providerTags) && providerName) {
-            const pactBrokerRootResponse = await this.pactBrokerClient.loadAsObject<PactBrokerRootResponse>(
-                mockPathOrUrl
-            );
-            const pactBrokerPacticipantUrl = pactBrokerRootResponse._links['pb:pacticipant'].href;
-            const pactBrokerPacticipantResponse = await this.pactBrokerClient.loadAsObject<PactBrokerPacticipantResponse>(
-               this.getSpecificUrlFromTemplate(pactBrokerPacticipantUrl,{pacticipant: providerName}),
-            );
-            branchVersionUrl = pactBrokerPacticipantResponse._links['pb:branch-version'].href;
-            versionTagUrl = pactBrokerPacticipantResponse._links['pb:version-tag'].href;
+            const pactBrokerRootResponse =
+                await this.pactBrokerClient.loadAsObject<PactBrokerRootResponse>(mockPathOrUrl);
+            branchVersionUrl = pactBrokerRootResponse._links['pb:pacticipant-branch-version'].href;
+            versionTagUrl = pactBrokerRootResponse._links['pb:pacticipant-version-tag'].href;
         }
-
-        if (providerBranch && providerName && branchVersionUrl) {
-            await this.pactBrokerClient.put(
-                this.getSpecificUrlFromTemplate(branchVersionUrl, {
-                    provider: providerName,
-                    branch: providerBranch,
-                    version: providerApplicationVersion,
-                }),
-                {
-                    version: providerApplicationVersion,
-                    branch: providerBranch,
-                },
-            );
-        }
-
-        if (providerTags && providerName && versionTagUrl) {
-            const tags = providerTags.split(',');
-            for (const tag of tags) {
+        try {
+            if (providerBranch && providerName && branchVersionUrl) {
                 await this.pactBrokerClient.put(
-                    this.getSpecificUrlFromTemplate(versionTagUrl, { tag: tag, version: providerApplicationVersion }),
-                    {
+                    this.getSpecificUrlFromTemplate(branchVersionUrl, {
+                        pacticipant: providerName,
+                        branch: providerBranch,
                         version: providerApplicationVersion,
-                        tag: tag,
-                    },
+                    }),
+                    {},
                 );
             }
+        } catch (e) {
+            console.error('Failed to create provider branch for verification result', e.message);
         }
 
+        try {
+            if (providerTags && providerName && versionTagUrl) {
+                const tags = providerTags.split(',');
+                for (const tag of tags) {
+                    await this.pactBrokerClient.put(
+                        this.getSpecificUrlFromTemplate(versionTagUrl, {
+                            pacticipant: providerName,
+                            tag: tag,
+                            version: providerApplicationVersion,
+                        }),
+                        {},
+                    );
+                }
+            }
+        } catch (e) {
+            console.error('Failed to create provider tag for verification result', e.message);
+        }
+
+        const testResults = [
+            ...errors.map((error) => ({
+                interactionDescription: error.mockDetails?.interactionDescription,
+                interactionId: null,
+                success: false,
+                mismatches: [
+                    {
+                        attribute: error.code,
+                        description: error.message,
+                        identifier: error.mockDetails?.value,
+                    },
+                ],
+            })),
+            ...warnings.map((warning) => ({
+                interactionDescription: warning.mockDetails?.interactionDescription,
+                interactionId: null,
+                success: true,
+                mismatches: [
+                    {
+                        attribute: warning.code,
+                        description: warning.message,
+                        identifier: warning.mockDetails?.value,
+                    },
+                ],
+            })),
+        ];
+        console.log(testResults);
         return this.pactBrokerClient.post(verificationUrl, {
             success,
             providerApplicationVersion,
             buildUrl,
+            testResults,
+            verifiedBy: {
+                implementation: 'swagger-mock-validator',
+            },
         });
     }
 
