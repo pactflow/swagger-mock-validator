@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import querystring from 'node:querystring';
 import { traverseJsonSchema } from '../common/traverse-json-schema';
 import { ParsedMockInteraction } from '../mock-parser/parsed-mock';
 import { result } from '../result';
@@ -82,7 +83,13 @@ export const validateParsedMockRequestBody = (
 
     const { schema, mediaType } = schemaForMediaType;
     const transformedSchema = transformSchema(schema);
-    const validationErrors = validateJson(transformedSchema, parsedMockInteraction.requestBody.value);
+
+    let transformedBody = parsedMockInteraction.requestBody.value;
+    if (mediaType?.startsWith("application/x-www-form-urlencoded")) {
+      transformedBody = querystring.parse(transformedBody);
+    }
+
+    const validationErrors = validateJson(transformedSchema, transformedBody);
 
     return _.map(validationErrors, (error) =>
         result.build({
