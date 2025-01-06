@@ -1,3 +1,12 @@
+# [14.5.0](https://github.com/pactflow/swagger-mock-validator/compare/14.4.0...14.5.0) (2025-01-06)
+
+
+### Bug Fixes
+
+* parse form bodies ([#72](https://github.com/pactflow/swagger-mock-validator/issues/72)) ([1f220eb](https://github.com/pactflow/swagger-mock-validator/commit/1f220ebae33bd80eb09fbefbe55de7a94c151f64))
+
+
+
 # [14.4.0](https://github.com/pactflow/swagger-mock-validator/compare/14.3.0...14.4.0) (2024-10-08)
 
 
