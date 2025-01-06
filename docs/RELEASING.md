@@ -36,7 +36,7 @@ The scripts will:
 You must be able to create a github access token with `repo` scope to the
 cypress-slack-reporter repository.
 
-- Set an environment variable `GITHUB_ACCESS_TOKEN_FOR_PACTFLOW_RELEASES` to this token.
+- Set an environment variable `GITHUB_ACCESS_TOKEN_FOR_PACTFLOW_RELEASES` to this token. It must be one of the valid token formats (see https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)
 - Make sure master contains the code you want to release
 - Run one of the following, depending on the class of change. These scripts send the custom repository_dispatch event `release-triggered`, kicking of the release workflow.
 
