@@ -100,7 +100,13 @@ const toRequirementDefinition = (
     name: string,
     securitySchemes: DereferencedSecuritySchemes,
     securityRequirement: SecurityRequirement
-): RequirementDefinition => ({name, scheme: securitySchemes[name], value: securityRequirement[name]});
+): RequirementDefinition => {
+  const scheme = securitySchemes[name];
+  if (typeof scheme === 'undefined') {
+    throw new Error(`"${name}" was not found in "securitySchemes"`);
+  }
+  return { name, scheme, value: securityRequirement[name], };
+}
 
 const parseSecurityRequirementGroup = (
     securityRequirement: SecurityRequirement,
