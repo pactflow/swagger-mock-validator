@@ -1,3 +1,9 @@
+# UPDATE: new package
+
+> [!IMPORTANT]  
+> This package has been replaced by https://github.com/pactflow/openapi-pact-comparator/, which is a ground-up rewrite of this project. It's much faster (50x in many cases)
+> and has numerous additional features and capabilities. This project is no longer incorporated into PactFlow's [Bi-Directional-Contract-Testing](https://pactflow.io/bi-directional-contract-testing) feature.
+
 # Swagger Mock Validator
 > A CLI tool to validate mocks against swagger/OpenApi specs.
 
